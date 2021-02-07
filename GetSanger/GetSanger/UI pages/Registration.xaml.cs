@@ -9,7 +9,7 @@ namespace GetSangerUI
         public Registration()
         {
             InitializeComponent();
-            
+       
         }
     }
 }
