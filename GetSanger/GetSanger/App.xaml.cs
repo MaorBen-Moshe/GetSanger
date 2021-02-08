@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using GetSangerUI;
 using Xamarin.Forms.Xaml;
+using GetSanger.UI_pages.signup;
 
 namespace GetSanger
 {
@@ -11,7 +12,7 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            MainPage = new Registration();
+            MainPage = new SignupPersonalDetailPage();
         }
 
         protected override void OnStart()

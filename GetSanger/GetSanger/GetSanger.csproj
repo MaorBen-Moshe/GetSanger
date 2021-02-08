@@ -20,8 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="UI pages\RegistrationPage.xaml.cs">
+      <DependentUpon>RegistrationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="UI pages\signup\signupEmailPage.xaml.cs">
-      <DependentUpon>signupEmailPage.xaml</DependentUpon>
+      <DependentUpon>SignupEmailPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -29,10 +32,19 @@
     <EmbeddedResource Update="UI pages\ModePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\Registration.xaml">
+    <EmbeddedResource Update="UI pages\RegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\signup\signupEmailPage.xaml">
+    <EmbeddedResource Update="UI pages\sanger\SangerMainPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UI pages\signup\SignupEmailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UI pages\signup\SignupPersonalDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UI pages\user\UserMainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

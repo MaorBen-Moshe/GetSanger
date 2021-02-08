@@ -4,9 +4,9 @@ using Xamarin.Forms.Xaml;
 namespace GetSangerUI
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Registration : ContentPage
+    public partial class RegistrationPage : ContentPage
     { 
-        public Registration()
+        public RegistrationPage()
         {
             InitializeComponent();
        

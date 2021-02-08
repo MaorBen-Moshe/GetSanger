@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys ="clr-namespace:System;assembly=mscorlib" 
+             x:Class="GetSanger.UI_pages.signup.SignupPersonalDetailPage">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center">
+            <ImageButton Aspect="AspectFill" CornerRadius="20" BorderColor="Yellow"/>
+            <Button Text="Upload Photo" CornerRadius="20"  Margin="100,20, 100, 20" BorderColor="Transparent" BorderWidth="0"/>
+            <Entry Placeholder="Nick Name" Keyboard="Text"/>
+            <Picker SelectedIndex="1" Title="Gender">
+                <Picker.Items>
+                    <x:String>Male</x:String>
+                    <x:String>Female</x:String>
+                    <x:String>Other</x:String>
+                </Picker.Items>
+            </Picker>
+            <StackLayout>
+                <Label Text="Birthday" Padding="5" />
+                <DatePicker Format="dd MMM yyyy" Date="{x:Static sys:DateTime.Today}" />
+            </StackLayout>
+
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">
+                <Button Text="Continue" Padding="5" HeightRequest="55" WidthRequest="90"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
