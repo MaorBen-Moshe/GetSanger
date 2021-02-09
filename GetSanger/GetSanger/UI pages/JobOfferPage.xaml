@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys ="clr-namespace:System;assembly=mscorlib"
+             x:Class="GetSanger.UI_pages.JobOfferPage">
+    <ContentPage.Content>
+        <Grid Padding="10">
+            <Label Text="Job Offer"
+                   FontSize="Header"
+                   HorizontalOptions="CenterAndExpand"
+                   Padding="50"
+                   Grid.Row="0"/>
+            
+            <StackLayout VerticalOptions="Center"
+                         Spacing="50"
+                         Padding="20"
+                         Grid.Row="1">
+
+                <Entry Text="Category here" HorizontalTextAlignment="Center" IsReadOnly="True"/>
+                <Entry Placeholder="Location"/> <!--Location Place-->
+                <Entry Placeholder="Phone number (optional)" Keyboard="Telephone"/>
+                <DatePicker Format="dd MMM yyyy" Date="{x:Static sys:DateTime.Today}"/>
+                <Editor IsSpellCheckEnabled="True"
+                        IsTextPredictionEnabled="True"
+                        Placeholder="Job Description">
+                    <Editor.Keyboard>
+                        <Keyboard x:FactoryMethod="Keyboard.Create" >
+                            <x:Arguments>
+                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                            </x:Arguments>
+                        </Keyboard>
+                    </Editor.Keyboard>
+                </Editor>
+            </StackLayout>
+
+            <Button Text="Send" 
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="EndAndExpand"
+                    Margin="50, 100"
+                    Padding="50, 20"
+                    CornerRadius="20"
+                    Grid.Row="2"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

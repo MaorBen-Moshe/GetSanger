@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sys ="clr-namespace:System;assembly=mscorlib" 
+             xmlns:sys ="clr-namespace:System;assembly=mscorlib"
              x:Class="GetSanger.UI_pages.signup.SignupPersonalDetailPage">
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center">
@@ -24,7 +24,7 @@
                 <Label Text="Birthday" Padding="5" Grid.Column="0" />
                 <DatePicker Format="dd MMM yyyy" Date="{x:Static sys:DateTime.Today}" Grid.Column="1"/>
             </Grid>
-
+            
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">
                 <Button Text="Continue" Padding="5" HeightRequest="55" WidthRequest="90"/>
             </StackLayout>
