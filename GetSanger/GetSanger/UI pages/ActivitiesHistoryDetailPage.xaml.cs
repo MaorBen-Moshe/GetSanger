@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace GetSanger.UI_pages.sanger
+namespace GetSanger.UI_pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SangerMainPage : ContentPage
+    public partial class ActivitiesHistoryDetailPage : ContentPage
     {
-        public SangerMainPage()
+        public ActivitiesHistoryDetailPage()
         {
             InitializeComponent();
-            
         }
     }
 }
