@@ -22,7 +22,9 @@
                 <DatePicker Format="dd MMM yyyy" Date="{x:Static sys:DateTime.Today}"/>
                 <Editor IsSpellCheckEnabled="True"
                         IsTextPredictionEnabled="True"
-                        Placeholder="Job Description">
+                        Placeholder="Job Description"
+                        VerticalOptions="FillAndExpand"
+                        HeightRequest="100">
                     <Editor.Keyboard>
                         <Keyboard x:FactoryMethod="Keyboard.Create" >
                             <x:Arguments>

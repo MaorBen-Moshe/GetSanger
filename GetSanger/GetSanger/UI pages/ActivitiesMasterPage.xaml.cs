@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -6,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace GetSanger.UI_pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ActivitiesHistoryMasterPage : ContentPage
+    public partial class ActivitiesMasterPage : ContentPage
     {
-        public ActivitiesHistoryMasterPage()
+        public ActivitiesMasterPage()
         {
             InitializeComponent();
         }
@@ -27,7 +31,7 @@ namespace GetSanger.UI_pages
 
         private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if(e.SelectedItem == null)
+            if (e.SelectedItem == null)
                 return;
 
             // var activity = e.SelectedItem as Activity;

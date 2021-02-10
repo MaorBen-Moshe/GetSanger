@@ -20,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="UI pages\ActivitiesMasterPage.xaml.cs">
+      <DependentUpon>ActivitiesMasterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI pages\ActivityDetailPage.xaml.cs">
+      <DependentUpon>ActivityDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="UI pages\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
@@ -32,7 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="UI pages\ActivitiesHistoryDetailPage.xaml">
+    <EmbeddedResource Update="UI pages\ActivitiesMasterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UI pages\ActivityDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="UI pages\ActivitiesHistoryMasterPage.xaml">
