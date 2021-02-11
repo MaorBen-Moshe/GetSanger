@@ -4,26 +4,24 @@
              x:Class="GetSanger.UI_pages.ActivityDetailPage">
     <ContentPage.Content>
         <Grid Padding="10">
-            <StackLayout Grid.Row="0"
-                         HorizontalOptions="CenterAndExpand"
-                         VerticalOptions="Center"
-                         Padding="50"
-                         Margin="50, 0">
+            <AbsoluteLayout Grid.Row="0"
+                            HorizontalOptions="CenterAndExpand">
                 <Label Text="Current Job"
-                   FontSize="Header"/>
-                <Grid Margin="150, 0">
+                       FontSize="50"
+                       AbsoluteLayout.LayoutBounds="0.5, 0.2, 1, 0.75"
+                       AbsoluteLayout.LayoutFlags="All"/>
+                <StackLayout AbsoluteLayout.LayoutBounds="0.5, 0.7, 0.75, 0.2"
+                             AbsoluteLayout.LayoutFlags="All">
                     <Label Text="Status: Active/Done"
                            FontSize="Title"
-                           Grid.Row="0"/>
-                    <Button Grid.Row="1"/>
-                </Grid>
-            </StackLayout>
+                           HorizontalOptions="CenterAndExpand"/>
+                    <Button Text="Job owner Profile"
+                            CornerRadius="20"/>
+                </StackLayout>
+            </AbsoluteLayout>
 
             <StackLayout VerticalOptions="Center"
-                         Spacing="50"
-                         Padding="20"
                          Grid.Row="1">
-
                 <Entry Text="Category here" HorizontalTextAlignment="Center" IsReadOnly="True"/>
                 <Entry Placeholder="Location" IsReadOnly="True"/>
                 <!--Location Place-->
@@ -46,11 +44,9 @@
             </StackLayout>
 
             <Button Text="See/Active Location services"
-                    WidthRequest="300"
                     HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="EndAndExpand"
-                    Margin="50, 100"
-                    Padding="50, 20"
+                    VerticalOptions="End"
+                    Padding="20, 10"
                     CornerRadius="20"
                     Grid.Row="2"/>
         </Grid>
