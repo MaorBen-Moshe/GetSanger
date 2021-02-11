@@ -20,16 +20,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="UI pages\ActivitiesMasterPage.xaml.cs">
+    <Compile Update="UI pages\common\ActivitiesMasterPage.xaml.cs">
       <DependentUpon>ActivitiesMasterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="UI pages\ActivityDetailPage.xaml.cs">
+    <Compile Update="UI pages\common\ActivityDetailPage.xaml.cs">
       <DependentUpon>ActivityDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="UI pages\RegistrationPage.xaml.cs">
+    <Compile Update="UI pages\signup\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="UI pages\AccountPage.xaml.cs">
+    <Compile Update="UI pages\common\AccountPage.xaml.cs">
       <DependentUpon>AccountPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="UI pages\signup\signupEmailPage.xaml.cs">
@@ -38,28 +38,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="UI pages\ActivitiesMasterPage.xaml">
+    <EmbeddedResource Update="UI pages\common\ActivitiesMasterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\ActivityDetailPage.xaml">
+    <EmbeddedResource Update="UI pages\common\ActivityDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\ActivitiesHistoryMasterPage.xaml">
+    <EmbeddedResource Update="UI pages\common\ActivitiesHistoryMasterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\JobOfferPage.xaml">
+    <EmbeddedResource Update="UI pages\common\JobOfferPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\ModePage.xaml">
+    <EmbeddedResource Update="UI pages\signup\ModePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\RegistrationPage.xaml">
+    <EmbeddedResource Update="UI pages\signup\RegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="UI pages\sanger\SangerMainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\AccountPage.xaml">
+    <EmbeddedResource Update="UI pages\common\AccountPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="UI pages\signup\SignupCategoriesPage.xaml">

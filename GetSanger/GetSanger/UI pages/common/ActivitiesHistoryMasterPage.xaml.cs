@@ -3,7 +3,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace GetSanger.UI_pages
+namespace GetSanger.UI_pages.common
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ActivitiesHistoryMasterPage : ContentPage

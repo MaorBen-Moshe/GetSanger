@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace GetSanger.UI_pages
+namespace GetSanger.UI_pages.signup
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AccountPage : ContentPage
+    public partial class ModePage : ContentPage
     {
-        public AccountPage()
+        public ModePage()
         {
             InitializeComponent();
-           
         }
     }
 }
