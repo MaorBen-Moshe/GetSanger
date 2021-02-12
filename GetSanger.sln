@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetSanger.Android", "GetSan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetSanger.iOS", "GetSanger\GetSanger.iOS\GetSanger.iOS.csproj", "{698C5343-F6A6-4240-849A-E0249E4A451B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetSanger", "GetSanger\GetSanger\GetSanger.csproj", "{97AB04B7-03C5-4EC2-A37A-CD510DFB8B25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetSanger", "GetSanger\GetSanger\GetSanger.csproj", "{97AB04B7-03C5-4EC2-A37A-CD510DFB8B25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,7 +21,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{638889D8-1D85-41C8-9167-E91B87F5235A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{638889D8-1D85-41C8-9167-E91B87F5235A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{638889D8-1D85-41C8-9167-E91B87F5235A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{638889D8-1D85-41C8-9167-E91B87F5235A}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{638889D8-1D85-41C8-9167-E91B87F5235A}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{638889D8-1D85-41C8-9167-E91B87F5235A}.Debug|iPhone.Deploy.0 = Debug|Any CPU

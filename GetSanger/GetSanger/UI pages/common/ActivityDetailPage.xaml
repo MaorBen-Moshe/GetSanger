@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys ="clr-namespace:System;assembly=mscorlib"
+             xmlns:keyboard="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Core"
              x:Class="GetSanger.UI_pages.common.ActivityDetailPage">
     <ContentPage.Content>
         <Grid Padding="10">
@@ -32,15 +34,8 @@
                         Placeholder="Job Description"
                         VerticalOptions="FillAndExpand"
                         HeightRequest="100"
-                        IsReadOnly="True">
-                    <Editor.Keyboard>
-                        <Keyboard x:FactoryMethod="Keyboard.Create" >
-                            <x:Arguments>
-                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                            </x:Arguments>
-                        </Keyboard>
-                    </Editor.Keyboard>
-                </Editor>
+                        IsReadOnly="True"
+                        x:Name="m_jobEditor" />
             </StackLayout>
 
             <Button Text="See/Active Location services"

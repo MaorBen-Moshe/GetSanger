@@ -16,8 +16,8 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
             <Label Text="Choose your mode" FontSize="Title" Padding="0, 0, 0, 30"/>
-            <Button Text="User Mode" Margin="10" Style="{StaticResource button}"/>
-            <Button Text="Sanger Mode" Margin="10" Style="{StaticResource button}"/>
+            <Button Text="User Mode" Margin="10" Style="{StaticResource button}" x:Name="UserButton" Clicked="UserButton_Clicked"/>
+            <Button Text="Sanger Mode" Margin="10" Style="{StaticResource button}" x:Name="SangerButton" Clicked="SangerButton_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

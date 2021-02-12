@@ -5,7 +5,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Button" x:Name="button">
-                <Setter Property="Margin" Value="1-5"></Setter>
+                <Setter Property="Margin" Value="5"></Setter>
                 <Setter Property="VerticalOptions" Value="Center"></Setter>
                 <Setter Property="CornerRadius" Value="20"></Setter>
             </Style>
@@ -20,10 +20,10 @@
                    Padding="20"
                    FontSize="Title" 
                    LineBreakMode="WordWrap"/>
-            <Button Text="Current Activities" Style="button"/>
-            <Button Text="Pending Jobs" Style="button"/>
-            <Button Text="History" Style="button"/>
-            <Button Text="My Account" Style="button"/>
+            <Button Text="Current Activities" />
+            <Button Text="Pending Jobs"/>
+            <Button Text="History"/>
+            <Button Text="My Account" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

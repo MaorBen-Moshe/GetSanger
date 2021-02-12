@@ -15,6 +15,8 @@ namespace GetSanger.UI_pages.common
         public ActivityDetailPage()
         {
             InitializeComponent();
+
+            m_jobEditor.Keyboard = Keyboard.Create(KeyboardFlags.Suggestions | KeyboardFlags.Spellcheck | KeyboardFlags.CapitalizeSentence);
         }
     }
 }

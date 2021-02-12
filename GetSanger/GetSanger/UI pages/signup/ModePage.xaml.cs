@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using GetSanger.UI_pages.sanger;
+using GetSanger.UI_pages.user;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,6 +12,16 @@ namespace GetSanger.UI_pages.signup
         public ModePage()
         {
             InitializeComponent();
+        }
+
+        private void UserButton_Clicked(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new UserMainPage();
+        }
+
+        private void SangerButton_Clicked(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new SangerMainPage();
         }
     }
 }
