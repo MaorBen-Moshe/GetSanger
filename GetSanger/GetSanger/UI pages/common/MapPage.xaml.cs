@@ -1,9 +1,4 @@
 ﻿using GetSanger.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -11,40 +6,58 @@ using Xamarin.Forms.Xaml;
 
 
 namespace GetSanger.UI_pages.common
-{
+{ 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
-        public event Location_Chosen location_chosen;
-        
-        public event Map_Disappeared map_disappeared;
-
         private MapRenderer MapRend { get; set; }
+
+        public Xamarin.Forms.Maps.Map CurrMap { get; set; }
 
         public MapPage()
         {
             InitializeComponent();
 
             MapRend = new MapRenderer();
-
-            m_Map.MapType = MapType.Street;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
+            
             Location location = await MapRend.GetCurrentLocation();
             Position position = new Position(location.Latitude, location.Longitude);
             MapSpan mapSpan = new MapSpan(position, 0.01, 0.01);
-            // bind map span to xaml map
+            
+            CurrMap = new Xamarin.Forms.Maps.Map(mapSpan)
+            {
+                MapType = MapType.Street,
+                IsShowingUser = true
+            };
+
+            CurrMap.MapClicked += CurrMap_MapClicked;
+
+            Content = CurrMap;
+
+            await DisplayAlert("Note", "Please click on the right place", "OK", FlowDirection.MatchParent);
         }
 
-        private async void m_Map_MapClicked(object sender, MapClickedEventArgs e)
+        private async void CurrMap_MapClicked(object sender, MapClickedEventArgs e)
         {
-            Position position = e.Position;
             Placemark placemark = await MapRend.PickedLocation(new Location(e.Position.Latitude, e.Position.Longitude));
-            // sending place mark to job offer page some how.
+            string location = $"Did you choose the right place?\n {placemark}";
+            bool answer = await DisplayAlert("Location Chosen", location, "Yes", "No");
+            if (answer)
+            {
+                Application.Current.MainPage = await Navigation.PopAsync();
+                (Application.Current.MainPage as JobOfferPage).PlaceMark = placemark;
+            }
+        }
+
+        protected override void OnDisappearing()
+        {
+            MapRend.Cancelation();
+            base.OnDisappearing();
         }
     }
 }

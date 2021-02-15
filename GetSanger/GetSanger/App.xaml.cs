@@ -13,7 +13,7 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            MainPage = new JobOfferPage();
+            MainPage = new NavigationPage(new JobOfferPage());
         }
 
         protected override void OnStart()

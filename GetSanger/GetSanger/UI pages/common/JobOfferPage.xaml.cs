@@ -13,8 +13,22 @@ namespace GetSanger.UI_pages.common
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class JobOfferPage : ContentPage
-    { 
-       
+    {
+        private Placemark m_Placemark;
+
+        public Placemark PlaceMark {
+            get
+            {
+                return m_Placemark;
+            }
+
+            set 
+            {
+                m_Placemark = value;
+                placemarkValidation();
+            } 
+        }
+
         public JobOfferPage()
         {
             InitializeComponent();
@@ -22,33 +36,18 @@ namespace GetSanger.UI_pages.common
 
         private async void LocationButton_Clicked(object sender, EventArgs e)
         {
-            try
-            {
-
-                Location location_marks = await getCurrentLocation();
-                IEnumerable<Placemark> placemarks = await Geocoding.GetPlacemarksAsync(location_marks);
-                Placemark placemark = placemarks.FirstOrDefault();
-                if (placemark == null)
-                {
-                    m_LocationEntry.Text = "Location could not be found, please try manually add it";
-                }
-
-                m_LocationEntry.Text = placemark.ToString();
-            }
-            catch(Exception ex)
-            {
-                throw new NotImplementedException();
-            }
+            MapPage map = new MapPage();
+            await Navigation.PushAsync(map);
         }
 
-        protected override void OnDisappearing()
+        private void placemarkValidation()
         {
-            if(Cts !=null && !Cts.IsCancellationRequested)
+            if (PlaceMark == null)
             {
-                Cts.Cancel();
+                m_LocationEntry.Text = "Location could not be found, please try manually add it";
             }
 
-            base.OnDisappearing();
+            m_LocationEntry.Text = PlaceMark.ToString();
         }
     }
 }
