@@ -46,7 +46,8 @@
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="EndAndExpand"
                     CornerRadius="20"
-                    Grid.Row="2"/>
+                    Grid.Row="2"
+                    Clicked="LocationButton_Clicked"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
