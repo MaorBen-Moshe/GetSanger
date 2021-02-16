@@ -4,7 +4,82 @@
              xmlns:sys ="clr-namespace:System;assembly=mscorlib"
              x:Class="GetSanger.UI_pages.common.JobOfferPage">
     <ContentPage.Content>
-        <Grid Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*"></RowDefinition>
+                
+            </Grid.RowDefinitions>
+            <Label Text="Job Offer"
+                   FontSize="Title"
+                   VerticalOptions="StartAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   Padding="50"
+                   Grid.Row="0"/>
+
+            <StackLayout Grid.Row="1" BackgroundColor="Yellow">
+                <Grid BackgroundColor="Gray"> 
+                    <Entry Text="Category here" IsReadOnly="True" Grid.Column="0"/>
+                    <Entry Text="Sub Category here" IsReadOnly="True" Grid.Column="1"/>
+                </Grid>
+
+                <Grid BackgroundColor="Green">
+                    <Entry Placeholder="My Location" 
+                           IsReadOnly="True" 
+                           Grid.Column="0" 
+                           Grid.ColumnSpan="2" 
+                           x:Name="m_MyLocationEntry"/>
+                    <Button Text="Get Location" Grid.Column="2" Clicked="LocationButton_Clicked"
+                            CornerRadius="20"/>
+                </Grid>
+
+                <Grid BackgroundColor="Red">
+                    <Entry Placeholder="Job Location" 
+                           IsReadOnly="True" 
+                           Grid.Column="0" 
+                           Grid.ColumnSpan="2" 
+                           x:Name="m_JobLocationEntry"/>
+                    <Button Text="Get Location" Grid.Column="2" Clicked="LocationButton_Clicked"
+                            CornerRadius="20"/>
+                </Grid>
+
+                <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Job date:" Padding="10" Grid.Column="0"/>
+                    <DatePicker Format="dd MMM yyyy" Date="{x:Static sys:DateTime.Today}" Grid.Column="1"/>
+                </Grid>
+                <Frame BorderColor="Blue" 
+                       VerticalOptions="FillAndExpand"
+                       HasShadow="True">
+                    <Editor IsSpellCheckEnabled="True"
+                        IsTextPredictionEnabled="True"
+                        Placeholder="Job Description"
+                        VerticalOptions="FillAndExpand"
+                        x:Name="Editorr">
+                        <Editor.Keyboard>
+                            <Keyboard x:FactoryMethod="Create" >
+                                <x:Arguments>
+                                    <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                                </x:Arguments>
+                            </Keyboard>
+                        </Editor.Keyboard>
+                    </Editor>
+                </Frame>
+                <Button Text="Send" 
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="End"
+                    CornerRadius="20"
+                    Clicked="SendButton_Clicked"
+                    Margin="5"/>
+            </StackLayout>
+
+        </Grid>
+        
+        
+        
+        <!--<Grid Padding="10">
             <Label Text="Job Offer"
                    FontSize="50"
                    HorizontalOptions="CenterAndExpand"
@@ -48,6 +123,6 @@
                     CornerRadius="20"
                     Grid.Row="2"
                     Clicked="LocationButton_Clicked"/>
-        </Grid>
+        </Grid>-->
     </ContentPage.Content>
 </ContentPage>

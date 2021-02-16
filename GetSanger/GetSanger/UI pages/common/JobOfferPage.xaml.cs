@@ -14,19 +14,34 @@ namespace GetSanger.UI_pages.common
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class JobOfferPage : ContentPage
     {
-        private Placemark m_Placemark;
+        private Placemark m_MyPlacemark;
+        private Placemark m_JobPlacemark;
 
-        public Placemark PlaceMark {
+        public Placemark MyPlaceMark {
             get
             {
-                return m_Placemark;
+                return m_MyPlacemark;
             }
 
             set 
             {
-                m_Placemark = value;
-                placemarkValidation();
+                m_MyPlacemark = value;
+                placemarkValidation(m_MyPlacemark, ref m_MyLocationEntry);
             } 
+        }
+
+        public Placemark JobPlaceMark
+        {
+            get
+            {
+                return m_JobPlacemark;
+            }
+
+            set
+            {
+                m_JobPlacemark = value;
+                placemarkValidation(m_JobPlacemark, ref m_JobLocationEntry);
+            }
         }
 
         public JobOfferPage()
@@ -40,14 +55,27 @@ namespace GetSanger.UI_pages.common
             await Navigation.PushAsync(map);
         }
 
-        private void placemarkValidation()
+        private async void SendButton_Clicked(object sender, EventArgs e)
         {
-            if (PlaceMark == null)
+            try
             {
-                m_LocationEntry.Text = "Location could not be found, please try manually add it";
+                await Sms.ComposeAsync(new SmsMessage(Editorr.Text, Phone.Text));
+            }
+            catch
+            {
+                await DisplayAlert("Error", "Could not send the message, please try again later", "OK");
+            }
+           
+        }
+
+        private void placemarkValidation(Placemark i_Placemark, ref Entry i_Entry)
+        {
+            if (i_Placemark == null)
+            {
+                i_Entry.Text = "Location could not be found, please try manually add it";
             }
 
-            m_LocationEntry.Text = PlaceMark.ToString();
+            i_Entry.Text = MyPlaceMark.ToString();
         }
     }
 }

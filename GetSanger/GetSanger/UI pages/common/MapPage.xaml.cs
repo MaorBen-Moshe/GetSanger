@@ -50,7 +50,14 @@ namespace GetSanger.UI_pages.common
             if (answer)
             {
                 Application.Current.MainPage = await Navigation.PopAsync();
-                (Application.Current.MainPage as JobOfferPage).PlaceMark = placemark;
+                if ((Application.Current.MainPage as JobOfferPage).MyPlaceMark == null)
+                {
+                    (Application.Current.MainPage as JobOfferPage).MyPlaceMark = placemark;
+                }
+                else
+                {
+                    (Application.Current.MainPage as JobOfferPage).JobPlaceMark = placemark;
+                }
             }
         }
 
