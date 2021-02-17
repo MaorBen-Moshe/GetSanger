@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GetSanger.UI_pages.common.ActivitiesMasterPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView x:Name="m_ListView" 
+                      IsPullToRefreshEnabled="True" 
+                      Refreshing="ListView_Refreshing"
+                      ItemSelected="ListView_ItemSelected">
+                <ListView.Header>
+                    <SearchBar Placeholder="Search..." 
+                               HorizontalOptions="Start"
+                               TextChanged="SearchBar_TextChanged">
+                    </SearchBar>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <!--Implement each cell appearance-->
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

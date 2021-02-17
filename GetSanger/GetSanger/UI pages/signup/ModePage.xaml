@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GetSanger.UI_pages.signup.ModePage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="button" TargetType="Button">
+                <Setter Property="HeightRequest" Value="80" />
+                <Setter Property="WidthRequest" Value="150" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="Default" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Center" 
+                     VerticalOptions="Center" 
+                     Orientation="Vertical">
+            <Label Text="Choose your mode" FontSize="Title" Padding="0, 0, 0, 30"/>
+            <Button Text="User Mode" Margin="10" Style="{StaticResource button}" x:Name="UserButton" Clicked="UserButton_Clicked"/>
+            <Button Text="Sanger Mode" Margin="10" Style="{StaticResource button}" x:Name="SangerButton" Clicked="SangerButton_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
