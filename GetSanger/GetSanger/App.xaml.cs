@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using GetSanger.UI_pages.signup;
@@ -9,11 +9,12 @@ namespace GetSanger
 {
     public partial class App : Application
     {
+        public static string BaseImageUrl { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public App()
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new JobOfferPage());
+            MainPage = new 
         }
 
         protected override void OnStart()
