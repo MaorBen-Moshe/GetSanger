@@ -1,20 +1,17 @@
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GetSanger.UI_pages.signup;
-using GetSanger.UI_pages;
-using GetSanger.UI_pages.common;
+using GetSanger.Views.Forms;
 
 namespace GetSanger
 {
     public partial class App : Application
     {
-        public static string BaseImageUrl { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public App()
         {
             InitializeComponent();
 
-            MainPage = new 
+            MainPage = new LoginWithSocialIconPage();
         }
 
         protected override void OnStart()

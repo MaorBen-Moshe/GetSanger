@@ -80,11 +80,7 @@ namespace GetSanger.ViewModels.Forms
         /// Gets or sets the command that is executed when the facebook login button is clicked.
         /// </summary>
         public Command FaceBookLoginCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the command that is executed when the twitter login button is clicked.
-        /// </summary>
-        public Command TwitterLoginCommand { get; set; }
+       
 
         /// <summary>
         /// Gets or sets the command that is executed when the gmail login button is clicked.
@@ -130,15 +126,6 @@ namespace GetSanger.ViewModels.Forms
         /// </summary>
         /// <param name="obj">The Object</param>
         private void FaceBookClicked(object obj)
-        {
-            // Do something
-        }
-
-        /// <summary>
-        /// Invoked when twitter login button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private void TwitterClicked(object obj)
         {
             // Do something
         }
