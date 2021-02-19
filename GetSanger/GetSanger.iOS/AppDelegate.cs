@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,6 +27,7 @@ namespace GetSanger.iOS
             Xamarin.FormsMaps.Init();
             ImageCircleRenderer.Init();
             LoadApplication(new App());
+            Firebase.Core.App.Configure();
 
             return base.FinishedLaunching(app, options);
         }
