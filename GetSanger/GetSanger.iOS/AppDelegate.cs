@@ -1,11 +1,3 @@
-using Syncfusion.XForms.iOS.Core;
-using Syncfusion.XForms.iOS.Graphics;
-using Syncfusion.ListView.XForms.iOS;
-using Syncfusion.SfCalendar.XForms.iOS;
-using Syncfusion.SfRating.XForms.iOS;
-using Syncfusion.XForms.iOS.ComboBox;
-using Syncfusion.XForms.iOS.Border;
-using Syncfusion.XForms.iOS.Buttons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,14 +24,6 @@ namespace GetSanger.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            Core.Init();
-            SfGradientViewRenderer.Init();
-            SfListViewRenderer.Init();
-            SfCalendarRenderer.Init();
-            SfRatingRenderer.Init();
-            SfBorderRenderer.Init();
-            SfButtonRenderer.Init();
-            SfComboBoxRenderer.Init();
             Xamarin.FormsMaps.Init();
             ImageCircleRenderer.Init();
             LoadApplication(new App());

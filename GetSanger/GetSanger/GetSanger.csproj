@@ -90,15 +90,6 @@
     <EmbeddedResource Update="UI pages\user\UserMainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Forms\LoginWithSocialIconPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\Forms\SimpleForgotPasswordPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\Forms\SimpleSignUpPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Styles\SignStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
