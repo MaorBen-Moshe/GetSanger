@@ -2,10 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GetSanger.UI_pages.signup.RegistrationPage"
-             xmlns:control="clr-namespace:GetSanger.Controls"
-             xmlns:local="clr-namespace:GetSanger.Views.Forms"
-             xmlns:converter="clr-namespace:GetSanger.Converters"
-             xmlns:viewModel="clr-namespace:GetSanger.ViewModels.Forms"
+             
              NavigationPage.HasNavigationBar="False">
 
     <Grid>

@@ -27,6 +27,9 @@
     <Compile Update="AppShell\UserShell.xaml.cs">
       <DependentUpon>UserShell.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Styles\SignStyles.xaml.cs">
+      <DependentUpon>SignStyles.xaml</DependentUpon>
+    </Compile>
     <Compile Update="UI pages\common\ActivitiesMasterPage.xaml.cs">
       <DependentUpon>ActivitiesMasterPage.xaml</DependentUpon>
     </Compile>
@@ -96,7 +99,7 @@
     <EmbeddedResource Update="Views\Forms\SimpleSignUpPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Forms\Styles.xaml">
+    <EmbeddedResource Update="Styles\SignStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

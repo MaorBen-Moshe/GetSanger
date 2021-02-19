@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary
-    x:Class="GetSanger.Views.Forms.Styles"
+    x:Class="GetSanger.Styles.SignStyles"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
-    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
-    xmlns:control="clr-namespace:GetSanger.Controls"
-    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
-    xmlns:graphics="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms">
+    xmlns:control="clr-namespace:GetSanger.Controls">
 
     <Color x:Key="EntryPlaceholderColor">#A0FFFFFF</Color>
     <Color x:Key="BorderBackgroundColor">#20FFFFFF</Color>
@@ -15,7 +11,6 @@
     <Color x:Key="GradientEndColor">#3F0041</Color>
     <Color x:Key="GradientStart">#713d74</Color>
     <Color x:Key="GradientEnd">#221e60</Color>
-    <Color x:Key="TwitterBlue">#55acee</Color>
     <Color x:Key="Red">#dc4e41</Color>
     <Color x:Key="FacebookBlue">#4267B2</Color>
     <Color x:Key="LightGreen">#35c659</Color>
@@ -25,15 +20,13 @@
     <x:String x:Key="AvatarIcon">&#xe723;</x:String>
     <x:String x:Key="FaceBook">&#xe70f;</x:String>
     <x:String x:Key="Google">&#xe74d;</x:String>
-    <x:String x:Key="Twitter">&#xe749;</x:String>
 
     <!--  Common style for content pages  -->
     <Style x:Key="ContentPageStyle" TargetType="ContentPage">
         <Setter Property="BackgroundImageSource">
             <OnPlatform
                 x:TypeArguments="ImageSource"
-                Android="LoginBackground.png"
-                WinPhone="LoginBackground.png" />
+                Android="LoginBackground.png" />
         </Setter>
     </Style>
 
@@ -57,17 +50,7 @@
     </Style>
 
     <!--  Common style for buttons  -->
-    <Style x:Key="SfButtonStyle" TargetType="buttons:SfButton">
-        <Setter Property="BackgroundGradient">
-            <Setter.Value>
-                <graphics:SfLinearGradientBrush>
-                    <graphics:SfLinearGradientBrush.GradientStops>
-                        <graphics:SfGradientStop Offset="0" Color="{DynamicResource PrimaryColor}" />
-                        <graphics:SfGradientStop Offset="1" Color="{DynamicResource PrimaryGradient}" />
-                    </graphics:SfLinearGradientBrush.GradientStops>
-                </graphics:SfLinearGradientBrush>
-            </Setter.Value>
-        </Setter>
+    <Style x:Key="SfButtonStyle" TargetType="Button">
         <Setter Property="TextColor" Value="{DynamicResource Gray-White}" />
         <Setter Property="FontFamily" Value="{StaticResource Montserrat-SemiBold}" />
         <Setter Property="BorderWidth" Value="0" />
@@ -78,54 +61,12 @@
     </Style>
 
     <!--  Common style for flat buttons  -->
-    <Style x:Key="SfFlatButtonStyle" TargetType="buttons:SfButton">
+    <Style x:Key="SfFlatButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
         <Setter Property="FontFamily" Value="{StaticResource Montserrat-SemiBold}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="VerticalTextAlignment" Value="Center" />
-    </Style>
-
-    <!--  Common style for borders  -->
-    <Style x:Key="SfBorderStyle" TargetType="border:SfBorder">
-        <Setter Property="BackgroundColor" Value="{StaticResource BorderBackgroundColor}" />
-        <Setter Property="BorderColor" Value="Transparent" />
-        <Setter Property="CornerRadius" Value="20" />
-        <Setter Property="BorderWidth" Value="1" />
-    </Style>
-
-    <!--  Common style for gradient view  -->
-    <Style x:Key="SfGradientViewStyle" TargetType="graphics:SfGradientView">
-        <Setter Property="Opacity" Value="0.82" />
-        <Setter Property="VerticalOptions" Value="FillAndExpand" />
-        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-        <Setter Property="BackgroundBrush">
-            <Setter.Value>
-                <graphics:SfLinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <graphics:SfLinearGradientBrush.GradientStops>
-                        <graphics:SfGradientStop Offset="0.0" Color="{StaticResource GradientEndColor}" />
-                        <graphics:SfGradientStop Offset="1.0" Color="{StaticResource GradientStartColor}" />
-                    </graphics:SfLinearGradientBrush.GradientStops>
-                </graphics:SfLinearGradientBrush>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="SfGradientStyle" TargetType="graphics:SfGradientView">
-        <Setter Property="Opacity" Value="1" />
-        <Setter Property="VerticalOptions" Value="FillAndExpand" />
-        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-        <Setter Property="BackgroundBrush">
-            <Setter.Value>
-                <graphics:SfLinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <graphics:SfLinearGradientBrush.GradientStops>
-                        
-                        <graphics:SfGradientStop Offset="0.0" Color="{StaticResource GradientStart}" />
-                        <graphics:SfGradientStop Offset="1.0" Color="{StaticResource GradientEnd}" />
-                    </graphics:SfLinearGradientBrush.GradientStops>
-                </graphics:SfLinearGradientBrush>
-            </Setter.Value>
-        </Setter>
     </Style>
 
 
@@ -136,13 +77,6 @@
         <Setter Property="TextColor" Value="{DynamicResource Gray-900}"/>
     </Style>
 
-    <Style x:Key="FormBorderStyle" TargetType="border:SfBorder">
-        <Setter Property="BorderColor" Value="{DynamicResource Gray-300}"/>
-        <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Padding" Value="12,8"/>
-        <Setter Property="Margin" Value="0,8"/>
-        <Setter Property="BackgroundColor" Value="{DynamicResource Gray-White}"/>
-    </Style>
 
     <Style x:Key="BusinessFormBorderStyle" TargetType="border:SfBorder">
         <Setter Property="BorderColor" Value="{DynamicResource Gray-300}"/>
@@ -164,15 +98,6 @@
         <Setter Property="TextColor" Value="{DynamicResource Gray-700}"/>
     </Style>
 
-    <Style x:Key="ComboBoxStyle" TargetType="combobox:SfComboBox">
-        <Setter Property="FontFamily" Value="{StaticResource Montserrat-Regular}"/>
-        <Setter Property="TextSize" Value="16"/>
-        <Setter Property="TextColor" Value="{DynamicResource Gray-700}"/>
-        <Setter Property="ShowBorder" Value="False"/>
-        <Setter Property="WatermarkColor" Value="{DynamicResource Gray-700}"/>
-        <Setter Property="Margin" Value="8,3,0,-3"/>
-        <Setter Property="HeightRequest" Value="40"/>
-    </Style>
 
     <Style x:Key="EntryTextBoxStyle" TargetType="control:BorderlessEntry">
         <Setter Property="FontFamily" Value="{StaticResource Montserrat-Regular}"/>
@@ -184,7 +109,7 @@
     </Style>
 
     <!--  Common style for social icon SfButton  -->
-    <Style x:Key="SocialIconButtonStyle" TargetType="buttons:SfButton">
+    <Style x:Key="SocialIconButtonStyle" TargetType="Button">
         <Setter Property="FontSize" Value="18" />
         <Setter Property="CornerRadius" Value="22" />
         <Setter Property="VerticalOptions" Value="Center" />

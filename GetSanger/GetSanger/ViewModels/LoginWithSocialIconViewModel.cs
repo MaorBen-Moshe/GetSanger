@@ -2,7 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
-namespace GetSanger.ViewModels.Forms
+namespace GetSanger.ViewModels
 {
     /// <summary>
     /// ViewModel for login with social icon page.
