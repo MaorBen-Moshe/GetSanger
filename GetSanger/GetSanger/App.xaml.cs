@@ -1,8 +1,8 @@
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GetSanger.Views.Forms;
 using GetSanger.UI_pages.signup;
+using GetSanger.UI_pages.common;
 
 namespace GetSanger
 {
@@ -12,7 +12,7 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            MainPage = new RegistrationPage();
+            MainPage = new JobOfferPage();
         }
 
         protected override void OnStart()

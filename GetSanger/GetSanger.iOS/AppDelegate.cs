@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using Google.Maps;
 using ImageCircle.Forms.Plugin.iOS;
 using UIKit;
 
@@ -24,6 +25,7 @@ namespace GetSanger.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            MapServices.ProvideApiKey("AIzaSyAX1raK9ukkg-Z00wWVsttkuvXs0ENdQIg");
             Xamarin.FormsMaps.Init();
             ImageCircleRenderer.Init();
             LoadApplication(new App());
