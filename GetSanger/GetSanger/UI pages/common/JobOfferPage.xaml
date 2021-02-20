@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*"></RowDefinition>
+                <RowDefinition Height="0.25*"></RowDefinition>
                 
             </Grid.RowDefinitions>
             <Label Text="Job Offer"
@@ -16,13 +16,13 @@
                    Padding="50"
                    Grid.Row="0"/>
 
-            <StackLayout Grid.Row="1" BackgroundColor="Yellow">
-                <Grid BackgroundColor="Gray"> 
+            <StackLayout Grid.Row="1" >
+                <Grid > 
                     <Entry Text="Category here" IsReadOnly="True" Grid.Column="0"/>
                     <Entry Text="Sub Category here" IsReadOnly="True" Grid.Column="1"/>
                 </Grid>
 
-                <Grid BackgroundColor="Green">
+                <Grid>
                     <Entry Placeholder="My Location" 
                            IsReadOnly="True" 
                            Grid.Column="0" 
@@ -32,7 +32,7 @@
                             CornerRadius="20"/>
                 </Grid>
 
-                <Grid BackgroundColor="Red">
+                <Grid>
                     <Entry Placeholder="Job Location" 
                            IsReadOnly="True" 
                            Grid.Column="0" 
@@ -50,7 +50,7 @@
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
                     <DatePicker Format="dd MMM yyyy" Date="{x:Static sys:DateTime.Today}" Grid.Column="1"/>
                 </Grid>
-                <Frame BorderColor="Blue" 
+                <Frame
                        VerticalOptions="FillAndExpand"
                        HasShadow="True">
                     <Editor IsSpellCheckEnabled="True"
@@ -77,52 +77,5 @@
 
         </Grid>
         
-        
-        
-        <!--<Grid Padding="10">
-            <Label Text="Job Offer"
-                   FontSize="50"
-                   HorizontalOptions="CenterAndExpand"
-                   Padding="50"
-                   Grid.Row="0"/>
-            
-            <StackLayout Spacing="20"
-                         Padding="20"
-                         Grid.Row="1">
-
-                <Entry Text="Category here" HorizontalTextAlignment="Center" IsReadOnly="True"/>
-                <Grid Margin="0, 10">
-                    <Entry Placeholder="Location" 
-                           IsReadOnly="True" 
-                           Grid.Column="0" 
-                           Grid.ColumnSpan="2" 
-                           x:Name="m_LocationEntry"/>
-                    <Button Text="Get Location" Grid.Column="2" Clicked="LocationButton_Clicked"
-                            CornerRadius="20"/>
-                </Grid>
-                <Entry Placeholder="Phone number (optional)" Keyboard="Telephone"/>
-                <DatePicker Format="dd MMM yyyy" Date="{x:Static sys:DateTime.Today}"/>
-                <Editor IsSpellCheckEnabled="True"
-                        IsTextPredictionEnabled="True"
-                        Placeholder="Job Description"
-                        VerticalOptions="FillAndExpand"
-                        HeightRequest="100">
-                    <Editor.Keyboard>
-                        <Keyboard x:FactoryMethod="Create" >
-                            <x:Arguments>
-                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                            </x:Arguments>
-                        </Keyboard>
-                    </Editor.Keyboard>
-                </Editor>
-            </StackLayout>
-
-            <Button Text="Send" 
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="EndAndExpand"
-                    CornerRadius="20"
-                    Grid.Row="2"
-                    Clicked="LocationButton_Clicked"/>
-        </Grid>-->
     </ContentPage.Content>
 </ContentPage>

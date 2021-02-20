@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace GetSanger.AppShell
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AppShell : Shell
+    public partial class UserShell : Shell
     {
-        public AppShell()
+        public UserShell()
         {
             InitializeComponent();
         }

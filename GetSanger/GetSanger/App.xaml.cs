@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using GetSanger.UI_pages.signup;
-using GetSanger.UI_pages;
 using GetSanger.UI_pages.common;
 
 namespace GetSanger
