@@ -27,7 +27,6 @@ namespace GetSanger.ViewModels
             this.SignUpCommand = new Command(this.SignUpClicked);
             this.ForgotPasswordCommand = new Command(this.ForgotPasswordClicked);
             this.FaceBookLoginCommand = new Command(this.FaceBookClicked);
-            this.TwitterLoginCommand = new Command(this.TwitterClicked);
             this.GmailLoginCommand = new Command(this.GmailClicked);
         }
 
