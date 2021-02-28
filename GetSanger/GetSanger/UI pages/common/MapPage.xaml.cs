@@ -9,7 +9,9 @@ namespace GetSanger.UI_pages.common
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
-        public Xamarin.Forms.Maps.Map CurrMap { get; set; }
+        private SearchBar m_SearchBar;
+
+        public Xamarin.Forms.Maps.Map CurrentMap { get; set; }
 
         public MapPage(BaseViewModel i_RefPage)
         {
@@ -34,9 +36,50 @@ namespace GetSanger.UI_pages.common
 
         private async void createMap()
         {
-            CurrMap = await (BindingContext as MapViewModel).CreateMapAsync();
-            CurrMap.MapClicked += CurrMap_MapClicked;
-            Content = CurrMap;
+            CurrentMap = await (BindingContext as MapViewModel).CreateMapAsync();
+            CurrentMap.MapClicked += CurrMap_MapClicked;
+            Content = createContent();
+        }
+
+        private StackLayout createContent()
+        {
+            m_SearchBar = new SearchBar
+            {
+                Placeholder = "כתובת"
+            };
+            var button = new Button
+            {
+                CornerRadius = 20,
+                Text = "חפש",  
+                BackgroundColor = Color.Transparent
+
+            };
+            button.Clicked += Button_Clicked;
+            var grid = new Grid
+            {
+                ColumnSpacing = 20
+            };
+            grid.Children.Add(button, 0, 0);
+            grid.Children.Add(m_SearchBar, 1, 0);
+            Grid.SetColumnSpan(m_SearchBar, 2);
+            grid.ColumnDefinitions.Add(new ColumnDefinition
+            {
+                Width = new GridLength(0.5, GridUnitType.Star)
+            });
+
+            return new StackLayout
+            {
+                Children =
+                {
+                    grid,
+                    CurrentMap
+                }
+            };
+        }
+
+        private async void Button_Clicked(object sender, System.EventArgs e)
+        {
+            await (BindingContext as MapViewModel).SetSearch(m_SearchBar.Text);
         }
 
         private void CurrMap_MapClicked(object sender, MapClickedEventArgs e)

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GetSanger.Interfaces;
 using GetSanger.Models;
@@ -24,10 +26,19 @@ namespace GetSanger.ViewModels
             ConnecetedPage = i_RefPage;
         }
 
-        public async Task<Xamarin.Forms.Maps.Map> CreateMapAsync()
+        public async Task<Xamarin.Forms.Maps.Map> CreateMapAsync(Position? i_Position = null)
         {
-            Location location = await MapRend.GetCurrentLocation();
-            Position position = new Position(location.Latitude, location.Longitude);
+            Position position;
+            if (i_Position == null)
+            {
+                Location location = await MapRend.GetCurrentLocation();
+                position = new Position(location.Latitude, location.Longitude);
+            }
+            else
+            {
+                position = (Position)i_Position;
+            }
+          
             MapSpan mapSpan = new MapSpan(position, 0.01, 0.01);
 
             Xamarin.Forms.Maps.Map map = new Xamarin.Forms.Maps.Map(mapSpan)
@@ -50,6 +61,27 @@ namespace GetSanger.ViewModels
             }
 
             await m_PageService.PopAsync();
+        }
+
+        public async Task<Xamarin.Forms.Maps.Map> SetSearch(string i_Search)
+        {
+            Position position;
+            Xamarin.Forms.Maps.Map map = null;
+            List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(i_Search));
+            if(positionList.Count != 0)
+            {
+                position = positionList.FirstOrDefault<Position>();
+                await CreateMapAsync(position);
+                map = await CreateMapAsync(position);
+                map.Pins.Add(new Pin
+                {
+                    Type = PinType.Place,
+                    Position = position
+                });
+                map.MoveToRegion(new MapSpan(position, 0.1, 0.1));
+            }
+
+            return map;
         }
 
         public void Cancelation()

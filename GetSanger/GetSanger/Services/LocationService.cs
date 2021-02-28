@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
-namespace GetSanger.Models
+namespace GetSanger.Services
 {
     public class LocationService
     {
