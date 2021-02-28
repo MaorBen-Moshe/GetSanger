@@ -4,20 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
-using Xamarin.Forms.Maps;
 
 namespace GetSanger.Models
 {
-    class MapRenderer
+    public class LocationService
     {
         public CancellationTokenSource Cts { get; private set; }
-
-        public async Task<Placemark> PickedLocation(Location i_Location)
-        {
-            IEnumerable<Placemark> placemarks = await Geocoding.GetPlacemarksAsync(i_Location);
-            Placemark placemark = placemarks.FirstOrDefault();
-            return placemark;
-        }
 
         public async Task<Location> GetCurrentLocation()
         {
@@ -30,6 +22,13 @@ namespace GetSanger.Models
             }
 
             return location;
+        }
+
+        public async Task<Placemark> PickedLocation(Location i_Location)
+        {
+            IEnumerable<Placemark> placemarks = await Geocoding.GetPlacemarksAsync(i_Location);
+            Placemark placemark = placemarks.FirstOrDefault();
+            return placemark;
         }
 
         public void Cancelation()

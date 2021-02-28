@@ -35,6 +35,17 @@ namespace GetSanger.ViewModels
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        protected void SetValue<T>(ref T i_BackingField, T i_Value, [CallerMemberName] string i_PropertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(i_BackingField, i_Value))
+            {
+                return;
+            }
+
+            i_BackingField = i_Value;
+            NotifyPropertyChanged(i_PropertyName);
+        }
+
         #endregion
     }
 }
