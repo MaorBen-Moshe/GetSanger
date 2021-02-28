@@ -1,26 +1,22 @@
 ﻿using GetSanger.ViewModels;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
-using System.Threading;
 
 
 namespace GetSanger.UI_pages.common
-{ 
+{
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
-        public Xamarin.Forms.Maps.Map CurrMap { get; private set; }
+        public Xamarin.Forms.Maps.Map CurrMap { get; set; }
 
-        public MapViewModel MapVM { get; private set; }
-
-        public MapPage()
+        public MapPage(BaseViewModel i_RefPage)
         {
-            InitializeComponent();
-
-            MapVM = new MapViewModel();
+            BindingContext = new MapViewModel(i_RefPage);
             createMap();
+
+            InitializeComponent();
         }
 
         protected override async void OnAppearing()
@@ -38,30 +34,14 @@ namespace GetSanger.UI_pages.common
 
         private async void createMap()
         {
-            CurrMap = await MapVM.CreateMapAsync();
+            CurrMap = await (BindingContext as MapViewModel).CreateMapAsync();
             CurrMap.MapClicked += CurrMap_MapClicked;
             Content = CurrMap;
         }
 
-        private async void CurrMap_MapClicked(object sender, MapClickedEventArgs e)
+        private void CurrMap_MapClicked(object sender, MapClickedEventArgs e)
         {
-            Placemark placemark = await MapVM.GetLocation(e.Position.Latitude, e.Position.Longitude); 
-            string location = $"Did you choose the right place?\n {placemark}";
-            bool answer = await DisplayAlert("Location Chosen", location, "Yes", "No");
-            if (answer)
-            {
-                //var page = await Navigation.PopAsync();
-                //if ((page as JobOfferPage).MyPlaceMark == null)
-                //{
-                //    (page as JobOfferPage).MyPlaceMark = placemark;
-                //}
-                //else
-                //{
-                //    (page as JobOfferPage).JobPlaceMark = placemark;
-                //}
-
-                //Application.Current.MainPage = page;
-            }
+            (BindingContext as MapViewModel).MapClicked(e.Position);
         }
     }
 }

@@ -1,16 +1,24 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.Interfaces;
+using GetSanger.Models;
+using GetSanger.Services;
+using GetSanger.UI_pages.common;
+using System.Windows.Input;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
     public class JobOfferViewModel : BaseViewModel
     {
         private LocationService LocationServices { get; set; } = new LocationService();
-
         private Placemark m_MyPlacemark;
         private Placemark m_JobPlacemark;
         private string m_MyLocation;
         private string m_JobLocation;
+        private IPageService m_PageService;
+
+        public ICommand CurrentLocation { get; private set; }
+        public ICommand JobLocation { get; private set; }
 
         public Placemark MyPlaceMark
         {
@@ -36,7 +44,7 @@ namespace GetSanger.ViewModels
             set
             {
                 m_JobPlacemark = value;
-                JobLocation = placemarkValidation(m_JobPlacemark);
+                WorkLocation = placemarkValidation(m_JobPlacemark);
             }
         }
 
@@ -46,16 +54,28 @@ namespace GetSanger.ViewModels
             set { SetValue(ref m_MyLocation, value); }
         }
 
-        public string JobLocation
+        public string WorkLocation
         {
             get { return m_JobLocation; }
             set { SetValue(ref m_JobLocation, value); }
+        }
+
+        public JobOfferViewModel()
+        {
+            CurrentLocation = new Command(GetCurrentLocation);
+            JobLocation = new Command(GetJobLocation);
+            m_PageService = new PageServices();
         }
 
         public async void GetCurrentLocation()
         {
             Location location = await LocationServices.GetCurrentLocation();
             MyPlaceMark = await LocationServices.PickedLocation(location);
+        }
+
+        public async void GetJobLocation()
+        {
+            await m_PageService.PushAsync(new MapPage(this));
         }
 
         private string placemarkValidation(Placemark i_Placemark)

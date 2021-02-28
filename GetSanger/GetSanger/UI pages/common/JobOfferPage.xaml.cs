@@ -15,17 +15,6 @@ namespace GetSanger.UI_pages.common
             InitializeComponent();
         }
 
-        private async void JobLocationButton_Clicked(object sender, EventArgs e)
-        {
-            MapPage map = new MapPage();
-            await Navigation.PushAsync(map);
-        }
-
-        private void CurrentLocationButton_Clicked(object sender, EventArgs e)
-        {
-            (BindingContext as JobOfferViewModel).GetCurrentLocation();
-        }
-
         private void SendButton_Clicked(object sender, EventArgs e)
         {
             // send sms code

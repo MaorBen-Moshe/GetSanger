@@ -28,17 +28,17 @@
                            IsReadOnly="True" 
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" />
-                    <Button Text="Get Location" Grid.Column="2" Clicked="CurrentLocationButton_Clicked"
+                    <Button Text="Get Location" Grid.Column="2" Command="{Binding CurrentLocation}"
                             CornerRadius="20"/>
                 </Grid>
 
                 <Grid>
                     <Entry Placeholder="Job Location" 
+                           Text="{Binding WorkLocation, Mode=TwoWay}"
                            IsReadOnly="True" 
                            Grid.Column="0" 
-                           Grid.ColumnSpan="2" 
-                           x:Name="m_JobLocationEntry"/>
-                    <Button Text="Get Location" Grid.Column="2" Clicked="JobLocationButton_Clicked"
+                           Grid.ColumnSpan="2" />
+                    <Button Text="Get Location" Grid.Column="2" Command="{Binding JobLocation}"
                             CornerRadius="20"/>
                 </Grid>
 

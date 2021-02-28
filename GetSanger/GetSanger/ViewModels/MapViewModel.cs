@@ -1,20 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using GetSanger.Interfaces;
 using GetSanger.Models;
+using GetSanger.Services;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 namespace GetSanger.ViewModels
 {
     public class MapViewModel : BaseViewModel
     {
+        private IPageService m_PageService;
+
+        private BaseViewModel ConnecetedPage { get; set; }
+
         public LocationService MapRend { get; private set; }
 
-        public MapViewModel()
+        public MapViewModel(BaseViewModel i_RefPage)
         {
             MapRend = new LocationService();
+            m_PageService = new PageServices();
+            ConnecetedPage = i_RefPage;
         }
 
         public async Task<Xamarin.Forms.Maps.Map> CreateMapAsync()
@@ -32,10 +39,16 @@ namespace GetSanger.ViewModels
             return map;
         }
 
-        public async Task<Placemark> GetLocation(double i_Latitude, double i_Longitude)
+        public async void MapClicked(Position i_Position)
         {
-            return await MapRend.PickedLocation(new Location(i_Latitude, i_Longitude));
-        } 
+            Placemark placemark = await MapRend.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
+            string location = $"Did you choose the right place?\n {placemark}";
+            bool answer = await m_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
+            if (answer)
+            {
+                (ConnecetedPage as JobOfferViewModel).JobPlaceMark = placemark;
+            }
+        }
 
         public void Cancelation()
         {
