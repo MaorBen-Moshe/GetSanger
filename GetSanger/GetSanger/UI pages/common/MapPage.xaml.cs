@@ -28,7 +28,7 @@ namespace GetSanger.UI_pages.common
 
         protected override void OnDisappearing()
         {
-            MapVM.Cancelation();
+            (BindingContext as MapViewModel).Cancelation();
             base.OnDisappearing();
         }
 
