@@ -42,12 +42,14 @@ namespace GetSanger.ViewModels
         public async void MapClicked(Position i_Position)
         {
             Placemark placemark = await MapRend.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
-            string location = $"Did you choose the right place?\n {placemark}";
+            string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
             bool answer = await m_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
             if (answer)
             {
                 (ConnecetedPage as JobOfferViewModel).JobPlaceMark = placemark;
             }
+
+            await m_PageService.PopAsync();
         }
 
         public void Cancelation()

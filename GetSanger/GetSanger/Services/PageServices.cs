@@ -15,5 +15,10 @@ namespace GetSanger.Services
         {
             return await Application.Current.MainPage.DisplayAlert(i_Title, i_Message, i_Accept, i_Cancel);
         }
+
+        public async Task PopAsync()
+        {
+             await Application.Current.MainPage.Navigation.PopAsync();
+        }
     }
 }
