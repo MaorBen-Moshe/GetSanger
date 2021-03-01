@@ -17,6 +17,7 @@
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+    <PackageReference Include="System.ObjectModel" Version="4.3.0" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />
     <PackageReference Include="Xamarin.Build.Download" Version="0.10.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
@@ -49,9 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Themes\LightTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="UI pages\common\ActivitiesMasterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using GetSanger.Services;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 namespace GetSanger.Controls
 {
-    class BindableMap : Map
+    public class BindableMap : Xamarin.Forms.Maps.Map
     {
         public ObservableCollection<Pin> PinsSource
         {
@@ -25,8 +27,8 @@ namespace GetSanger.Controls
 
         public MapSpan MapSpan
         {
-            get { return (MapSpan)GetValue(MapSpanProperty); }
-            set { SetValue(MapSpanProperty, value); }
+            get => (MapSpan)GetValue(MapSpanProperty); 
+            set => SetValue(MapSpanProperty, value); 
         }
 
         public static readonly BindableProperty MapSpanProperty = BindableProperty.Create(
@@ -38,10 +40,21 @@ namespace GetSanger.Controls
                                                          validateValue: null,
                                                          propertyChanged: MapSpanPropertyChanged);
 
+        private LocationService LocationServices { get; }
+
         public BindableMap() : base()
         {
+            LocationServices = new LocationService();
             PinsSource = new ObservableCollection<Pin>();
             PinsSource.CollectionChanged += PinsSourceOnCollectionChanged;
+            createMap();
+        }
+
+        private async void createMap()
+        {
+            Location location = await LocationServices.GetCurrentLocation();
+            Position position = new Position(location.Latitude, location.Longitude);
+            MapSpan = new MapSpan(position, 0.01, 0.01);
         }
 
         private static void MapSpanPropertyChanged(BindableObject bindable, object oldValue, object newValue)
@@ -56,9 +69,10 @@ namespace GetSanger.Controls
             var thisInstance = bindable as BindableMap;
             var newPinsSource = newValue as ObservableCollection<Pin>;
 
-            if (thisInstance == null ||
-                newPinsSource == null)
+            if (thisInstance == null || newPinsSource == null)
+            {
                 return;
+            }
 
             UpdatePinsSource(thisInstance, newPinsSource);
         }
@@ -67,7 +81,7 @@ namespace GetSanger.Controls
             UpdatePinsSource(this, sender as IEnumerable<Pin>);
         }
 
-        private static void UpdatePinsSource(Map bindableMap, IEnumerable<Pin> newSource)
+        private static void UpdatePinsSource(Xamarin.Forms.Maps.Map bindableMap, IEnumerable<Pin> newSource)
         {
             bindableMap.Pins.Clear();
             foreach (var pin in newSource)

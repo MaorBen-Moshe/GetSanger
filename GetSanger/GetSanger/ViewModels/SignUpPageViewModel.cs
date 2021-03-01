@@ -52,7 +52,7 @@ namespace GetSanger.ViewModels
                 }
 
                 this.name = value;
-                this.NotifyPropertyChanged();
+                this.OnPropertyChanged();
             }
         }
 
@@ -74,7 +74,7 @@ namespace GetSanger.ViewModels
                 }
 
                 this.password = value;
-                this.NotifyPropertyChanged();
+                this.OnPropertyChanged();
             }
         }
 
@@ -96,7 +96,7 @@ namespace GetSanger.ViewModels
                 }
 
                 this.confirmPassword = value;
-                this.NotifyPropertyChanged();
+                this.OnPropertyChanged();
             }
         }
 

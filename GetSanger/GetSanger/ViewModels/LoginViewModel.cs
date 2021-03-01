@@ -36,7 +36,7 @@ namespace GetSanger.ViewModels
                 }
 
                 this.email = value;
-                this.NotifyPropertyChanged();
+                this.OnPropertyChanged();
             }
         }
 
@@ -58,7 +58,7 @@ namespace GetSanger.ViewModels
                 }
 
                 this.isInvalidEmail = value;
-                this.NotifyPropertyChanged();
+                this.OnPropertyChanged();
             }
         }
 

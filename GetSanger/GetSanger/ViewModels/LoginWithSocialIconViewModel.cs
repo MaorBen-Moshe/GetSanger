@@ -52,7 +52,7 @@ namespace GetSanger.ViewModels
                 }
 
                 this.password = value;
-                this.NotifyPropertyChanged();
+                this.OnPropertyChanged();
             }
         }
 

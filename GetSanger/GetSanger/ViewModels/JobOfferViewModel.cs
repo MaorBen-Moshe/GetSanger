@@ -51,13 +51,13 @@ namespace GetSanger.ViewModels
         public string MyLocation
         {
             get { return m_MyLocation; }
-            set { SetValue(ref m_MyLocation, value); }
+            set { SetClassProperty(ref m_MyLocation, value); }
         }
 
         public string WorkLocation
         {
             get { return m_JobLocation; }
-            set { SetValue(ref m_JobLocation, value); }
+            set { SetClassProperty(ref m_JobLocation, value); }
         }
 
         public JobOfferViewModel()

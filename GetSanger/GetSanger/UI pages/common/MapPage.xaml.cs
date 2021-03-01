@@ -1,6 +1,5 @@
-﻿using GetSanger.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
+﻿using GetSanger.Controls;
+using GetSanger.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
@@ -11,22 +10,18 @@ namespace GetSanger.UI_pages.common
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
-        private SearchBar m_SearchBar;
-
-        public Xamarin.Forms.Maps.Map CurrentMap { get; set; }
-
         public MapPage(BaseViewModel i_RefPage)
         {
-            BindingContext = new MapViewModel(i_RefPage);
-            createMap();
-
             InitializeComponent();
+
+            BindingContext = new MapViewModel(i_RefPage, ref CurrentMap);
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
+            CurrentMap.MapClicked += CurrMap_MapClicked;
             await DisplayAlert("Note", "Please click on the right place", "OK", FlowDirection.MatchParent);
         }
 
@@ -34,67 +29,6 @@ namespace GetSanger.UI_pages.common
         {
             (BindingContext as MapViewModel).Cancelation();
             base.OnDisappearing();
-        }
-
-        private async void createMap()
-        {
-            CurrentMap = await (BindingContext as MapViewModel).CreateMapAsync();
-            CurrentMap.MapClicked += CurrMap_MapClicked;
-            Content = createContent();
-        }
-
-        private StackLayout createContent()
-        {
-            m_SearchBar = new SearchBar
-            {
-                Placeholder = "כתובת"
-            };
-            var button = new Button
-            {
-                CornerRadius = 20,
-                Text = "חפש",  
-                BackgroundColor = Color.Transparent
-
-            };
-            button.Clicked += Button_Clicked;
-            var grid = new Grid
-            {
-                ColumnSpacing = 20
-            };
-            grid.Children.Add(button, 0, 0);
-            grid.Children.Add(m_SearchBar, 1, 0);
-            Grid.SetColumnSpan(m_SearchBar, 2);
-            grid.ColumnDefinitions.Add(new ColumnDefinition
-            {
-                Width = new GridLength(0.5, GridUnitType.Star)
-            });
-
-            return new StackLayout
-            {
-                Children =
-                {
-                    grid,
-                    CurrentMap
-                }
-            };
-        }
-
-        private async void Button_Clicked(object sender, System.EventArgs e)
-        {
-            //await (BindingContext as MapViewModel).SetSearch(m_SearchBar.Text);
-            Position position;
-            List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(m_SearchBar.Text));
-            if (positionList.Count != 0)
-            {
-                position = positionList.FirstOrDefault<Position>();
-                CurrentMap.Pins.Add(new Pin
-                {
-                    Type = PinType.Place,
-                    Position = position,
-                    Label = "Job Place"
-                });
-                CurrentMap.MoveToRegion(new MapSpan(position, 0.01, 0.01));
-            }
         }
 
         private void CurrMap_MapClicked(object sender, MapClickedEventArgs e)

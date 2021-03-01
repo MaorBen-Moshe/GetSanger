@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.UI_pages.common.MapPage">
+    <StackLayout Padding="0, 10, 0, 0" >
+        <SearchBar x:Name="AddressSearchBar" 
+                   Placeholder="כתובת"
+                   SearchCommand="{Binding SearchCommand}"
+                   SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
+        <controls:BindableMap x:Name="CurrentMap"
+                              MapType="Street" 
+                              IsShowingUser="True"
+                              HasZoomEnabled="True"
+                              BackgroundColor="Transparent"/>
+    </StackLayout>
 </ContentPage>

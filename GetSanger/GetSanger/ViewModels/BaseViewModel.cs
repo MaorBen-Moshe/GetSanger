@@ -1,39 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using GetSanger.Interfaces;
+using System;
 using System.Runtime.Serialization;
-using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
     [Preserve(AllMembers = true)]
     [DataContract]
-    public class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : PropertySetter
     {
-        #region Event handler
-        public event PropertyChangedEventHandler PropertyChanged;
-        #endregion
-
-        #region Methods
-
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        private bool m_IsLoading;
+        private bool m_IsNotLoading;
+        protected string m_DefaultBackUri = "..";
+        public bool IsLoading
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected void SetValue<T>(ref T i_BackingField, T i_Value, [CallerMemberName] string i_PropertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(i_BackingField, i_Value))
+            set
             {
-                return;
+                SetStructProperty(ref m_IsLoading, value);
+                IsNotLoading = !value;
             }
-
-            i_BackingField = i_Value;
-            NotifyPropertyChanged(i_PropertyName);
+            get => m_IsLoading;
+        }
+        public bool IsNotLoading
+        {
+            set => SetStructProperty(ref m_IsNotLoading, value);
+            get => m_IsNotLoading;
         }
 
-        #endregion
+        protected virtual async Task GoBack()
+        {
+            await Shell.Current.GoToAsync(m_DefaultBackUri);
+        }
+
+        public async Task RunTaskWhileLoading(Task i_InnerTask)
+        {
+            try
+            {
+                DependencyService.Get<ILoadingService>().InitLoadingPage();
+                DependencyService.Get<ILoadingService>().ShowLoadingPage();
+                await i_InnerTask;
+                DependencyService.Get<ILoadingService>().HideLoadingPage();
+            }
+            catch (Exception ex)
+            {
+                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                throw ex;
+            }
+        }
     }
 }

@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GetSanger.Controls;
 using GetSanger.Interfaces;
-using GetSanger.Models;
 using GetSanger.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -14,45 +14,26 @@ namespace GetSanger.ViewModels
     public class MapViewModel : BaseViewModel
     {
         private IPageService m_PageService;
+        private BindableMap m_Map;
 
         private BaseViewModel ConnecetedPage { get; set; }
 
-        public LocationService MapRend { get; private set; }
+        public LocationService LocationServices { get; private set; }
 
-        public MapViewModel(BaseViewModel i_RefPage)
+        public ICommand SearchCommand { get; private set; }
+
+        public MapViewModel(BaseViewModel i_RefPage, ref BindableMap i_Map)
         {
-            MapRend = new LocationService();
+            LocationServices = new LocationService();
             m_PageService = new PageServices();
             ConnecetedPage = i_RefPage;
-        }
-
-        public async Task<Xamarin.Forms.Maps.Map> CreateMapAsync(Position? i_Position = null)
-        {
-            Position position;
-            if (i_Position == null)
-            {
-                Location location = await MapRend.GetCurrentLocation();
-                position = new Position(location.Latitude, location.Longitude);
-            }
-            else
-            {
-                position = (Position)i_Position;
-            }
-          
-            MapSpan mapSpan = new MapSpan(position, 0.01, 0.01);
-
-            Xamarin.Forms.Maps.Map map = new Xamarin.Forms.Maps.Map(mapSpan)
-            {
-                MapType = MapType.Street,
-                IsShowingUser = true
-            };
-
-            return map;
+            SearchCommand = new Command(SearchCom);
+            m_Map = i_Map;
         }
 
         public async void MapClicked(Position i_Position)
         {
-            Placemark placemark = await MapRend.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
+            Placemark placemark = await LocationServices.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
             string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
             bool answer = await m_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
             if (answer)
@@ -63,30 +44,30 @@ namespace GetSanger.ViewModels
             await m_PageService.PopAsync();
         }
 
-        public async Task<Xamarin.Forms.Maps.Map> SetSearch(string i_Search)
+        public async void SearchCom(object i_Search)
         {
-            Position position;
-            Xamarin.Forms.Maps.Map map = null;
-            List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(i_Search));
-            if(positionList.Count != 0)
+            if(i_Search is string)
             {
-                position = positionList.FirstOrDefault<Position>();
-                await CreateMapAsync(position);
-                map = await CreateMapAsync(position);
-                map.Pins.Add(new Pin
+                Position position;
+                List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(i_Search as string));
+                if (positionList.Count != 0)
                 {
-                    Type = PinType.Place,
-                    Position = position
-                });
-                map.MoveToRegion(new MapSpan(position, 0.1, 0.1));
+                    position = positionList.FirstOrDefault<Position>();
+                    m_Map.Pins.Clear();
+                    m_Map.Pins.Add(new Pin
+                    {
+                        Type = PinType.Place,
+                        Position = position,
+                        Label = "Job Place"
+                    });
+                    m_Map.MapSpan = new MapSpan(position, 0.01, 0.01);
+                }
             }
-
-            return map;
         }
 
         public void Cancelation()
         {
-            MapRend.Cancelation();
+            LocationServices.Cancelation();
         }
     }
 }
