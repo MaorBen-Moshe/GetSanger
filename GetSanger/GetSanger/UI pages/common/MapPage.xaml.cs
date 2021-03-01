@@ -1,4 +1,6 @@
 ﻿using GetSanger.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
@@ -79,7 +81,20 @@ namespace GetSanger.UI_pages.common
 
         private async void Button_Clicked(object sender, System.EventArgs e)
         {
-            await (BindingContext as MapViewModel).SetSearch(m_SearchBar.Text);
+            //await (BindingContext as MapViewModel).SetSearch(m_SearchBar.Text);
+            Position position;
+            List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(m_SearchBar.Text));
+            if (positionList.Count != 0)
+            {
+                position = positionList.FirstOrDefault<Position>();
+                CurrentMap.Pins.Add(new Pin
+                {
+                    Type = PinType.Place,
+                    Position = position,
+                    Label = "Job Place"
+                });
+                CurrentMap.MoveToRegion(new MapSpan(position, 0.01, 0.01));
+            }
         }
 
         private void CurrMap_MapClicked(object sender, MapClickedEventArgs e)
