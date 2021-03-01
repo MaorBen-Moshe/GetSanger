@@ -38,7 +38,7 @@ namespace GetSanger.ViewModels
             bool answer = await m_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
             if (answer)
             {
-                (ConnecetedPage as JobOfferViewModel).JobPlaceMark = placemark;
+                (ConnecetedPage as JobOfferViewModel).SetLocation(placemark);
             }
 
             await m_PageService.PopAsync();

@@ -1,5 +1,4 @@
 ﻿using GetSanger.Interfaces;
-using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.UI_pages.common;
 using System.Windows.Input;
@@ -16,6 +15,7 @@ namespace GetSanger.ViewModels
         private string m_MyLocation;
         private string m_JobLocation;
         private IPageService m_PageService;
+        private bool m_IsMyLocation = true;
 
         public ICommand CurrentLocation { get; private set; }
         public ICommand JobLocation { get; private set; }
@@ -65,16 +65,40 @@ namespace GetSanger.ViewModels
             CurrentLocation = new Command(GetCurrentLocation);
             JobLocation = new Command(GetJobLocation);
             m_PageService = new PageServices();
+            IntialCurrentLocation();
         }
 
-        public async void GetCurrentLocation()
+        public async void IntialCurrentLocation()
         {
             Location location = await LocationServices.GetCurrentLocation();
             MyPlaceMark = await LocationServices.PickedLocation(location);
         }
 
+        public void SetLocation(Placemark i_PlaceMark)
+        {
+            if (m_IsMyLocation)
+            {
+                MyPlaceMark = i_PlaceMark;
+            }
+            else
+            {
+                JobPlaceMark = i_PlaceMark;
+            }
+        }
+
+        public async void GetCurrentLocation()
+        {
+            m_IsMyLocation = true;
+            bool answer = await m_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
+            if (answer)
+            {
+                await m_PageService.PushAsync(new MapPage(this));
+            }
+        }
+
         public async void GetJobLocation()
         {
+            m_IsMyLocation = false;
             await m_PageService.PushAsync(new MapPage(this));
         }
 

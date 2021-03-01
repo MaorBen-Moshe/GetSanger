@@ -10,9 +10,9 @@ namespace GetSanger.UI_pages.common
     {
         public JobOfferPage()
         {
-            BindingContext = new JobOfferViewModel();
-
             InitializeComponent();
+
+            BindingContext = new JobOfferViewModel();
         }
 
         private void SendButton_Clicked(object sender, EventArgs e)
