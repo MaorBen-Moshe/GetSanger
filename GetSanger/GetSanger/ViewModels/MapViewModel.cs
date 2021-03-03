@@ -31,17 +31,9 @@ namespace GetSanger.ViewModels
             m_Map = i_Map;
         }
 
-        public async void MapClicked(Position i_Position)
+        public void MapClicked(Position i_Position)
         {
-            Placemark placemark = await LocationServices.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
-            string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
-            bool answer = await m_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
-            if (answer)
-            {
-                (ConnecetedPage as JobOfferViewModel).SetLocation(placemark);
-            }
-
-            await m_PageService.PopAsync();
+            locationPicked(i_Position);
         }
 
         public async void SearchCom(object i_Search)
@@ -58,10 +50,23 @@ namespace GetSanger.ViewModels
                     {
                         Type = PinType.Place,
                         Position = position,
-                        Label = "Job Place"
+                        Label = "Chosen Place" 
                     });
-                    m_Map.MapSpan = new MapSpan(position, 0.01, 0.01);
+                    m_Map.Pins[0].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position); 
+                    m_Map.MapSpan = new MapSpan(position, 0.01, 0.01);                
                 }
+            }
+        }
+
+        private async void locationPicked(Position i_Position)
+        {
+            Placemark placemark = await LocationServices.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
+            string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
+            bool answer = await m_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
+            if (answer)
+            {
+                (ConnecetedPage as JobOfferViewModel).SetLocation(placemark);
+                await m_PageService.PopAsync();
             }
         }
 

@@ -76,15 +76,7 @@ namespace GetSanger.ViewModels
 
         public void SetLocation(Placemark i_PlaceMark)
         {
-            //_ = m_IsMyLocation == true ? MyPlaceMark = i_PlaceMark : JobPlaceMark = i_PlaceMark;
-            if (m_IsMyLocation)
-            {
-                MyPlaceMark = i_PlaceMark;
-            }
-            else
-            {
-                JobPlaceMark = i_PlaceMark;
-            }
+            _ = m_IsMyLocation == true ? MyPlaceMark = i_PlaceMark : JobPlaceMark = i_PlaceMark;
         }
 
         public async void GetCurrentLocation()
