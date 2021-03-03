@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using GetSanger.Controls;
 using GetSanger.Interfaces;
@@ -14,6 +14,7 @@ namespace GetSanger.ViewModels
     public class MapViewModel : BaseViewModel
     {
         private IPageService m_PageService;
+        private ObservableCollection<Pin> m_Pins = new ObservableCollection<Pin>();
         private BindableMap m_Map;
 
         private BaseViewModel ConnecetedPage { get; set; }
@@ -21,6 +22,12 @@ namespace GetSanger.ViewModels
         public LocationService LocationServices { get; private set; }
 
         public ICommand SearchCommand { get; private set; }
+        
+        public ObservableCollection<Pin> MapPins 
+        {
+            get => m_Pins;
+            set => SetClassProperty(ref m_Pins, value);
+        }
 
         public MapViewModel(BaseViewModel i_RefPage, ref BindableMap i_Map)
         {
@@ -45,15 +52,14 @@ namespace GetSanger.ViewModels
                 if (positionList.Count != 0)
                 {
                     position = positionList.FirstOrDefault<Position>();
-                    m_Map.Pins.Clear();
-                    m_Map.Pins.Add(new Pin
+                    m_Map.PinsSource.Add(new Pin
                     {
                         Type = PinType.Place,
                         Position = position,
-                        Label = "Chosen Place" 
+                        Label = $"Chosen Place" 
                     });
-                    m_Map.Pins[0].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position); 
-                    m_Map.MapSpan = new MapSpan(position, 0.01, 0.01);                
+                    m_Map.PinsSource[0].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position); 
+                    m_Map.MapSpan = new MapSpan(position, 0.01, 0.01);
                 }
             }
         }

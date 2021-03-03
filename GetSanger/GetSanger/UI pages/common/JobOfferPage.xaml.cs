@@ -21,13 +21,27 @@ namespace GetSanger.UI_pages.common
             //send sms code
             try
             {
-                await Xamarin.Essentials.Sms.ComposeAsync(new SmsMessage(Editorr.Text, Phone.Text));
+                bool answer = await DisplayAlert("Message From", "Please choose the app:", "Whatsapp", "Default App");
+                if (answer)
+                {
+                    sendWhatsapp(Editorr.Text, Phone.Text);
+                }
+                else
+                {
+                    await Xamarin.Essentials.Sms.ComposeAsync(new SmsMessage(Editorr.Text, Phone.Text));
+                }
             }
             catch
             {
                 await DisplayAlert("Error", "Could not send the message, please try again later", "OK");
             }
 
+        }
+
+        private async void sendWhatsapp(string i_Message, string i_Phone)
+        {
+            string uri = $"https://wa.me/{"972"+i_Phone}?text={i_Message}";
+            await Launcher.OpenAsync(new Uri(uri));
         }
     }
 }
