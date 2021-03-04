@@ -24,7 +24,7 @@ namespace GetSanger.UI_pages.common
                 bool answer = await DisplayAlert("Message From", "Please choose the app:", "Whatsapp", "Default App");
                 if (answer)
                 {
-                    sendWhatsapp(Editorr.Text, Phone.Text);
+                    await Launcher.OpenAsync(new Uri($"https://wa.me/{"972" + Phone.Text}?text={Editorr.Text}"));
                 }
                 else
                 {
@@ -36,12 +36,6 @@ namespace GetSanger.UI_pages.common
                 await DisplayAlert("Error", "Could not send the message, please try again later", "OK");
             }
 
-        }
-
-        private async void sendWhatsapp(string i_Message, string i_Phone)
-        {
-            string uri = $"https://wa.me/{"972"+i_Phone}?text={i_Message}";
-            await Launcher.OpenAsync(new Uri(uri));
         }
     }
 }
