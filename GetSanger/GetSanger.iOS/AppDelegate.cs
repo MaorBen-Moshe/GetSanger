@@ -23,6 +23,7 @@ namespace GetSanger.iOS
             //MapServices.ProvideApiKey("AIzaSyAX1raK9ukkg-Z00wWVsttkuvXs0ENdQIg");
             Xamarin.FormsMaps.Init();
             ImageCircleRenderer.Init();
+            Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
             LoadApplication(new App());
             Firebase.Core.App.Configure();
 

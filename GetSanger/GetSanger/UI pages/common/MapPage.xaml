@@ -8,6 +8,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:MapClickedConverter x:Key="MapClickedConverter" />
+            <converter:PinClickedConverter x:Key="PinClickedConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -24,9 +25,12 @@
                               PinsSource="{Binding Pins, Mode=TwoWay}"
                               MapSpan="{Binding Span, Mode=TwoWay}">
             <controls:BindableMap.Behaviors>
-                <behaviors:EventToCommandBehavior Command="{Binding Clicked}"
+                <behaviors:EventToCommandBehavior Command="{Binding MapClicked}"
                                                   EventName="MapClicked"
                                                   Converter="{StaticResource MapClickedConverter}"/>
+                <behaviors:EventToCommandBehavior Command="{Binding PinClicked}"
+                                                  EventName="PinClicked"
+                                                  Converter="{StaticResource PinClickedConverter}"/>
             </controls:BindableMap.Behaviors>
         </controls:BindableMap>
     </StackLayout>

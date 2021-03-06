@@ -6,7 +6,7 @@ using GetSanger.Interfaces;
 using GetSanger.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Maps;
+using Xamarin.Forms.GoogleMaps;
 
 namespace GetSanger.ViewModels
 {
@@ -34,7 +34,9 @@ namespace GetSanger.ViewModels
 
         public ICommand SearchCommand { get; private set; }
 
-        public ICommand Clicked { get; private set; }
+        public ICommand MapClicked { get; private set; }
+
+        public ICommand PinClicked { get; private set; }
 
         public MapViewModel(BaseViewModel i_RefPage)
         {
@@ -42,7 +44,8 @@ namespace GetSanger.ViewModels
             r_PageService = new PageServices();
             ConnecetedPage = i_RefPage;
             SearchCommand = new Command(SearchCom);
-            Clicked = new Command(MapClicked);
+            MapClicked = new Command(MapClickedHelper);
+            PinClicked = new Command(PinClickedHelper);
             createMapSpan();
             Pins = new ObservableCollection<Pin>
             {
@@ -53,13 +56,17 @@ namespace GetSanger.ViewModels
                     Label = "My Location",
                 }
             };
-            Pins[0].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position);
+            //Pins[0].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position);
         }
 
-        public void MapClicked(object i_Args)
+        public void MapClickedHelper(object i_Args)
         {
-            Position position = (i_Args as MapClickedEventArgs).Position;
-            locationPicked(position);
+            locationPicked((i_Args as MapClickedEventArgs).Point);
+        }
+
+        public void PinClickedHelper(object i_Args)
+        {
+            locationPicked((i_Args as PinClickedEventArgs).Pin.Position);
         }
 
         public async void SearchCom(object i_Search)
@@ -80,7 +87,7 @@ namespace GetSanger.ViewModels
                         Label = $"Chosen Place"
                         }
                     };
-                    Pins[1].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position); 
+                    //[1].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position); 
                     Span = new MapSpan(position, 0.01, 0.01);
                 }
             }

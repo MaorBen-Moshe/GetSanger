@@ -2,11 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using Xamarin.Forms;
-using Xamarin.Forms.Maps;
+using Xamarin.Forms.GoogleMaps;
 
 namespace GetSanger.Controls
 {
-    public class BindableMap : Xamarin.Forms.Maps.Map
+    public class BindableMap : Xamarin.Forms.GoogleMaps.Map
     {
         public ObservableCollection<Pin> PinsSource
         {
@@ -47,7 +47,7 @@ namespace GetSanger.Controls
         private static void MapSpanPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var thisInstance = bindable as BindableMap;
-            var newMapSpan = newValue as MapSpan;
+            var newMapSpan = newValue as Xamarin.Forms.GoogleMaps.MapSpan;
             
             if(newMapSpan == null)
             {
@@ -73,7 +73,7 @@ namespace GetSanger.Controls
             UpdatePinsSource(this, sender as IEnumerable<Pin>);
         }
 
-        private static void UpdatePinsSource(Xamarin.Forms.Maps.Map bindableMap, IEnumerable<Pin> newSource)
+        private static void UpdatePinsSource(Xamarin.Forms.GoogleMaps.Map bindableMap, IEnumerable<Pin> newSource)
         {
             bindableMap.Pins.Clear();
             foreach (var pin in newSource)
