@@ -1,8 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:GetSanger.Controls"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             xmlns:converter="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.UI_pages.common.MapPage">
-    <StackLayout Padding="0, 10, 0, 0" >
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:MapClickedConverter x:Key="MapClickedConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <StackLayout Padding="0, 10, 0, 0">
         <SearchBar x:Name="AddressSearchBar" 
                    Placeholder="כתובת"
                    SearchCommand="{Binding SearchCommand}"
@@ -11,6 +20,14 @@
                               MapType="Street" 
                               IsShowingUser="True"
                               HasZoomEnabled="True"
-                              BackgroundColor="Transparent"/>
+                              BackgroundColor="Transparent"
+                              PinsSource="{Binding Pins, Mode=TwoWay}"
+                              MapSpan="{Binding Span, Mode=TwoWay}">
+            <controls:BindableMap.Behaviors>
+                <behaviors:EventToCommandBehavior Command="{Binding Clicked}"
+                                                  EventName="MapClicked"
+                                                  Converter="{StaticResource MapClickedConverter}"/>
+            </controls:BindableMap.Behaviors>
+        </controls:BindableMap>
     </StackLayout>
 </ContentPage>

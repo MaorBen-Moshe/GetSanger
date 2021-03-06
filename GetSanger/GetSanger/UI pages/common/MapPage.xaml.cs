@@ -14,14 +14,12 @@ namespace GetSanger.UI_pages.common
         {
             InitializeComponent();
 
-            BindingContext = new MapViewModel(i_RefPage, ref CurrentMap);
+            BindingContext = new MapViewModel(i_RefPage);
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-            CurrentMap.MapClicked += CurrMap_MapClicked;
             await DisplayAlert("Note", "Please click on the right place", "OK", FlowDirection.MatchParent);
         }
 
@@ -29,11 +27,6 @@ namespace GetSanger.UI_pages.common
         {
             (BindingContext as MapViewModel).Cancelation();
             base.OnDisappearing();
-        }
-
-        private void CurrMap_MapClicked(object sender, MapClickedEventArgs e)
-        {
-            (BindingContext as MapViewModel).MapClicked(e.Position);
         }
     }
 }

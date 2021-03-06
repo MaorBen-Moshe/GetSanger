@@ -1,8 +1,6 @@
-﻿using GetSanger.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -40,27 +38,21 @@ namespace GetSanger.Controls
                                                          validateValue: null,
                                                          propertyChanged: MapSpanPropertyChanged);
 
-        private LocationService LocationServices { get; }
-
         public BindableMap() : base()
         {
-            LocationServices = new LocationService();
             PinsSource = new ObservableCollection<Pin>();
             PinsSource.CollectionChanged += PinsSourceOnCollectionChanged;
-            createMap();
-        }
-
-        private async void createMap()
-        {
-            Location location = await LocationServices.GetCurrentLocation();
-            Position position = new Position(location.Latitude, location.Longitude);
-            MapSpan = new MapSpan(position, 0.01, 0.01);
         }
 
         private static void MapSpanPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var thisInstance = bindable as BindableMap;
             var newMapSpan = newValue as MapSpan;
+            
+            if(newMapSpan == null)
+            {
+                return;
+            }
 
             thisInstance?.MoveToRegion(newMapSpan);
         }
