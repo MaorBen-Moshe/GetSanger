@@ -22,6 +22,7 @@
     <PackageReference Include="Xamarin.Build.Download" Version="0.10.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Forms.GoogleMaps" Version="3.3.0" />
     <PackageReference Include="Xamarin.Forms.Maps" Version="5.0.0.2012" />
   </ItemGroup>
 
