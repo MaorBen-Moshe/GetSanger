@@ -53,10 +53,9 @@ namespace GetSanger.ViewModels
                 {
                     Type = PinType.Generic,
                     Position = Span.Center,
-                    Label = "My Location",
+                    Label = "My Location"
                 }
             };
-            //Pins[0].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position);
         }
 
         public void MapClickedHelper(object i_Args)
@@ -87,7 +86,6 @@ namespace GetSanger.ViewModels
                         Label = $"Chosen Place"
                         }
                     };
-                    //[1].MarkerClicked += (object sender, PinClickedEventArgs e) => locationPicked((sender as Pin).Position); 
                     Span = new MapSpan(position, 0.01, 0.01);
                 }
             }
