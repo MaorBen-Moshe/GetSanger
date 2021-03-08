@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GetSanger.Services
 {
-    class AppManager
+    public class AppManager
     {
     }
 }

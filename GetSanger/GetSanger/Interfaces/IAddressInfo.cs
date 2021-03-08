@@ -9,6 +9,5 @@ namespace GetSanger.Interfaces
         string Location { get; }
         MapSpan MapSpan { get; }
         ObservableCollection<Pin> Pins { get; }
-        //Task Set(IHoldAddress i_Holder);
     }
 }
