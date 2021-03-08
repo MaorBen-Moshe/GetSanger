@@ -70,6 +70,7 @@ namespace GetSanger.ViewModels
             createMapSpan();
             IsSearch = ConnecetedPage is JobOfferViewModel;
             IsTrip = ConnecetedPage is ActivityViewModel;
+            IsTrip = true;
         }
 
         public void MapClickedHelper(object i_Args)
@@ -103,7 +104,7 @@ namespace GetSanger.ViewModels
             }
             catch
             {
-                await r_PageService.DisplayAlert("Error", "Something went wrong\nPlease try again later.", "Ok", null);
+                await r_PageService.DisplayAlert("שגיאה", "משהו נכשל, תנסה שוב מאוחר יותר.", "Ok", "ok");
             }
         }
 

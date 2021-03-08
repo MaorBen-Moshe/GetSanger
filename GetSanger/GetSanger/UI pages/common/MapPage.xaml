@@ -30,7 +30,7 @@
             </controls:BindableMap.Behaviors>
         </controls:BindableMap>
 
-        <Frame BackgroundColor="White"
+        <Frame BackgroundColor="Transparent"
                BorderColor="Gray"
                HeightRequest="20"
                WidthRequest="300"
