@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
+using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
 namespace GetSanger.Converters
 {
-    class PinClickedConverter
+    public class PinClickedConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
