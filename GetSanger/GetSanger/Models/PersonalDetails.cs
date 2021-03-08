@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GetSanger.Models
 {
-    class PersonalDetails
+    public class PersonalDetails
     {
         public string Nickname { get; set; }
         public string Gender { get; set; }

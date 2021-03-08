@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GetSanger.Models
 {
-    class Rating
+    public class Rating
     {
         public int Score { get; set; }
         public string Description { get; set; }

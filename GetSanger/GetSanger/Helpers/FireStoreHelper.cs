@@ -6,44 +6,44 @@ using System.Threading.Tasks;
 
 namespace GetSanger.Helpers
 {
-    class FireStoreHelper
+    public static class FireStoreHelper
     {
-        public async Task<List<Activity>> GetActivities(int i_UserID)
+        public static async Task<List<Activity>> GetActivities(int i_UserID)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Activity> GetActivity(int i_ClientID, int i_SangerID)
+        public static async Task<Activity> GetActivity(int i_ClientID, int i_SangerID)
         {
             throw new NotImplementedException();
         }
 
-        public async void AddActivity(Activity i_Activity)
+        public static async void AddActivity(Activity i_Activity)
         {
             throw new NotImplementedException();
         }
 
-        public async void UpdateActivity(Activity i_Activity)
+        public static async void UpdateActivity(Activity i_Activity)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<JobOffer>> GetJobOffers(int i_UserID)
+        public static async Task<List<JobOffer>> GetJobOffers(int i_UserID)
         {
             throw new NotImplementedException();
         }
 
-        public async void SendJobOffer(JobOffer i_JobOffer)
+        public static async void SendJobOffer(JobOffer i_JobOffer)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<User> GetUser(int i_UserID)
+        public static async Task<User> GetUser(int i_UserID)
         {
             throw new NotImplementedException();
         }
 
-        public async void UpdateUser(User i_User)
+        public static async void UpdateUser(User i_User)
         {
             throw new NotImplementedException();
         }

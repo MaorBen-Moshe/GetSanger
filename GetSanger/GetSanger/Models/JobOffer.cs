@@ -5,7 +5,7 @@ using Xamarin.Essentials;
 
 namespace GetSanger.Models
 {
-    class JobOffer
+    public class JobOffer
     {
         public int ClientID { get; set; }
         public Location Location { get; set; }

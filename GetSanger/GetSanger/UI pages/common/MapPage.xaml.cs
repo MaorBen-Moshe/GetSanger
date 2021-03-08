@@ -1,7 +1,6 @@
-﻿using GetSanger.Controls;
-using GetSanger.ViewModels;
+﻿using GetSanger.ViewModels;
+using System.Threading;
 using Xamarin.Forms;
-using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
 
 
@@ -20,7 +19,7 @@ namespace GetSanger.UI_pages.common
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await DisplayAlert("Note", "Please click on the right place", "OK", FlowDirection.MatchParent);
+            await DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK", FlowDirection.MatchParent);
         }
 
         protected override void OnDisappearing()

@@ -12,7 +12,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid Padding="0, 10, 0, 0">
+    <Grid>
         <controls:BindableMap x:Name="CurrentMap"
                               MapType="Street" 
                               IsShowingUser="True"
@@ -33,15 +33,32 @@
         <Frame BackgroundColor="White"
                BorderColor="Gray"
                HeightRequest="20"
+               WidthRequest="300"
                HorizontalOptions="Center"
                VerticalOptions="Start">
             <SearchBar x:Name="AddressSearchBar" 
-                   PlaceholderColor="Black"
                    Placeholder="כתובת"
                    IsVisible="{Binding IsSearch}"
                    IsEnabled="{Binding IsSearch}"
                    SearchCommand="{Binding SearchCommand}"
                    SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
         </Frame>
+
+        <Grid VerticalOptions="End"
+              HorizontalOptions="Center"
+              ColumnSpacing="10"
+              IsVisible="{Binding IsTrip}"
+              IsEnabled="{Binding IsTrip}">
+            <Button Text="EndTrip" 
+                BackgroundColor="White"
+                CornerRadius="20"
+                Command="{Binding EndTripCommand}"
+                Grid.Column="0"/>
+            <Button Text="Call" 
+                    BackgroundColor="White"
+                    CornerRadius="20"
+                    Command="{Binding CallTripCommand}"
+                    Grid.Column="1"/>
+        </Grid>
     </Grid>
 </ContentPage>

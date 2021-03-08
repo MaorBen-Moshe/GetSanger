@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -16,6 +17,7 @@ namespace GetSanger.ViewModels
         private ObservableCollection<Pin> m_Pins;
         private MapSpan m_Span;
         private bool m_IsSearch;
+        private bool m_IsTrip;
 
         private BaseViewModel ConnecetedPage { get; set; }
 
@@ -39,11 +41,21 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsSearch, value);
         }
 
+        public bool IsTrip
+        {
+            get => m_IsTrip;
+            set => SetStructProperty(ref m_IsTrip, value);
+        }
+
         public ICommand SearchCommand { get; private set; }
 
         public ICommand MapClicked { get; private set; }
 
         public ICommand PinClicked { get; private set; }
+
+        public ICommand EndTripCommand { get; private set; }
+
+        public ICommand CallTripCommand { get; private set; }
 
         public MapViewModel(BaseViewModel i_RefPage)
         {
@@ -53,27 +65,46 @@ namespace GetSanger.ViewModels
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
             PinClicked = new Command(PinClickedHelper);
+            EndTripCommand = new Command(EndTripHelper);
+            CallTripCommand = new Command(CallTripHelper);
             createMapSpan();
-            Pins = new ObservableCollection<Pin>
-            {
-                new Pin
-                {
-                    Type = PinType.Generic,
-                    Position = Span.Center,
-                    Label = "My Location"
-                }
-            };
             IsSearch = ConnecetedPage is JobOfferViewModel;
+            IsTrip = ConnecetedPage is ActivityViewModel;
         }
 
         public void MapClickedHelper(object i_Args)
         {
-            locationPicked((i_Args as MapClickedEventArgs).Point);
+            locationPicked((Position)i_Args);
         }
 
         public void PinClickedHelper(object i_Args)
         {
-            locationPicked((i_Args as PinClickedEventArgs).Pin.Position);
+            locationPicked((Position)i_Args);
+        }
+
+        public void EndTripHelper()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async void CallTripHelper()
+        {
+            try
+            {
+                PhoneDialer.Open((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerPhoneNumber.PhoneNumber);
+            }
+            catch(ArgumentNullException anex)
+            {
+                await r_PageService.DisplayAlert("Error", anex.Message, "Ok", null);
+            }
+            catch(FeatureNotSupportedException fnx)
+            {
+                await r_PageService.DisplayAlert("Error", fnx.Message, "Ok", null);
+            }
+            catch
+            {
+                await r_PageService.DisplayAlert("Error", "Something went wrong\nPlease try again later.", "Ok", null);
+            }
         }
 
         public async void SearchCom(object i_Search)
@@ -121,6 +152,15 @@ namespace GetSanger.ViewModels
             Location location = await LocationServices.GetCurrentLocation();
             Position position = new Position(location.Latitude, location.Longitude);
             Span = new MapSpan(position, 0.01, 0.01);
+            Pins = new ObservableCollection<Pin>
+            {
+                new Pin
+                {
+                    Type = PinType.Generic,
+                    Position = Span.Center,
+                    Label = "My Location"
+                }
+            };
         }
     }
 }

@@ -5,7 +5,7 @@ using Xamarin.Essentials;
 
 namespace GetSanger.Models
 {
-    class Activity
+    public class Activity
     {
         public int ClientID { get; set; }
         public int SangerID { get; set; }
