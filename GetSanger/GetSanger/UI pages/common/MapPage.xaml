@@ -11,12 +11,8 @@
             <converter:PinClickedConverter x:Key="PinClickedConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <StackLayout Padding="0, 10, 0, 0">
-        <SearchBar x:Name="AddressSearchBar" 
-                   Placeholder="כתובת"
-                   SearchCommand="{Binding SearchCommand}"
-                   SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
+
+    <Grid Padding="0, 10, 0, 0">
         <controls:BindableMap x:Name="CurrentMap"
                               MapType="Street" 
                               IsShowingUser="True"
@@ -33,5 +29,19 @@
                                                   Converter="{StaticResource PinClickedConverter}"/>
             </controls:BindableMap.Behaviors>
         </controls:BindableMap>
-    </StackLayout>
+        
+        <Frame BackgroundColor="White"
+               BorderColor="Gray"
+               HeightRequest="20"
+               HorizontalOptions="Center"
+               VerticalOptions="Start">
+            <SearchBar x:Name="AddressSearchBar" 
+                   PlaceholderColor="Black"
+                   Placeholder="כתובת"
+                   IsVisible="{Binding IsSearch}"
+                   IsEnabled="{Binding IsSearch}"
+                   SearchCommand="{Binding SearchCommand}"
+                   SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
+        </Frame>
+    </Grid>
 </ContentPage>

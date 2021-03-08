@@ -15,6 +15,7 @@ namespace GetSanger.ViewModels
         private readonly IPageService r_PageService;
         private ObservableCollection<Pin> m_Pins;
         private MapSpan m_Span;
+        private bool m_IsSearch;
 
         private BaseViewModel ConnecetedPage { get; set; }
 
@@ -30,6 +31,12 @@ namespace GetSanger.ViewModels
         {
             get => m_Span;
             set => SetClassProperty(ref m_Span, value);
+        }
+
+        public bool IsSearch
+        {
+            get => m_IsSearch;
+            set => SetStructProperty(ref m_IsSearch, value);
         }
 
         public ICommand SearchCommand { get; private set; }
@@ -56,6 +63,7 @@ namespace GetSanger.ViewModels
                     Label = "My Location"
                 }
             };
+            IsSearch = ConnecetedPage is JobOfferViewModel;
         }
 
         public void MapClickedHelper(object i_Args)
