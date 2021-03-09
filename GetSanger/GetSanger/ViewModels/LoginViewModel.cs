@@ -7,9 +7,6 @@ using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    /// <summary>
-    /// ViewModel for login page.
-    /// </summary>
     [Preserve(AllMembers = true)]
     public class LoginViewModel : BaseViewModel
     {

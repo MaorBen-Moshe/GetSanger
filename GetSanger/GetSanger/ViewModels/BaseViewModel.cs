@@ -15,7 +15,7 @@ namespace GetSanger.ViewModels
         private bool m_IsLoading;
         private bool m_IsNotLoading;
         protected string m_DefaultBackUri = "..";
-        protected readonly IPageService r_PageService = new PageServices();
+        protected readonly IPageService r_PageService;
 
         public bool IsLoading
         {
@@ -30,6 +30,11 @@ namespace GetSanger.ViewModels
         {
             set => SetStructProperty(ref m_IsNotLoading, value);
             get => m_IsNotLoading;
+        }
+
+        protected BaseViewModel()
+        {
+            r_PageService = new PageServices();
         }
 
         protected virtual async Task GoBack()
