@@ -1,4 +1,5 @@
 ﻿using GetSanger.Interfaces;
+using GetSanger.Services;
 using System;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ namespace GetSanger.ViewModels
         private bool m_IsLoading;
         private bool m_IsNotLoading;
         protected string m_DefaultBackUri = "..";
+        protected readonly IPageService r_PageService = new PageServices();
+
         public bool IsLoading
         {
             set

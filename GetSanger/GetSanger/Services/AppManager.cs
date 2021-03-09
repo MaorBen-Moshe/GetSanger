@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GetSanger.Services
 {
     public class AppManager
     {
+        public event Action Refresh_Event;
+
+        public static AppManager Instance { get => Singleton<AppManager>.Instance; }
     }
 }
