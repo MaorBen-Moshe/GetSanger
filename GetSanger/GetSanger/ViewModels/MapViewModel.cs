@@ -13,7 +13,6 @@ namespace GetSanger.ViewModels
 {
     public class MapViewModel : BaseViewModel
     {
-        private readonly IPageService r_PageService;
         private ObservableCollection<Pin> m_Pins;
         private MapSpan m_Span;
         private bool m_IsSearch;
@@ -60,7 +59,6 @@ namespace GetSanger.ViewModels
         public MapViewModel(BaseViewModel i_RefPage)
         {
             LocationServices = new LocationService();
-            r_PageService = new PageServices();
             ConnecetedPage = i_RefPage;
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
@@ -70,7 +68,6 @@ namespace GetSanger.ViewModels
             createMapSpan();
             IsSearch = ConnecetedPage is JobOfferViewModel;
             IsTrip = ConnecetedPage is ActivityViewModel;
-            IsTrip = true;
         }
 
         public void MapClickedHelper(object i_Args)

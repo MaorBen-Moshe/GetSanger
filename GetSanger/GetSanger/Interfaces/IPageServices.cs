@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Interfaces
 {
-    interface IPageService
+    public interface IPageService
     {
         Task PushAsync(Page i_Page);
 
