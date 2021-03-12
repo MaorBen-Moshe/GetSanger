@@ -82,6 +82,7 @@ namespace GetSanger.ViewModels
 
         public void EndTripHelper()
         {
+            // kill the thread that getting location from a sanger if in user // or stop enabling location to user from sanger
             throw new NotImplementedException();
         }
 
@@ -89,7 +90,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                PhoneDialer.Open((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerPhoneNumber.PhoneNumber);
+                r_DialService.Call(); // notice to give phone to the property first.
             }
             catch(ArgumentNullException anex)
             {

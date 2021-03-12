@@ -6,7 +6,12 @@ namespace GetSanger.Services
     public static class Singleton<T> where T : class
     {
         private static T s_Instance;
-        private static readonly object s_LockObj = new object();
+        private static readonly object s_LockObj;
+
+        static Singleton()
+        {
+            s_LockObj = new object();
+        }
 
         public static T Instance
         {
@@ -18,23 +23,31 @@ namespace GetSanger.Services
                     {
                         if (s_Instance == null)
                         {
-                            ConstructorInfo constructor = null;
+                            Type typeT = typeof(T);
+                            ConstructorInfo[] constructors = typeT.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
+                            bool hasCtor = false;
 
                             try
                             {
-                                constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null);
+                                foreach(ConstructorInfo ctor in constructors)
+                                {
+                                    if(ctor.IsPrivate && ctor.GetParameters().Length == 0)
+                                    {
+                                        hasCtor = true;
+                                        s_Instance = (T)ctor.Invoke(null);
+                                        break;
+                                    }
+                                }
                             }
                             catch (Exception exception)
                             {
                                 throw new Exception(null, exception);
                             }
 
-                            if (constructor == null || constructor.IsAssembly)
+                            if (!hasCtor)
                             {
                                 throw new Exception("No constructor was found!");
                             }
-
-                            s_Instance = constructor.Invoke(null) as T;
                         }
                     }
                 }

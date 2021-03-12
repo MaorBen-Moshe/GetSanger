@@ -4,6 +4,7 @@ using GetSanger.UI_pages.common;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using System;
 
 namespace GetSanger.ViewModels
 {
@@ -19,6 +20,8 @@ namespace GetSanger.ViewModels
 
         public ICommand CurrentLocation { get; private set; }
         public ICommand JobLocation { get; private set; }
+        public ICommand SendJobCommand { get; private set; }
+
 
         public Placemark MyPlaceMark
         {
@@ -64,6 +67,7 @@ namespace GetSanger.ViewModels
         {
             CurrentLocation = new Command(GetCurrentLocation);
             JobLocation = new Command(GetJobLocation);
+            SendJobCommand = new Command(SendJob);
             m_PageService = new PageServices();
             IntialCurrentLocation();
         }
@@ -93,6 +97,12 @@ namespace GetSanger.ViewModels
         {
             m_IsMyLocation = false;
             await m_PageService.PushAsync(new MapPage(this));
+        }
+
+        public void SendJob()
+        {
+            // send the form to all sangers available.
+            throw new NotImplementedException();
         }
 
         private string placemarkValidation(Placemark i_Placemark)

@@ -16,6 +16,7 @@ namespace GetSanger.ViewModels
         private bool m_IsNotLoading;
         protected string m_DefaultBackUri = "..";
         protected readonly IPageService r_PageService;
+        protected readonly IDialService r_DialService;
 
         public bool IsLoading
         {
@@ -35,6 +36,7 @@ namespace GetSanger.ViewModels
         protected BaseViewModel()
         {
             r_PageService = new PageServices();
+            r_DialService = new DialServices();
         }
 
         protected virtual async Task GoBack()

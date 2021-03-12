@@ -71,8 +71,8 @@
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="End"
                     CornerRadius="20"
-                    Clicked="SendButton_Clicked"
-                    Margin="5"/>
+                    Margin="5"
+                    Command="{Binding SendJobCommand}"/>
             </StackLayout>
 
         </Grid>
