@@ -1,5 +1,6 @@
 ﻿using GetSanger.Interfaces;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -7,7 +8,23 @@ namespace GetSanger.Services
 {
     public class DialServices : IDialService
     {
-        public string PhoneNumber { get; set; }
+        private string m_Phone;
+        public string PhoneNumber
+        {
+            get
+            {
+                return m_Phone;
+            }
+            set
+            {
+                if(!Regex.Match(value, @"^(\+[0-9])$").Success)
+                {
+                    throw new ArgumentException("Phone number should contain only numbers");
+                }
+
+                m_Phone = value;
+            }
+        }
         public string Message { get; set; } = string.Empty;
 
         public void Call()

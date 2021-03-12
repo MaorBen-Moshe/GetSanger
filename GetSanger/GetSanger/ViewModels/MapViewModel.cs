@@ -20,8 +20,6 @@ namespace GetSanger.ViewModels
 
         private BaseViewModel ConnecetedPage { get; set; }
 
-        public LocationService LocationServices { get; private set; }
-
         public ObservableCollection<Pin> Pins
         {
             get => m_Pins;
@@ -58,7 +56,6 @@ namespace GetSanger.ViewModels
 
         public MapViewModel(BaseViewModel i_RefPage)
         {
-            LocationServices = new LocationService();
             ConnecetedPage = i_RefPage;
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
@@ -90,7 +87,8 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                r_DialService.Call(); // notice to give phone to the property first.
+                r_DialService.PhoneNumber = (ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerPhoneNumber.PhoneNumber;
+                r_DialService.Call();
             }
             catch(ArgumentNullException anex)
             {

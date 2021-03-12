@@ -18,6 +18,8 @@ namespace GetSanger.ViewModels
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
 
+        protected LocationService LocationServices { get; private set; }
+
         public bool IsLoading
         {
             set
@@ -37,6 +39,7 @@ namespace GetSanger.ViewModels
         {
             r_PageService = new PageServices();
             r_DialService = new DialServices();
+            LocationServices = new LocationService();
         }
 
         protected virtual async Task GoBack()

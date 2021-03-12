@@ -10,7 +10,6 @@ namespace GetSanger.ViewModels
 {
     public class JobOfferViewModel : BaseViewModel
     {
-        private LocationService LocationServices { get; set; } = new LocationService();
         private Placemark m_MyPlacemark;
         private Placemark m_JobPlacemark;
         private string m_MyLocation;
