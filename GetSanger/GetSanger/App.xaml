@@ -4,9 +4,5 @@
              x:Class="GetSanger.App">
     <Application.Resources>
 
-        <ResourceDictionary>
-      
-        </ResourceDictionary>
-        
     </Application.Resources>
 </Application>

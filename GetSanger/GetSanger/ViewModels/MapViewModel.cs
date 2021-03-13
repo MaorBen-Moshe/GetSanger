@@ -13,7 +13,6 @@ namespace GetSanger.ViewModels
 {
     public class MapViewModel : BaseViewModel
     {
-        private readonly IPageService r_PageService;
         private ObservableCollection<Pin> m_Pins;
         private MapSpan m_Span;
         private bool m_IsSearch;
@@ -60,7 +59,6 @@ namespace GetSanger.ViewModels
         public MapViewModel(BaseViewModel i_RefPage)
         {
             LocationServices = new LocationService();
-            r_PageService = new PageServices();
             ConnecetedPage = i_RefPage;
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
@@ -103,7 +101,7 @@ namespace GetSanger.ViewModels
             }
             catch
             {
-                await r_PageService.DisplayAlert("Error", "Something went wrong\nPlease try again later.", "Ok", null);
+                await r_PageService.DisplayAlert("שגיאה", "משהו נכשל, תנסה שוב מאוחר יותר.", "Ok", "ok");
             }
         }
 

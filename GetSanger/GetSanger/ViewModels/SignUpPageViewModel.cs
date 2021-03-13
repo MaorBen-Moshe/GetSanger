@@ -57,7 +57,7 @@ namespace GetSanger.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the password from users in the Sign Up page.
+        /// Gets or sets the property that bounds with an entry that gets the m_Password from users in the Sign Up page.
         /// </summary>
         public string Password
         {
@@ -79,7 +79,7 @@ namespace GetSanger.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the password confirmation from users in the Sign Up page.
+        /// Gets or sets the property that bounds with an entry that gets the m_Password confirmation from users in the Sign Up page.
         /// </summary>
         public string ConfirmPassword
         {
