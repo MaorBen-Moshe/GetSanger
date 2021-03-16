@@ -5,39 +5,39 @@ using System.Text;
 
 namespace GetSanger.Helpers
 {
-    class AuthHelper
+    public static class AuthHelper
     {
-        public async void RegisterViaEmail(string i_Email, string i_Password)
+        public static void RegisterViaEmail(string i_Email, string i_Password)
         {
             throw new NotImplementedException();
         }
 
-        public async void LoginViaEmail(string i_Email, string i_Password)
+        public static void LoginViaEmail(string i_Email, string i_Password)
         {
             throw new NotImplementedException();
         }
 
-        public async void LoginViaGoogle()
+        public static void LoginViaGoogle()
         {
             throw new NotImplementedException();
         }
 
-        public async void LoginViaFacebook()
+        public static void LoginViaFacebook()
         {
             throw new NotImplementedException();
         }
 
-        public async void AddUser(User i_User)
+        public static void AddUser(User i_User)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsLoggedIn()
+        public static bool IsLoggedIn()
         {
             throw new NotImplementedException();
         }
 
-        public int GetLoggedInUserID()
+        public static int GetLoggedInUserID()
         {
             throw new NotImplementedException();
         }

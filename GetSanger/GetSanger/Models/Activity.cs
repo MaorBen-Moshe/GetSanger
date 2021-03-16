@@ -12,7 +12,6 @@ namespace GetSanger.Models
         public int ClientID { get; set; }
         public int SangerID { get; set; }
         public JobOffer JobOffer { get; set; }
-        public ContactPhone SangerPhoneNumber { get; set; }
         public string Status { get; set; }
     }
 }

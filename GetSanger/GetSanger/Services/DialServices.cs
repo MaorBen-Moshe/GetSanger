@@ -13,6 +13,11 @@ namespace GetSanger.Services
         {
             get
             {
+                if(m_Phone == null)
+                {
+                    throw new ArgumentNullException("No phone number was given");
+                }
+
                 return m_Phone;
             }
             set
