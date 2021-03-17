@@ -4,7 +4,21 @@
              xmlns:common="clr-namespace:GetSanger.UI_pages.common"
              x:Class="GetSanger.AppShell.UserShell">
     <TabBar Shell.NavBarIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate common:AccountPage}" />
-        <ShellContent ContentTemplate="{DataTemplate common:ActivitiesHistoryMasterPage}" />
+        <Tab Title="Account"
+             Route="account">
+            <ShellContent ContentTemplate="{DataTemplate common:AccountPage}" />
+        </Tab>
+        <Tab Title="History"
+             Route="history">
+            <ShellContent ContentTemplate="{DataTemplate common:ActivitiesHistoryMasterPage}" />
+        </Tab>
+        <Tab Title="Activity"
+             Route="activity">
+            <ShellContent ContentTemplate="{DataTemplate common:ActivitiesMasterPage}" />
+        </Tab>
+        <Tab Title="Categories"
+             Route="categories">
+            <ShellContent ContentTemplate="{DataTemplate common:CategoriesPage}" />
+        </Tab>
     </TabBar>
 </Shell>
