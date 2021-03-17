@@ -13,15 +13,5 @@ namespace GetSanger.UI_pages.signup
         {
             InitializeComponent();
         }
-
-        private void UserButton_Clicked(object sender, EventArgs e)
-        {
-            Application.Current.MainPage = new UserMainPage();
-        }
-
-        private void SangerButton_Clicked(object sender, EventArgs e)
-        {
-            Application.Current.MainPage = new SangerMainPage();
-        }
     }
 }

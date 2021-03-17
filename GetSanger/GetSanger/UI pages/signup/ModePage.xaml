@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
              x:Class="GetSanger.UI_pages.signup.ModePage">
 
     <ContentPage.Resources>
@@ -15,6 +16,11 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <vm:ModeViewModel />
+    </ContentPage.BindingContext>
+    
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center">
             <StackLayout HorizontalOptions="Center">
@@ -23,8 +29,8 @@
             </StackLayout>
             <StackLayout Spacing="20"
                          Padding="20">
-                <Button Text="User Mode" Margin="10" Style="{StaticResource button}" x:Name="UserButton" Clicked="UserButton_Clicked"/>
-                <Button Text="Sanger Mode" Margin="10" Style="{StaticResource button}" x:Name="SangerButton" Clicked="SangerButton_Clicked"/>
+                <Button Text="User Mode" Margin="10" Style="{StaticResource button}" Command="{Binding UserCommand}"/>
+                <Button Text="Sanger Mode" Margin="10" Style="{StaticResource button}" Command="{Binding SangerCommand}"/>
             </StackLayout>
       </StackLayout>
     </ContentPage.Content>
