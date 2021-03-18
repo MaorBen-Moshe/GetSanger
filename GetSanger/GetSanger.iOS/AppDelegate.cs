@@ -1,6 +1,10 @@
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
 using UIKit;
+using Firebase.Core;
+using UserNotifications;
+using Firebase.CloudMessaging;
+using Plugin.FirebasePushNotification;
 
 namespace GetSanger.iOS
 {
@@ -24,10 +28,47 @@ namespace GetSanger.iOS
             Xamarin.FormsMaps.Init();
             ImageCircleRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
+
+            FirebasePushNotificationManager.Initialize(options, true);
+
             LoadApplication(new App());
             Firebase.Core.App.Configure();
 
+            //TEMPORARY
+            Messaging.SharedInstance.Subscribe("Topic");
+
             return base.FinishedLaunching(app, options);
         }
+
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
+        }
+
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
+
+        }
+
+        // To receive notifications in foregroung on iOS 9 and below.
+        // To receive notifications in background in any iOS version
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary messageData, System.Action<UIBackgroundFetchResult> completionHandler)
+        {
+            // If you are receiving a notification message while your app is in the background,
+            // this callback will not be fired 'till the user taps on the notification launching the application.
+
+            // If you disable method swizzling, you'll need to call this method. 
+            // This lets FCM track message delivery and analytics, which is performed
+            // automatically with method swizzling enabled.
+            FirebasePushNotificationManager.DidReceiveMessage(messageData);
+
+            // Handle notification data (messageData)
+            System.Console.WriteLine(messageData);
+            
+
+            completionHandler(UIBackgroundFetchResult.NewData);
+        }
     }
+
 }
