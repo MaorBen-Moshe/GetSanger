@@ -1,11 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Shell xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:user="clr-namespace:GetSanger.UI_pages.user"
              xmlns:common="clr-namespace:GetSanger.UI_pages.common"
              x:Class="GetSanger.AppShell.UserShell">
-    <TabBar>
-        <ShellContent ContentTemplate="{DataTemplate common:AccountPage}"></ShellContent>
-        <ShellContent ContentTemplate="{DataTemplate common:ActivitiesHistoryMasterPage}"></ShellContent>
+    <TabBar Shell.NavBarIsVisible="False">
+        <Tab Title="Account"
+             Route="account">
+            <ShellContent ContentTemplate="{DataTemplate common:AccountPage}" />
+        </Tab>
+        <Tab Title="History"
+             Route="history">
+            <ShellContent ContentTemplate="{DataTemplate common:ActivitiesHistoryMasterPage}" />
+        </Tab>
+        <Tab Title="Activity"
+             Route="activity">
+            <ShellContent ContentTemplate="{DataTemplate common:ActivitiesMasterPage}" />
+        </Tab>
+        <Tab Title="Categories"
+             Route="categories">
+            <ShellContent ContentTemplate="{DataTemplate common:CategoriesPage}" />
+        </Tab>
     </TabBar>
 </Shell>

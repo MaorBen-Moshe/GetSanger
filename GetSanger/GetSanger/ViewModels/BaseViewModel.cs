@@ -1,40 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using GetSanger.Interfaces;
+using GetSanger.Services;
+using System;
 using System.Runtime.Serialization;
-using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    /// <summary>
-    /// This viewmodel extends in another viewmodels.
-    /// </summary>
     [Preserve(AllMembers = true)]
     [DataContract]
-    public class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : PropertySetter
     {
-        #region Event handler
+        private bool m_IsLoading;
+        private bool m_IsNotLoading;
+        protected string m_DefaultBackUri = "..";
+        protected readonly IPageService r_PageService;
+        protected readonly IDialService r_DialService;
 
-        /// <summary>
-        /// Occurs when the property is changed.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        protected LocationService LocationServices { get; private set; }
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// The PropertyChanged event occurs when changing the value of property.
-        /// </summary>
-        /// <param name="propertyName">The PropertyName</param>
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        public bool IsLoading
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            set
+            {
+                SetStructProperty(ref m_IsLoading, value);
+                IsNotLoading = !value;
+            }
+            get => m_IsLoading;
+        }
+        public bool IsNotLoading
+        {
+            set => SetStructProperty(ref m_IsNotLoading, value);
+            get => m_IsNotLoading;
         }
 
-        #endregion
+        protected BaseViewModel()
+        {
+            r_PageService = new PageServices();
+            r_DialService = new DialServices();
+            LocationServices = new LocationService();
+        }
+
+        protected virtual async Task GoBack()
+        {
+            await Shell.Current.GoToAsync(m_DefaultBackUri);
+        }
+
+        public async Task RunTaskWhileLoading(Task i_InnerTask)
+        {
+            try
+            {
+                DependencyService.Get<ILoadingService>().InitLoadingPage();
+                DependencyService.Get<ILoadingService>().ShowLoadingPage();
+                await i_InnerTask;
+                DependencyService.Get<ILoadingService>().HideLoadingPage();
+            }
+            catch (Exception ex)
+            {
+                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                throw ex;
+            }
+        }
     }
 }

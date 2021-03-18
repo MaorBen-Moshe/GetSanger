@@ -24,21 +24,21 @@
 
                 <Grid>
                     <Entry Placeholder="My Location" 
+                           Text="{Binding MyLocation, Mode=TwoWay}" 
                            IsReadOnly="True" 
                            Grid.Column="0" 
-                           Grid.ColumnSpan="2" 
-                           x:Name="m_MyLocationEntry"/>
-                    <Button Text="Get Location" Grid.Column="2" Clicked="LocationButton_Clicked"
+                           Grid.ColumnSpan="2" />
+                    <Button Text="Get Location" Grid.Column="2" Command="{Binding CurrentLocation}"
                             CornerRadius="20"/>
                 </Grid>
 
                 <Grid>
                     <Entry Placeholder="Job Location" 
+                           Text="{Binding WorkLocation, Mode=TwoWay}"
                            IsReadOnly="True" 
                            Grid.Column="0" 
-                           Grid.ColumnSpan="2" 
-                           x:Name="m_JobLocationEntry"/>
-                    <Button Text="Get Location" Grid.Column="2" Clicked="LocationButton_Clicked"
+                           Grid.ColumnSpan="2" />
+                    <Button Text="Get Location" Grid.Column="2" Command="{Binding JobLocation}"
                             CornerRadius="20"/>
                 </Grid>
 
@@ -71,8 +71,8 @@
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="End"
                     CornerRadius="20"
-                    Clicked="SendButton_Clicked"
-                    Margin="5"/>
+                    Margin="5"
+                    Command="{Binding SendJobCommand}"/>
             </StackLayout>
 
         </Grid>

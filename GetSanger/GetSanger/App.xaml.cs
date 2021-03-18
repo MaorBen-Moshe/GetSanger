@@ -1,8 +1,5 @@
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using GetSanger.UI_pages.signup;
-using GetSanger.UI_pages.common;
+using GetSanger.AppShell;
 
 namespace GetSanger
 {
@@ -12,7 +9,7 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new JobOfferPage());
+            MainPage = new AuthShell();
         }
 
         protected override void OnStart()

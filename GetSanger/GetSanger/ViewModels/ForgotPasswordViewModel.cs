@@ -4,7 +4,7 @@ using Xamarin.Forms.Internals;
 namespace GetSanger.ViewModels
 {
     /// <summary>
-    /// ViewModel for forgot password page.
+    /// ViewModel for forgot m_Password page.
     /// </summary>
     [Preserve(AllMembers = true)]
     public class ForgotPasswordViewModel : LoginViewModel

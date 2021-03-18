@@ -1,5 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:GetSanger.Controls"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             xmlns:converter="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.UI_pages.common.MapPage">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:MapClickedConverter x:Key="MapClickedConverter" />
+            <converter:PinClickedConverter x:Key="PinClickedConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <controls:BindableMap x:Name="CurrentMap"
+                              MapType="Street" 
+                              IsShowingUser="True"
+                              HasZoomEnabled="True"
+                              BackgroundColor="Transparent"
+                              PinsSource="{Binding Pins, Mode=TwoWay}"
+                              MapSpan="{Binding Span, Mode=TwoWay}">
+            <controls:BindableMap.Behaviors>
+                <behaviors:EventToCommandBehavior Command="{Binding MapClicked}"
+                                                  EventName="MapClicked"
+                                                  Converter="{StaticResource MapClickedConverter}"/>
+                <behaviors:EventToCommandBehavior Command="{Binding PinClicked}"
+                                                  EventName="PinClicked"
+                                                  Converter="{StaticResource PinClickedConverter}"/>
+            </controls:BindableMap.Behaviors>
+        </controls:BindableMap>
+
+        <Frame BackgroundColor="Transparent"
+               BorderColor="Gray"
+               HeightRequest="20"
+               WidthRequest="300"
+               HorizontalOptions="Center"
+               VerticalOptions="Start"
+               Margin="0, 20, 0, 0">
+            <SearchBar x:Name="AddressSearchBar" 
+                   Placeholder="כתובת"
+                   IsVisible="{Binding IsSearch}"
+                   IsEnabled="{Binding IsSearch}"
+                   SearchCommand="{Binding SearchCommand}"
+                   SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
+        </Frame>
+
+        <Grid VerticalOptions="End"
+              HorizontalOptions="Center"
+              ColumnSpacing="10"
+              IsVisible="{Binding IsTrip}"
+              IsEnabled="{Binding IsTrip}"
+              Padding="0,0,0, 20">
+            <Button Text="EndTrip" 
+                BackgroundColor="White"
+                CornerRadius="20"
+                Command="{Binding EndTripCommand}"
+                Grid.Column="0"/>
+            <Button Text="Call" 
+                    BackgroundColor="White"
+                    CornerRadius="20"
+                    Command="{Binding CallTripCommand}"
+                    Grid.Column="1"/>
+        </Grid>
+    </Grid>
 </ContentPage>
