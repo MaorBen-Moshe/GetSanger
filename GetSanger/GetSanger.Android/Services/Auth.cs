@@ -30,7 +30,7 @@ namespace GetSanger.Droid.Services
                 user = FirebaseAuth.Instance.CurrentUser;
             }
 
-            return user.GetIdToken(false).Result.ToString();
+            return user.Zzh();
         }
 
         public Task<string> GetUserId()
