@@ -8,13 +8,14 @@ using GetSanger.Interfaces;
 using Xamarin.Forms;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace GetSanger.Helpers
 {
     public static class AuthHelper
     {
         private static IAuth auth = DependencyService.Get<IAuth>();
-        public static async void RegisterViaEmail(string i_Email, string i_Password)
+        public static async Task RegisterViaEmail(string i_Email, string i_Password)
         {
             string idToken = await auth.GetIdToken();
             Dictionary<string, string> details = new Dictionary<string, string>()

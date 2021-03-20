@@ -24,7 +24,7 @@ namespace GetSanger.UI_pages.signup
             {
                 if (password.Text.Equals(confirm.Text))
                 {
-                    AuthHelper.RegisterViaEmail(email.Text, password.Text);
+                    await AuthHelper.RegisterViaEmail(email.Text, password.Text);
                     await DisplayAlert("Note", "Success", "Ok");
                 }
             }
