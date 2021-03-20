@@ -61,7 +61,7 @@ namespace GetSanger.ViewModels
                 case AppMode.Sanger:
                     doSanger();
                     break;
-                case AppMode.User:
+                case AppMode.Client:
                     doUser();
                     break;
                 default:
@@ -114,7 +114,7 @@ namespace GetSanger.ViewModels
             User user;
             switch (mode)
             {
-                case AppMode.User:
+                case AppMode.Client:
                     user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
                     Phone = user.PersonalDetails.Phone.PhoneNumber;
                     break;

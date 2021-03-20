@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System.Windows.Input;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
@@ -26,8 +27,9 @@ namespace GetSanger.ViewModels
         /// </summary>
         public SignUpPageViewModel()
         {
-            this.LoginCommand = new Command(this.LoginClicked);
-            this.SignUpCommand = new Command(this.SignUpClicked);
+            LoginCommand = new Command(this.LoginClicked);
+            SignUpCommand = new Command(this.SignUpClicked);
+            ImagePickerCommand = new Command(imagePicker);
         }
 
         #endregion
@@ -114,6 +116,8 @@ namespace GetSanger.ViewModels
         /// </summary>
         public Command SignUpCommand { get; set; }
 
+        public ICommand ImagePickerCommand { get; set; }
+
         #endregion
 
         #region Methods
@@ -134,6 +138,11 @@ namespace GetSanger.ViewModels
         private void SignUpClicked(object obj)
         {
             // Do something
+        }
+
+        private void imagePicker(object i_Param)
+        {
+
         }
 
         #endregion
