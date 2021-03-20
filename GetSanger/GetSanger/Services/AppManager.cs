@@ -3,7 +3,7 @@ using System;
 
 namespace GetSanger.Services
 {
-    public enum AppMode { User, Sanger };
+    public enum AppMode { Client, Sanger };
 
     public sealed class AppManager
     {
