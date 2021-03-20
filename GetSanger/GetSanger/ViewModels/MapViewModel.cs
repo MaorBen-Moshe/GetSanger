@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using GetSanger.Helpers;
 using GetSanger.Interfaces;
+using GetSanger.Models;
 using GetSanger.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -19,8 +21,6 @@ namespace GetSanger.ViewModels
         private bool m_IsTrip;
 
         private BaseViewModel ConnecetedPage { get; set; }
-
-        public LocationService LocationServices { get; private set; }
 
         public ObservableCollection<Pin> Pins
         {
@@ -58,7 +58,6 @@ namespace GetSanger.ViewModels
 
         public MapViewModel(BaseViewModel i_RefPage)
         {
-            LocationServices = new LocationService();
             ConnecetedPage = i_RefPage;
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
@@ -82,6 +81,7 @@ namespace GetSanger.ViewModels
 
         public void EndTripHelper()
         {
+            // kill the thread that getting location from a sanger if in user // or stop enabling location to user from sanger
             throw new NotImplementedException();
         }
 
@@ -89,7 +89,9 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                PhoneDialer.Open((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerPhoneNumber.PhoneNumber);
+                User sanger = await FireStoreHelper.GetUser((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerID);
+                r_DialService.PhoneNumber = sanger.PersonalDetails.Phone.PhoneNumber;
+                r_DialService.Call();
             }
             catch(ArgumentNullException anex)
             {

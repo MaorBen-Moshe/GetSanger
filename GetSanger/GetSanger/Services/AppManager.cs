@@ -1,11 +1,23 @@
-﻿using System;
+﻿using GetSanger.Models;
+using System;
 
 namespace GetSanger.Services
 {
-    public class AppManager
+    public enum AppMode { Client, Sanger };
+
+    public sealed class AppManager
     {
         public event Action Refresh_Event;
 
         public static AppManager Instance { get => Singleton<AppManager>.Instance; }
+
+        public AppMode CurrentMode { get; set; }
+
+        public User ConnectedUser { get; set; }
+
+        private AppManager()
+        {
+
+        }
     }
 }

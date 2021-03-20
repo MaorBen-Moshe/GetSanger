@@ -1,6 +1,5 @@
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using GetSanger.AppShell;
 using GetSanger.UI_pages.signup;
 using GetSanger.UI_pages.common;
 using Plugin.FirebasePushNotification;
