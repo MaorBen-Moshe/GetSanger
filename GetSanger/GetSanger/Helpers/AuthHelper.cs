@@ -33,7 +33,11 @@ namespace GetSanger.Helpers
             HttpClientHandler httpClientHandler = new HttpClientHandler();
             HttpMessageInvoker httpMessageInvoker = new HttpClient(httpClientHandler, false);
 
-            await httpMessageInvoker.SendAsync(httpRequest, new CancellationToken());
+            HttpResponseMessage response = await httpMessageInvoker.SendAsync(httpRequest, new CancellationToken());
+            if (response == null || !response.IsSuccessStatusCode)
+            {
+                throw new Exception(response.StatusCode.ToString());
+            }
         }
 
         public static void LoginViaEmail(string i_Email, string i_Password)
