@@ -12,11 +12,11 @@ using GetSanger.Interfaces;
 using System.Threading.Tasks;
 using Android.Gms.Extensions;
 using Firebase.Auth;
-using GetSanger.Droid.Dependencies;
+using GetSanger.Droid.Services;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(Auth))]
-namespace GetSanger.Droid.Dependencies
+namespace GetSanger.Droid.Services
 {
     class Auth : IAuth
     {
@@ -25,7 +25,7 @@ namespace GetSanger.Droid.Dependencies
             FirebaseUser user = FirebaseAuth.Instance.CurrentUser;
 
             if (user == null)
-            { 
+            {
                 await FirebaseAuth.Instance.SignInAnonymouslyAsync();
                 user = FirebaseAuth.Instance.CurrentUser;
             }
