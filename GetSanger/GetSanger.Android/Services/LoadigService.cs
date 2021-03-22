@@ -10,7 +10,7 @@ namespace GetSanger.Droid.Services
     {
         bool IsLoading = false;
 
-        public void InitLoadingPage(ContentPage loadingIndicatorPage = null) // param just for ios implementation
+        public void InitLoadingPage(ContentPage i_LoadingIndicatorPage = null) // param just for ios implementation
         {
             InitDialogPage(new LoadingPage());
             IsLoading = false;
@@ -18,11 +18,18 @@ namespace GetSanger.Droid.Services
 
         public void ShowLoadingPage()
         {
-            if (_isInitialized && IsLoading == false)
+            if(!_isInitialized && IsLoading == false)
+            {
+                InitLoadingPage(new LoadingPage()); // set the default loading page
+                _dialog.Show();
+                IsLoading = true;
+            }
+            else if(IsLoading == false)
             {
                 _dialog.Show();
                 IsLoading = true;
             }
+            //else means loading page is already shown and we don't need to do anything
         }
 
         public void HideLoadingPage()

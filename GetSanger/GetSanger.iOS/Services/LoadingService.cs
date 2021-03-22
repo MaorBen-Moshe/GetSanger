@@ -14,19 +14,19 @@ namespace GetSanger.iOS.Services
 
         private bool _isInitialized;
 
-        public void InitLoadingPage(ContentPage loadingIndicatorPage)
+        public void InitLoadingPage(ContentPage i_LoadingIndicatorPage = null)
         {
             // check if the page parameter is available
-            if (loadingIndicatorPage != null)
+            if (i_LoadingIndicatorPage != null)
             {
                 // build the loading page with native base
-                loadingIndicatorPage.Parent = Xamarin.Forms.Application.Current.MainPage;
+                i_LoadingIndicatorPage.Parent = Xamarin.Forms.Application.Current.MainPage;
 
-                loadingIndicatorPage.Layout(new Xamarin.Forms.Rectangle(0, 0,
+                i_LoadingIndicatorPage.Layout(new Xamarin.Forms.Rectangle(0, 0,
                     Xamarin.Forms.Application.Current.MainPage.Width,
                     Xamarin.Forms.Application.Current.MainPage.Height));
 
-                var renderer = loadingIndicatorPage.GetOrCreateRenderer();
+                var renderer = i_LoadingIndicatorPage.GetOrCreateRenderer();
 
                 _nativeView = renderer.NativeView;
 

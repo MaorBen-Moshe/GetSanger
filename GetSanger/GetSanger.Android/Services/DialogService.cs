@@ -39,7 +39,7 @@ namespace GetSanger.Droid.Services
                     _dialog.SetContentView(_nativeView);
                     Window window = _dialog.Window;
                     window.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
-                    //window.ClearFlags(WindowManagerFlags.DimBehind);
+                    window.ClearFlags(WindowManagerFlags.DimBehind);
                     window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
 
                     _isInitialized = true;

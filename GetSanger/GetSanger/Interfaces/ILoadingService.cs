@@ -4,7 +4,7 @@ namespace GetSanger.Interfaces
 {
     public interface ILoadingService
     {
-        void InitLoadingPage(ContentPage loadingIndicatorPage = null);
+        void InitLoadingPage(ContentPage i_LoadingIndicatorPage = null);
 
         void ShowLoadingPage();
 
