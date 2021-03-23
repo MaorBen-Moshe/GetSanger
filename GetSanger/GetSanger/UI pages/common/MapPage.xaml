@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converter="clr-namespace:GetSanger.Converters"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
              x:Class="GetSanger.UI_pages.common.MapPage">
-    
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:MapClickedConverter x:Key="MapClickedConverter" />
@@ -19,7 +20,10 @@
                               HasZoomEnabled="True"
                               BackgroundColor="Transparent"
                               PinsSource="{Binding Pins, Mode=TwoWay}"
-                              MapSpan="{Binding Span, Mode=TwoWay}">
+                              MapSpan="{Binding Span, Mode=TwoWay}"
+                              PinDragStart="{Binding PinDragStartCommand}"
+                              PinDragging="{Binding PinDraggingCommand}"
+                              PinDragEnd="{Binding PinDragEndCommand}">
             <controls:BindableMap.Behaviors>
                 <behaviors:EventToCommandBehavior Command="{Binding MapClicked}"
                                                   EventName="MapClicked"
