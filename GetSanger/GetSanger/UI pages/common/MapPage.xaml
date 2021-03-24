@@ -20,10 +20,7 @@
                               HasZoomEnabled="True"
                               BackgroundColor="Transparent"
                               PinsSource="{Binding Pins, Mode=TwoWay}"
-                              MapSpan="{Binding Span, Mode=TwoWay}"
-                              PinDragStart="{Binding PinDragStartCommand}"
-                              PinDragging="{Binding PinDraggingCommand}"
-                              PinDragEnd="{Binding PinDragEndCommand}">
+                              MapSpan="{Binding Span, Mode=TwoWay}">
             <controls:BindableMap.Behaviors>
                 <behaviors:EventToCommandBehavior Command="{Binding MapClicked}"
                                                   EventName="MapClicked"

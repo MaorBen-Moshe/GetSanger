@@ -56,12 +56,6 @@ namespace GetSanger.ViewModels
 
         public ICommand CallTripCommand { get; private set; }
 
-        public ICommand PinDragStartCommand { get; private set; }
-
-        public ICommand PinDraggingCommand { get; private set; }
-
-        public ICommand PinDragEndCommand { get; private set; }
-
         public MapViewModel(BaseViewModel i_RefPage)
         {
             ConnecetedPage = i_RefPage;
@@ -70,9 +64,6 @@ namespace GetSanger.ViewModels
             PinClicked = new Command(PinClickedHelper);
             EndTripCommand = new Command(EndTripHelper);
             CallTripCommand = new Command(CallTripHelper);
-            PinDragStartCommand = new Command(pinDragStart);
-            PinDraggingCommand = new Command(pinDragging);
-            PinDragEndCommand = new Command(pinDragEnd);
             createMapSpan();
             IsSearch = ConnecetedPage is JobOfferViewModel;
             IsTrip = ConnecetedPage is ActivityViewModel;
@@ -171,24 +162,5 @@ namespace GetSanger.ViewModels
                 }
             };
         }
-
-        #region PinEvents
-        private void pinDragStart(object i_Args)
-        {
-            PinDragEventArgs args = i_Args as PinDragEventArgs;
-        }
-
-        private void pinDragging(object i_Args)
-        {
-            PinDragEventArgs args = i_Args as PinDragEventArgs;
-            
-        }
-
-        private void pinDragEnd(object i_Args)
-        {
-            PinDragEventArgs args = i_Args as PinDragEventArgs;
-        }
-
-        #endregion
     }
 }
