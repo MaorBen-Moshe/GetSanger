@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Push\MessagingDelegate.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
     <None Include="Entitlements.plist" />
     <BundleResource Include="GoogleService-Info.plist" />
@@ -133,9 +134,6 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="Plugin.FirebasePushNotification">
-      <Version>3.3.10</Version>
     </PackageReference>
     <PackageReference Include="SkiaSharp.Extended">
       <Version>1.60.0</Version>

@@ -16,18 +16,15 @@ namespace GetSanger.Droid
     [Activity(Label = "GetSanger", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-<<<<<<< HEAD
         static readonly string TAG = "MainActivity";
 
         internal static readonly string CHANNEL_ID = "my_notification_channel";
         internal static readonly int NOTIFICATION_ID = 100;
-=======
         internal static MainActivity Instance { get; private set; }
 
         public static readonly int PickImageId = 1000;
 
         public TaskCompletionSource<Stream> PickImageTaskCompletionSource { set; get; }
->>>>>>> origin/master
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -41,7 +38,6 @@ namespace GetSanger.Droid
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             ImageCircleRenderer.Init();
             LoadApplication(new App());
-<<<<<<< HEAD
             HandleMessageData();
 
             //TEMPORARY
@@ -56,9 +52,7 @@ namespace GetSanger.Droid
         protected override void OnPause()
         {
             base.OnPause();
-=======
             Instance = this;
->>>>>>> origin/master
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -69,7 +63,6 @@ namespace GetSanger.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-<<<<<<< HEAD
         internal void HandleMessageData()
         {
             if (Intent.Extras != null)
@@ -129,7 +122,8 @@ namespace GetSanger.Droid
 
             var notificationManager = (NotificationManager)GetSystemService(Android.Content.Context.NotificationService);
             notificationManager.CreateNotificationChannel(channel);
-=======
+        }
+
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent intent)
         {
             base.OnActivityResult(requestCode, resultCode, intent);
@@ -149,7 +143,6 @@ namespace GetSanger.Droid
                     PickImageTaskCompletionSource.SetResult(null);
                 }
             }
->>>>>>> origin/master
         }
     }
 }

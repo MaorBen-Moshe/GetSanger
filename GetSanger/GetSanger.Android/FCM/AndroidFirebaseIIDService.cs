@@ -19,6 +19,7 @@ namespace GetSanger.Droid.FCM
         void SendRegistrationToServer(string token)
         {
             // Add custom implementation, as needed.
+            // Server should resubscribe the user to the previous topics he was subscribed to
         }
     }
 }

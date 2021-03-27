@@ -46,14 +46,11 @@
 	<string>Can we use your location when your application is being used?</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Can we use your location at all times?</string>
-<<<<<<< HEAD
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 	</array>
-=======
   <key>NSPhotoLibraryUsageDescription</key>
   <string>Picture Picker uses photo library</string>
->>>>>>> origin/master
 </dict>
 </plist>
