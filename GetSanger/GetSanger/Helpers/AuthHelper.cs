@@ -1,15 +1,39 @@
 ﻿using GetSanger.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using GetSanger.Interfaces;
+using Xamarin.Forms;
+using System.Text.Json;
+using System.Threading;
 
 namespace GetSanger.Helpers
 {
     public static class AuthHelper
     {
-        public static void RegisterViaEmail(string i_Email, string i_Password)
+        private static IAuth auth = DependencyService.Get<IAuth>();
+        public static async void RegisterViaEmail(string i_Email, string i_Password)
         {
-            throw new NotImplementedException();
+            string idToken = await auth.GetIdToken();
+            Dictionary<string, string> details = new Dictionary<string, string>()
+            {
+                ["email"] = i_Email,
+                ["password"] = i_Password
+            };
+
+            string json = JsonSerializer.Serialize(details);
+
+            HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Post,
+                "https://europe-west3-get-sanger.cloudfunctions.net/RegisterUserWithEmailAndPassword");
+            httpRequest.Content = new StringContent(json);
+            httpRequest.Headers.Authorization = AuthenticationHeaderValue.Parse(idToken);
+
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+            HttpMessageInvoker httpMessageInvoker = new HttpClient(httpClientHandler, false);
+
+            await httpMessageInvoker.SendAsync(httpRequest, new CancellationToken());
         }
 
         public static void LoginViaEmail(string i_Email, string i_Password)

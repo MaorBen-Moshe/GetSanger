@@ -155,6 +155,7 @@
   <ItemGroup>
     <Compile Include="FCM\AndroidFirebaseIIDService.cs" />
     <Compile Include="FCM\AndroidFirebaseMessagingService.cs" />
+    <Compile Include="Services\Auth.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
