@@ -70,6 +70,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Push\MessagingDelegate.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
+    <Compile Include="Services\PushService.cs" />
     <None Include="Entitlements.plist" />
     <BundleResource Include="GoogleService-Info.plist" />
     <None Include="Info.plist" />

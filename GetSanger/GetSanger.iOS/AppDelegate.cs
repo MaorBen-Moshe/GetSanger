@@ -69,7 +69,7 @@ namespace GetSanger.iOS
         [Export("messaging:didReceiveRegistrationToken:")]
         public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken)
         {
-            SendTokenToServer(fcmToken); 
+            SendRegistrationToServer(fcmToken); 
 
             var token = Messaging.SharedInstance.FcmToken ?? "";
             Console.WriteLine($"Current FCM token: {token}");
@@ -81,7 +81,7 @@ namespace GetSanger.iOS
             Messaging.SharedInstance.ApnsToken = deviceToken;
         }
 
-        internal void SendTokenToServer(string token)
+        internal void SendRegistrationToServer(string token)
         {
             // Send token to server if needed
             // Server should resubscribe the user(token) to the previous topics he was subscribed to
