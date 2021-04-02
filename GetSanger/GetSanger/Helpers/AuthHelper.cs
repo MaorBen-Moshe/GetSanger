@@ -29,15 +29,16 @@ namespace GetSanger.Helpers
             HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Post,
                 "https://europe-west3-get-sanger.cloudfunctions.net/RegisterUserWithEmailAndPassword");
             httpRequest.Content = new StringContent(json);
-            httpRequest.Headers.Authorization = AuthenticationHeaderValue.Parse(idToken);
+            httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", idToken);
 
             HttpClientHandler httpClientHandler = new HttpClientHandler();
             HttpMessageInvoker httpMessageInvoker = new HttpClient(httpClientHandler, false);
 
             HttpResponseMessage response = await httpMessageInvoker.SendAsync(httpRequest, new CancellationToken());
-            if (response == null || !response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(response.StatusCode.ToString());
+                string responseMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(responseMessage);
             }
         }
 
