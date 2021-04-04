@@ -1,10 +1,9 @@
-﻿using GetSanger.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using GetSanger.Models;
 
-namespace GetSanger.Helpers
+namespace GetSanger.Services
 {
     public static class FireStoreHelper
     {
@@ -38,7 +37,12 @@ namespace GetSanger.Helpers
             throw new NotImplementedException();
         }
 
-        public static async Task<User> GetUser(int i_UserID)
+        public static void AddUser(User i_User)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async Task<User> GetUser(string i_UserID)
         {
             throw new NotImplementedException();
         }
@@ -47,6 +51,5 @@ namespace GetSanger.Helpers
         {
             throw new NotImplementedException();
         }
-
     }
 }
