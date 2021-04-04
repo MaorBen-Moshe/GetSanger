@@ -9,8 +9,8 @@ namespace GetSanger.Models
 
     public class Activity
     {
-        public int ClientID { get; set; }
-        public int SangerID { get; set; }
+        public string ClientID { get; set; }
+        public string SangerID { get; set; }
         public JobOffer JobOffer { get; set; }
         public string Status { get; set; }
     }
