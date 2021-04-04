@@ -8,6 +8,10 @@ namespace GetSanger.Interfaces
     public interface IAuth
     {
         Task<string> GetIdToken();
-        Task<string> GetUserId();
+        string GetUserId();
+        void SignOut();
+        bool IsLoggedIn();
+        void SignInWithCustomToken(string i_Token);
+        bool IsAnonymousUser();
     }
 }

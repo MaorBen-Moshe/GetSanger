@@ -7,9 +7,9 @@ namespace GetSanger.Models
 {
     public class User
     {
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public Uri ProfilePictureUri { get; set; }
-        public List<string> Categoriess { get; set; }
+        public List<string> Categories { get; set; }
         public List<Location> WorkLocations { get; set; }
         public PersonalDetails PersonalDetails { get; set; }
         public List<Rating> Ratings { get; set; }

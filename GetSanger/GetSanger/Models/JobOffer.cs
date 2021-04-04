@@ -5,7 +5,7 @@ namespace GetSanger.Models
 {
     public class JobOffer
     {
-        public int ClientID { get; set; }
+        public string ClientID { get; set; }
         public Location Location { get; set; }
         public Location JobLocation { get; set; }
         public string Category { get; set; }
