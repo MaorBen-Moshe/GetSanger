@@ -11,8 +11,14 @@ namespace GetSanger.Services
             await Application.Current.MainPage.Navigation.PushAsync(i_Page);
         }
 
-        public async Task<bool> DisplayAlert(string i_Title, string i_Message, string i_Accept, string i_Cancel)
+        public async Task<bool> DisplayAlert(string i_Title, string i_Message, string i_Accept, string i_Cancel = null)
         {
+            if(i_Cancel == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(i_Title, i_Message, i_Accept);
+                return true;
+            }
+
             return await Application.Current.MainPage.DisplayAlert(i_Title, i_Message, i_Accept, i_Cancel);
         }
 

@@ -16,21 +16,5 @@ namespace GetSanger.UI_pages.signup
         {
             InitializeComponent();
         }
-
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                if (password.Text.Equals(confirm.Text))
-                {
-                    await AuthHelper.RegisterViaEmail(email.Text, password.Text);
-                    await DisplayAlert("Note", "Success", "Ok");
-                }
-            }
-            catch(Exception ex)
-            {
-                await DisplayAlert("Error", ex.Message, "Ok");
-            }
-        }
     }
 }

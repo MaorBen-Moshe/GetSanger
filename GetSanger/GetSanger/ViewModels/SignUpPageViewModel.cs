@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using GetSanger.Services;
+using System;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -12,23 +14,19 @@ namespace GetSanger.ViewModels
     {
         #region Fields
 
-        private string name;
+        private string m_Name;
 
-        private string password;
+        private string m_Password;
 
-        private string confirmPassword;
+        private string m_ConfirmPassword;
 
         #endregion
 
         #region Constructor
 
-        /// <summary>
-        /// Initializes a new instance for the <see cref="SignUpPageViewModel" /> class.
-        /// </summary>
         public SignUpPageViewModel()
         {
-            LoginCommand = new Command(this.LoginClicked);
-            SignUpCommand = new Command(this.SignUpClicked);
+            EmailPartCommand = new Command(EmailPartClicked);
             ImagePickerCommand = new Command(imagePicker);
         }
 
@@ -36,85 +34,29 @@ namespace GetSanger.ViewModels
 
         #region Property
 
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the name from user in the Sign Up page.
-        /// </summary>
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
-
-            set
-            {
-                if (this.name == value)
-                {
-                    return;
-                }
-
-                this.name = value;
-                this.OnPropertyChanged();
-            }
+            get => m_Name;
+            set => SetClassProperty(ref m_Name, value);
         }
 
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the m_Password from users in the Sign Up page.
-        /// </summary>
-        public string Password
+        public new string Password
         {
-            get
-            {
-                return this.password;
-            }
-
-            set
-            {
-                if (this.password == value)
-                {
-                    return;
-                }
-
-                this.password = value;
-                this.OnPropertyChanged();
-            }
+            get => m_Password;
+            set => SetClassProperty(ref m_Password, value);
         }
 
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the m_Password confirmation from users in the Sign Up page.
-        /// </summary>
         public string ConfirmPassword
         {
-            get
-            {
-                return this.confirmPassword;
-            }
-
-            set
-            {
-                if (this.confirmPassword == value)
-                {
-                    return;
-                }
-
-                this.confirmPassword = value;
-                this.OnPropertyChanged();
-            }
+            get => m_ConfirmPassword;
+            set => SetClassProperty(ref m_ConfirmPassword, value);
         }
 
         #endregion
 
         #region Command
 
-        /// <summary>
-        /// Gets or sets the command that is executed when the Log In button is clicked.
-        /// </summary>
-        public Command LoginCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the command that is executed when the Sign Up button is clicked.
-        /// </summary>
-        public Command SignUpCommand { get; set; }
+        public ICommand EmailPartCommand { get; set; }
 
         public ICommand ImagePickerCommand { get; set; }
 
@@ -122,22 +64,20 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        /// <summary>
-        /// Invoked when the Log in button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private void LoginClicked(object obj)
+        private async void EmailPartClicked()
         {
-            // Do something
-        }
+            if(AuthHelper.IsValidEmail(Email) == false)
+            {
+                await r_PageService.DisplayAlert("Notice", "Please enter a valid email address!", "OK");
+                return;
+            }
 
-        /// <summary>
-        /// Invoked when the Sign Up button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private void SignUpClicked(object obj)
-        {
-            // Do something
+            if (Password.Equals(ConfirmPassword))
+            {
+                // go to next page in sign up
+            }
+
+            await r_PageService.DisplayAlert("Notice", "Please check the password is correct", "OK");
         }
 
         private void imagePicker(object i_Param)
