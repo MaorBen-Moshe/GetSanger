@@ -12,9 +12,6 @@ using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    /// <summary>
-    /// ViewModel for sign-up page.
-    /// </summary>
     [Preserve(AllMembers = true)]
     public class SignUpPageViewModel : LoginViewModel
     {
@@ -44,6 +41,7 @@ namespace GetSanger.ViewModels
         {
             EmailPartCommand = new Command(emailPartClicked);
             PersonalDetailPartCommand = new Command(personalDetailPartClicked);
+            CategoriesPartCommand = new Command(categoriesPartClicked);
             ImagePickerCommand = new Command(imagePicker);
             Birthday = DateTime.Now;
             GenderItems = (from action in (GenderType[])Enum.GetValues(typeof(GenderType)) select action.ToString()).ToList();
@@ -109,6 +107,8 @@ namespace GetSanger.ViewModels
 
         public ICommand PersonalDetailPartCommand { get; set; }
 
+        public ICommand CategoriesPartCommand { get; set; }
+
         public ICommand ImagePickerCommand { get; set; }
 
         #endregion
@@ -141,6 +141,11 @@ namespace GetSanger.ViewModels
                 Birthday = Birthday
             };
             // register and move to mode page
+        }
+
+        private void categoriesPartClicked()
+        {
+
         }
 
         private async void imagePicker(object i_Param)

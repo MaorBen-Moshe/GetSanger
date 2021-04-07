@@ -7,7 +7,6 @@ namespace GetSanger.ViewModels
     [Preserve(AllMembers = true)]
     public class ForgotPasswordViewModel : LoginViewModel
     {
-        private string m_Email;
         private string m_ConfirmEmail;
         #region Constructor
 
@@ -19,12 +18,6 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region properties
-        public new string Email
-        {
-            get => m_Email;
-            set => SetClassProperty(ref m_Email, value);
-        }
-
         public string ConfirmEmail
         {
             get => m_ConfirmEmail;
@@ -39,9 +32,9 @@ namespace GetSanger.ViewModels
         #region Methods
         private async void SendClicked()
         {
-            if (Email.Equals(ConfirmEmail) == false)
+            if (AuthHelper.IsValidEmail(Email) == false || Email.Equals(ConfirmEmail) == false)
             {
-                await r_PageService.DisplayAlert("Error", "Please Check the fields are equal!", "OK");
+                await r_PageService.DisplayAlert("Error", "Please Check your email", "OK");
                 return;
             }
 
