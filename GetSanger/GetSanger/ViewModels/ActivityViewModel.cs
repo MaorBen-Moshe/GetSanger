@@ -31,7 +31,7 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Phone, value);
         }
 
-        public string Category { get => ConnectedActivity.JobOffer.Category; }
+        public string Category { get => ConnectedActivity.JobOffer.Category.ToString(); }
         public string SubCategory { get => ConnectedActivity.JobOffer.SubCategory; }
         public DateTime Date { get => ConnectedActivity.JobOffer.Date; }
         public string Description { get => ConnectedActivity.JobOffer.Description; }
