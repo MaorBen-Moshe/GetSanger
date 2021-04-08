@@ -31,6 +31,10 @@ namespace GetSanger.ViewModels
 
         private IList<string> m_GenderItems;
 
+        private IList<CategoryCell> m_CategoriesItems;
+
+        private IList<Category> m_CheckedItems;
+
         private string m_PickedGender;
 
         #endregion
@@ -46,6 +50,7 @@ namespace GetSanger.ViewModels
             Birthday = DateTime.Now;
             //GenderItems = (from action in (GenderType[])Enum.GetValues(typeof(GenderType)) select action.ToString()).ToList();
             GenderItems = AppManager.Instance.GetListOfEnum(typeof(GenderType));
+            CategoriesItems = AppManager.Instance.GetListOfEnum(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
         }
 
         #endregion
@@ -94,6 +99,12 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_GenderItems, value);
         }
 
+        public IList<CategoryCell> CategoriesItems
+        {
+            get => m_CategoriesItems;
+            set => SetClassProperty(ref m_CategoriesItems, value);
+        }
+
         public string PickedGender
         {
             get => m_PickedGender;
@@ -111,8 +122,6 @@ namespace GetSanger.ViewModels
         public ICommand CategoriesPartCommand { get; set; }
 
         public ICommand ImagePickerCommand { get; set; }
-
-        public ICommand CategoryChecked { get; set; }
 
         #endregion
 
@@ -148,7 +157,9 @@ namespace GetSanger.ViewModels
 
         private void categoriesPartClicked()
         {
-
+            m_CheckedItems = (from category in CategoriesItems 
+                             where category.Checked == true select category.Category).ToList();
+            // continue next page
         }
 
         private async void imagePicker(object i_Param)
