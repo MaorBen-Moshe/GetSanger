@@ -18,22 +18,5 @@ namespace GetSanger.UI_pages.signup
         {
             InitializeComponent();
         }
-
-        async void OnPickPhotoButtonClicked(object sender, EventArgs e)
-        {
-            (sender as Button).IsEnabled = false;
-
-            Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
-            if (stream != null)
-            {
-                image.Source = ImageSource.FromStream(() => stream);
-            }
-            else
-            {
-                await DisplayAlert("Error", "Something went wrong, please try again later", "Ok");
-            }
-
-            (sender as Button).IsEnabled = true;
-        }
     }
 }

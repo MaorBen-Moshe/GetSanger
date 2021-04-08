@@ -10,10 +10,11 @@ using Android.Content;
 
 //TEMPORARY
 using Firebase.Messaging;
+using Plugin.CurrentActivity;
 
 namespace GetSanger.Droid
 {
-    [Activity(Label = "GetSanger", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
+    [Activity(Label = "GetSanger", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         static readonly string TAG = "MainActivity";
@@ -37,6 +38,7 @@ namespace GetSanger.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             ImageCircleRenderer.Init();
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             LoadApplication(new App());
             HandleMessageData();
 
@@ -58,7 +60,6 @@ namespace GetSanger.Droid
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -90,9 +91,9 @@ namespace GetSanger.Droid
             if (resultCode != ConnectionResult.Success)
             {
 
-                 //"This device is not supported"; 
-                 Finish();
-                
+                //"This device is not supported"; 
+                Finish();
+
                 return false;
             }
             else
@@ -113,14 +114,15 @@ namespace GetSanger.Droid
             }
 
             var channel = new NotificationChannel(CHANNEL_ID,
-                                                  "FCM Notifications",
-                                                  NotificationImportance.Default)
+                "FCM Notifications",
+                NotificationImportance.Default)
             {
 
                 Description = "Firebase Cloud Messages appear in this channel"
             };
 
-            var notificationManager = (NotificationManager)GetSystemService(Android.Content.Context.NotificationService);
+            var notificationManager =
+                (NotificationManager)GetSystemService(Android.Content.Context.NotificationService);
             notificationManager.CreateNotificationChannel(channel);
         }
 

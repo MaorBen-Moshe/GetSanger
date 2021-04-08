@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using GetSanger.Helpers;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;

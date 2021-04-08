@@ -1,8 +1,10 @@
-﻿namespace GetSanger.Interfaces
+﻿using Xamarin.Forms;
+
+namespace GetSanger.Interfaces
 {
     public interface ILoadingService
     {
-        void InitLoadingPage();
+        void InitLoadingPage(ContentPage i_LoadingIndicatorPage = null);
 
         void ShowLoadingPage();
 

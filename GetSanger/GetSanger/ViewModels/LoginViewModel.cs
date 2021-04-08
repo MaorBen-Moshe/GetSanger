@@ -1,4 +1,6 @@
 ﻿using GetSanger.Interfaces;
+using GetSanger.Services;
+using GetSanger.UI_pages.signup;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -75,32 +77,35 @@ namespace GetSanger.ViewModels
 
         #region methods
 
-        private void LoginClicked(object obj)
+        private async void LoginClicked(object obj)
         {
-            // Do something
+            if(Email == null || Password == null)
+            {
+                await r_PageService.DisplayAlert("Error", "Please enter valid values.", "OK");
+                return;
+            }
+
+            await AuthHelper.LoginViaEmail(Email, Password.ToString());
         }
 
-        private void SignUpClicked(object obj)
+        protected void SignUpClicked()
         {
-            // Do something
+            Application.Current.MainPage = new SignupEmailPage(); // change it using shell application
         }
 
-        private async void ForgotPasswordClicked(object obj)
+        private void ForgotPasswordClicked(object obj)
         {
-            var label = obj as Label;
-            label.BackgroundColor = Color.FromHex("#70FFFFFF");
-            await Task.Delay(100);
-            label.BackgroundColor = Color.Transparent;
+            Application.Current.MainPage = new ForgotPasswordPage(); // change it using shell application
         }
 
         private void FaceBookClicked(object obj)
         {
-            // Do something
+            AuthHelper.LoginViaFacebook();
         }
 
         private void GmailClicked(object obj)
         {
-            // Do something
+            AuthHelper.LoginViaGoogle();
         }
 
         #endregion

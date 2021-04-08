@@ -24,8 +24,6 @@ namespace GetSanger.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            //MapServices.ProvideApiKey("AIzaSyAX1raK9ukkg-Z00wWVsttkuvXs0ENdQIg");
-            Xamarin.FormsMaps.Init();
             ImageCircleRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
             Messaging.SharedInstance.ShouldEstablishDirectChannel = true;

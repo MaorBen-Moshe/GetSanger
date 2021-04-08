@@ -4,7 +4,7 @@
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converter="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.UI_pages.common.MapPage">
-    
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:MapClickedConverter x:Key="MapClickedConverter" />

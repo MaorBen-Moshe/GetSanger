@@ -1,148 +1,171 @@
-﻿using System.Windows.Input;
+﻿using GetSanger.Interfaces;
+using GetSanger.Models;
+using GetSanger.Services;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    /// <summary>
-    /// ViewModel for sign-up page.
-    /// </summary>
     [Preserve(AllMembers = true)]
     public class SignUpPageViewModel : LoginViewModel
     {
         #region Fields
 
-        private string name;
+        private string m_Name;
 
-        private string password;
+        private string m_Password;
 
-        private string confirmPassword;
+        private string m_ConfirmPassword;
+
+        private string m_PhoneNumber;
+
+        private Image m_PersonalImage;
+
+        private DateTime m_Birthday;
+
+        private IList<string> m_GenderItems;
+
+        private string m_PickedGender;
 
         #endregion
 
         #region Constructor
 
-        /// <summary>
-        /// Initializes a new instance for the <see cref="SignUpPageViewModel" /> class.
-        /// </summary>
         public SignUpPageViewModel()
         {
-            LoginCommand = new Command(this.LoginClicked);
-            SignUpCommand = new Command(this.SignUpClicked);
+            EmailPartCommand = new Command(emailPartClicked);
+            PersonalDetailPartCommand = new Command(personalDetailPartClicked);
+            CategoriesPartCommand = new Command(categoriesPartClicked);
             ImagePickerCommand = new Command(imagePicker);
+            Birthday = DateTime.Now;
+            //GenderItems = (from action in (GenderType[])Enum.GetValues(typeof(GenderType)) select action.ToString()).ToList();
+            GenderItems = AppManager.Instance.GetListOfEnum(typeof(GenderType));
         }
 
         #endregion
 
         #region Property
 
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the name from user in the Sign Up page.
-        /// </summary>
         public string Name
         {
-            get
-            {
-                return this.name;
-            }
-
-            set
-            {
-                if (this.name == value)
-                {
-                    return;
-                }
-
-                this.name = value;
-                this.OnPropertyChanged();
-            }
+            get => m_Name;
+            set => SetClassProperty(ref m_Name, value);
         }
 
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the m_Password from users in the Sign Up page.
-        /// </summary>
-        public string Password
+        public new string Password
         {
-            get
-            {
-                return this.password;
-            }
-
-            set
-            {
-                if (this.password == value)
-                {
-                    return;
-                }
-
-                this.password = value;
-                this.OnPropertyChanged();
-            }
+            get => m_Password;
+            set => SetClassProperty(ref m_Password, value);
         }
 
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the m_Password confirmation from users in the Sign Up page.
-        /// </summary>
         public string ConfirmPassword
         {
-            get
-            {
-                return this.confirmPassword;
-            }
+            get => m_ConfirmPassword;
+            set => SetClassProperty(ref m_ConfirmPassword, value);
+        }
 
-            set
-            {
-                if (this.confirmPassword == value)
-                {
-                    return;
-                }
+        public string PhoneNumber
+        {
+            get => m_PhoneNumber;
+            set => SetClassProperty(ref m_PhoneNumber, value);
+        }
 
-                this.confirmPassword = value;
-                this.OnPropertyChanged();
-            }
+        public Image PersonalImage
+        {
+            get => m_PersonalImage;
+            set => SetClassProperty(ref m_PersonalImage, value);
+        }
+
+        public DateTime Birthday
+        {
+            get => m_Birthday;
+            set => SetStructProperty(ref m_Birthday, value);
+        }
+
+        public IList<string> GenderItems
+        {
+            get => m_GenderItems;
+            set => SetClassProperty(ref m_GenderItems, value);
+        }
+
+        public string PickedGender
+        {
+            get => m_PickedGender;
+            set => SetClassProperty(ref m_PickedGender, value);
         }
 
         #endregion
 
         #region Command
 
-        /// <summary>
-        /// Gets or sets the command that is executed when the Log In button is clicked.
-        /// </summary>
-        public Command LoginCommand { get; set; }
+        public ICommand EmailPartCommand { get; set; }
 
-        /// <summary>
-        /// Gets or sets the command that is executed when the Sign Up button is clicked.
-        /// </summary>
-        public Command SignUpCommand { get; set; }
+        public ICommand PersonalDetailPartCommand { get; set; }
+
+        public ICommand CategoriesPartCommand { get; set; }
 
         public ICommand ImagePickerCommand { get; set; }
+
+        public ICommand CategoryChecked { get; set; }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Invoked when the Log in button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private void LoginClicked(object obj)
+        private async void emailPartClicked()
         {
-            // Do something
+            if(AuthHelper.IsValidEmail(Email) == false)
+            {
+                await r_PageService.DisplayAlert("Notice", "Please enter a valid email address!", "OK");
+                return;
+            }
+
+            if (Password.Equals(ConfirmPassword))
+            {
+                // go to next page in sign up
+            }
+
+            await r_PageService.DisplayAlert("Notice", "Please check the password is correct", "OK");
         }
 
-        /// <summary>
-        /// Invoked when the Sign Up button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private void SignUpClicked(object obj)
+        private void personalDetailPartClicked()
         {
-            // Do something
+            PersonalDetails personal = new PersonalDetails
+            {
+                Phone = new ContactPhone(PhoneNumber),
+                Nickname = Name,
+                Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender),
+                Birthday = Birthday
+            };
+            // register and move to mode page
         }
 
-        private void imagePicker(object i_Param)
+        private void categoriesPartClicked()
         {
 
+        }
+
+        private async void imagePicker(object i_Param)
+        {
+            (i_Param as Button).IsEnabled = false;
+
+            Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
+            if (stream != null)
+            {
+                PersonalImage.Source = ImageSource.FromStream(() => stream);
+            }
+            else
+            {
+                await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "Ok");
+            }
+
+            (i_Param as Button).IsEnabled = true;
         }
 
         #endregion

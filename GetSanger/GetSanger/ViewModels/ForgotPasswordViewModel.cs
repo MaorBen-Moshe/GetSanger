@@ -1,59 +1,44 @@
-﻿using Xamarin.Forms;
+﻿using GetSanger.Services;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    /// <summary>
-    /// ViewModel for forgot m_Password page.
-    /// </summary>
     [Preserve(AllMembers = true)]
     public class ForgotPasswordViewModel : LoginViewModel
     {
+        private string m_ConfirmEmail;
         #region Constructor
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ForgotPasswordViewModel" /> class.
-        /// </summary>
         public ForgotPasswordViewModel()
         {
-            this.SignUpCommand = new Command(this.SignUpClicked);
             this.SendCommand = new Command(this.SendClicked);
         }
 
         #endregion
 
+        #region properties
+        public string ConfirmEmail
+        {
+            get => m_ConfirmEmail;
+            set => SetClassProperty(ref m_ConfirmEmail, value);
+        }
+        #endregion
+
         #region Command
-
-        /// <summary>
-        /// Gets or sets the command that is executed when the Send button is clicked.
-        /// </summary>
         public Command SendCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the command that is executed when the Sign Up button is clicked.
-        /// </summary>
-        public Command SignUpCommand { get; set; }
-
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Invoked when the Send button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private void SendClicked(object obj)
+        private async void SendClicked()
         {
-            // Do something
-        }
+            if (AuthHelper.IsValidEmail(Email) == false || Email.Equals(ConfirmEmail) == false)
+            {
+                await r_PageService.DisplayAlert("Error", "Please Check your email", "OK");
+                return;
+            }
 
-        /// <summary>
-        /// Invoked when the Sign Up button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private void SignUpClicked(object obj)
-        {
-            // Do something
+            AuthHelper.ForgotPassword(Email);
         }
 
         #endregion

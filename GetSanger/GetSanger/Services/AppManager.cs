@@ -1,5 +1,7 @@
 ﻿using GetSanger.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GetSanger.Services
 {
@@ -18,6 +20,11 @@ namespace GetSanger.Services
         private AppManager()
         {
 
+        }
+
+        public IList<string> GetListOfEnum(Type i_EnumType)
+        {
+            return i_EnumType.GetEnumNames().ToList();
         }
     }
 }
