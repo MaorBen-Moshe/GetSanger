@@ -43,7 +43,7 @@
                                                                               EventName="CheckedChanged"/>
                                         </CheckBox.Behaviors>
                                     </CheckBox>
-                                    <Label />
+                                    <Label /> <!--Category Name-->
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
