@@ -2,8 +2,7 @@
 using Xamarin.Essentials;
 
 namespace GetSanger.Models
-{
-    public enum Category { Other }; // all categories are here
+{ 
     public class JobOffer
     {
         public string ClientID { get; set; }
