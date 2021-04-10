@@ -1,8 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.UI_pages.signup.SignupCategoriesPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     
     <ContentPage.Content>
@@ -38,7 +44,7 @@
                                 <Frame WidthRequest="327" Padding="2" CornerRadius="07" HasShadow="false" BackgroundColor="Silver" Margin="24,10,34,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
                                     <Frame WidthRequest="327" Padding="0" CornerRadius="07" HasShadow="false" OutlineColor="Transparent">
                                         <StackLayout WidthRequest="327" Orientation="Horizontal" Spacing="0">
-                                            <Label HeightRequest="30" WidthRequest="120" FontSize="20" Margin="22,0,0,0" Text="{Binding Category}" TextColor="Gray"  VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" />
+                                            <Label HeightRequest="30" WidthRequest="120" FontSize="20" Margin="22,0,0,0" Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray"  VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" />
                                             <CheckBox HeightRequest="27" 
                                                       WidthRequest="31" 
                                                       Margin="24,0,0,0" 
