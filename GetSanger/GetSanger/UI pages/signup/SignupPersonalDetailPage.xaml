@@ -3,10 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              x:Class="GetSanger.UI_pages.signup.SignupPersonalDetailPage">
-    <ContentPage.BindingContext>
-        <vm:SignUpPageViewModel />
-    </ContentPage.BindingContext>
-    
+
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center">
             <Image Source="{Binding PersonalImage}" Aspect="AspectFill" >

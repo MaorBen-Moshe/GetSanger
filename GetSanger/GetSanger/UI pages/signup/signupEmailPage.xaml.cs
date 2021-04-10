@@ -15,6 +15,8 @@ namespace GetSanger.UI_pages.signup
         public SignupEmailPage()
         {
             InitializeComponent();
+
+            BindingContext = AppManager.Instance.SignUpVM;
         }
     }
 }

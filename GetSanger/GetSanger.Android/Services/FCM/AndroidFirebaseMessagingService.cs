@@ -7,7 +7,7 @@ using Firebase.Messaging;
 using System.Collections.Generic;
 using Android.Support.V4.App;
 
-namespace GetSanger.Droid.FCM
+namespace GetSanger.Droid.Services.FCM
 {
     [Service]
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]

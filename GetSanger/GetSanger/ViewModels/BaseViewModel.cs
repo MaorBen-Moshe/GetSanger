@@ -20,7 +20,7 @@ namespace GetSanger.ViewModels
 
         protected LocationService LocationServices { get; private set; }
 
-        public bool IsLoading
+        protected bool IsLoading
         {
             set
             {
@@ -29,7 +29,7 @@ namespace GetSanger.ViewModels
             }
             get => m_IsLoading;
         }
-        public bool IsNotLoading
+        protected bool IsNotLoading
         {
             set => SetStructProperty(ref m_IsNotLoading, value);
             get => m_IsNotLoading;
@@ -47,11 +47,11 @@ namespace GetSanger.ViewModels
             await Shell.Current.GoToAsync(m_DefaultBackUri);
         }
 
-        public async Task RunTaskWhileLoading(Task i_InnerTask)
+        public async Task RunTaskWhileLoading(Task i_InnerTask, ContentPage i_OptionalLoading = null)
         {
             try
             {
-                DependencyService.Get<ILoadingService>().InitLoadingPage();
+                DependencyService.Get<ILoadingService>().InitLoadingPage(i_OptionalLoading);
                 DependencyService.Get<ILoadingService>().ShowLoadingPage();
                 await i_InnerTask;
                 DependencyService.Get<ILoadingService>().HideLoadingPage();

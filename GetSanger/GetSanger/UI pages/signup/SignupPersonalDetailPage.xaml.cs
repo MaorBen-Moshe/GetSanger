@@ -1,4 +1,5 @@
 ﻿using GetSanger.Interfaces;
+using GetSanger.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,8 @@ namespace GetSanger.UI_pages.signup
         public SignupPersonalDetailPage()
         {
             InitializeComponent();
+
+            BindingContext = AppManager.Instance.SignUpVM;
         }
     }
 }

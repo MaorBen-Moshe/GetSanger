@@ -9,6 +9,7 @@ namespace GetSanger.Services
     public class DialServices : IDialService
     {
         private string m_Phone;
+
         public string PhoneNumber
         {
             get
@@ -30,6 +31,7 @@ namespace GetSanger.Services
                 m_Phone = value;
             }
         }
+
         public string Message { get; set; } = string.Empty;
 
         public void Call()

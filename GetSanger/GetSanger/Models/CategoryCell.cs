@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace GetSanger.Models
@@ -10,6 +11,20 @@ namespace GetSanger.Models
     {
         public Category Category { get; set; }
 
+        // for sign up categories page
         public bool Checked { get; set; }
+
+        //for categories main page
+        public string ImageUri { get; set; }
+
+        public CategoryCell()
+        {
+            setCategoriesImage();
+        }
+
+        private void setCategoriesImage()
+        {
+            // set by category the image
+        }
     }
 }

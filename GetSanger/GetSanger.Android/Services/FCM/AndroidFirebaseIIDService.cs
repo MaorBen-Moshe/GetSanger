@@ -3,7 +3,7 @@ using Android.App;
 using Firebase.Iid;
 using Android.Util;
 
-namespace GetSanger.Droid.FCM
+namespace GetSanger.Droid.Services.FCM
 {
     [Service]
     [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
