@@ -49,8 +49,8 @@ namespace GetSanger.ViewModels
             ImagePickerCommand = new Command(imagePicker);
             Birthday = DateTime.Now;
             //GenderItems = (from action in (GenderType[])Enum.GetValues(typeof(GenderType)) select action.ToString()).ToList();
-            GenderItems = AppManager.Instance.GetListOfEnum(typeof(GenderType));
-            CategoriesItems = AppManager.Instance.GetListOfEnum(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
+            GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
+            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
         }
 
         #endregion

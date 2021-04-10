@@ -32,7 +32,6 @@ namespace GetSanger.ViewModels
         }
 
         public string Category { get => ConnectedActivity.JobOffer.Category.ToString(); }
-        public string SubCategory { get => ConnectedActivity.JobOffer.SubCategory; }
         public DateTime Date { get => ConnectedActivity.JobOffer.Date; }
         public string Description { get => ConnectedActivity.JobOffer.Description; }
 
