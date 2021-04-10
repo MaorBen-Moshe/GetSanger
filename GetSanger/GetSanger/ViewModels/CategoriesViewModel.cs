@@ -39,7 +39,7 @@ namespace GetSanger.ViewModels
         #region Methods
         private void categorySelected(object i_Param)
         {
-            Console.WriteLine("");
+           
         }
         #endregion
     }

@@ -22,7 +22,7 @@ namespace GetSanger.Services
 
         private AppManager()
         {
-            SignUpVM = new SignUpPageViewModel();
+          
         }
 
         public IList<string> GetListOfEnum(Type i_EnumType)

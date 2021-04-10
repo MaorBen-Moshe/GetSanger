@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using GetSanger.Services;
+using GetSanger.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.AppShell
@@ -9,6 +11,8 @@ namespace GetSanger.AppShell
         public AuthShell()
         {
             InitializeComponent();
+
+            AppManager.Instance.SignUpVM = new SignUpPageViewModel();
         }
     }
 }
