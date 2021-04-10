@@ -12,17 +12,10 @@ namespace GetSanger.ViewModels
     public class CategoriesViewModel : BaseViewModel
     {
         #region Fields
-        private string m_Title;
-
         private IList<CategoryCell> m_CategoriesItems;
         #endregion
 
         #region Properties
-        public string Title
-        {
-            get => m_Title;
-            set => SetClassProperty(ref m_Title, value);
-        }
 
         public IList<CategoryCell> CategoriesItems
         {
@@ -40,7 +33,7 @@ namespace GetSanger.ViewModels
         public CategoriesViewModel()
         {
             CategorySelectedCommand = new Command(categorySelected);
-            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name.Replace(" ", "_")) }).ToList();
+            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
         }
         #endregion
 
@@ -48,8 +41,8 @@ namespace GetSanger.ViewModels
         private void categorySelected(object i_Param)
         {
             CategoryCell current = i_Param as CategoryCell;
-            
-            // go to job offer page and send him the category
+
+            Shell.Current.GoToAsync($"jobOffer?category={current.Category}");
         }
         #endregion
     }

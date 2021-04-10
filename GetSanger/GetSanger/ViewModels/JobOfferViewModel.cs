@@ -5,16 +5,18 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System;
+using GetSanger.Models;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(JobCategory), "category")]
     public class JobOfferViewModel : BaseViewModel
     {
         private Placemark m_MyPlacemark;
         private Placemark m_JobPlacemark;
         private string m_MyLocation;
         private string m_JobLocation;
-        private IPageService m_PageService;
+        private Category m_JobCategory;
         private bool m_IsMyLocation = true;
 
         public ICommand CurrentLocation { get; private set; }
@@ -62,12 +64,17 @@ namespace GetSanger.ViewModels
             set { SetClassProperty(ref m_JobLocation, value); }
         }
 
+        public Category JobCategory
+        {
+            get => m_JobCategory;
+            set => SetStructProperty(ref m_JobCategory, value);
+        }
+
         public JobOfferViewModel()
         {
             CurrentLocation = new Command(GetCurrentLocation);
             JobLocation = new Command(GetJobLocation);
             SendJobCommand = new Command(SendJob);
-            m_PageService = new PageServices();
             IntialCurrentLocation();
         }
 
@@ -85,17 +92,17 @@ namespace GetSanger.ViewModels
         public async void GetCurrentLocation()
         {
             m_IsMyLocation = true;
-            bool answer = await m_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
+            bool answer = await r_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
             if (answer)
             {
-                await m_PageService.PushAsync(new MapPage(this));
+                await r_PageService.PushAsync(new MapPage(this));
             }
         }
 
         public async void GetJobLocation()
         {
             m_IsMyLocation = false;
-            await m_PageService.PushAsync(new MapPage(this));
+            await r_PageService.PushAsync(new MapPage(this));
         }
 
         public void SendJob()

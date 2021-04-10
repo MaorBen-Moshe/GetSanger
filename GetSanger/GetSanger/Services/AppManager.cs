@@ -27,7 +27,7 @@ namespace GetSanger.Services
 
         public IList<string> GetListOfEnumNames(Type i_EnumType)
         {
-            return (from name in i_EnumType.GetEnumNames() select name.Replace("_", " ")).ToList();
+            return (from name in i_EnumType.GetEnumNames() select name).ToList();
         }
     }
 }

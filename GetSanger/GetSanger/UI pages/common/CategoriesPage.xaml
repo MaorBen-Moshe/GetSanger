@@ -13,6 +13,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:SelectedCategoryConverter x:Key="SelectedCategoryConverter" />
+            <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -52,7 +53,7 @@
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="{Binding ImageUri}"/>
-                                    <Label Text="{Binding Category}"/>
+                                    <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"/>
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
