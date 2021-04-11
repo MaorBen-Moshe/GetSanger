@@ -12,6 +12,7 @@ namespace GetSanger.Models
         public string ClientID { get; set; }
         public string SangerID { get; set; }
         public JobOffer JobOffer { get; set; }
-        public string Status { get; set; }
+        public ActivityStatus Status { get; set; }
+        public bool LocationActivatedBySanger { get; set; }
     }
 }
