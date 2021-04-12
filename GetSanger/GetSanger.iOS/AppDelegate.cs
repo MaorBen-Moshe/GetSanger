@@ -4,7 +4,7 @@ using UIKit;
 using Firebase.Core;
 using UserNotifications;
 using Firebase.CloudMessaging;
-using Plugin.FirebasePushNotification;
+using System;
 
 namespace GetSanger.iOS
 {
@@ -26,47 +26,129 @@ namespace GetSanger.iOS
             global::Xamarin.Forms.Forms.Init();
             ImageCircleRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
-
-            FirebasePushNotificationManager.Initialize(options, true);
+            Messaging.SharedInstance.ShouldEstablishDirectChannel = true;
 
             LoadApplication(new App());
             Firebase.Core.App.Configure();
+            Messaging.SharedInstance.Delegate = this as Firebase.CloudMessaging.IMessagingDelegate;
+
+            RegisterForRemoteNotifications();
 
             //TEMPORARY
             Messaging.SharedInstance.Subscribe("Topic");
-
             return base.FinishedLaunching(app, options);
         }
 
+        internal void RegisterForRemoteNotifications()
+        {
+            // Register your app for remote notifications.
+            if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+            {
+
+                // For iOS 10 display notification (sent via APNS)
+                UNUserNotificationCenter.Current.Delegate = this as UserNotifications.IUNUserNotificationCenterDelegate;
+
+                var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
+                UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
+                    Console.WriteLine("in RegisterForRemoteNotifications, {1}", granted);
+                });
+            }
+            else
+            {
+                // iOS 9 or before
+                var allNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound;
+                var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
+                UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+            }
+
+            UIApplication.SharedApplication.RegisterForRemoteNotifications();
+        }
+
+        [Export("messaging:didReceiveRegistrationToken:")]
+        public void DidReceiveRegistrationToken(Messaging messaging, string fcmToken)
+        {
+            SendRegistrationToServer(fcmToken); 
+
+            var token = Messaging.SharedInstance.FcmToken ?? "";
+            Console.WriteLine($"Current FCM token: {token}");
+        }
+
+        // For when Method Swizzling is disabled
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
         {
-            FirebasePushNotificationManager.DidRegisterRemoteNotifications(deviceToken);
+            Messaging.SharedInstance.ApnsToken = deviceToken;
         }
 
-        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        internal void SendRegistrationToServer(string token)
         {
-            FirebasePushNotificationManager.RemoteNotificationRegistrationFailed(error);
-
+            // Send token to server if needed
+            // Server should resubscribe the user(token) to the previous topics he was subscribed to
         }
 
-        // To receive notifications in foregroung on iOS 9 and below.
-        // To receive notifications in background in any iOS version
-        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary messageData, System.Action<UIBackgroundFetchResult> completionHandler)
+        public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
         {
             // If you are receiving a notification message while your app is in the background,
-            // this callback will not be fired 'till the user taps on the notification launching the application.
+            // this callback will not be fired till the user taps on the notification launching the application.
+            // TODO: Handle data of notification
 
-            // If you disable method swizzling, you'll need to call this method. 
-            // This lets FCM track message delivery and analytics, which is performed
-            // automatically with method swizzling enabled.
-            FirebasePushNotificationManager.DidReceiveMessage(messageData);
+            // With swizzling disabled you must let Messaging know about the message, for Analytics
+            //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
 
-            // Handle notification data (messageData)
-            System.Console.WriteLine(messageData);
-            
+            // Print full message.
+            Console.WriteLine(userInfo);
+        }
 
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            // If you are receiving a notification message while your app is in the background,
+            // this callback will not be fired till the user taps on the notification launching the application.
+            // TODO: Handle data of notification
+
+            // With swizzling disabled you must let Messaging know about the message, for Analytics
+            //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
+
+            // Print full message.
+            Console.WriteLine(userInfo);
+
+            Messaging.SharedInstance.AppDidReceiveMessage(userInfo);
             completionHandler(UIBackgroundFetchResult.NewData);
         }
+
+        [Foundation.Export("didReceiveMessage:conversation:")]
+        public virtual void DidReceiveMessage(Messages.MSMessage message, Messages.MSConversation conversation)
+        {// Handles messages while in the foreground
+            
+        }
+
+        // Receive displayed notifications for iOS 10 devices.
+        // Handle incoming notification messages while app is in the foreground.
+        [Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
+        public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
+        {
+            var userInfo = notification.Request.Content.UserInfo;
+
+            // With swizzling disabled you must let Messaging know about the message, for Analytics
+            //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
+
+            // Print full message.
+            Console.WriteLine(userInfo);
+
+            // Change this to your preferred presentation option
+            completionHandler(UNNotificationPresentationOptions.None);
+        }
+
+        // Handle notification messages after display notification is tapped by the user.
+        [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
+        public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
+        {
+            var userInfo = response.Notification.Request.Content.UserInfo;
+
+            // Print full message.
+            Console.WriteLine(userInfo);
+
+            completionHandler();
+        }
+
     }
 
 }

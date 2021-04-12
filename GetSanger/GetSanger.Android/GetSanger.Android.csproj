@@ -160,7 +160,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\FCM\AndroidFirebaseIIDService.cs" />
     <Compile Include="Services\FCM\AndroidFirebaseMessagingService.cs" />
     <Compile Include="Services\Auth.cs" />
     <Compile Include="MainActivity.cs" />
@@ -169,6 +168,7 @@
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\LoadigService.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
+    <Compile Include="Services\PushService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\UIFontIcons.ttf" />
