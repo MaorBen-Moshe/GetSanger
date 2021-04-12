@@ -12,7 +12,7 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            MainPage = new ProfileViewPage();
+            MainPage = new SignupCategoriesPage();
 
             // IOS Push
             // Token event

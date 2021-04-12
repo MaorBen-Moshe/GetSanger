@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Converters
 {
-    public class SelectedCategoryConverter: IValueConverter
+    public class SelectedItemConverter: IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
