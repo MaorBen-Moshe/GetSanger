@@ -13,7 +13,14 @@ namespace GetSanger.ViewModels
         private string m_Location;
         private string m_JobLocation;
         private string m_Phone;
+        private string m_ActivatedButtonText;
         public Activity ConnectedActivity { get; }
+
+        public string ActivatedButtonText
+        {
+            get => m_ActivatedButtonText;
+            set => SetClassProperty(ref m_ActivatedButtonText, value);
+        }
 
         public string Location
         {
@@ -32,7 +39,6 @@ namespace GetSanger.ViewModels
         }
 
         public string Category { get => ConnectedActivity.JobOffer.Category.ToString(); }
-        public string SubCategory { get => ConnectedActivity.JobOffer.SubCategory; }
         public DateTime Date { get => ConnectedActivity.JobOffer.Date; }
         public string Description { get => ConnectedActivity.JobOffer.Description; }
 
@@ -50,6 +56,7 @@ namespace GetSanger.ViewModels
             Location = await getLocation(ConnectedActivity.JobOffer.Location);
             JobLocation = await getLocation(ConnectedActivity.JobOffer.JobLocation);
             LocationCommand = new Command(locationCommandHelper);
+            ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Active")} Location");
         } 
 
         private void locationCommandHelper()

@@ -10,7 +10,8 @@ namespace GetSanger.Models
         public string UserID { get; set; }
         public Uri ProfilePictureUri { get; set; }
         public List<string> Categories { get; set; }
-        public List<Location> WorkLocations { get; set; }
+        public Location UserLocation { get; set; }
+        public IList<Activity> Activities { get; set; }
         public PersonalDetails PersonalDetails { get; set; }
         public List<Rating> Ratings { get; set; }
         public Dictionary<string, bool> ActivatedMap { get; set; } // map usage ==> when sanger activate map the key is the sanger id and the value is true\false (true when activated)

@@ -84,7 +84,7 @@
                     </Editor>
                 </Frame>
                 
-                <Button Text="See/Active Location services"
+                <Button Text="{Binding ActivatedButtonText}"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="End"
                         Padding="20, 10"

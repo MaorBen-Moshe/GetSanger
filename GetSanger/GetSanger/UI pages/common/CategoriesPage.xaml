@@ -1,12 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:behaviors ="clr-namespace:GetSanger.Behaviors"
+             xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.UI_pages.common.CategoriesPage">
+
+    <ContentPage.BindingContext>
+        <vm:CategoriesViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:SelectedCategoryConverter x:Key="SelectedCategoryConverter" />
+            <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+
+        <StackLayout Orientation="Vertical" Spacing="20">
+
+            <Label 
+                   Margin="14,17,20,0" 
+                   HeightRequest="54"
+                   WidthRequest="350"
+                   HorizontalTextAlignment="Center" 
+                   Text="Choose Categories:" 
+                   FontSize="21"
+                   TextColor="Black"
+                   HorizontalOptions="CenterAndExpand" />
+
+            <StackLayout  
+                   Spacing="10" 
+                   Orientation="Vertical" 
+                   VerticalOptions="FillAndExpand" 
+                   HorizontalOptions="FillAndExpand">
+
+                <ListView SeparatorVisibility="None" 
+                          Margin="0"
+                          RowHeight="55"
+                          ItemsSource="{Binding CategoriesItems}"
+                          BackgroundColor="Transparent"
+                          HasUnevenRows="True">
+                    <ListView.Behaviors>
+                        <behaviors:EventToCommandBehavior Command="{Binding CategorySelectedCommand}" 
+                                                          EventName="ItemSelected"
+                                                          Converter="{StaticResource SelectedCategoryConverter}"/>
+                    </ListView.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding ImageUri}"/>
+                                    <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout>
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

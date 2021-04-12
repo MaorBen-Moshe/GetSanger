@@ -1,4 +1,5 @@
 ﻿using GetSanger.Models;
+using GetSanger.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +18,16 @@ namespace GetSanger.Services
 
         public User ConnectedUser { get; set; }
 
+        public SignUpPageViewModel SignUpVM { get; set; }
+
         private AppManager()
         {
-
+          
         }
 
-        public IList<string> GetListOfEnum(Type i_EnumType)
+        public IList<string> GetListOfEnumNames(Type i_EnumType)
         {
-            return i_EnumType.GetEnumNames().ToList();
+            return (from name in i_EnumType.GetEnumNames() select name).ToList();
         }
     }
 }

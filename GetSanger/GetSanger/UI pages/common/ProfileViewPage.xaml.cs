@@ -1,22 +1,22 @@
-﻿using System;
+﻿using GetSanger.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GetSanger.Services;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace GetSanger.UI_pages.signup
+namespace GetSanger.UI_pages.common
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SignupEmailPage : ContentPage
+    public partial class ProfileViewPage : ContentPage
     {
-        public SignupEmailPage()
+        public ProfileViewPage()
         {
             InitializeComponent();
 
-            BindingContext = AppManager.Instance.SignUpVM;
         }
     }
 }

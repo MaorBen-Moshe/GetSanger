@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using GetSanger.Services;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.UI_pages.signup
@@ -9,6 +10,8 @@ namespace GetSanger.UI_pages.signup
         public SignupCategoriesPage()
         {
             InitializeComponent();
+
+            BindingContext = AppManager.Instance.SignUpVM;
         }
     }
 }

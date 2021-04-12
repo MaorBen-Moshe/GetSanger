@@ -6,7 +6,8 @@ namespace GetSanger.Models
 {
     public class Rating
     {
-        public int Score { get; set; }
+        public float Score { get; set; }
+
         public string Description { get; set; }
     }
 }

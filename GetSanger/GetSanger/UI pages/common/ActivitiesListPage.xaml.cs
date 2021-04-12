@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace GetSanger.UI_pages.common
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ActivitiesMasterPage : ContentPage
+    public partial class ActivitiesListPage : ContentPage
     {
-        public ActivitiesMasterPage()
+        public ActivitiesListPage()
         {
             InitializeComponent();
         }

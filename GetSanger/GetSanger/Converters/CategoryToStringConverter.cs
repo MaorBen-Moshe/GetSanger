@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GetSanger.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -6,17 +7,17 @@ using Xamarin.Forms;
 
 namespace GetSanger.Converters
 {
-    public class CheckBoxConverter: IValueConverter
+    public class CategoryToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var eventArgs = value as CheckedChangedEventArgs;
-            return eventArgs.Value;
+            string originString = ((Category)value).ToString();
+            return originString.Replace("_", " ");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new CheckedChangedEventArgs((bool)value);
+            throw new NotImplementedException();
         }
     }
 }
