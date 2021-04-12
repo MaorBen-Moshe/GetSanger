@@ -3,6 +3,7 @@ using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -31,7 +32,9 @@ namespace GetSanger.ViewModels
 
         private IList<string> m_GenderItems;
 
-        private IList<CategoryCell> m_CategoriesItems;
+        private ObservableCollection<CategoryCell> m_CategoriesItems;
+
+        private IList<CategoryCell> m_TempCategories;
 
         private IList<Category> m_CheckedItems;
 
@@ -46,11 +49,13 @@ namespace GetSanger.ViewModels
             EmailPartCommand = new Command(emailPartClicked);
             PersonalDetailPartCommand = new Command(personalDetailPartClicked);
             CategoriesPartCommand = new Command(categoriesPartClicked);
+            AllCategoriesCommand = new Command(allCategoriesChecked);
             ImagePickerCommand = new Command(imagePicker);
             Birthday = DateTime.Now;
             //GenderItems = (from action in (GenderType[])Enum.GetValues(typeof(GenderType)) select action.ToString()).ToList();
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
-            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
+            CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList());
+            m_TempCategories = CategoriesItems;
         }
 
         #endregion
@@ -99,7 +104,7 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_GenderItems, value);
         }
 
-        public IList<CategoryCell> CategoriesItems
+        public ObservableCollection<CategoryCell> CategoriesItems
         {
             get => m_CategoriesItems;
             set => SetClassProperty(ref m_CategoriesItems, value);
@@ -116,6 +121,8 @@ namespace GetSanger.ViewModels
         #region Command
 
         public ICommand EmailPartCommand { get; set; }
+
+        public ICommand AllCategoriesCommand { get; set; }
 
         public ICommand PersonalDetailPartCommand { get; set; }
 
@@ -177,6 +184,20 @@ namespace GetSanger.ViewModels
             }
 
             (i_Param as Button).IsEnabled = true;
+        }
+
+        private void allCategoriesChecked(object i_Param)
+        {
+            var category = i_Param as CategoryCell;
+            if (category != null && category.Category.Equals(Category.All))
+            {
+                foreach (var elem in m_TempCategories)
+                {
+                    elem.Checked = category.Checked;
+                }
+
+                CategoriesItems = new ObservableCollection<CategoryCell>(m_TempCategories);
+            }
         }
 
         #endregion

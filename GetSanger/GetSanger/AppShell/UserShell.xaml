@@ -8,13 +8,13 @@
              Route="account">
             <ShellContent ContentTemplate="{DataTemplate common:AccountPage}" />
         </Tab>
-        <Tab Title="History"
+        <!--<Tab Title="History"
              Route="history">
             <ShellContent ContentTemplate="{DataTemplate common:ActivitiesHistoryMasterPage}" />
-        </Tab>
+        </Tab>-->
         <Tab Title="Activity"
              Route="activity">
-            <ShellContent ContentTemplate="{DataTemplate common:ActivitiesMasterPage}" />
+            <ShellContent ContentTemplate="{DataTemplate common:ActivitiesListPage}" />
         </Tab>
         <Tab Title="Categories"
              Route="categories">

@@ -10,8 +10,6 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
-
-            MainPage = new SignupCategoriesPage();
         }
 
         protected override void OnStart()

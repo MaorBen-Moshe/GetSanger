@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:GetSanger.Converters"
-             x:Class="GetSanger.UI_pages.signup.SignupCategoriesPage">
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             x:Class="GetSanger.UI_pages.signup.SignupCategoriesPage"
+             x:Name="SignUpCategories">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -51,6 +53,11 @@
                                                       VerticalOptions="CenterAndExpand" 
                                                       HorizontalOptions="End"
                                                       IsChecked="{Binding Checked}">
+                                                <CheckBox.Behaviors>
+                                                    <behaviors:EventToCommandBehavior Command="{Binding BindingContext.AllCategoriesCommand, Source={x:Reference SignUpCategories}}"
+                                                                                      EventName="CheckedChanged"
+                                                                                      CommandParameter="{Binding}"/>
+                                                </CheckBox.Behaviors>
                                             </CheckBox>
                                         </StackLayout>
                                     </Frame>

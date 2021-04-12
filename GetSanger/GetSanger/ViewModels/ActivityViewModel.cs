@@ -8,13 +8,14 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(ConnectedActivity), "activity")]
     public class ActivityViewModel : BaseViewModel
     {
         private string m_Location;
         private string m_JobLocation;
         private string m_Phone;
         private string m_ActivatedButtonText;
-        public Activity ConnectedActivity { get; }
+        public Activity ConnectedActivity { get; set; }
 
         public string ActivatedButtonText
         {

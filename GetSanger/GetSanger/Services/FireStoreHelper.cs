@@ -7,7 +7,7 @@ namespace GetSanger.Services
 {
     public static class FireStoreHelper
     {
-        public static async Task<List<Activity>> GetActivities(int i_UserID)
+        public static async Task<List<Activity>> GetActivities(string i_UserID)
         {
             throw new NotImplementedException();
         }

@@ -12,7 +12,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:SelectedCategoryConverter x:Key="SelectedCategoryConverter" />
+            <converters:SelectedItemConverter x:Key="SelectedItemConverter" />
             <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -46,7 +46,7 @@
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior Command="{Binding CategorySelectedCommand}" 
                                                           EventName="ItemSelected"
-                                                          Converter="{StaticResource SelectedCategoryConverter}"/>
+                                                          Converter="{StaticResource SelectedItemConverter}"/>
                     </ListView.Behaviors>
                     <ListView.ItemTemplate>
                         <DataTemplate>

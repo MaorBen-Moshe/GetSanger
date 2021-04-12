@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GetSanger.Models
 {
-    public enum Category { Delivery, Arrangement, House_Devices, Studies, Computers_And_Smartphones, Cleaning, Handiman, Electrician, Gardening, Pets, Vehicle, Beauty, Other }; // all categories are here
+    public enum Category { All, Delivery, Arrangement, House_Devices, Studies, Computers_And_Smartphones, Cleaning, Handiman, Electrician, Gardening, Pets, Vehicle, Beauty, Other }; // all categories are here
 
     public class CategoryCell
     {
