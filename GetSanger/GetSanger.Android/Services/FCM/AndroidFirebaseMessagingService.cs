@@ -7,7 +7,7 @@ using Firebase.Messaging;
 using System.Collections.Generic;
 using Android.Support.V4.App;
 
-namespace GetSanger.Droid.FCM
+namespace GetSanger.Droid.Services.FCM
 {
     [Service]
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
@@ -17,6 +17,18 @@ namespace GetSanger.Droid.FCM
         public override void OnMessageReceived(RemoteMessage message)
         {//Sets how the app handles messages and notifications in foreground (background messages are not passed here)
             SendNotification(message.GetNotification().Body, message.Data);
+        }
+
+        public override void OnNewToken(string token)
+        {
+            Log.Debug(TAG, "Refreshed token: " + token);
+            SendRegistrationToServer(token);
+        }
+        
+        void SendRegistrationToServer(string token)
+        {
+            // Add custom implementation, as needed.
+            // Server should resubscribe the user to the previous topics he was subscribed to
         }
 
         void SendNotification(string messageBody, IDictionary<string, string> data)
