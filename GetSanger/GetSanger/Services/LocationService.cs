@@ -45,11 +45,11 @@ namespace GetSanger.Services
             }
         }
 
-        public void HandleTripThread(System.Timers.ElapsedEventHandler i_Elpased)
+        public void HandleTripThread(System.Timers.ElapsedEventHandler i_Elpased, int i_Interval)
         {
            m_Timer = new System.Timers.Timer
            {
-                Interval = 300000
+                Interval = i_Interval //300000
            };
 
             m_Timer.Elapsed += i_Elpased;

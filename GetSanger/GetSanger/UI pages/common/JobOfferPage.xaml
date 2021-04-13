@@ -47,16 +47,16 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Format="dd MMM yyyy" Date="{x:Static sys:DateTime.Today}" Grid.Column="1"/>
+                    <DatePicker Format="dd MMM yyyy" Date="{Binding JobDate}" Grid.Column="1"/>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"
                        HasShadow="True">
                     <Editor IsSpellCheckEnabled="True"
-                        IsTextPredictionEnabled="True"
-                        Placeholder="Job Description"
-                        VerticalOptions="FillAndExpand"
-                        x:Name="Editorr">
+                            IsTextPredictionEnabled="True"
+                            Placeholder="Job Description"
+                            VerticalOptions="FillAndExpand"
+                            Text="{Binding JobDescription}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >
                                 <x:Arguments>

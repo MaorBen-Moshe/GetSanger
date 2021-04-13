@@ -68,7 +68,7 @@ namespace GetSanger.ViewModels
             IsTrip = ConnecetedPage is ActivityViewModel;
             if (IsTrip)
             {
-                LocationServices.HandleTripThread(handleTrip);
+                LocationServices.HandleTripThread(handleTrip, 350000);
             }
         }
 
@@ -91,8 +91,15 @@ namespace GetSanger.ViewModels
         public void EndTripHelper()
         {
             // kill the thread that getting location from a sanger if in user // or stop enabling location to user from sanger
-            LocationServices.LeaveTripThread(handleTrip);
-            throw new NotImplementedException();
+            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            {
+                LocationServices.LeaveTripThread(handleTrip);
+                // get out of the map back to the activity
+            }
+            else if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
+            {
+                (ConnecetedPage as ActivityViewModel).StopSangerLocationSharing();
+            }
         }
 
         public async void CallTripHelper()

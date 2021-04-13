@@ -7,7 +7,10 @@ namespace GetSanger.ViewModels
     [Preserve(AllMembers = true)]
     public class ForgotPasswordViewModel : LoginViewModel
     {
+        #region Fields
         private string m_ConfirmEmail;
+        #endregion
+
         #region Constructor
 
         public ForgotPasswordViewModel()

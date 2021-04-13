@@ -52,7 +52,6 @@ namespace GetSanger.ViewModels
             AllCategoriesCommand = new Command(allCategoriesChecked);
             ImagePickerCommand = new Command(imagePicker);
             Birthday = DateTime.Now;
-            //GenderItems = (from action in (GenderType[])Enum.GetValues(typeof(GenderType)) select action.ToString()).ToList();
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
             CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList());
             m_TempCategories = CategoriesItems;
@@ -162,7 +161,8 @@ namespace GetSanger.ViewModels
                 Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender),
                 Birthday = Birthday
             };
-            // register and move to mode page
+            // continue next page
+            
         }
 
         private void categoriesPartClicked()
@@ -170,8 +170,8 @@ namespace GetSanger.ViewModels
             m_CheckedItems = (from category in CategoriesItems 
                              where category.Checked == true && category.Category.Equals(Category.All) == false select category.Category).ToList();
             r_PushService.RegisterTopic(UserId, m_CheckedItems.Select(category => category.ToString()));
-            
-            // continue next page
+
+            // register and move to mode page
         }
 
         private async void imagePicker(object i_Param)
