@@ -169,7 +169,7 @@ namespace GetSanger.ViewModels
         {
             m_CheckedItems = (from category in CategoriesItems 
                              where category.Checked == true && category.Category.Equals(Category.All) == false select category.Category).ToList();
-            r_PushService.RegisterTopic(UserId, m_CheckedItems.Select(category => category.ToString()));
+            r_PushService.RegisterTopics(UserId, (m_CheckedItems.Select(category => category.ToString())).ToArray());
 
             // register and move to mode page
         }

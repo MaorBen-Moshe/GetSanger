@@ -21,13 +21,13 @@ namespace GetSanger.Services
             return true;
         }
 
-        public bool RegisterTopic(string i_UserId, IEnumerable<string> i_Topics)
+        public bool RegisterTopics(string i_UserId, params string[] i_Topics)
         {
             
             return true;
         }
 
-        public bool UnsubscribeTopic(string i_UserId, string i_Topic)
+        public bool UnsubscribeTopics(string i_UserId, params string[] i_Topics)
         {
             return true;
         }
