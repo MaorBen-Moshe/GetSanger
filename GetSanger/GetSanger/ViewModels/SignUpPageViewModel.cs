@@ -68,6 +68,8 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Name, value);
         }
 
+        public string UserId { get; set; }
+
         public new string Password
         {
             get => m_Password;
@@ -144,6 +146,7 @@ namespace GetSanger.ViewModels
 
             if (Password.Equals(ConfirmPassword))
             {
+                UserId = AuthHelper.GetLoggedInUserId();
                 // go to next page in sign up
             }
 
@@ -166,7 +169,8 @@ namespace GetSanger.ViewModels
         {
             m_CheckedItems = (from category in CategoriesItems 
                              where category.Checked == true && category.Category.Equals(Category.All) == false select category.Category).ToList();
-            //register user to topic
+            r_PushService.RegisterTopic(UserId, m_CheckedItems.Select(category => category.ToString()));
+            
             // continue next page
         }
 

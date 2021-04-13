@@ -17,22 +17,22 @@ namespace GetSanger.Services
             throw new NotImplementedException();
         }
 
-        public static async void AddActivity(Activity i_Activity)
+        public static void AddActivity(Activity i_Activity)
         {
             throw new NotImplementedException();
         }
 
-        public static async void UpdateActivity(Activity i_Activity)
+        public static void DeleteActivity(Activity i_Activity) // delete activity from user list and from server data base
+        {
+            throw new NotImplementedException();
+        }
+
+        public static async void UpdateActivity(Activity i_Activity) // update activity in user list and in server data base
         {
             throw new NotImplementedException();
         }
 
         public static async Task<List<JobOffer>> GetJobOffers(int i_UserID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async void SendJobOffer(JobOffer i_JobOffer)
         {
             throw new NotImplementedException();
         }

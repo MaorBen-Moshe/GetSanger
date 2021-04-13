@@ -57,7 +57,15 @@ namespace GetSanger.ViewModels
             Location = await getLocation(ConnectedActivity.JobOffer.Location);
             JobLocation = await getLocation(ConnectedActivity.JobOffer.JobLocation);
             LocationCommand = new Command(locationCommandHelper);
-            ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Active")} Location");
+            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            {
+                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask from sanger to active")} Location");
+            }
+            else if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
+            {
+                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger == false ? "Enable" : "Disable")} Location");
+            }
+           
         } 
 
         private void locationCommandHelper()
@@ -85,34 +93,48 @@ namespace GetSanger.ViewModels
                 bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
                 if (agreed)
                 {
-                    user.ActivatedMap.Add(ConnectedActivity.SangerID, false);
+                    user.ActivatedMap.Add(ConnectedActivity.ActivityId, false);
+                    AppManager.Instance.ConnectedUser.UserLocation = await LocationServices.GetCurrentLocation();
                     FireStoreHelper.UpdateUser(user);
+                    FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                    LocationServices.LeaveTripThread(handleSangerLocation);
+                    // we can send push to user to tell that if he is in the map 
                 }
+
+                ActivatedButtonText = "Enable Location";
             }
             else
             {
                 bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
                 if (agreed)
                 {
-                    user.ActivatedMap.Add(ConnectedActivity.SangerID, true);
+                    user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
                     FireStoreHelper.UpdateUser(user);
+                    LocationServices.HandleTripThread(handleSangerLocation);
                 }
+
+                ActivatedButtonText = "Disable Location";
             }
         }
 
         private async void doUser()
         {
             User user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
-            bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.SangerID, out bool activated);
+            bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
             if(sangerInUser && activated)
             {
-                //show map
+                await Shell.Current.GoToAsync($"/map?connectedpage={this}");
             }
             else 
             {
                 User sanger = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
                 await r_PageService.DisplayAlert("Note", $"{sanger.PersonalDetails.Nickname} did not share with you location, please contact him to share with you the location!", "ok", "cancel");
             }
+        }
+
+        private void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
+        {
+
         }
 
         private async void initialPhoneNumber()

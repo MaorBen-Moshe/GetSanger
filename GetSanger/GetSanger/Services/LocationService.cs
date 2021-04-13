@@ -11,6 +11,8 @@ namespace GetSanger.Services
     {
         private static Location m_CurrLocation = null;
         private static Location m_PrevLocation = null;
+        private System.Timers.Timer m_Timer;
+
         public bool KeepThread { get; set; }
 
         public CancellationTokenSource Cts { get; private set; }
@@ -41,6 +43,23 @@ namespace GetSanger.Services
             {
                 Cts.Cancel();
             }
+        }
+
+        public void HandleTripThread(System.Timers.ElapsedEventHandler i_Elpased)
+        {
+           m_Timer = new System.Timers.Timer
+           {
+                Interval = 300000
+           };
+
+            m_Timer.Elapsed += i_Elpased;
+            m_Timer.Start();
+        }
+
+        public void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elpased)
+        {
+            m_Timer.Elapsed -= i_Elpased;
+            m_Timer.Stop();
         }
 
 
