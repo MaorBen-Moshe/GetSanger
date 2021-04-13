@@ -165,7 +165,8 @@ namespace GetSanger.ViewModels
         private void categoriesPartClicked()
         {
             m_CheckedItems = (from category in CategoriesItems 
-                             where category.Checked == true select category.Category).ToList();
+                             where category.Checked == true && category.Category.Equals(Category.All) == false select category.Category).ToList();
+            //register user to topic
             // continue next page
         }
 

@@ -17,6 +17,7 @@ namespace GetSanger.ViewModels
         private ObservableCollection<Activity> m_ActivitiesSource;
         private bool m_IsListRefreshing;
         #endregion
+
         #region Properties
         public ObservableCollection<Activity> ActivitiesSource
         {
@@ -30,6 +31,7 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsListRefreshing, value);
         }
         #endregion
+
         #region Commands
         public ICommand SearchActivity { get; set; }
         public ICommand ConfirmActivityCommand { get; set; }
