@@ -22,7 +22,7 @@ namespace GetSanger.Services
             throw new NotImplementedException();
         }
 
-        public static void DeleteActivity(Activity i_Activity) // delete activity from user list and from server data base
+        public static void DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
         {
             throw new NotImplementedException();
         }

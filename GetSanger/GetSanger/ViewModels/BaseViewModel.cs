@@ -18,7 +18,7 @@ namespace GetSanger.ViewModels
         protected string m_DefaultBackUri = "..";
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
-        protected readonly PushService r_PushService;
+        protected readonly PushServices r_PushService;
         #endregion
 
         #region Properties
@@ -46,7 +46,7 @@ namespace GetSanger.ViewModels
             r_PageService = new PageServices();
             r_DialService = new DialServices();
             LocationServices = new LocationService();
-            r_PushService = new PushService();
+            r_PushService = new PushServices();
         }
         #endregion
 

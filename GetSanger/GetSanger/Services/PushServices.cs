@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public class PushService
+    public class PushServices
     {
         private readonly static IPushService sr_Push = DependencyService.Get<IPushService>();
 
