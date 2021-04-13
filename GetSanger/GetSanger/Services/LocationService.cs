@@ -9,11 +9,7 @@ namespace GetSanger.Services
 {
     public class LocationService
     {
-        private static Location m_CurrLocation = null;
-        private static Location m_PrevLocation = null;
         private System.Timers.Timer m_Timer;
-
-        public bool KeepThread { get; set; }
 
         public CancellationTokenSource Cts { get; private set; }
 
