@@ -10,7 +10,6 @@ using Android.Content;
 
 //TEMPORARY
 using Firebase.Messaging;
-using Plugin.CurrentActivity;
 
 namespace GetSanger.Droid
 {
@@ -18,8 +17,8 @@ namespace GetSanger.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         static readonly string TAG = "MainActivity";
+        internal static readonly string CHANNEL_ID = "notification_channel";
 
-        internal static readonly string CHANNEL_ID = "my_notification_channel";
         internal static readonly int NOTIFICATION_ID = 100;
         internal static MainActivity Instance { get; private set; }
 
@@ -29,6 +28,7 @@ namespace GetSanger.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -38,9 +38,9 @@ namespace GetSanger.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             ImageCircleRenderer.Init();
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             LoadApplication(new App());
-            HandleMessageData();
+            Services.PushService pushService = new Services.PushService();
+            pushService.PushHelper(Intent, this);
 
             //TEMPORARY
             FirebaseMessaging.Instance.SubscribeToTopic("Topic");
@@ -62,89 +62,6 @@ namespace GetSanger.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
-        internal void HandleMessageData()
-        {
-            if (Intent.Extras != null)
-            {
-                foreach (var key in Intent.Extras.KeySet())
-                {
-                    var value = Intent.Extras.GetString(key);
-                    // We can add here more logic as needed
-                }
-            }
-
-            if (!IsPlayServicesAvailable())
-            {
-                // Must have play services available
-                int exceptionParam = 0;
-                throw new GooglePlayServicesNotAvailableException(exceptionParam);
-            }
-
-            CreateNotificationChannel();
-        }
-
-        public bool IsPlayServicesAvailable()
-        {
-            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);
-            if (resultCode != ConnectionResult.Success)
-            {
-
-                //"This device is not supported"; 
-                Finish();
-
-                return false;
-            }
-            else
-            {
-                //"Google Play Services is available.";
-                return true;
-            }
-        }
-
-        void CreateNotificationChannel()
-        {
-            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
-            {
-                // Notification channels are new in API 26 (and not a part of the
-                // support library). There is no need to create a notification
-                // channel on older versions of Android.
-                return;
-            }
-
-            var channel = new NotificationChannel(CHANNEL_ID,
-                "FCM Notifications",
-                NotificationImportance.Default)
-            {
-
-                Description = "Firebase Cloud Messages appear in this channel"
-            };
-
-            var notificationManager =
-                (NotificationManager)GetSystemService(Android.Content.Context.NotificationService);
-            notificationManager.CreateNotificationChannel(channel);
-        }
-
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent intent)
-        {
-            base.OnActivityResult(requestCode, resultCode, intent);
-
-            if (requestCode == PickImageId)
-            {
-                if ((resultCode == Result.Ok) && (intent != null))
-                {
-                    Android.Net.Uri uri = intent.Data;
-                    Stream stream = ContentResolver.OpenInputStream(uri);
-
-                    // Set the Stream as the completion of the Task
-                    PickImageTaskCompletionSource.SetResult(stream);
-                }
-                else
-                {
-                    PickImageTaskCompletionSource.SetResult(null);
-                }
-            }
         }
     }
 }
