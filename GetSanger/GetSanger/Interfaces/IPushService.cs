@@ -6,6 +6,6 @@ namespace GetSanger.Interfaces
 {
     public interface IPushService
     {
-        void TempMethod(string token);
+        string GetRegistrationToken();
     }
 }

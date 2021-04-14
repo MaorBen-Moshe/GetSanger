@@ -16,18 +16,44 @@ using Android.Content.PM;
 using ImageCircle.Forms.Plugin.Droid;
 using System.Threading.Tasks;
 using System.IO;
+using Firebase.Messaging;
+using Firebase.Installations;
+using GetSanger.ViewModels;
 
 [assembly: Dependency(typeof(GetSanger.Droid.Services.PushService))]
 namespace GetSanger.Droid.Services
 {
     class PushService : IPushService
     {
+        private static string m_FCMToken = null;
+
         internal static readonly string CHANNEL_ID = "notification_channel";
 
-        public void TempMethod(string token)
+        public static string FCMToken
         {
-            throw new NotImplementedException();
+            get
+            {
+                return m_FCMToken;
+            }
+            set
+            {
+                m_FCMToken = value;
+            }
         }
+
+        public string GetRegistrationToken()
+        {
+            //var res =  (string)FirebaseMessaging.Instance.GetToken() as string;
+            //return (string)FirebaseInstallations.Instance.GetToken(false);
+            //return res;
+            //if(FCMToken == null)
+            //{
+                //throw new Exception("Empty token");
+            //}
+            return FCMToken;
+            
+        }
+        
 
         internal void PushHelper(Intent intent, MainActivity invoker)
         {

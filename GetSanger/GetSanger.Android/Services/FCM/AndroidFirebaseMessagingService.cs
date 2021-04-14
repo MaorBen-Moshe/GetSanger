@@ -11,6 +11,7 @@ namespace GetSanger.Droid.Services.FCM
 {
     [Service]
     [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
+    [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
     public class AndroidFirebaseMessagingService : FirebaseMessagingService
     {
         const string TAG = "MyFirebaseMsgService";
@@ -19,13 +20,14 @@ namespace GetSanger.Droid.Services.FCM
             SendNotification(message.GetNotification().Body, message.Data);
         }
 
-        public override void OnNewToken(string token)
+        public override void OnNewToken(string newToken)
         {
-            Log.Debug(TAG, "Refreshed token: " + token);
-            SendRegistrationToServer(token);
+            string oldToken = PushService.FCMToken;
+            PushService.FCMToken = newToken;
+            SendRegistrationToServer(newToken, oldToken);
         }
         
-        void SendRegistrationToServer(string token)
+        void SendRegistrationToServer(string newToken, string oldToken)
         {
             // Add custom implementation, as needed.
             // Server should resubscribe the user to the previous topics he was subscribed to
