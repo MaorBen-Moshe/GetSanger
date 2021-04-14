@@ -15,11 +15,14 @@ namespace GetSanger.ViewModels
     [QueryProperty(nameof(ConnecetedPage), "connectedpage")]
     public class MapViewModel : BaseViewModel
     {
+        #region Fields
         private ObservableCollection<Pin> m_Pins;
         private MapSpan m_Span;
         private bool m_IsSearch;
         private bool m_IsTrip;
+        #endregion
 
+        #region Properties
         private BaseViewModel ConnecetedPage { get; set; }
 
         public ObservableCollection<Pin> Pins
@@ -45,6 +48,12 @@ namespace GetSanger.ViewModels
             get => m_IsTrip;
             set => SetStructProperty(ref m_IsTrip, value);
         }
+        #endregion
+
+        #region Commands
+        public ICommand AppearingPageCommand { get; private set; }
+
+        public ICommand DisappearingPageCommand { get; private set; }
 
         public ICommand SearchCommand { get; private set; }
 
@@ -52,26 +61,25 @@ namespace GetSanger.ViewModels
 
         public ICommand PinClicked { get; private set; }
 
-        public ICommand EndTripCommand { get; private set; }
-
         public ICommand CallTripCommand { get; private set; }
+        #endregion
 
+        #region Constructor
         public MapViewModel()
         {
+            AppearingPageCommand = new Command(appearing);
+            DisappearingPageCommand = new Command(disappearing);
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
             PinClicked = new Command(PinClickedHelper);
-            EndTripCommand = new Command(EndTripHelper);
             CallTripCommand = new Command(CallTripHelper);
             createMapSpan();
             IsSearch = ConnecetedPage is JobOfferViewModel;
             IsTrip = ConnecetedPage is ActivityViewModel;
-            if (IsTrip)
-            {
-                LocationServices.HandleTripThread(handleTrip, 350000);
-            }
         }
+        #endregion
 
+        #region Methods
         public void MapClickedHelper(object i_Args)
         {
             if (IsSearch)
@@ -85,20 +93,6 @@ namespace GetSanger.ViewModels
             if (IsSearch)
             {
                 locationPicked((Position)i_Args);
-            }
-        }
-
-        public void EndTripHelper()
-        {
-            // kill the thread that getting location from a sanger if in user // or stop enabling location to user from sanger
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
-            {
-                LocationServices.LeaveTripThread(handleTrip);
-                // get out of the map back to the activity
-            }
-            else if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
-            {
-                (ConnecetedPage as ActivityViewModel).StopSangerLocationSharing();
             }
         }
 
@@ -152,6 +146,7 @@ namespace GetSanger.ViewModels
             LocationServices.Cancelation();
         }
 
+        // handler to handle the client asking for location from sanger
         private async void handleTrip(object sender, System.Timers.ElapsedEventArgs e)
         {
             var activity = (ConnecetedPage as ActivityViewModel).ConnectedActivity;
@@ -169,7 +164,13 @@ namespace GetSanger.ViewModels
                 }
             };
 
-
+            // when sanger is near to us we want to stop asking for location, 0.3 kilometers
+            if (Location.CalculateDistance(await LocationServices.GetCurrentLocation(), sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
+            {
+                LocationServices.LeaveTripThread(handleTrip);
+                (ConnecetedPage as ActivityViewModel).IsActivatedLocationButton = false;
+                await GoBack();
+            }
         }
 
         private async void locationPicked(Position i_Position)
@@ -199,5 +200,22 @@ namespace GetSanger.ViewModels
                 }
             };
         }
+
+        private void appearing()
+        {
+            if (IsTrip) // we already checked if sanger gave permission to client to see location
+            {
+                LocationServices.StartTripThread(handleTrip, 350000);
+            }
+        }
+
+        private void disappearing()
+        {
+            if (IsTrip)
+            {
+                LocationServices.LeaveTripThread(handleTrip);
+            }
+        }
+        #endregion
     }
 }
