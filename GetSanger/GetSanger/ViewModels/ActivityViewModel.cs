@@ -11,10 +11,14 @@ namespace GetSanger.ViewModels
     [QueryProperty(nameof(ConnectedActivity), "activity")]
     public class ActivityViewModel : BaseViewModel
     {
+        #region Fields
         private string m_Location;
         private string m_JobLocation;
         private string m_Phone;
         private string m_ActivatedButtonText;
+        #endregion
+
+        #region Properties
         public Activity ConnectedActivity { get; set; }
 
         public string ActivatedButtonText
@@ -42,22 +46,43 @@ namespace GetSanger.ViewModels
         public string Category { get => ConnectedActivity.JobOffer.Category.ToString(); }
         public DateTime Date { get => ConnectedActivity.JobOffer.Date; }
         public string Description { get => ConnectedActivity.JobOffer.Description; }
+        #endregion
 
+        #region Commands
         public ICommand ProfileCommand { get; private set; }
         public ICommand LocationCommand { get; private set; }
 
+        #endregion
+
+        #region Constructor
         public ActivityViewModel()
         {
             setLocationsLabels();
             initialPhoneNumber();
         }
+        #endregion
+
+        #region Methods
+
+        public void StopSangerLocationSharing()
+        {
+            LocationServices.LeaveTripThread(handleSangerLocation);
+        }
 
         private async void setLocationsLabels()
         {
-            Location = await getLocation(ConnectedActivity.JobOffer.Location);
-            JobLocation = await getLocation(ConnectedActivity.JobOffer.JobLocation);
+            Location = await getLocationString(ConnectedActivity.JobOffer.Location);
+            JobLocation = await getLocationString(ConnectedActivity.JobOffer.JobLocation);
             LocationCommand = new Command(locationCommandHelper);
-            ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Active")} Location");
+            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            {
+                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask the sanger to active")} Location");
+            }
+            else if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
+            {
+                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger == false ? "Enable" : "Disable")} Location");
+            }
+           
         } 
 
         private void locationCommandHelper()
@@ -85,34 +110,49 @@ namespace GetSanger.ViewModels
                 bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
                 if (agreed)
                 {
-                    user.ActivatedMap.Add(ConnectedActivity.SangerID, false);
+                    user.ActivatedMap.Add(ConnectedActivity.ActivityId, false);
+                    AppManager.Instance.ConnectedUser.UserLocation = await LocationServices.GetCurrentLocation();
                     FireStoreHelper.UpdateUser(user);
+                    FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                    StopSangerLocationSharing();
+                    // we can send push to user to tell that if he is in the map 
                 }
+
+                ActivatedButtonText = "Enable Location";
             }
             else
             {
                 bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
                 if (agreed)
                 {
-                    user.ActivatedMap.Add(ConnectedActivity.SangerID, true);
+                    user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
                     FireStoreHelper.UpdateUser(user);
+                    LocationServices.HandleTripThread(handleSangerLocation, 300000);
                 }
+
+                ActivatedButtonText = "Disable Location";
             }
         }
 
         private async void doUser()
         {
             User user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
-            bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.SangerID, out bool activated);
+            bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
             if(sangerInUser && activated)
             {
-                //show map
+                await Shell.Current.GoToAsync($"/map?connectedpage={this}");
             }
             else 
             {
                 User sanger = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
-                await r_PageService.DisplayAlert("Note", $"{sanger.PersonalDetails.Nickname} did not share with you location, please contact him to share with you the location!", "ok", "cancel");
+                await r_PageService.DisplayAlert("Note", $"{sanger.PersonalDetails.Nickname} did not share with you location, please contact him to share with you the location!", "OK");
             }
+        }
+
+        private async void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            AppManager.Instance.ConnectedUser.UserLocation = await LocationServices.GetCurrentLocation();
+            FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
         }
 
         private async void initialPhoneNumber()
@@ -122,11 +162,11 @@ namespace GetSanger.ViewModels
             switch (mode)
             {
                 case AppMode.Client:
-                    user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
+                    user = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
                     Phone = user.PersonalDetails.Phone.PhoneNumber;
                     break;
                 case AppMode.Sanger:
-                    user = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
+                    user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
                     Phone = user.PersonalDetails.Phone.PhoneNumber;
                     break;
                 default:
@@ -134,7 +174,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private async Task<string> getLocation(Location i_Location)
+        private async Task<string> getLocationString(Location i_Location)
         {
             Placemark placemark = await LocationServices.PickedLocation(i_Location);
             if(placemark == null)
@@ -145,4 +185,5 @@ namespace GetSanger.ViewModels
             return string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare);
         }
     }
+    #endregion
 }

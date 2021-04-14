@@ -9,11 +9,11 @@ namespace GetSanger.UI_pages.common
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapPage : ContentPage
     {
-        public MapPage(BaseViewModel i_RefPage)
+        public MapPage()
         {
             InitializeComponent();
 
-            BindingContext = new MapViewModel(i_RefPage);
+            BindingContext = new MapViewModel();
         }
 
         protected override async void OnAppearing()

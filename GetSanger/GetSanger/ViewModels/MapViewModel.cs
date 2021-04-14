@@ -12,6 +12,7 @@ using Xamarin.Forms.GoogleMaps;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(ConnecetedPage), "connectedpage")]
     public class MapViewModel : BaseViewModel
     {
         private ObservableCollection<Pin> m_Pins;
@@ -55,9 +56,8 @@ namespace GetSanger.ViewModels
 
         public ICommand CallTripCommand { get; private set; }
 
-        public MapViewModel(BaseViewModel i_RefPage)
+        public MapViewModel()
         {
-            ConnecetedPage = i_RefPage;
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
             PinClicked = new Command(PinClickedHelper);
@@ -66,22 +66,40 @@ namespace GetSanger.ViewModels
             createMapSpan();
             IsSearch = ConnecetedPage is JobOfferViewModel;
             IsTrip = ConnecetedPage is ActivityViewModel;
+            if (IsTrip)
+            {
+                LocationServices.HandleTripThread(handleTrip, 350000);
+            }
         }
 
         public void MapClickedHelper(object i_Args)
         {
-            locationPicked((Position)i_Args);
+            if (IsSearch)
+            {
+                locationPicked((Position)i_Args);
+            }
         }
 
         public void PinClickedHelper(object i_Args)
         {
-            locationPicked((Position)i_Args);
+            if (IsSearch)
+            {
+                locationPicked((Position)i_Args);
+            }
         }
 
         public void EndTripHelper()
         {
             // kill the thread that getting location from a sanger if in user // or stop enabling location to user from sanger
-            throw new NotImplementedException();
+            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            {
+                LocationServices.LeaveTripThread(handleTrip);
+                // get out of the map back to the activity
+            }
+            else if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
+            {
+                (ConnecetedPage as ActivityViewModel).StopSangerLocationSharing();
+            }
         }
 
         public async void CallTripHelper()
@@ -132,6 +150,26 @@ namespace GetSanger.ViewModels
         public void Cancelation()
         {
             LocationServices.Cancelation();
+        }
+
+        private async void handleTrip(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var activity = (ConnecetedPage as ActivityViewModel).ConnectedActivity;
+            User sanger = await FireStoreHelper.GetUser(activity.SangerID);
+            Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
+            Span = new MapSpan(position, 0.01, 0.01);
+            Pins.Clear();
+            Pins = new ObservableCollection<Pin>
+            {
+                new Pin
+                {
+                    Type = PinType.Generic,
+                    Position = Span.Center,
+                    // add icon to pin
+                }
+            };
+
+
         }
 
         private async void locationPicked(Position i_Position)

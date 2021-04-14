@@ -19,6 +19,18 @@ namespace GetSanger.Droid.Services.FCM
             SendNotification(message.GetNotification().Body, message.Data);
         }
 
+        public override void OnNewToken(string token)
+        {
+            Log.Debug(TAG, "Refreshed token: " + token);
+            SendRegistrationToServer(token);
+        }
+        
+        void SendRegistrationToServer(string token)
+        {
+            // Add custom implementation, as needed.
+            // Server should resubscribe the user to the previous topics he was subscribed to
+        }
+
         void SendNotification(string messageBody, IDictionary<string, string> data)
         {
             var intent = new Intent(this, typeof(MainActivity));

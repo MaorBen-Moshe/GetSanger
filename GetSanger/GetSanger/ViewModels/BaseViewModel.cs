@@ -12,12 +12,16 @@ namespace GetSanger.ViewModels
     [DataContract]
     public abstract class BaseViewModel : PropertySetter
     {
+        #region Fields
         private bool m_IsLoading;
         private bool m_IsNotLoading;
         protected string m_DefaultBackUri = "..";
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
+        protected readonly PushServices r_PushService;
+        #endregion
 
+        #region Properties
         protected LocationService LocationServices { get; private set; }
 
         protected bool IsLoading
@@ -34,14 +38,19 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsNotLoading, value);
             get => m_IsNotLoading;
         }
+        #endregion
 
+        #region Constructor
         protected BaseViewModel()
         {
             r_PageService = new PageServices();
             r_DialService = new DialServices();
             LocationServices = new LocationService();
+            r_PushService = new PushServices();
         }
+        #endregion
 
+        #region Methods
         protected virtual async Task GoBack()
         {
             await Shell.Current.GoToAsync(m_DefaultBackUri);
@@ -62,5 +71,6 @@ namespace GetSanger.ViewModels
                 throw ex;
             }
         }
+        #endregion
     }
 }

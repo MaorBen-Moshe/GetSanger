@@ -45,7 +45,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ProfileViewModel()
         {
-           // setUser();
+           setUser();
         }
         #endregion
 

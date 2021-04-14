@@ -12,17 +12,37 @@ namespace GetSanger.ViewModels
     [QueryProperty(nameof(JobCategory), "category")]
     public class JobOfferViewModel : BaseViewModel
     {
+        #region Fields
         private Placemark m_MyPlacemark;
         private Placemark m_JobPlacemark;
         private string m_MyLocation;
         private string m_JobLocation;
         private Category m_JobCategory;
         private bool m_IsMyLocation = true;
+        private DateTime m_JobDate;
+        private string m_JobDescription;
+        #endregion
+
+        #region Commands
 
         public ICommand CurrentLocation { get; private set; }
         public ICommand JobLocation { get; private set; }
         public ICommand SendJobCommand { get; private set; }
+        #endregion
 
+        #region Properties
+
+        public DateTime JobDate
+        {
+            get => m_JobDate;
+            set => SetStructProperty(ref m_JobDate, value);
+        }
+
+        public string JobDescription
+        {
+            get => m_JobDescription;
+            set => SetClassProperty(ref m_JobDescription, value);
+        }
 
         public Placemark MyPlaceMark
         {
@@ -69,14 +89,20 @@ namespace GetSanger.ViewModels
             get => m_JobCategory;
             set => SetStructProperty(ref m_JobCategory, value);
         }
+        #endregion
 
+        #region Constructor
         public JobOfferViewModel()
         {
             CurrentLocation = new Command(GetCurrentLocation);
             JobLocation = new Command(GetJobLocation);
             SendJobCommand = new Command(SendJob);
+            JobDate = DateTime.Now;
             IntialCurrentLocation();
         }
+        #endregion
+
+        #region Methods
 
         public async void IntialCurrentLocation()
         {
@@ -95,20 +121,30 @@ namespace GetSanger.ViewModels
             bool answer = await r_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
             if (answer)
             {
-                await r_PageService.PushAsync(new MapPage(this));
+                await Shell.Current.GoToAsync($"/map?connectedpage={this}");
             }
         }
 
         public async void GetJobLocation()
         {
             m_IsMyLocation = false;
-            await r_PageService.PushAsync(new MapPage(this));
+            await Shell.Current.GoToAsync($"/map?connectedpage={this}");
         }
 
         public void SendJob()
         {
-            // send the form to all sangers available.
-            throw new NotImplementedException();
+            JobOffer job = new JobOffer
+            {
+                Category = JobCategory,
+                Location = MyPlaceMark.Location,
+                JobLocation = JobPlaceMark.Location,
+                ClientID = AuthHelper.GetLoggedInUserId(),
+                ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone,
+                Date = JobDate,
+                Description = JobDescription
+            };
+
+            r_PushService.SendTAllTopic(job.Category.ToString(), job);
         }
 
         private string placemarkValidation(Placemark i_Placemark)
@@ -122,5 +158,6 @@ namespace GetSanger.ViewModels
             toRet = string.Format("{0}, {1} {2}", i_Placemark.Locality, i_Placemark.Thoroughfare, i_Placemark.SubThoroughfare);
             return toRet;
         }
+        #endregion
     }
 }
