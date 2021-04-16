@@ -12,6 +12,13 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior EventName="Appearing"
+                                          Command="{Binding AppearingPageCommand}" />
+        <behaviors:EventToCommandBehavior EventName="Disappearing"
+                                          Command="{Binding DisappearingPageCommand}" />
+    </ContentPage.Behaviors>
+
     <Grid>
         <controls:BindableMap x:Name="CurrentMap"
                               MapType="Street" 
@@ -45,22 +52,14 @@
                    SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
         </Frame>
 
-        <Grid VerticalOptions="End"
-              HorizontalOptions="Center"
-              ColumnSpacing="10"
-              IsVisible="{Binding IsTrip}"
-              IsEnabled="{Binding IsTrip}"
-              Padding="0,0,0, 20">
-            <Button Text="EndTrip" 
-                BackgroundColor="White"
-                CornerRadius="20"
-                Command="{Binding EndTripCommand}"
-                Grid.Column="0"/>
-            <Button Text="Call" 
+
+        <Button Text="Call" 
                     BackgroundColor="White"
+                    IsVisible="{Binding IsTrip}"
+                    VerticalOptions="End"
+                    HorizontalOptions="Center"
                     CornerRadius="20"
-                    Command="{Binding CallTripCommand}"
-                    Grid.Column="1"/>
-        </Grid>
+                    Padding="0, 0, 0, 20"
+                    Command="{Binding CallTripCommand}"/>
     </Grid>
 </ContentPage>
