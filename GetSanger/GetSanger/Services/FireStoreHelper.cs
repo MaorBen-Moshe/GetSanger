@@ -12,7 +12,7 @@ namespace GetSanger.Services
             throw new NotImplementedException();
         }
 
-        public static async Task<Activity> GetActivity(int i_ClientID, int i_SangerID)
+        public static async Task<Activity> GetActivity(int i_ActivityId, int i_ClientID, int i_SangerID)
         {
             throw new NotImplementedException();
         }

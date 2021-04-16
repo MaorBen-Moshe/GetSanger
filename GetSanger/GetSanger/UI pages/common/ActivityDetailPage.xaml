@@ -85,11 +85,22 @@
                 </Frame>
                 
                 <Button Text="{Binding ActivatedButtonText}"
+                        IsVisible="{Binding IsActivatedLocationButton}"
+                        IsEnabled="{Binding IsActivatedLocationButton}"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="End"
                         Padding="20, 10"
                         CornerRadius="20"
                         Command="{Binding LocationCommand}"/>
+                
+                <Button Text="End Activity"
+                        IsVisible="{Binding IsActivatedEndButton}"
+                        IsEnabled="{Binding IsActivatedEndButton}"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="End"
+                        Padding="20, 10"
+                        CornerRadius="20"
+                        Command="{Binding EndActivityCommand}"/>
             </StackLayout>
 
         </Grid>
