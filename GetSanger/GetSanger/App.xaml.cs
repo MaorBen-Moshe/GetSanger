@@ -1,7 +1,5 @@
 using Xamarin.Forms;
 using GetSanger.AppShell;
-using GetSanger.UI_pages.signup;
-using GetSanger.UI_pages.common;
 
 namespace GetSanger
 {
@@ -10,7 +8,8 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
-            MainPage = new SignupCategoriesPage();
+            
+            MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
         }
 
         protected override void OnStart()

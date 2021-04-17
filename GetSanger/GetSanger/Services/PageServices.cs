@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    class PageServices : IPageService
+    class PageServices : Service, IPageService
     {
         public async Task PushAsync(Page i_Page)
         {
@@ -25,6 +25,11 @@ namespace GetSanger.Services
         public async Task PopAsync()
         {
              await Application.Current.MainPage.Navigation.PopAsync();
+        }
+
+        public override void SetDependencies()
+        {
+            //;
         }
     }
 }

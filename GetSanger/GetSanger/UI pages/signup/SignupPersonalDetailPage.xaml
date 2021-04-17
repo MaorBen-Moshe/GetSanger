@@ -30,7 +30,7 @@
                 </Grid.ColumnDefinitions>
                
                 <Label Text="Birthday" Padding="5" Grid.Column="0" />
-                <DatePicker Format="dd MMM yyyy" Date="{Binding Birthday}"  Grid.Column="1"/>
+                <DatePicker Format="dd MMM yyyy" Date="{Binding Birthday, Mode=TwoWay}"  Grid.Column="1"/>
             </Grid>
             
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">

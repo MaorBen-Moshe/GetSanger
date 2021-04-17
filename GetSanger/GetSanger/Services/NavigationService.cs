@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public class NavigationService
+    public class NavigationService : Service
     {
         public NavigationService()
         {
@@ -25,6 +25,11 @@ namespace GetSanger.Services
             {
                 throw;
             }
+        }
+
+        public override void SetDependencies()
+        {
+            //
         }
     }
 }

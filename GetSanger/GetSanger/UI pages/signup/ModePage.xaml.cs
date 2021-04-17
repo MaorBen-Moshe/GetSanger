@@ -13,5 +13,11 @@ namespace GetSanger.UI_pages.signup
         {
             InitializeComponent();
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            DisplayAlert("Note", "You must choose a mode to continue.", "OK");
+            return true;
+        }
     }
 }

@@ -38,5 +38,9 @@ namespace GetSanger.Constants
         public const string LoadingPage = "loading";
 
         public const string EditProfile = "editProfile";
+
+        public const string Login = "login";
+
+        public const string ForgotPassword = "forgotPassword";
     }
 }

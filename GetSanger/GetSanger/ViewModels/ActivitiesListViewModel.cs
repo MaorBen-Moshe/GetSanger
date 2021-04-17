@@ -56,10 +56,10 @@ namespace GetSanger.ViewModels
             if (!string.IsNullOrWhiteSpace(text) && text.Length >= 5)
             {
                 ActivitiesSource = (ObservableCollection<Activity>)ActivitiesSource.Where(activity =>
-                activity.JobOffer.Description.Contains(text) ||
-                activity.Title.Contains(text) ||
-                activity.Status.ToString().Contains(text) ||
-                activity.JobOffer.Category.ToString().Contains(text)
+                activity.JobOffer.Description.ToLower().Contains(text) ||
+                activity.Title.ToLower().Contains(text) ||
+                activity.Status.ToString().ToLower().Contains(text) ||
+                activity.JobOffer.Category.ToString().ToLower().Contains(text)
                 );
             }
         }
