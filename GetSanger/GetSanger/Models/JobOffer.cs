@@ -34,5 +34,21 @@ namespace GetSanger.Models
             JobId = m_counter.ToString();
             m_counter++;
         }
+
+        public override bool Equals(object obj)
+        {
+            if(!(obj is JobOffer))
+            {
+                throw new ArgumentException("Must provide a valid JobDetails object");
+            }
+
+            JobOffer other = obj as JobOffer;
+            return JobId == other.JobId;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

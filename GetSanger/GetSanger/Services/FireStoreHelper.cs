@@ -94,7 +94,7 @@ namespace GetSanger.Services
         {
             if (i_JobOffer == null)
             {
-                throw new ArgumentNullException("JobOffer is null");
+                throw new ArgumentNullException("JobDetails is null");
             }
 
             User client = await GetUser(i_JobOffer.ClientID);

@@ -59,9 +59,9 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Phone, value);
         }
 
-        public string Category { get => ConnectedActivity.JobOffer.Category.ToString(); }
-        public DateTime Date { get => ConnectedActivity.JobOffer.Date; }
-        public string Description { get => ConnectedActivity.JobOffer.Description; }
+        public string Category { get => ConnectedActivity.JobDetails.Category.ToString(); }
+        public DateTime Date { get => ConnectedActivity.JobDetails.Date; }
+        public string Description { get => ConnectedActivity.JobDetails.Description; }
         #endregion
 
         #region Commands
@@ -92,8 +92,8 @@ namespace GetSanger.ViewModels
 
         private async void setLocationsLabels()
         {
-            Location = await getLocationString(ConnectedActivity.JobOffer.Location);
-            JobLocation = await getLocationString(ConnectedActivity.JobOffer.JobLocation);
+            Location = await getLocationString(ConnectedActivity.JobDetails.Location);
+            JobLocation = await getLocationString(ConnectedActivity.JobDetails.JobLocation);
             LocationCommand = new Command(locationCommandHelper);
             if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
             {
@@ -133,6 +133,8 @@ namespace GetSanger.ViewModels
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, false);
+                    ConnectedActivity.LocationActivatedBySanger = false;
+                    FireStoreHelper.UpdateActivity(ConnectedActivity);
                     FireStoreHelper.UpdateUser(user);
                     LocationServices.LeaveTripThread();
                     // we can send push to user to tell that if he is in the map 
@@ -146,6 +148,8 @@ namespace GetSanger.ViewModels
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
+                    ConnectedActivity.LocationActivatedBySanger = true;
+                    FireStoreHelper.UpdateActivity(ConnectedActivity);
                     FireStoreHelper.UpdateUser(user);
                     LocationServices.StartTripThread();
                     ActivatedButtonText = "Disable Location";
@@ -204,6 +208,7 @@ namespace GetSanger.ViewModels
             if(IsActivatedLocationButton == false)
             {
                 ConnectedActivity.Status = ActivityStatus.Completed;
+                ConnectedActivity.LocationActivatedBySanger = false;
                 LocationServices.LeaveTripThread(); // sanger stop sharing location
                 FireStoreHelper.UpdateActivity(ConnectedActivity);
                 IsActivatedEndButton = false;
