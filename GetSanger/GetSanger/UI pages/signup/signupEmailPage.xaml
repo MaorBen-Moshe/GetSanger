@@ -4,6 +4,10 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              x:Class="GetSanger.UI_pages.signup.SignupEmailPage">
 
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackButtonBehaviorCommand}"/>
+    </Shell.BackButtonBehavior>
+
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center" Padding="5">
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">

@@ -10,20 +10,29 @@ namespace GetSanger.ViewModels
 
         public ICommand SangerCommand { get; private set; }
 
+        public ICommand BackButtonBehaviorCommand { get; set; }
+
         public ModeViewModel()
         {
             UserCommand = new Command(userCommandHelper);
             SangerCommand = new Command(sangerCommandHelper);
+            BackButtonBehaviorCommand = new Command(backButtonBehavior);
+        }
+
+        private void backButtonBehavior(object i_Param)
+        {
+            // back to login page
+            // set back the first login of this user to true
         }
 
         private void userCommandHelper()
         {
-            Shell.Current.GoToAsync("/AppShell/UserShell");
+            App.Current.MainPage = new UserShell();
         }
 
         private void sangerCommandHelper()
         {
-            Shell.Current.GoToAsync("/AppShell/SangerShell");
+            App.Current.MainPage = new SangerShell();
         }
     }
 }

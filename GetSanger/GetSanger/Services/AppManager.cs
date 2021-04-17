@@ -20,14 +20,34 @@ namespace GetSanger.Services
 
         public SignUpPageViewModel SignUpVM { get; set; }
 
+        public AppServices Services { get; set; }
+
         private AppManager()
         {
-          
+            setAppManager();
         }
 
         public IList<string> GetListOfEnumNames(Type i_EnumType)
         {
             return (from name in i_EnumType.GetEnumNames() select name).ToList();
+        }
+
+        private void setAppManager()
+        {
+            Services = new AppServices();
+            Services.Add(typeof(LocationService), new LocationService());
+            Services.Add(typeof(DialServices), new DialServices());
+            Services.Add(typeof(LoginServices), new LoginServices());
+            Services.Add(typeof(NavigationService), new NavigationService());
+            Services.Add(typeof(PageServices), new PageServices());
+            Services.Add(typeof(PushServices), new PushServices());
+        }
+
+        public void RefreshAppManager()
+        {
+            setAppManager();
+            Services.SetDependencies();
+            Refresh_Event?.Invoke();
         }
     }
 }

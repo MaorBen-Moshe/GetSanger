@@ -7,9 +7,13 @@ using Xamarin.Essentials;
 
 namespace GetSanger.Services
 {
-    public class LocationService
+    public class LocationService : Service
     {
         private System.Timers.Timer m_Timer;
+
+        public LocationService()
+        {
+        }
 
         public CancellationTokenSource Cts { get; private set; }
 
@@ -63,6 +67,11 @@ namespace GetSanger.Services
         {
             AppManager.Instance.ConnectedUser.UserLocation = await GetCurrentLocation();
             FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+        }
+
+        public override void SetDependencies()
+        {
+            //
         }
     }
 }
