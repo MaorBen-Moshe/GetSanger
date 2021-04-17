@@ -1,4 +1,5 @@
 ﻿using GetSanger.AppShell;
+using GetSanger.Services;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -6,33 +7,39 @@ namespace GetSanger.ViewModels
 {
     public class ModeViewModel : BaseViewModel
     {
+        #region Commands
         public ICommand UserCommand { get; private set; }
 
         public ICommand SangerCommand { get; private set; }
+        #endregion
 
-        public ICommand BackButtonBehaviorCommand { get; set; }
-
+        #region Constructor
         public ModeViewModel()
         {
             UserCommand = new Command(userCommandHelper);
             SangerCommand = new Command(sangerCommandHelper);
-            BackButtonBehaviorCommand = new Command(backButtonBehavior);
         }
+        #endregion
 
-        private void backButtonBehavior(object i_Param)
-        {
-            // back to login page
-            // set back the first login of this user to true
-        }
-
+        #region Methods
         private void userCommandHelper()
         {
+            setUserMode(AppMode.Client);
             App.Current.MainPage = new UserShell();
         }
 
         private void sangerCommandHelper()
         {
+            setUserMode(AppMode.Sanger);
             App.Current.MainPage = new SangerShell();
         }
+
+        private void setUserMode(AppMode i_Mode)
+        {
+            AppManager.Instance.CurrentMode = i_Mode;
+            AppManager.Instance.ConnectedUser.LastUserMode = i_Mode;
+            FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+        }
+        #endregion
     }
 }
