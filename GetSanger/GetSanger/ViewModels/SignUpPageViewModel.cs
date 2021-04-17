@@ -1,4 +1,5 @@
-﻿using GetSanger.Interfaces;
+﻿using GetSanger.Constants;
+using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -19,6 +21,8 @@ namespace GetSanger.ViewModels
         #region Fields
 
         private string m_Name;
+
+        private string m_Email;
 
         private string m_Password;
 
@@ -51,6 +55,7 @@ namespace GetSanger.ViewModels
             CategoriesPartCommand = new Command(categoriesPartClicked);
             AllCategoriesCommand = new Command(allCategoriesChecked);
             ImagePickerCommand = new Command(imagePicker);
+            BackButtonBehaviorCommand = new Command(backButtonBehavior);
             Birthday = DateTime.Now;
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
             CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList());
@@ -68,6 +73,12 @@ namespace GetSanger.ViewModels
         }
 
         public string UserId { get; set; }
+
+         public new string Email
+        {
+            get => m_Email;
+            set => SetClassProperty(ref m_Email, value);
+        }
 
         public new string Password
         {
@@ -121,6 +132,8 @@ namespace GetSanger.ViewModels
 
         #region Command
 
+        public ICommand BackButtonBehaviorCommand { get; set; }
+
         public ICommand EmailPartCommand { get; set; }
 
         public ICommand AllCategoriesCommand { get; set; }
@@ -135,6 +148,32 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
+        private async void backButtonBehavior(object i_Param) // when move from email page back to registration page
+        {
+            bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?\n any detail will be lost.", "Yes", "No");
+            if (answer)
+            {
+                PropertyInfo[] properties = GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+                foreach(var property in properties)
+                {
+                    if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(CategoriesItems)) || property.Name.Equals(nameof(GenderItems)))
+                    {
+                        continue;
+                    }
+
+                    if (property.Name.Equals(nameof(Birthday)))
+                    {
+                        property.SetValue(this, DateTime.Now);
+                        continue;
+                    }
+
+                    property.SetValue(this, null);
+                }
+
+                await GoBack();
+            }
+        }
+
         private async void emailPartClicked()
         {
             if(AuthHelper.IsValidEmail(Email) == false)
@@ -145,14 +184,16 @@ namespace GetSanger.ViewModels
 
             if (Password.Equals(ConfirmPassword))
             {
-                UserId = AuthHelper.GetLoggedInUserId();
-                // go to next page in sign up
+                //UserId = AuthHelper.GetLoggedInUserId();
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails);
             }
-
-            await r_PageService.DisplayAlert("Notice", "Please check the password is correct", "OK");
+            else
+            {
+                await r_PageService.DisplayAlert("Notice", "Please check the password is correct", "OK");
+            }
         }
 
-        private void personalDetailPartClicked()
+        private async void personalDetailPartClicked()
         {
             PersonalDetails personal = new PersonalDetails
             {
@@ -161,17 +202,19 @@ namespace GetSanger.ViewModels
                 Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender),
                 Birthday = Birthday
             };
-            // continue next page
-            
+
+            // set logged in user personal details
+            await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }
 
-        private void categoriesPartClicked()
+        private async void categoriesPartClicked()
         {
             m_CheckedItems = (from category in CategoriesItems 
                              where category.Checked == true && category.Category.Equals(Category.All) == false select category.Category).ToList();
-            r_PushService.RegisterTopics(UserId, (m_CheckedItems.Select(category => category.ToString())).ToArray());
+            //r_PushService.RegisterTopics(UserId, (m_CheckedItems.Select(category => category.ToString())).ToArray());
 
             // register and move to mode page
+            await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
         }
 
         private async void imagePicker(object i_Param)

@@ -1,4 +1,5 @@
-﻿using GetSanger.Interfaces;
+﻿using GetSanger.Constants;
+using GetSanger.Interfaces;
 using GetSanger.Services;
 using GetSanger.UI_pages.signup;
 using System;
@@ -86,26 +87,35 @@ namespace GetSanger.ViewModels
             }
 
             await AuthHelper.LoginViaEmail(Email, Password.ToString());
+            // check if login succeeded
         }
 
-        protected void SignUpClicked()
+        protected async void SignUpClicked()
         {
-            Application.Current.MainPage = new SignupEmailPage(); // change it using shell application
+            await r_NavigationService.NavigateTo(ShellRoutes.SignupEmail);
         }
 
-        private void ForgotPasswordClicked(object obj)
+        private async void ForgotPasswordClicked(object obj)
         {
-            Application.Current.MainPage = new ForgotPasswordPage(); // change it using shell application
+            await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
         }
 
         private void FaceBookClicked(object obj)
         {
             AuthHelper.LoginViaFacebook();
+            if (AuthHelper.IsFirstTimeLogIn())
+            {
+                // go to sign up personal details!
+            }
         }
 
         private void GmailClicked(object obj)
         {
             AuthHelper.LoginViaGoogle();
+            if (AuthHelper.IsFirstTimeLogIn())
+            {
+                // go to sign up personal details!
+            }
         }
 
         #endregion

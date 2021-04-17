@@ -16,10 +16,24 @@ namespace GetSanger.ViewModels
         private string m_JobLocation;
         private string m_Phone;
         private string m_ActivatedButtonText;
+        private bool m_IsActivetdLocationButton;
+        private bool m_IsActivatedEndButton;
         #endregion
 
         #region Properties
         public Activity ConnectedActivity { get; set; }
+
+        public bool IsActivatedEndButton
+        {
+            get => m_IsActivatedEndButton;
+            set => SetStructProperty(ref m_IsActivatedEndButton, value);
+        }
+
+        public bool IsActivatedLocationButton
+        {
+            get => m_IsActivetdLocationButton;
+            set => SetStructProperty(ref m_IsActivetdLocationButton, value);
+        }
 
         public string ActivatedButtonText
         {
@@ -32,11 +46,13 @@ namespace GetSanger.ViewModels
             get { return m_Location; }
             set { SetClassProperty(ref m_Location, value); }
         }
+
         public string JobLocation
         {
             get { return m_JobLocation; }
             set { SetClassProperty(ref m_JobLocation, value); }
         }
+
         public string Phone
         {
             get => m_Phone;
@@ -49,8 +65,12 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
+
         public ICommand ProfileCommand { get; private set; }
+
         public ICommand LocationCommand { get; private set; }
+
+        public ICommand EndActivityCommand { get; private set; }
 
         #endregion
 
@@ -59,15 +79,16 @@ namespace GetSanger.ViewModels
         {
             setLocationsLabels();
             initialPhoneNumber();
+            ProfileCommand = new Command(profilePage);
+            EndActivityCommand = new Command(endActivity);
+            IsActivatedLocationButton = true;
+            IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
+                                   AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
+                                   ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
         }
         #endregion
 
         #region Methods
-
-        public void StopSangerLocationSharing()
-        {
-            LocationServices.LeaveTripThread(handleSangerLocation);
-        }
 
         private async void setLocationsLabels()
         {
@@ -82,8 +103,8 @@ namespace GetSanger.ViewModels
             {
                 ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger == false ? "Enable" : "Disable")} Location");
             }
-           
-        } 
+
+        }
 
         private void locationCommandHelper()
         {
@@ -105,32 +126,30 @@ namespace GetSanger.ViewModels
         {
             User user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
             bool sangerInuser = user.ActivatedMap.TryGetValue(ConnectedActivity.SangerID, out bool activated);
-            if(sangerInuser && activated)
+            if (sangerInuser && activated)
             {
+                // sanger ends location
                 bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, false);
-                    AppManager.Instance.ConnectedUser.UserLocation = await LocationServices.GetCurrentLocation();
                     FireStoreHelper.UpdateUser(user);
-                    FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                    StopSangerLocationSharing();
+                    LocationServices.LeaveTripThread();
                     // we can send push to user to tell that if he is in the map 
+                    ActivatedButtonText = "Enable Location";
                 }
-
-                ActivatedButtonText = "Enable Location";
             }
             else
             {
+                // sanger starts location
                 bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
                     FireStoreHelper.UpdateUser(user);
-                    LocationServices.HandleTripThread(handleSangerLocation, 300000);
+                    LocationServices.StartTripThread();
+                    ActivatedButtonText = "Disable Location";
                 }
-
-                ActivatedButtonText = "Disable Location";
             }
         }
 
@@ -138,21 +157,15 @@ namespace GetSanger.ViewModels
         {
             User user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
             bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
-            if(sangerInUser && activated)
+            if (sangerInUser && activated)
             {
                 await Shell.Current.GoToAsync($"/map?connectedpage={this}");
             }
-            else 
+            else
             {
                 User sanger = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
                 await r_PageService.DisplayAlert("Note", $"{sanger.PersonalDetails.Nickname} did not share with you location, please contact him to share with you the location!", "OK");
             }
-        }
-
-        private async void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            AppManager.Instance.ConnectedUser.UserLocation = await LocationServices.GetCurrentLocation();
-            FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
         }
 
         private async void initialPhoneNumber()
@@ -177,13 +190,35 @@ namespace GetSanger.ViewModels
         private async Task<string> getLocationString(Location i_Location)
         {
             Placemark placemark = await LocationServices.PickedLocation(i_Location);
-            if(placemark == null)
+            if (placemark == null)
             {
                 return "No Location was given";
             }
 
             return string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare);
         }
+
+        private async void endActivity()
+        {
+            IsActivatedLocationButton = !(await r_PageService.DisplayAlert("Note", "Are you sure?", "Yes", "No"));
+            if(IsActivatedLocationButton == false)
+            {
+                ConnectedActivity.Status = ActivityStatus.Completed;
+                LocationServices.LeaveTripThread(); // sanger stop sharing location
+                FireStoreHelper.UpdateActivity(ConnectedActivity);
+                IsActivatedEndButton = false;
+            }
+        }
+
+        private async void profilePage()
+        {
+            User user = ConnectedActivity.ClientID.Equals(AppManager.Instance.ConnectedUser.UserID) ?
+                        await FireStoreHelper.GetUser(ConnectedActivity.SangerID) :
+                        await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
+
+            await Shell.Current.GoToAsync($"/profile?user={user}");
+        }
+
+        #endregion
     }
-    #endregion
 }

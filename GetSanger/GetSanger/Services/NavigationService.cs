@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public class NavigationService
+    public class NavigationService : Service
     {
         public NavigationService()
         {
@@ -15,14 +15,8 @@ namespace GetSanger.Services
 
         }
 
-        public async void GoBack()
-        {
-            await Shell.Current.GoToAsync("..");
-        }
-
         public async Task NavigateTo(string i_ViewPath)
         {
-            ShellNavigationState state = Shell.Current.CurrentState;
             try
             {
                 await Shell.Current.GoToAsync(i_ViewPath);
@@ -31,6 +25,11 @@ namespace GetSanger.Services
             {
                 throw;
             }
+        }
+
+        public override void SetDependencies()
+        {
+            //
         }
     }
 }
