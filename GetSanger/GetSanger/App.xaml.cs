@@ -8,7 +8,7 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
-
+            
             MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
         }
 

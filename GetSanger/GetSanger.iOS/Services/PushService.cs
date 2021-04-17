@@ -13,9 +13,24 @@ namespace GetSanger.iOS.Services
 {
     class PushService : IPushService
     {
-        public void TempMethod(string token)
+        private static string m_FCMToken = null;
+        internal static readonly string CHANNEL_ID = "notification_channel";
+
+        public static string FCMToken
         {
-            throw new NotImplementedException();
+            get 
+            {
+                return m_FCMToken;
+            }
+            set
+            {
+                m_FCMToken = value;
+            }
+        }
+
+        public string GetRegistrationToken()
+        {
+            return FCMToken;
         }
     }
 }
