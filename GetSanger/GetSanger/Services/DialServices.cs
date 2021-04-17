@@ -6,7 +6,7 @@ using Xamarin.Essentials;
 
 namespace GetSanger.Services
 {
-    public class DialServices : IDialService
+    public class DialServices : Service, IDialService
     {
         private string m_Phone;
 
@@ -59,6 +59,11 @@ namespace GetSanger.Services
             }
 
             return canOpen;
+        }
+
+        public override void SetDependencies()
+        {
+           //
         }
     }
 }

@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public class PushServices
+    public class PushServices : Service
     {
         private readonly static IPushService sr_Push = DependencyService.Get<IPushService>();
 
@@ -32,5 +32,9 @@ namespace GetSanger.Services
             return true;
         }
 
+        public override void SetDependencies()
+        {
+            //
+        }
     }
 }

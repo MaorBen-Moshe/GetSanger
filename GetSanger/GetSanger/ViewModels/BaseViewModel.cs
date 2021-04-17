@@ -19,6 +19,7 @@ namespace GetSanger.ViewModels
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
         protected readonly PushServices r_PushService;
+        protected readonly NavigationService r_NavigationService;
         #endregion
 
         #region Properties
@@ -47,6 +48,7 @@ namespace GetSanger.ViewModels
             r_DialService = new DialServices();
             LocationServices = new LocationService();
             r_PushService = new PushServices();
+            r_NavigationService = new NavigationService();
         }
         #endregion
 

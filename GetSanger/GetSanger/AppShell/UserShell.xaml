@@ -2,13 +2,15 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:common="clr-namespace:GetSanger.UI_pages.common"
-             x:Class="GetSanger.AppShell.UserShell">
+             x:Class="GetSanger.AppShell.UserShell"
+             CurrentItem="{x:Reference categories}">
+
     <TabBar Shell.NavBarIsVisible="False">
         <Tab Title="Account"
              Route="account">
             <ShellContent ContentTemplate="{DataTemplate common:AccountPage}" />
         </Tab>
-        <!--<Tab Title="History"
+        <!--<Tab Title="job Offers"
              Route="history">
             <ShellContent ContentTemplate="{DataTemplate common:ActivitiesHistoryMasterPage}" />
         </Tab>-->
@@ -17,7 +19,8 @@
             <ShellContent ContentTemplate="{DataTemplate common:ActivitiesListPage}" />
         </Tab>
         <Tab Title="Categories"
-             Route="categories">
+             Route="categories"
+             x:Name="categories">
             <ShellContent ContentTemplate="{DataTemplate common:CategoriesPage}" />
         </Tab>
     </TabBar>
