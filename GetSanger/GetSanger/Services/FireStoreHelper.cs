@@ -68,8 +68,8 @@ namespace GetSanger.Services
         {
             User client = await GetUser(i_Activity.ClientID);
             User sanger = await GetUser(i_Activity.SangerID);
-            client.Activities = (from activity in client.Activities where activity.ActivityId != i_Activity.ActivityId select activity).ToList();
-            sanger.Activities = (from activity in sanger.Activities where activity.ActivityId != i_Activity.ActivityId select activity).ToList();
+            client.Activities = (from activity in client.Activities where activity.Equals(i_Activity) == false select activity).ToList();
+            sanger.Activities = (from activity in sanger.Activities where activity.Equals(i_Activity) == false select activity).ToList();
             client.Activities.Add(i_Activity);
             sanger.Activities.Add(i_Activity);
             UpdateUser(client);
@@ -79,7 +79,7 @@ namespace GetSanger.Services
         public static async void UpdateJobOffer(JobOffer i_JobOffer) // update jobOffer in user list and in server data base
         {
             User user = await GetUser(i_JobOffer.ClientID);
-            user.JobOffers = (from job in user.JobOffers where job.JobId != i_JobOffer.JobId select job).ToList();
+            user.JobOffers = (from job in user.JobOffers where job.Equals(i_JobOffer) == false select job).ToList();
             user.JobOffers.Add(i_JobOffer);
             UpdateUser(user);
         }
@@ -110,7 +110,7 @@ namespace GetSanger.Services
             }
 
             User client = await GetUser(i_JobOffer.ClientID);
-            client.JobOffers = (from job in client.JobOffers where job.JobId != i_JobOffer.JobId select job).ToList();
+            client.JobOffers = (from job in client.JobOffers where job.Equals(i_JobOffer) == false select job).ToList();
             UpdateUser(client);
         }
 
