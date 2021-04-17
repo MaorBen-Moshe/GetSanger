@@ -16,6 +16,9 @@ using Android.Content.PM;
 using ImageCircle.Forms.Plugin.Droid;
 using System.Threading.Tasks;
 using System.IO;
+using Firebase.Messaging;
+using Firebase.Installations;
+using GetSanger.ViewModels;
 
 [assembly: Dependency(typeof(GetSanger.Droid.Services.PushService))]
 namespace GetSanger.Droid.Services
@@ -43,6 +46,10 @@ namespace GetSanger.Droid.Services
             //var res =  (string)FirebaseMessaging.Instance.GetToken() as string;
             //return (string)FirebaseInstallations.Instance.GetToken(false);
             //return res;
+            //if(FCMToken == null)
+            //{
+                //throw new Exception("Empty token");
+            //}
             return FCMToken;
             
         }
