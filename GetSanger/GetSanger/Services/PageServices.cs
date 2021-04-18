@@ -31,5 +31,10 @@ namespace GetSanger.Services
         {
             //;
         }
+
+        public async Task<string> DisplayActionSheet(string i_Title, string i_Cancel, string i_Distruction, params string[] i_Buttons)
+        {
+            return await Application.Current.MainPage.DisplayActionSheet(i_Title, i_Cancel, i_Distruction, i_Buttons);
+        }
     }
 }
