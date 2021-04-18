@@ -27,7 +27,7 @@ namespace GetSanger.Models
         public string ClientID { get; set; }
         public string SangerID { get; set; }
         public string Title { get; set; }
-        public JobOffer JobOffer { get; set; }
+        public JobOffer JobDetails { get; set; }
         public ActivityStatus Status { get; set; }
         public bool LocationActivatedBySanger { get; set; }
 
@@ -35,6 +35,22 @@ namespace GetSanger.Models
         {
             ActivityId = m_counter.ToString();
             m_counter++;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Activity))
+            {
+                throw new ArgumentException("Must provide a valid Activity object");
+            }
+
+            Activity other = obj as Activity;
+            return ActivityId == other.ActivityId;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

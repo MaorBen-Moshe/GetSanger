@@ -56,10 +56,10 @@ namespace GetSanger.ViewModels
             if (!string.IsNullOrWhiteSpace(text) && text.Length >= 5)
             {
                 ActivitiesSource = (ObservableCollection<Activity>)ActivitiesSource.Where(activity =>
-                activity.JobOffer.Description.ToLower().Contains(text) ||
+                activity.JobDetails.Description.ToLower().Contains(text) ||
                 activity.Title.ToLower().Contains(text) ||
                 activity.Status.ToString().ToLower().Contains(text) ||
-                activity.JobOffer.Category.ToString().ToLower().Contains(text)
+                activity.JobDetails.Category.ToString().ToLower().Contains(text)
                 );
             }
         }
@@ -81,7 +81,7 @@ namespace GetSanger.ViewModels
                 FireStoreHelper.UpdateActivity(activity);
                 r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} confirmed your job.\n You can see it now on your list.");
                 IList<Activity> rejected = (from Rejectactivity in AppManager.Instance.ConnectedUser.Activities
-                                            where Rejectactivity.JobOffer.JobId.Equals(activity.JobOffer.JobId) && Rejectactivity.ActivityId != activity.ActivityId
+                                            where Rejectactivity.JobDetails.JobId.Equals(activity.JobDetails.JobId) && Rejectactivity.ActivityId != activity.ActivityId
                                             select Rejectactivity).ToList();
                 foreach(Activity reject in rejected)
                 {
