@@ -68,12 +68,12 @@ namespace GetSanger.Services
             s_Auth.SignInWithCustomToken(customToken);
         }
 
-        public static void LoginViaGoogle()
+        public async static Task<Dictionary<string, string>> LoginViaGoogle()
         {
             throw new NotImplementedException();
         }
 
-        public static void LoginViaFacebook()
+        public async static Task<Dictionary<string, string>> LoginViaFacebook()
         {
             throw new NotImplementedException();
         }
