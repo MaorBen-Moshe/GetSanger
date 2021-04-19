@@ -88,9 +88,30 @@ namespace GetSanger.Services
             return s_Auth.GetUserId();
         }
 
-        public static bool IsFirstTimeLogIn()
+        public static async Task<bool> IsFirstTimeLogIn()
         {
-            throw new NotImplementedException();
+            string uid = GetLoggedInUserId();
+
+            Dictionary<string, string> dictionary = new Dictionary<string, string>()
+            {
+                ["userId"] = uid
+            };
+            string json = JsonSerializer.Serialize(dictionary);
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserInDatabase";
+            string idToken = await s_Auth.GetIdToken();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseMessage = await response.Content.ReadAsStringAsync();
+                bool result = JsonSerializer.Deserialize<bool>(responseMessage);
+                return result;
+            }
+            else
+            {
+                throw new Exception("Error");
+            }
         }
 
         public static bool IsValidEmail(string i_Verify)
