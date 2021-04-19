@@ -137,7 +137,7 @@ namespace GetSanger.ViewModels
                     FireStoreHelper.UpdateActivity(ConnectedActivity);
                     FireStoreHelper.UpdateUser(user);
                     LocationServices.LeaveTripThread();
-                    await r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} stopped sharing the location with you!");
+                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} stopped sharing the location with you!");
                     ActivatedButtonText = "Enable Location";
                 }
             }
@@ -151,7 +151,7 @@ namespace GetSanger.ViewModels
                     ConnectedActivity.LocationActivatedBySanger = true;
                     FireStoreHelper.UpdateActivity(ConnectedActivity);
                     FireStoreHelper.UpdateUser(user);
-                    await r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} shared the location with you!");
+                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} shared the location with you!");
                     LocationServices.StartTripThread();
                     ActivatedButtonText = "Disable Location";
                 }
