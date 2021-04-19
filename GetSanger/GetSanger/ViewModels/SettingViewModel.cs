@@ -1,4 +1,5 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.AppShell;
+using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Collections;
@@ -34,12 +35,15 @@ namespace GetSanger.ViewModels
 
         #region Commands
         public ICommand ToggledCommand { get; set; }
+
+        public ICommand DeleteAccountCommand { get; set; }
         #endregion
 
         #region Constructor
         public SettingViewModel()
         {
             ToggledCommand = new Command(toggled);
+            DeleteAccountCommand = new Command(deleteAccount);
             CategoriesItems = new ObservableCollection<CategoryCell>(
                 (from 
                     category in AppManager.Instance.GetListOfEnumNames(typeof(Category))
@@ -87,6 +91,18 @@ namespace GetSanger.ViewModels
             }
 
             FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+        }
+
+        private async void deleteAccount()
+        {
+            bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
+            if (answer)
+            {
+                FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserID);
+                // do delete 
+                await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
+                Application.Current.MainPage = new AuthShell();
+            }
         }
         #endregion
     }

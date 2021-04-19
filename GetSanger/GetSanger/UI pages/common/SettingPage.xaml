@@ -68,6 +68,10 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Frame>
+
+            <Button Text="Delete Account"
+                    TextColor="Red"
+                    Command="{Binding DeleteAccountCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
