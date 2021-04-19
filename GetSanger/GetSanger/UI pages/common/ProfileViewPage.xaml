@@ -9,7 +9,49 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.25*"></RowDefinition>
+
+            </Grid.RowDefinitions>
+            <Label Text="Profile"
+                   FontSize="Title"
+                   VerticalOptions="StartAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   Padding="50"
+                   Grid.Row="0"/>
+         
+            <StackLayout Grid.Row="1" >
+                <Grid >
+                    <Label Text="{Binding NickName}"
+                           Grid.Column="0"
+                           Margin="10,10,0,0" />
+                </Grid>
+
+                <Grid>
+                    <Label Text="{Binding PhoneNumber}" 
+                           Grid.Column="0" 
+                           Margin="10,0,0,0" />
+                </Grid>
+                <Grid>
+                    <Label Text="{Binding Gender}" 
+                           Grid.Column="0" 
+                           Margin="10,0,0,0" />
+                </Grid>
+                <Grid>
+                    <Label Text="{Binding Birthday, StringFormat='{}{0:MM/dd/yyyy}'}" 
+                           Grid.Column="0" 
+                           Margin="10,0,0,0" />
+                </Grid>
+                <Grid>
+                    <Label Text="Rate:" 
+                           Grid.Column="0" 
+                           Margin="10,0,0,0" />
+                </Grid>
+
+
+            </StackLayout>
+        </Grid>
+
     </ContentPage.Content>
-    
 </ContentPage>

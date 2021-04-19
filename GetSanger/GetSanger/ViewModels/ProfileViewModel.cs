@@ -15,6 +15,14 @@ namespace GetSanger.ViewModels
         private User m_CurrenUser;
         private ImageSource m_UserImage;
         private string m_Location;
+        //personal detailes
+        private string m_NickName;
+        private ContactPhone m_PhonNumber;
+        private GenderType m_Geneder;
+        private DateTime m_Birthday;
+        private Image m_ProfileImage;
+        private List<Rating> m_RatingList;
+
         #endregion
 
         #region Properties
@@ -25,6 +33,37 @@ namespace GetSanger.ViewModels
             get => m_CurrenUser;
             set => SetClassProperty(ref m_CurrenUser, value);
         }
+
+        public Image ProfileImage
+        {
+            get => m_ProfileImage;
+            set => SetClassProperty(ref m_ProfileImage, value);
+        }
+
+        public GenderType Gender
+        {
+            get => m_Geneder;
+            set => SetStructProperty(ref m_Geneder, value);
+        }
+
+        public  DateTime Birthday
+        {
+            get => m_Birthday;
+            set => SetStructProperty(ref m_Birthday,value);
+        }
+
+        public ContactPhone PhoneNumber
+        {
+            get => m_PhonNumber;
+            set => SetClassProperty(ref m_PhonNumber, value);
+        }
+
+        public string NickName
+        {
+            get => m_NickName;
+            set => SetClassProperty(ref m_NickName, value);
+        }
+
 
         public ImageSource UserImage
         {
@@ -45,7 +84,25 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ProfileViewModel()
         {
-           setUser();
+            //setUser();
+            //test - should be deleted
+            CurrentUser = new User
+            {
+                PersonalDetails = new PersonalDetails
+                {
+                    Nickname = "Refael",
+                    Gender = GenderType.Male, 
+                    Birthday = new DateTime(1993,9,13),
+                    Phone = new ContactPhone("0526460006")
+                }
+            };
+            m_NickName = CurrentUser.PersonalDetails.Nickname;
+            m_PhonNumber = CurrentUser.PersonalDetails.Phone;
+            m_Geneder = CurrentUser.PersonalDetails.Gender;
+            m_Birthday = CurrentUser.PersonalDetails.Birthday;
+            //m_UserImage = new Image(m_CurrenUser.ProfilePictureUri);
+            m_RatingList = CurrentUser.Ratings;
+
         }
         #endregion
 
