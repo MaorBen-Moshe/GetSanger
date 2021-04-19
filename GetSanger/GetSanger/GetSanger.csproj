@@ -53,9 +53,6 @@
     <Compile Update="UI pages\signup\signupEmailPage.xaml.cs">
       <DependentUpon>SignupEmailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ViewModels\RatingStars.xaml.cs">
-      <DependentUpon>RatingStars.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -115,9 +112,6 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Styles\SignStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ViewModels\RatingStars.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

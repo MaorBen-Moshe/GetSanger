@@ -76,6 +76,12 @@ namespace GetSanger.ViewModels
             get => m_Location;
             set => SetClassProperty(ref m_Location, value);
         }
+
+        public List<Rating> Ratings
+        {
+            get => m_RatingList;
+            set => SetClassProperty(ref m_RatingList, value);
+        }
         #endregion
 
         #region Commands
@@ -102,6 +108,16 @@ namespace GetSanger.ViewModels
             m_Birthday = CurrentUser.PersonalDetails.Birthday;
             //m_UserImage = new Image(m_CurrenUser.ProfilePictureUri);
             m_RatingList = CurrentUser.Ratings;
+
+            Ratings = new List<Rating>
+            {
+                new Rating
+                {
+                    Score = 3,
+                    Description = "Refael is not good enough :)",
+                    RatingOwnerId = "10"
+                }
+            };
 
         }
         #endregion

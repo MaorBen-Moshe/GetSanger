@@ -9,7 +9,7 @@ namespace GetSanger.Models
         // score between 1-5.
         public float Score { get; set; }
 
-        public User m_RatingOwnerId { get; set; }
+        public string RatingOwnerId { get; set; }
 
         public string Description { get; set; }
     }

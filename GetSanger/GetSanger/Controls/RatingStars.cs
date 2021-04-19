@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using System.Linq;
+using System.Text;
 
-namespace GetSanger.ViewModels
+using Xamarin.Forms;
+
+namespace GetSanger.Controls
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RatingStars : ContentView
+    public class RatingStars : ContentView
     {
         #region Fields
         private Label ReviewsLabel { get; set; }
@@ -127,20 +128,19 @@ namespace GetSanger.ViewModels
             //Rating is out of 10 
             if (Rating >= currentStarMaxRating)
             {
-                return "rating_star_on.png";
+                return "drawable/rating_star_on.png";
             }
             else if (Rating >= currentStarMaxRating - 1)
             {
-                return "rating_star_half.png";
+                return "drawable/rating_star_half.png";
             }
             else
             {
-                return "rating_star_off.png";
+                return "drawable/rating_star_off.png";
             }
         }
 
 
         #endregion
-
     }
 }

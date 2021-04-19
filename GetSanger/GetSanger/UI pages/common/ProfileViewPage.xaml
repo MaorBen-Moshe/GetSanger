@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:controls ="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.UI_pages.common.ProfileViewPage">
 
     <ContentPage.BindingContext>
@@ -43,11 +44,20 @@
                            Grid.Column="0" 
                            Margin="10,0,0,0" />
                 </Grid>
-                <Grid>
-                    <Label Text="Rate:" 
-                           Grid.Column="0" 
-                           Margin="10,0,0,0" />
-                </Grid>
+                <ListView ItemsSource="{Binding Ratings}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Label Text="{Binding RatingOwnerId}" Grid.Column="0"/>
+                                    <controls:RatingStars Reviews="{Binding Description}"
+                                                      Rating="{Binding Score}"
+                                                          Grid.Column="1"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
 
             </StackLayout>
