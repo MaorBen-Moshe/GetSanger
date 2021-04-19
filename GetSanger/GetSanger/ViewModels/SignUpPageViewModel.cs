@@ -59,7 +59,9 @@ namespace GetSanger.ViewModels
             BackButtonBehaviorCommand = new Command(backButtonBehavior);
             Birthday = DateTime.Now;
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
-            CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList());
+            CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance
+                .GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell
+                    {Category = (Category) Enum.Parse(typeof(Category), name)}).ToList());
             m_TempCategories = CategoriesItems;
         }
 
@@ -147,26 +149,30 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior(object i_Param) // when move from email page back to registration page
         {
-            bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?\n any detail will be lost.", "Yes", "No");
+            bool answer =
+                await r_PageService.DisplayAlert("Warning", "Are you sure?\n any detail will be lost.", "Yes", "No");
             if (answer)
             {
-                PropertyInfo[] properties = GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+                PropertyInfo[] properties = GetType()
+                    .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
                 Email = null; // property of base class
-                foreach(var property in properties)
+                foreach (var property in properties)
                 {
                     if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(GenderItems)))
                     {
                         continue;
                     }
 
-                    else if(IsFacebookGamil && (property.Name.Equals(nameof(Email)) || property.Name.Equals(nameof(Password)) || property.Name.Equals(nameof(ConfirmPassword))))
+                    else if (IsFacebookGamil && (property.Name.Equals(nameof(Email)) ||
+                                                 property.Name.Equals(nameof(Password)) ||
+                                                 property.Name.Equals(nameof(ConfirmPassword))))
                     {
                         continue;
                     }
 
                     else if (property.Name.Equals(nameof(CategoriesItems)))
                     {
-                        foreach(var cell in CategoriesItems)
+                        foreach (var cell in CategoriesItems)
                         {
                             cell.Checked = false;
                         }
@@ -189,7 +195,7 @@ namespace GetSanger.ViewModels
 
         private async void emailPartClicked()
         {
-            if(AuthHelper.IsValidEmail(Email) == false)
+            if (AuthHelper.IsValidEmail(Email) == false)
             {
                 await r_PageService.DisplayAlert("Notice", "Please enter a valid email address!", "OK");
                 return;
@@ -197,13 +203,21 @@ namespace GetSanger.ViewModels
 
             if (Password.Equals(ConfirmPassword))
             {
-                await AuthHelper.RegisterViaEmail(Email, Password);
-                m_CreatedUser = new User
+                try
                 {
-                    UserID = AuthHelper.GetLoggedInUserId()
-                };
+                    await AuthHelper.RegisterViaEmail(Email, Password);
+                    m_CreatedUser = new User
+                    {
+                        UserID = AuthHelper.GetLoggedInUserId()
+                    };
 
-                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
+                    await r_NavigationService.NavigateTo(
+                        ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
+                }
+                catch (Exception e)
+                {
+                    await r_PageService.DisplayAlert("Notice", e.Message, "OK");
+                }
             }
             else
             {
@@ -217,7 +231,7 @@ namespace GetSanger.ViewModels
             {
                 Phone = new ContactPhone(PhoneNumber),
                 Nickname = Name,
-                Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender),
+                Gender = (GenderType) Enum.Parse(typeof(GenderType), PickedGender),
                 Birthday = Birthday
             };
             //  need to set the image also
@@ -228,10 +242,11 @@ namespace GetSanger.ViewModels
 
         private async void categoriesPartClicked()
         {
-            m_CheckedItems = (from category in CategoriesItems 
-                             where category.Checked == true && category.Category.Equals(Category.All) == false select category.Category).ToList();
+            m_CheckedItems = (from category in CategoriesItems
+                where category.Checked == true && category.Category.Equals(Category.All) == false
+                select category.Category).ToList();
 
-            m_CreatedUser.Categories = (List<Category>)m_CheckedItems;
+            m_CreatedUser.Categories = (List<Category>) m_CheckedItems;
             r_PushService.RegisterTopics(UserId, (m_CheckedItems.Select(category => category.ToString())).ToArray());
             FireStoreHelper.AddUser(m_CreatedUser);
             await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
