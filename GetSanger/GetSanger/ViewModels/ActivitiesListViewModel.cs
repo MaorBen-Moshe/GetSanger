@@ -64,14 +64,14 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private void confirmActivity(object i_Param)
+        private async void confirmActivity(object i_Param)
         {
             Activity activity = i_Param as Activity;
             if (activity.Status.Equals(ActivityStatus.Pending)) //snager mode
             {
                 activity.Status = ActivityStatus.ConfirmedBySanger;
                 FireStoreHelper.DeleteActivity(activity);
-                r_PushService.SendToDevice(activity.ClientID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} confirmed your job.");
+                await r_PushService.SendToDevice(activity.ClientID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} confirmed your job.");
             }
             else if (activity.Status.Equals(ActivityStatus.ConfirmedBySanger)) // user mode
             {
@@ -79,20 +79,20 @@ namespace GetSanger.ViewModels
                 AppManager.Instance.ConnectedUser.ActivatedMap.Add(activity.ActivityId, false);
                 FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                 FireStoreHelper.UpdateActivity(activity);
-                r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} confirmed your job.\n You can see it now on your list.");
+                await r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} confirmed your job.\n You can see it now on your list.");
                 IList<Activity> rejected = (from Rejectactivity in AppManager.Instance.ConnectedUser.Activities
                                             where Rejectactivity.JobDetails.JobId.Equals(activity.JobDetails.JobId) && Rejectactivity.ActivityId != activity.ActivityId
                                             select Rejectactivity).ToList();
                 foreach(Activity reject in rejected)
                 {
                     reject.Status = ActivityStatus.Rejected;
-                    r_PushService.SendToDevice(reject.SangerID, reject, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} rejected your job offer.");
+                    await r_PushService.SendToDevice(reject.SangerID, reject, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} rejected your job offer.");
                     FireStoreHelper.DeleteActivity(reject);
                 }
             }
         }
 
-        private void rejectActivity(object i_Param)
+        private async void rejectActivity(object i_Param)
         {
             Activity activity = i_Param as Activity;
             if (activity.Status.Equals(ActivityStatus.Pending)) // sanger mode
@@ -103,7 +103,7 @@ namespace GetSanger.ViewModels
             {
                 FireStoreHelper.DeleteActivity(activity);
                 activity.Status = ActivityStatus.Rejected;
-                r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} rejected your job offer.");
+                await r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} rejected your job offer.");
             }
         }
 

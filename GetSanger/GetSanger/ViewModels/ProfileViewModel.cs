@@ -15,12 +15,11 @@ namespace GetSanger.ViewModels
         private User m_CurrenUser;
         private ImageSource m_UserImage;
         private string m_Location;
-        //personal detailes
+        private int m_AverageRating;
         private string m_NickName;
         private ContactPhone m_PhonNumber;
         private GenderType m_Geneder;
         private DateTime m_Birthday;
-        private Image m_ProfileImage;
         private List<Rating> m_RatingList;
 
         #endregion
@@ -34,16 +33,16 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_CurrenUser, value);
         }
 
-        public Image ProfileImage
-        {
-            get => m_ProfileImage;
-            set => SetClassProperty(ref m_ProfileImage, value);
-        }
-
         public GenderType Gender
         {
             get => m_Geneder;
             set => SetStructProperty(ref m_Geneder, value);
+        }
+
+        public int AverageRating
+        {
+            get => m_AverageRating;
+            set => SetStructProperty(ref m_AverageRating, value);
         }
 
         public  DateTime Birthday
@@ -135,6 +134,20 @@ namespace GetSanger.ViewModels
             UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
             Placemark placemark = await LocationServices.PickedLocation(CurrentUser.UserLocation);
             UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
+            AverageRating = getAverage(CurrentUser);
+        }
+
+        private int getAverage(User i_User)
+        {
+            List<Rating> ratings = i_User.Ratings;
+            float avg = 0;
+            foreach(var rating in ratings)
+            {
+                avg += rating.Score;
+            }
+
+            avg /= ratings.Count;
+            return (int)Math.Ceiling(avg);
         }
         #endregion
     }

@@ -41,7 +41,7 @@ namespace GetSanger.ViewModels
                 return;
             }
 
-            AuthHelper.ForgotPassword(Email);
+            await AuthHelper.ForgotPassword(Email);
         }
 
         #endregion

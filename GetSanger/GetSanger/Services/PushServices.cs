@@ -15,11 +15,8 @@ namespace GetSanger.Services
         public async Task<bool> SendToDevice<T>(string i_UserId, T i_Data, string i_Message = null)
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
-            if (user.IsGenericNotifications)
-            {
-                // send push
-            }
-
+            i_Message = user.IsGenericNotifications ? i_Message : null;
+            //send push
             return true;
         }
 

@@ -102,8 +102,9 @@ namespace GetSanger.ViewModels
 
         private async void FaceBookClicked(object obj)
         {
-            AuthHelper.LoginViaFacebook();
-            if (AuthHelper.IsFirstTimeLogIn())
+            await AuthHelper.LoginViaFacebook();
+            bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
+            if (isFirstLoggedin)
             {
                 await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
@@ -111,8 +112,9 @@ namespace GetSanger.ViewModels
 
         private async void GmailClicked(object obj)
         {
-            AuthHelper.LoginViaGoogle();
-            if (AuthHelper.IsFirstTimeLogIn())
+            await AuthHelper.LoginViaGoogle();
+            bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
+            if (isFirstLoggedin)
             {
                 // go to sign up personal details!
                 await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");

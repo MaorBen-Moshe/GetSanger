@@ -23,8 +23,6 @@ namespace GetSanger.ViewModels
 
         private string m_Name;
 
-        private string m_Email;
-
         private string m_Password;
 
         private string m_ConfirmPassword;
@@ -78,12 +76,6 @@ namespace GetSanger.ViewModels
         }
 
         public string UserId { get; set; }
-
-         public new string Email
-        {
-            get => m_Email;
-            set => SetClassProperty(ref m_Email, value);
-        }
 
         public new string Password
         {
@@ -159,6 +151,7 @@ namespace GetSanger.ViewModels
             if (answer)
             {
                 PropertyInfo[] properties = GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+                Email = null; // property of base class
                 foreach(var property in properties)
                 {
                     if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(GenderItems)))
