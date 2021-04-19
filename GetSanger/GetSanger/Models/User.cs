@@ -15,20 +15,14 @@ namespace GetSanger.Models
         public List<Category> Categories { get; set; }
         public bool IsGenericNotifications { get; set; }
         public Location UserLocation { get; set; }
-
         [JsonIgnore]
         public IList<Activity> Activities { get; set; } // sanger and user activities each mode shows its own activities
-
-        [JsonIgnore] public IList<JobOffer> JobOffers { get; set; }
+        [JsonIgnore]
+        public IList<JobOffer> JobOffers { get; set; }
         public PersonalDetails PersonalDetails { get; set; }
-        [JsonIgnore] public List<Rating> Ratings { get; set; }
-
-        public Dictionary<string, bool>
-            ActivatedMap
-        {
-            get;
-            set;
-        } // map usage ==> when sanger activate map the key is the activity id and the value is true/false (true when activated)
+        [JsonIgnore]
+        public List<Rating> Ratings { get; set; }
+        public Dictionary<string, bool> ActivatedMap { get; set; } // map usage ==> when sanger activate map the key is the activity id and the value is true/false (true when activated)
 
         public User()
         {

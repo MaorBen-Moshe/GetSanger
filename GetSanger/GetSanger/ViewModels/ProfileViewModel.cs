@@ -140,14 +140,13 @@ namespace GetSanger.ViewModels
         private int getAverage(User i_User)
         {
             List<Rating> ratings = i_User.Ratings;
-            float avg = 0;
+            int avg = 0;
             foreach(var rating in ratings)
             {
                 avg += rating.Score;
             }
 
-            avg /= ratings.Count;
-            return (int)Math.Ceiling(avg);
+            return avg / ratings.Count;
         }
         #endregion
     }

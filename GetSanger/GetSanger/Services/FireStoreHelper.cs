@@ -8,8 +8,35 @@ using GetSanger.Models;
 
 namespace GetSanger.Services
 {
+    public enum CollectionType { Activity, JobOffer, Rating };
+
     public static class FireStoreHelper
     {
+        // experiment
+        #region Generic_Methods
+
+        public static async Task<List<T>> GetCollection<T>(string i_UserId, CollectionType i_Type)
+        {
+            string uri = "uri here";
+            Dictionary<string, string> id = new Dictionary<string, string>
+            {
+                ["userid"] = i_UserId,
+                ["type"] = i_Type.ToString()
+            };
+
+            string json = JsonSerializer.Serialize(id);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+
+            return JsonSerializer.Deserialize<List<T>>(await response.Content.ReadAsStringAsync());
+        }
+
+        #endregion
+
+        #region Activities
         public static async Task<List<Activity>> GetActivities(string i_UserID)
         {
             string uri = "uri here";
@@ -28,21 +55,25 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
         }
 
-        public static async Task<Activity> GetActivity(int i_ActivityId, string i_ClientID, string i_SangerID)
+        public static async Task<Activity> GetActivity(string i_ActivityId)
         {
-            List<Activity> client_activities = await GetActivities(i_ClientID);
-            List<Activity> sanger_activities = await GetActivities(i_SangerID);
-            Activity client_activity = client_activities.Where(activity => activity.ActivityId.Equals(i_ActivityId)).FirstOrDefault();
-            Activity sanger_activity = sanger_activities.Where(activity => activity.ActivityId.Equals(i_ActivityId)).FirstOrDefault();
-            if (client_activity.Equals(sanger_activity))
+            string uri = "uri here";
+            Dictionary<string, string> data = new Dictionary<string, string>
             {
-                return client_activity;
+                ["activityid"] = i_ActivityId
+            };
+
+            string json = JsonSerializer.Serialize(data);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            throw new ArgumentException("Could not handle the request"); // need to change the message
+            return JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static void AddActivity(Activity i_Activity)
+        public async static void AddActivity(params Activity[] i_Activity)
         {
             if(i_Activity == null)
             {
@@ -56,10 +87,6 @@ namespace GetSanger.Services
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
-
-            User client = await GetUser(i_Activity.ClientID);
-            i_Activity.ActivityId = await response.Content.ReadAsStringAsync();
-            client.Activities.Add(i_Activity); // check if the activity is not already inside
         }
 
         public async static void DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
@@ -90,7 +117,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async void UpdateActivity(Activity i_Activity) // update activity in user list and in server data base
+        public static async void UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_Activity);
@@ -100,18 +127,9 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
+        #endregion
 
-        public static async void UpdateJobOffer(JobOffer i_JobOffer) // update jobOffer in user list and in server data base
-        {
-            string uri = "uri here";
-            string json = JsonSerializer.Serialize(i_JobOffer);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
-            }
-        }
-
+        #region JobOffers
         public static async Task<List<JobOffer>> GetJobOffers(string i_UserID)
         {
             string uri = "uri here";
@@ -127,22 +145,28 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync()); 
+            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
         }
 
-        public static async Task<JobOffer> GetJobOffer(int i_JobId, string i_ClientID)
+        public static async Task<JobOffer> GetJobOffer(string i_JobId)
         {
-            List<JobOffer> client_jobOffers = await GetJobOffers(i_ClientID);
-            JobOffer client_jobOffer = client_jobOffers.Where(jobOffer => jobOffer.JobId.Equals(i_JobId)).FirstOrDefault();
-            if(client_jobOffer != null)
+            string uri = "uri here";
+            Dictionary<string, string> data = new Dictionary<string, string>
             {
-                return client_jobOffer;
+                ["jobid"] = i_JobId
+            };
+
+            string json = JsonSerializer.Serialize(data);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            throw new ArgumentException("Could not handle the request"); // need to change the message
+            return JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static void AddJobOffer(JobOffer i_JobOffer)
+        public async static void AddJobOffer(params JobOffer[] i_JobOffer)
         {
             if (i_JobOffer == null)
             {
@@ -156,10 +180,6 @@ namespace GetSanger.Services
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
-
-            User client = await GetUser(i_JobOffer.ClientID);
-            i_JobOffer.JobId = await response.Content.ReadAsStringAsync();
-            client.JobOffers.Add(i_JobOffer); // check if the activity is not already inside
         }
 
         public async static void DeleteJobOffer(JobOffer i_JobOffer)
@@ -178,17 +198,83 @@ namespace GetSanger.Services
             }
         }
 
-        public async static void AddUser(User i_User)
+        public static async void UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
         {
-            string server_uri = "Cloud Function Of FireStore Here";
-            string json = JsonSerializer.Serialize(i_User);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post);
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_JobOffer);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+        }
+        #endregion
+
+        #region Ratings
+        public static async Task<List<Rating>> GetRatings(string i_UserID)
+        {
+            string uri = "uri here";
+            Dictionary<string, string> id = new Dictionary<string, string>
+            {
+                ["userid"] = i_UserID
+            };
+
+            string json = JsonSerializer.Serialize(id);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+
+            return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async static void AddRating(params Rating[] i_Rating)
+        {
+            if (i_Rating == null)
+            {
+                throw new ArgumentNullException("Activity is null");
+            }
+
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_Rating);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
 
+        public async static void DeleteRating(Rating i_Rating) // delete activity from user list and from server data base
+        {
+            if (i_Rating == null)
+            {
+                throw new ArgumentNullException("Activity is null");
+            }
+
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_Rating);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        public static async void UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
+        {
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_Rating);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        #endregion
+
+        #region User
         public static async Task<User> GetUser(string i_UserID)
         {
             string server_uri = "Cloud Function Of FireStore Here";
@@ -203,10 +289,14 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
+            User user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
+            user.Activities = await GetActivities(user.UserID);
+            user.JobOffers = await GetJobOffers(user.UserID);
+            user.Ratings = await GetRatings(user.UserID);
+            return user;
         }
 
-        public static async void UpdateUser(User i_User)
+        public async static void AddUser(User i_User)
         {
             string server_uri = "Cloud Function Of FireStore Here";
             string json = JsonSerializer.Serialize(i_User);
@@ -216,5 +306,38 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
+
+        public async static void DeleteUser(string i_UserId)
+        {
+            string uri = "server uri here";
+            Dictionary<string, string> data = new Dictionary<string, string>
+            {
+                ["userid"] = i_UserId
+            };
+
+            string json = JsonSerializer.Serialize(data);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        public static async void UpdateUser(User i_User)
+        {
+            string server_uri = "Cloud Function Of FireStore Here";
+            // the three are not serialized with the user, we update the manually
+            UpdateActivity(i_User.Activities.ToArray());
+            UpdateJobOffer(i_User.JobOffers.ToArray());
+            UpdateRating(i_User.Ratings.ToArray());
+
+            string json = JsonSerializer.Serialize(i_User);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+        }
+        #endregion
     }
 }
