@@ -167,6 +167,7 @@ namespace GetSanger.ViewModels
             // when sanger is near to us we want to stop asking for location, 0.3 kilometers
             if (Location.CalculateDistance(await LocationServices.GetCurrentLocation(), sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
             {
+                await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
                 LocationServices.LeaveTripThread(handleTrip);
                 (ConnecetedPage as ActivityViewModel).IsActivatedLocationButton = false;
                 await GoBack();

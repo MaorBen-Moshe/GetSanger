@@ -12,16 +12,28 @@ namespace GetSanger.Services
     {
         public static async Task<List<Activity>> GetActivities(string i_UserID)
         {
-            User user = await GetUser(i_UserID);
-            return (List<Activity>)user.Activities;
+            string uri = "uri here";
+            Dictionary<string, string> id = new Dictionary<string, string>
+            {
+                ["userid"] = i_UserID
+            };
+
+            string json = JsonSerializer.Serialize(id);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+
+            return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
         }
 
         public static async Task<Activity> GetActivity(int i_ActivityId, string i_ClientID, string i_SangerID)
         {
-            User client = await GetUser(i_ClientID);
-            User sanger = await GetUser(i_SangerID);
-            Activity client_activity = client.Activities.Where(activity => activity.ActivityId.Equals(i_ActivityId)).FirstOrDefault();
-            Activity sanger_activity = sanger.Activities.Where(activity => activity.ActivityId.Equals(i_ActivityId)).FirstOrDefault();
+            List<Activity> client_activities = await GetActivities(i_ClientID);
+            List<Activity> sanger_activities = await GetActivities(i_SangerID);
+            Activity client_activity = client_activities.Where(activity => activity.ActivityId.Equals(i_ActivityId)).FirstOrDefault();
+            Activity sanger_activity = sanger_activities.Where(activity => activity.ActivityId.Equals(i_ActivityId)).FirstOrDefault();
             if (client_activity.Equals(sanger_activity))
             {
                 return client_activity;
@@ -37,57 +49,97 @@ namespace GetSanger.Services
                 throw new ArgumentNullException("Activity is null");
             }
 
-            User client = await GetUser(i_Activity.ClientID);
-            User sanger = await GetUser(i_Activity.SangerID);
-            client.Activities.Add(i_Activity); // check if the activity is not already inside
-            sanger.Activities.Add(i_Activity); // check if the activity is not already inside
-            UpdateUser(client);
-            UpdateUser(sanger);
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_Activity);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
 
+            User client = await GetUser(i_Activity.ClientID);
+            i_Activity.ActivityId = await response.Content.ReadAsStringAsync();
+            client.Activities.Add(i_Activity); // check if the activity is not already inside
         }
 
         public async static void DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
         {
-            if (i_UserId != null)
+            if (i_Activity == null)
             {
-                User user = await GetUser(i_UserId);
-                user.Activities.Remove(i_Activity);
-                UpdateUser(user);
-                return;
+                throw new ArgumentNullException("Activity is null");
             }
-            // by default activity is removed from both users
-            User client = await GetUser(i_Activity.ClientID);
-            User sanger = await GetUser(i_Activity.SangerID);
-            client.Activities.Remove(i_Activity); // check if the activity is not already inside
-            sanger.Activities.Remove(i_Activity); // check if the activity is not already inside
-            UpdateUser(client);
-            UpdateUser(sanger);
+
+            if(i_UserId != null) // we want to remove the activity just from sanger
+            {
+                if (i_Activity.ClientID.Equals(i_UserId)) // here we want to delete from client
+                {
+                    i_Activity.SangerID = null;
+                }
+                else if (i_Activity.SangerID.Equals(i_UserId)) // here we want to delete from sanger
+                {
+                    i_Activity.ClientID = null;
+                }
+            }
+
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_Activity);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
         }
 
         public static async void UpdateActivity(Activity i_Activity) // update activity in user list and in server data base
         {
-            User client = await GetUser(i_Activity.ClientID);
-            User sanger = await GetUser(i_Activity.SangerID);
-            client.Activities = (from activity in client.Activities where activity.Equals(i_Activity) == false select activity).ToList();
-            sanger.Activities = (from activity in sanger.Activities where activity.Equals(i_Activity) == false select activity).ToList();
-            client.Activities.Add(i_Activity);
-            sanger.Activities.Add(i_Activity);
-            UpdateUser(client);
-            UpdateUser(sanger);
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_Activity);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
         }
 
         public static async void UpdateJobOffer(JobOffer i_JobOffer) // update jobOffer in user list and in server data base
         {
-            User user = await GetUser(i_JobOffer.ClientID);
-            user.JobOffers = (from job in user.JobOffers where job.Equals(i_JobOffer) == false select job).ToList();
-            user.JobOffers.Add(i_JobOffer);
-            UpdateUser(user);
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_JobOffer);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
         }
 
         public static async Task<List<JobOffer>> GetJobOffers(string i_UserID)
         {
-            User user = await GetUser(i_UserID);
-            return (List<JobOffer>)user.JobOffers;
+            string uri = "uri here";
+            Dictionary<string, string> id = new Dictionary<string, string>
+            {
+                ["userid"] = i_UserID
+            };
+
+            string json = JsonSerializer.Serialize(id);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+
+            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync()); 
+        }
+
+        public static async Task<JobOffer> GetJobOffer(int i_JobId, string i_ClientID)
+        {
+            List<JobOffer> client_jobOffers = await GetJobOffers(i_ClientID);
+            JobOffer client_jobOffer = client_jobOffers.Where(jobOffer => jobOffer.JobId.Equals(i_JobId)).FirstOrDefault();
+            if(client_jobOffer != null)
+            {
+                return client_jobOffer;
+            }
+
+            throw new ArgumentException("Could not handle the request"); // need to change the message
         }
 
         public async static void AddJobOffer(JobOffer i_JobOffer)
@@ -97,21 +149,33 @@ namespace GetSanger.Services
                 throw new ArgumentNullException("JobDetails is null");
             }
 
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_JobOffer);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+
             User client = await GetUser(i_JobOffer.ClientID);
+            i_JobOffer.JobId = await response.Content.ReadAsStringAsync();
             client.JobOffers.Add(i_JobOffer); // check if the activity is not already inside
-            UpdateUser(client);
         }
 
         public async static void DeleteJobOffer(JobOffer i_JobOffer)
         {
             if (i_JobOffer == null)
             {
-                throw new ArgumentNullException("Activity is null");
+                throw new ArgumentNullException("Job offer is null");
             }
 
-            User client = await GetUser(i_JobOffer.ClientID);
-            client.JobOffers = (from job in client.JobOffers where job.Equals(i_JobOffer) == false select job).ToList();
-            UpdateUser(client);
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_JobOffer);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
         }
 
         public async static void AddUser(User i_User)

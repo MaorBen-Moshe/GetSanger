@@ -16,7 +16,6 @@ namespace GetSanger.UI_pages.common
         public ProfileViewPage()
         {
             InitializeComponent();
-
         }
     }
 }

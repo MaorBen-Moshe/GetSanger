@@ -129,7 +129,7 @@ namespace GetSanger.ViewModels
             if (sangerInuser && activated)
             {
                 // sanger ends location
-                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
+                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.Nickname}?", "OK", "cancel");
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, false);
@@ -137,20 +137,21 @@ namespace GetSanger.ViewModels
                     FireStoreHelper.UpdateActivity(ConnectedActivity);
                     FireStoreHelper.UpdateUser(user);
                     LocationServices.LeaveTripThread();
-                    // we can send push to user to tell that if he is in the map 
+                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} stopped sharing the location with you!");
                     ActivatedButtonText = "Enable Location";
                 }
             }
             else
             {
                 // sanger starts location
-                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
+                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.Nickname}?", "OK", "cancel");
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
                     ConnectedActivity.LocationActivatedBySanger = true;
                     FireStoreHelper.UpdateActivity(ConnectedActivity);
                     FireStoreHelper.UpdateUser(user);
+                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} shared the location with you!");
                     LocationServices.StartTripThread();
                     ActivatedButtonText = "Disable Location";
                 }
