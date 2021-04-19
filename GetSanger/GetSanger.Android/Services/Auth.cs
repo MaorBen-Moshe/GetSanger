@@ -16,6 +16,7 @@ using GetSanger.Droid.Services;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(Auth))]
+
 namespace GetSanger.Droid.Services
 {
     class Auth : IAuth
@@ -57,7 +58,7 @@ namespace GetSanger.Droid.Services
 
         public bool IsLoggedIn()
         {
-            return getUser() != null;
+            return getUser() != null && !IsAnonymousUser();
         }
 
         public void SignInWithCustomToken(string i_Token)
