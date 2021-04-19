@@ -16,6 +16,7 @@ namespace GetSanger.Services
     public static class AuthHelper
     {
         private static readonly IAuth s_Auth = DependencyService.Get<IAuth>();
+
         public static async Task RegisterViaEmail(string i_Email, string i_Password)
         {
             if (!s_Auth.IsAnonymousUser())
@@ -40,6 +41,7 @@ namespace GetSanger.Services
                 string responseMessage = await response.Content.ReadAsStringAsync();
                 throw new Exception(responseMessage);
             }
+
             await LoginViaEmail(i_Email, i_Password);
         }
 
@@ -102,7 +104,7 @@ namespace GetSanger.Services
             {
                 // Normalize the domain
                 i_Verify = Regex.Replace(i_Verify, @"(@)(.+)$", DomainMapper,
-                                      RegexOptions.None, TimeSpan.FromMilliseconds(200));
+                    RegexOptions.None, TimeSpan.FromMilliseconds(200));
 
                 // Examines the domain part of the email and normalizes it.
                 string DomainMapper(Match match)
@@ -137,9 +139,21 @@ namespace GetSanger.Services
             }
         }
 
-        public static void ForgotPassword(string i_Email)
+        public static async Task ForgotPassword(string i_Email)
         {
-            throw new NotImplementedException();
+            Dictionary<string, string> dictionary = new Dictionary<string, string>()
+            {
+                ["email"] = i_Email
+            };
+            string json = JsonSerializer.Serialize(dictionary);
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPasswordResetEmail";
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string error = await response.Content.ReadAsStringAsync();
+                throw new Exception(error);
+            }
         }
     }
 }
