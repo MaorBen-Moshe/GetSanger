@@ -1,7 +1,9 @@
 ﻿using GetSanger.Interfaces;
+using GetSanger.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace GetSanger.Services
@@ -10,9 +12,14 @@ namespace GetSanger.Services
     {
         private readonly static IPushService sr_Push = DependencyService.Get<IPushService>();
 
-        public bool SendToDevice<T>(string i_UserId, T i_Data, string i_Message = null)
+        public async Task<bool> SendToDevice<T>(string i_UserId, T i_Data, string i_Message = null)
         {
-            
+            User user = await FireStoreHelper.GetUser(i_UserId);
+            if (user.IsGenericNotifications)
+            {
+                // send push
+            }
+
             return true;
         }
 

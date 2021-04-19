@@ -12,6 +12,7 @@ namespace GetSanger.Models
         public Uri ProfilePictureUri { get; set; }
         public AppMode LastUserMode { get; set; } // if null open mode page else open client/sanger shell
         public List<Category> Categories { get; set; }
+        public bool IsGenericNotifications { get; set; }
         public Location UserLocation { get; set; }
         public IList<Activity> Activities { get; set; } // sanger and user activities each mode shows its own activities
         public IList<JobOffer> JobOffers { get; set; }
@@ -25,6 +26,7 @@ namespace GetSanger.Models
             ActivatedMap = new Dictionary<string, bool>();
             Activities = new List<Activity>();
             Ratings = new List<Rating>();
+            IsGenericNotifications = true; // default generic notifications 
         }
 
         public override bool Equals(object obj)

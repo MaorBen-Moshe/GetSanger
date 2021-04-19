@@ -15,17 +15,27 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private ObservableCollection<CategoryCell> m_CategoriesItems;
+        private bool m_IsGenericNotificatons;
         #endregion
+
         #region Properties
         public ObservableCollection<CategoryCell> CategoriesItems
         {
             get => m_CategoriesItems;
             set => SetClassProperty(ref m_CategoriesItems, value);
         }
+
+        public bool IsGenericNotificatons
+        {
+            get => m_IsGenericNotificatons;
+            set => SetStructProperty(ref m_IsGenericNotificatons, value);
+        }
         #endregion
+
         #region Commands
         public ICommand ToggledCommand { get; set; }
         #endregion
+
         #region Constructor
         public SettingViewModel()
         {
@@ -42,21 +52,38 @@ namespace GetSanger.ViewModels
                         Checked = AppManager.Instance.ConnectedUser.Categories.Contains((Category)Enum.Parse(typeof(Category), category))
                     }
                  ).ToList());
+            IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
         }
         #endregion
+
         #region Methods
         private void toggled(object i_Param)
         {
-            CategoryCell current = i_Param as CategoryCell;
-            if (current.Checked)
+            if (i_Param is CategoryCell)
             {
-                AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
-                r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, current.Category.ToString());
+                CategoryCell current = i_Param as CategoryCell;
+                if (current.Checked)
+                {
+                    AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
+                    r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, current.Category.ToString());
+                }
+                else
+                {
+                    AppManager.Instance.ConnectedUser.Categories.Remove(current.Category);
+                    r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, current.Category.ToString());
+                }
             }
-            else
+            else // generic notifications
             {
-                AppManager.Instance.ConnectedUser.Categories.Remove(current.Category);
-                r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, current.Category.ToString());
+                AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
+                if (IsGenericNotificatons)
+                {
+                    r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic);
+                }
+                else
+                {
+                    r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic);
+                }
             }
 
             FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);

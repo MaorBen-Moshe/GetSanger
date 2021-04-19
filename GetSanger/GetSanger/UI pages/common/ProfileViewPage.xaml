@@ -10,7 +10,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <Grid>
+        <!--<Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.25*"></RowDefinition>
 
@@ -43,14 +43,15 @@
                     <Label Text="{Binding Birthday, StringFormat='{}{0:MM/dd/yyyy}'}" 
                            Grid.Column="0" 
                            Margin="10,0,0,0" />
-                </Grid>
-                <ListView ItemsSource="{Binding Ratings}">
+                </Grid>-->
+                <ListView ItemsSource="{Binding Ratings}"
+                          HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <Grid>
                                     <Label Text="{Binding RatingOwnerId}" Grid.Column="0"/>
-                                    <controls:RatingStars Reviews="{Binding Description}"
+                                    <controls:RatingStars Review="{Binding Description}"
                                                       Rating="{Binding Score}"
                                                           Grid.Column="1"/>
                                 </Grid>
@@ -60,8 +61,8 @@
                 </ListView>
 
 
-            </StackLayout>
-        </Grid>
+            <!--</StackLayout>
+        </Grid>-->
 
     </ContentPage.Content>
 </ContentPage>

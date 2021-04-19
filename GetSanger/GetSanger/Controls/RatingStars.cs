@@ -38,11 +38,12 @@ namespace GetSanger.Controls
 
         //Add in configurable "Rating" double property from XAML, for setting the rating stars
 
-        public static BindableProperty ReviewsProperty = BindableProperty.Create(
-            nameof(Reviews),
-            typeof(int),
+        public static BindableProperty ReviewProperty = BindableProperty.Create(
+            nameof(Review),
+            typeof(string),
             typeof(RatingStars),
-            0, BindingMode.OneWay,
+            "No Description"
+            , BindingMode.OneWay,
             propertyChanged: (bindable, oldValue, newValue) =>
             {
                 var ratingStars = (RatingStars)bindable;
@@ -50,12 +51,10 @@ namespace GetSanger.Controls
             }
         );
 
-
-        //Count of the total number of reviews 
-        public int Reviews
+        public string Review
         {
-            get { return (int)GetValue(ReviewsProperty); }
-            set { SetValue(ReviewsProperty, value); }
+            get { return (string)GetValue(ReviewProperty); }
+            set { SetValue(ReviewProperty, value); }
         }
         #endregion
 
@@ -90,12 +89,12 @@ namespace GetSanger.Controls
                 Padding = 0,
                 Spacing = 0,
                 Children = {
+                    ReviewsLabel,
                     StarImages[0],
                     StarImages[1],
                     StarImages[2],
                     StarImages[3],
-                    StarImages[4],
-                    ReviewsLabel
+                    StarImages[4]
                 }
             };
 
@@ -105,17 +104,17 @@ namespace GetSanger.Controls
             this.Content = starsStack;
         }
 
-        //Set the Display of the Reviews Label 
+        //Set the Display of the Review Label 
         public void updateReviewsDisplay()
         {
-            ReviewsLabel.Text = Reviews > 0 ? " (" + Convert.ToString(Reviews) + ")" : "";
+            ReviewsLabel.Text = Review;
         }
 
 
         //Set the correct images for the stars based on the rating 
         public void updateStarsDisplay()
         {
-            for (int i = 0; i < StarImages.Count; i++)
+            for (int i = 0; i < Rating; i++)
             {
                 StarImages[i].Source = GetStarFileName(i);
             }

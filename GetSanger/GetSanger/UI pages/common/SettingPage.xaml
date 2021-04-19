@@ -19,39 +19,55 @@
     
     <ContentPage.Content>
         <StackLayout>
-            <ListView SeparatorVisibility="None" 
+            <Frame>
+                <StackLayout>
+                    <Label Text="Notifications"/>
+                    <Switch IsToggled="{Binding IsGenericNotificatons}">
+                        <Switch.Behaviors>
+                            <behaviors:EventToCommandBehavior Command="{Binding ToggledCommand}"
+                                                                                      EventName="Toggled" />
+                        </Switch.Behaviors>
+                    </Switch>
+                </StackLayout>
+            </Frame>
+            <!-- Categories Notifications-->
+            <Frame>
+                <ListView SeparatorVisibility="None" 
                           Margin="0"
                           RowHeight="55"
                           ItemsSource="{Binding CategoriesItems}"
                           BackgroundColor="Transparent"
                           HasUnevenRows="True">
-
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Frame WidthRequest="327" Padding="2" CornerRadius="07" HasShadow="false" BackgroundColor="Silver" Margin="24,10,34,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
-                                <Frame WidthRequest="327" Padding="0" CornerRadius="07" HasShadow="false" OutlineColor="Transparent">
-                                    <StackLayout WidthRequest="327" Orientation="Horizontal" Spacing="0">
-                                        <Label HeightRequest="30" WidthRequest="120" FontSize="20" Margin="22,0,0,0" Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray"  VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" />
-                                        <Switch HeightRequest="27" 
+                    <ListView.Header>
+                        <Label Text="Categories"/>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame WidthRequest="327" Padding="2" CornerRadius="07" HasShadow="false" BackgroundColor="Silver" Margin="24,10,34,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+                                    <Frame WidthRequest="327" Padding="0" CornerRadius="07" HasShadow="false" OutlineColor="Transparent">
+                                        <StackLayout WidthRequest="327" Orientation="Horizontal" Spacing="0">
+                                            <Label HeightRequest="30" WidthRequest="120" FontSize="20" Margin="22,0,0,0" Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray"  VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" />
+                                            <Switch HeightRequest="27" 
                                                       WidthRequest="31" 
                                                       Margin="24,0,0,0" 
                                                       VerticalOptions="CenterAndExpand" 
                                                       HorizontalOptions="End"
                                                       IsToggled="{Binding Checked}">
-                                            <Switch.Behaviors>
-                                                <behaviors:EventToCommandBehavior Command="{Binding BindingContext.ToggledCommand, Source={x:Reference SettingsPage}}"
-                                                                                      EventName="CheckedChanged"
+                                                <Switch.Behaviors>
+                                                    <behaviors:EventToCommandBehavior Command="{Binding BindingContext.ToggledCommand, Source={x:Reference SettingsPage}}"
+                                                                                      EventName="Toggled"
                                                                                       CommandParameter="{Binding}"/>
-                                            </Switch.Behaviors>
-                                        </Switch>
-                                    </StackLayout>
+                                                </Switch.Behaviors>
+                                            </Switch>
+                                        </StackLayout>
+                                    </Frame>
                                 </Frame>
-                            </Frame>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
