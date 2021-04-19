@@ -16,6 +16,7 @@ using Xamarin.Forms.Internals;
 namespace GetSanger.ViewModels
 {
     [Preserve(AllMembers = true)]
+    [QueryProperty(nameof(IsFacebookGamil), "isFacebookGamail")]
     public class SignUpPageViewModel : LoginViewModel
     {
         #region Fields
@@ -44,6 +45,8 @@ namespace GetSanger.ViewModels
 
         private string m_PickedGender;
 
+        private User m_CreatedUser;
+
         #endregion
 
         #region Constructor
@@ -65,6 +68,8 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Property
+
+        public bool IsFacebookGamil { get; set; }
 
         public string Name
         {
@@ -156,12 +161,27 @@ namespace GetSanger.ViewModels
                 PropertyInfo[] properties = GetType().GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
                 foreach(var property in properties)
                 {
-                    if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(CategoriesItems)) || property.Name.Equals(nameof(GenderItems)))
+                    if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(GenderItems)))
                     {
                         continue;
                     }
 
-                    if (property.Name.Equals(nameof(Birthday)))
+                    else if(IsFacebookGamil && (property.Name.Equals(nameof(Email)) || property.Name.Equals(nameof(Password)) || property.Name.Equals(nameof(ConfirmPassword))))
+                    {
+                        continue;
+                    }
+
+                    else if (property.Name.Equals(nameof(CategoriesItems)))
+                    {
+                        foreach(var cell in CategoriesItems)
+                        {
+                            cell.Checked = false;
+                        }
+
+                        continue;
+                    }
+
+                    else if (property.Name.Equals(nameof(Birthday)))
                     {
                         property.SetValue(this, DateTime.Now);
                         continue;
@@ -184,8 +204,13 @@ namespace GetSanger.ViewModels
 
             if (Password.Equals(ConfirmPassword))
             {
-                //UserId = AuthHelper.GetLoggedInUserId();
-                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails);
+                await AuthHelper.RegisterViaEmail(Email, Password);
+                m_CreatedUser = new User
+                {
+                    UserID = AuthHelper.GetLoggedInUserId()
+                };
+
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
             }
             else
             {
@@ -202,8 +227,9 @@ namespace GetSanger.ViewModels
                 Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender),
                 Birthday = Birthday
             };
-
-            // set logged in user personal details
+            //  need to set the image also
+            // need to set the user location
+            m_CreatedUser.PersonalDetails = personal;
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }
 
@@ -211,9 +237,10 @@ namespace GetSanger.ViewModels
         {
             m_CheckedItems = (from category in CategoriesItems 
                              where category.Checked == true && category.Category.Equals(Category.All) == false select category.Category).ToList();
-            //r_PushService.RegisterTopics(UserId, (m_CheckedItems.Select(category => category.ToString())).ToArray());
 
-            // register and move to mode page
+            m_CreatedUser.Categories = (List<Category>)m_CheckedItems;
+            r_PushService.RegisterTopics(UserId, (m_CheckedItems.Select(category => category.ToString())).ToArray());
+            FireStoreHelper.AddUser(m_CreatedUser);
             await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
         }
 

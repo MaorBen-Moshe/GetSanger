@@ -1,12 +1,5 @@
-﻿using GetSanger.Interfaces;
+﻿using GetSanger.ViewModels;
 using GetSanger.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,6 +13,12 @@ namespace GetSanger.UI_pages.signup
             InitializeComponent();
 
             BindingContext = AppManager.Instance.SignUpVM;
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            (BindingContext as SignUpPageViewModel).BackButtonBehaviorCommand.Execute(null);
+            return true;
         }
     }
 }

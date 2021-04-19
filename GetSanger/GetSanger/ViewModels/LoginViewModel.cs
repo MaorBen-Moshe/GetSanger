@@ -100,21 +100,22 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
         }
 
-        private void FaceBookClicked(object obj)
+        private async void FaceBookClicked(object obj)
         {
             AuthHelper.LoginViaFacebook();
             if (AuthHelper.IsFirstTimeLogIn())
             {
-                // go to sign up personal details!
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
         }
 
-        private void GmailClicked(object obj)
+        private async void GmailClicked(object obj)
         {
             AuthHelper.LoginViaGoogle();
             if (AuthHelper.IsFirstTimeLogIn())
             {
                 // go to sign up personal details!
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
         }
 

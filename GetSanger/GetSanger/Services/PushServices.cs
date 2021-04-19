@@ -12,7 +12,7 @@ namespace GetSanger.Services
 
         public bool SendToDevice<T>(string i_UserId, T i_Data, string i_Message = null)
         {
-
+            
             return true;
         }
 

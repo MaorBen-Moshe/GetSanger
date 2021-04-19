@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GetSanger.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,12 @@ namespace GetSanger.UI_pages.common
         public EditProfilePage()
         {
             InitializeComponent();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            (BindingContext as EditProfileViewModel).BackButtonCommand.Execute(null);
+            return true;
         }
     }
 }

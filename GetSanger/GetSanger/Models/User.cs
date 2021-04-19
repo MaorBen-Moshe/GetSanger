@@ -19,6 +19,14 @@ namespace GetSanger.Models
         public List<Rating> Ratings { get; set; }
         public Dictionary<string, bool> ActivatedMap { get; set; } // map usage ==> when sanger activate map the key is the activity id and the value is true/false (true when activated)
 
+        public User()
+        {
+            JobOffers = new List<JobOffer>();
+            ActivatedMap = new Dictionary<string, bool>();
+            Activities = new List<Activity>();
+            Ratings = new List<Rating>();
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is User))

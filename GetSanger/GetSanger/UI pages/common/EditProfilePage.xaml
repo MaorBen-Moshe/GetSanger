@@ -5,14 +5,20 @@
              x:Class="GetSanger.UI_pages.common.EditProfilePage">
 
     <ContentPage.BindingContext>
-        <vm:ProfileViewModel />
+        <vm:EditProfileViewModel />
     </ContentPage.BindingContext>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackButtonCommand}"/>
+    </Shell.BackButtonBehavior>
     
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <ImageButton Source="{Binding ProfileImage, Mode=TwoWay}" Command="{Binding ImageChosenCommand}"/>
+            <Entry Text="{Binding NickName}" />
+            <Entry Text="{Binding Phone}" Keyboard="Numeric"/>
+            <DatePicker Date="{Binding Birthday}" Format="dd mm yy"/>
+            <Picker ItemsSource="{Binding GenderItems}" SelectedItem="{Binding Gender}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
