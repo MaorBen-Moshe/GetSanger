@@ -86,7 +86,7 @@ namespace GetSanger.ViewModels
                 return;
             }
 
-            await AuthHelper.LoginViaEmail(Email, Password.ToString());
+            await RunTaskWhileLoading(AuthHelper.LoginViaEmail(Email, Password.ToString()));
             // check if login succeeded
         }
 
