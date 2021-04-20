@@ -10,6 +10,8 @@ namespace GetSanger.Models
     public class User
     {
         public string UserID { get; set; }
+        [JsonIgnore]
+        public string Email { get; set; }
         public Uri ProfilePictureUri { get; set; }
         public AppMode LastUserMode { get; set; } // if null open mode page else open client/sanger shell
         public List<Category> Categories { get; set; }
