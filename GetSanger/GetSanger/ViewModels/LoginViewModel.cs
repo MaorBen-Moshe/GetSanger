@@ -15,7 +15,7 @@ namespace GetSanger.ViewModels
     {
         #region Events
 
-        public event Action DisplayInvalidLoginPrompt;
+        //public event Action DisplayInvalidLoginPrompt;
 
         #endregion
 
@@ -119,6 +119,14 @@ namespace GetSanger.ViewModels
                 // go to sign up personal details!
                 await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
+        }
+
+        protected override void appearing(object i_Param)
+        {
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
 
         #endregion

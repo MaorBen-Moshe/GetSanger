@@ -97,8 +97,6 @@ namespace GetSanger.ViewModels
             CurrentLocation = new Command(GetCurrentLocation);
             JobLocation = new Command(GetJobLocation);
             SendJobCommand = new Command(SendJob);
-            JobDate = DateTime.Now;
-            IntialCurrentLocation();
         }
         #endregion
 
@@ -157,6 +155,16 @@ namespace GetSanger.ViewModels
 
             toRet = string.Format("{0}, {1} {2}", i_Placemark.Locality, i_Placemark.Thoroughfare, i_Placemark.SubThoroughfare);
             return toRet;
+        }
+
+        protected override void appearing(object i_Param)
+        {
+            JobDate = DateTime.Now;
+            IntialCurrentLocation();
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
     }

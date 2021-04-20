@@ -68,12 +68,12 @@ namespace GetSanger.Services
             s_Auth.SignInWithCustomToken(customToken);
         }
 
-        public async static Task<Dictionary<string, string>> LoginViaGoogle()
+        public static Task<Dictionary<string, string>> LoginViaGoogle()
         {
             throw new NotImplementedException();
         }
 
-        public async static Task<Dictionary<string, string>> LoginViaFacebook()
+        public static Task<Dictionary<string, string>> LoginViaFacebook()
         {
             throw new NotImplementedException();
         }
@@ -139,11 +139,11 @@ namespace GetSanger.Services
                     return match.Groups[1].Value + domainName;
                 }
             }
-            catch (RegexMatchTimeoutException e)
+            catch (RegexMatchTimeoutException)
             {
                 return false;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return false;
             }

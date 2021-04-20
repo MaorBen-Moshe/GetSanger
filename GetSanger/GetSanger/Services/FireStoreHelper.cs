@@ -73,7 +73,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static void AddActivity(params Activity[] i_Activity)
+        public async static Task AddActivity(params Activity[] i_Activity)
         {
             if(i_Activity == null)
             {
@@ -89,7 +89,7 @@ namespace GetSanger.Services
             }
         }
 
-        public async static void DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
+        public async static Task DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
         {
             if (i_Activity == null)
             {
@@ -117,7 +117,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async void UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
+        public static async Task UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_Activity);
@@ -166,7 +166,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static void AddJobOffer(params JobOffer[] i_JobOffer)
+        public async static Task AddJobOffer(params JobOffer[] i_JobOffer)
         {
             if (i_JobOffer == null)
             {
@@ -182,7 +182,7 @@ namespace GetSanger.Services
             }
         }
 
-        public async static void DeleteJobOffer(JobOffer i_JobOffer)
+        public async static Task DeleteJobOffer(JobOffer i_JobOffer)
         {
             if (i_JobOffer == null)
             {
@@ -198,7 +198,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async void UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
+        public static async Task UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_JobOffer);
@@ -229,7 +229,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static void AddRating(params Rating[] i_Rating)
+        public async static Task AddRating(params Rating[] i_Rating)
         {
             if (i_Rating == null)
             {
@@ -245,7 +245,7 @@ namespace GetSanger.Services
             }
         }
 
-        public async static void DeleteRating(Rating i_Rating) // delete activity from user list and from server data base
+        public async static Task DeleteRating(Rating i_Rating) // delete activity from user list and from server data base
         {
             if (i_Rating == null)
             {
@@ -261,7 +261,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async void UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
+        public static async Task UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_Rating);
@@ -296,7 +296,7 @@ namespace GetSanger.Services
             return user;
         }
 
-        public async static void AddUser(User i_User)
+        public async static Task AddUser(User i_User)
         {
             string server_uri = "Cloud Function Of FireStore Here";
             string json = JsonSerializer.Serialize(i_User);
@@ -307,7 +307,7 @@ namespace GetSanger.Services
             }
         }
 
-        public async static void DeleteUser(string i_UserId)
+        public async static Task DeleteUser(string i_UserId)
         {
             string uri = "server uri here";
             Dictionary<string, string> data = new Dictionary<string, string>
@@ -323,13 +323,13 @@ namespace GetSanger.Services
             }
         }
 
-        public static async void UpdateUser(User i_User)
+        public static async Task UpdateUser(User i_User)
         {
             string server_uri = "Cloud Function Of FireStore Here";
             // the three are not serialized with the user, we update the manually
-            UpdateActivity(i_User.Activities.ToArray());
-            UpdateJobOffer(i_User.JobOffers.ToArray());
-            UpdateRating(i_User.Ratings.ToArray());
+            await UpdateActivity(i_User.Activities.ToArray());
+            await UpdateJobOffer(i_User.JobOffers.ToArray());
+            await UpdateRating(i_User.Ratings.ToArray());
 
             string json = JsonSerializer.Serialize(i_User);
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post);

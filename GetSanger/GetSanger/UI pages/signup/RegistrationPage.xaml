@@ -2,12 +2,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.UI_pages.signup.RegistrationPage"
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.BindingContext>
         <vm:LoginViewModel />
     </ContentPage.BindingContext>
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior EventName="Appearing"
+                                          Command="{Binding AppearingPageCommand}" />
+        <behaviors:EventToCommandBehavior EventName="Disappearing"
+                                          Command="{Binding DisappearingPageCommand}" />
+    </ContentPage.Behaviors>
 
     <Grid>
         <StackLayout  VerticalOptions="Center" 

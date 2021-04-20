@@ -3,11 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:controls ="clr-namespace:GetSanger.Controls"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.UI_pages.common.ProfileViewPage">
 
     <ContentPage.BindingContext>
         <vm:ProfileViewModel />
     </ContentPage.BindingContext>
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior EventName="Appearing"
+                                          Command="{Binding AppearingPageCommand}" />
+        <behaviors:EventToCommandBehavior EventName="Disappearing"
+                                          Command="{Binding DisappearingPageCommand}" />
+    </ContentPage.Behaviors>
 
     <ContentPage.Content>
         <Grid>

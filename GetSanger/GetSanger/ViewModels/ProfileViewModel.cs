@@ -102,37 +102,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ProfileViewModel()
         {
-            //setUser();
             setCommands();
-            //test - should be deleted
-
-            CurrentUser = new User
-            {
-                PersonalDetails = new PersonalDetails
-                {
-                    Nickname = "Refael",
-                    Gender = GenderType.Male, 
-                    Birthday = new DateTime(1993,9,13),
-                    Phone = new ContactPhone("0526460006")
-                }
-            };
-            m_NickName = CurrentUser.PersonalDetails.Nickname;
-            m_PhonNumber = CurrentUser.PersonalDetails.Phone;
-            m_Geneder = CurrentUser.PersonalDetails.Gender;
-            m_Birthday = CurrentUser.PersonalDetails.Birthday;
-            //m_UserImage = new Image(m_CurrenUser.ProfilePictureUri);
-            m_RatingList = CurrentUser.Ratings;
-
-            Ratings = new List<Rating>
-            {
-                new Rating
-                {
-                    Score = 3,
-                    Description = "Refael is not good enough :)",
-                    RatingOwnerId = "10"
-                }
-            };
-
         }
         #endregion
 
@@ -234,6 +204,15 @@ namespace GetSanger.ViewModels
         private async void addRating(object i_Param)
         {
             await Shell.Current.GoToAsync($"{ShellRoutes.AddRating}?ratedUser={CurrentUser}");
+        }
+
+        protected override void appearing(object i_Param)
+        {
+            setUser();
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
     }

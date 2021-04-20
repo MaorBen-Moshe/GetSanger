@@ -51,9 +51,6 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
-        public ICommand AppearingPageCommand { get; private set; }
-
-        public ICommand DisappearingPageCommand { get; private set; }
 
         public ICommand SearchCommand { get; private set; }
 
@@ -67,15 +64,10 @@ namespace GetSanger.ViewModels
         #region Constructor
         public MapViewModel()
         {
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
             PinClicked = new Command(PinClickedHelper);
             CallTripCommand = new Command(CallTripHelper);
-            createMapSpan();
-            IsSearch = ConnecetedPage is JobOfferViewModel;
-            IsTrip = ConnecetedPage is ActivityViewModel;
         }
         #endregion
 
@@ -202,15 +194,18 @@ namespace GetSanger.ViewModels
             };
         }
 
-        private void appearing()
+        protected override void appearing(object i_Param)
         {
+            createMapSpan();
+            IsSearch = ConnecetedPage is JobOfferViewModel;
+            IsTrip = ConnecetedPage is ActivityViewModel;
             if (IsTrip) // we already checked if sanger gave permission to client to see location
             {
                 LocationServices.StartTripThread(handleTrip, 350000);
             }
         }
 
-        private void disappearing()
+        protected override void disappearing(object i_Param)
         {
             if (IsTrip)
             {

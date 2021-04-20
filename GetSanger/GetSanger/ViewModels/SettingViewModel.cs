@@ -44,24 +44,11 @@ namespace GetSanger.ViewModels
         {
             ToggledCommand = new Command(toggled);
             DeleteAccountCommand = new Command(deleteAccount);
-            CategoriesItems = new ObservableCollection<CategoryCell>(
-                (from 
-                    category in AppManager.Instance.GetListOfEnumNames(typeof(Category))
-                 where
-                    !category.Equals(Category.All.ToString())
-                 select 
-                    new CategoryCell
-                    {
-                        Category = (Category)Enum.Parse(typeof(Category), category),
-                        Checked = AppManager.Instance.ConnectedUser.Categories.Contains((Category)Enum.Parse(typeof(Category), category))
-                    }
-                 ).ToList());
-            IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
         }
         #endregion
 
         #region Methods
-        private void toggled(object i_Param)
+        private async void toggled(object i_Param)
         {
             if (i_Param is CategoryCell)
             {
@@ -90,7 +77,7 @@ namespace GetSanger.ViewModels
                 }
             }
 
-            FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
         }
 
         private async void deleteAccount()
@@ -98,11 +85,32 @@ namespace GetSanger.ViewModels
             bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
             if (answer)
             {
-                FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserID);
+                await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserID));
                 // do delete 
                 await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
                 Application.Current.MainPage = new AuthShell();
             }
+        }
+
+        protected override void appearing(object i_Param)
+        {
+            CategoriesItems = new ObservableCollection<CategoryCell>(
+            (from
+                category in AppManager.Instance.GetListOfEnumNames(typeof(Category))
+             where
+                !category.Equals(Category.All.ToString())
+             select
+                new CategoryCell
+                {
+                    Category = (Category)Enum.Parse(typeof(Category), category),
+                    Checked = AppManager.Instance.ConnectedUser.Categories.Contains((Category)Enum.Parse(typeof(Category), category))
+                }
+            ).ToList());
+            IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
     }

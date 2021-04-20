@@ -40,7 +40,6 @@ namespace GetSanger.ViewModels
         public AddRatingViewModel()
         {
             AddRatingCommand = new Command(addRating);
-            Rating = 1;
         }
         #endregion
 
@@ -55,9 +54,18 @@ namespace GetSanger.ViewModels
                 RatingOwnerId = RatedUser.UserID
             };
 
-            FireStoreHelper.AddRating(current);
+            await RunTaskWhileLoading(FireStoreHelper.AddRating(current));
             await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
             await GoBack();
+        }
+
+        protected override void appearing(object i_Param)
+        {
+            Rating = 1;
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
     }

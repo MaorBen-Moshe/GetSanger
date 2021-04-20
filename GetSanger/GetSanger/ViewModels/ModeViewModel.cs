@@ -34,11 +34,19 @@ namespace GetSanger.ViewModels
             App.Current.MainPage = new SangerShell();
         }
 
-        private void setUserMode(AppMode i_Mode)
+        private async void setUserMode(AppMode i_Mode)
         {
             AppManager.Instance.CurrentMode = i_Mode;
             AppManager.Instance.ConnectedUser.LastUserMode = i_Mode;
-            FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
+        }
+
+        protected override void appearing(object i_Param)
+        {
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
     }

@@ -16,7 +16,14 @@
             <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior EventName="Appearing"
+                                          Command="{Binding AppearingPageCommand}" />
+        <behaviors:EventToCommandBehavior EventName="Disappearing"
+                                          Command="{Binding DisappearingPageCommand}" />
+    </ContentPage.Behaviors>
+
     <ContentPage.Content>
 
         <StackLayout Orientation="Vertical" Spacing="20">
