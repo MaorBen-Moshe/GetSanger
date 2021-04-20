@@ -12,7 +12,7 @@ using System.Net.Mail;
 
 namespace GetSanger.ViewModels
 {
-    public enum ReportOption { Abuse, Other };
+    public enum ReportOption { Abuse, Harassment, Unprofessional, Ads, Other }; // need to fully implement
 
     [QueryProperty(nameof(UserId), "userid")]
     public class ProfileViewModel : BaseViewModel
