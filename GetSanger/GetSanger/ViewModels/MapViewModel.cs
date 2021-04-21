@@ -60,9 +60,6 @@ namespace GetSanger.ViewModels
 
         public ICommand CallTripCommand { get; private set; }
 
-        public ICommand AppearingPageCommand { get; set; }
-
-        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -72,8 +69,6 @@ namespace GetSanger.ViewModels
             MapClicked = new Command(MapClickedHelper);
             PinClicked = new Command(PinClickedHelper);
             CallTripCommand = new Command(CallTripHelper);
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -200,7 +195,7 @@ namespace GetSanger.ViewModels
             };
         }
 
-        protected async void appearing(object i_Param)
+        public override async void Appearing()
         {
             createMapSpan();
             IsSearch = ConnecetedPage is JobOfferViewModel;
@@ -216,7 +211,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected void disappearing(object i_Param)
+        public void Disappearing()
         {
             if (IsTrip)
             {

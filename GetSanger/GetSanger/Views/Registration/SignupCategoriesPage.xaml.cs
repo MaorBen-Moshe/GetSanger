@@ -12,9 +12,7 @@ namespace GetSanger.Views.Registration
         {
             InitializeComponent();
 
-            //BindingContext = AppManager.Instance.SignUpVM;
-            
-            BindingContext = new SignUpPageViewModel();
+            BindingContext = AppManager.Instance.SignUpVM;
         }
     }
 }

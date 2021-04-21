@@ -38,9 +38,6 @@ namespace GetSanger.ViewModels
 
         public ICommand DeleteAccountCommand { get; set; }
 
-        public ICommand AppearingPageCommand { get; set; }
-
-        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -48,8 +45,6 @@ namespace GetSanger.ViewModels
         {
             ToggledCommand = new Command(toggled);
             DeleteAccountCommand = new Command(deleteAccount);
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -98,7 +93,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected void appearing(object i_Param)
+        public override void Appearing()
         {
             CategoriesItems = new ObservableCollection<CategoryCell>(
             (from
@@ -113,10 +108,6 @@ namespace GetSanger.ViewModels
                 }
             ).ToList());
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
-        }
-
-        protected void disappearing(object i_Param)
-        {
         }
         #endregion
     }

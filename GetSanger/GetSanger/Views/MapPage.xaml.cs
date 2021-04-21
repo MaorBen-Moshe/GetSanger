@@ -12,8 +12,18 @@ namespace GetSanger.Views
         public MapPage()
         {
             InitializeComponent();
+        }
 
-            BindingContext = new MapViewModel();
+        protected override void OnAppearing()
+        {
+            (BindingContext as BaseViewModel).Appearing();
+            base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as MapViewModel).Disappearing();
+            base.OnDisappearing();
         }
     }
 }

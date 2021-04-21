@@ -28,8 +28,6 @@ namespace GetSanger.ViewModels
         public ICommand CurrentLocation { get; private set; }
         public ICommand JobLocation { get; private set; }
         public ICommand SendJobCommand { get; private set; }
-        public ICommand AppearingPageCommand { get; set; }
-        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Properties
@@ -100,8 +98,6 @@ namespace GetSanger.ViewModels
             CurrentLocation = new Command(GetCurrentLocation);
             JobLocation = new Command(GetJobLocation);
             SendJobCommand = new Command(SendJob);
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -162,14 +158,10 @@ namespace GetSanger.ViewModels
             return toRet;
         }
 
-        protected void appearing(object i_Param)
+        public override void Appearing()
         {
             JobDate = DateTime.Now;
             IntialCurrentLocation();
-        }
-
-        protected void disappearing(object i_Param)
-        {
         }
         #endregion
     }

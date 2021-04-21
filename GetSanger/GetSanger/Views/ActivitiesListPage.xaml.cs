@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GetSanger.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,10 @@ namespace GetSanger.Views
             InitializeComponent();
         }
 
+        protected override void OnAppearing()
+        {
+            (BindingContext as BaseViewModel).Appearing();
+            base.OnAppearing();
+        }
     }
 }

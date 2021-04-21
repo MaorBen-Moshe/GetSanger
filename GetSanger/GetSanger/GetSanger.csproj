@@ -37,9 +37,6 @@
     <Compile Update="Styles\SignStyles.xaml.cs">
       <DependentUpon>SignStyles.xaml</DependentUpon>
     </Compile>
-    <Compile Update="UI pages\common\ActivitiesMasterPage.xaml.cs">
-      <DependentUpon>ActivitiesMasterPage.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\ActivityDetailPage.xaml.cs">
       <DependentUpon>ActivityDetailPage.xaml</DependentUpon>
     </Compile>
@@ -62,9 +59,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ActivityDetailPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UI pages\common\ActivitiesHistoryMasterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\AddRatingPage.xaml">

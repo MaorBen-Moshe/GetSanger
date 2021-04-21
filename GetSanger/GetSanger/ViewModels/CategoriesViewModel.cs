@@ -26,8 +26,6 @@ namespace GetSanger.ViewModels
 
         #region Commands
         public ICommand CategorySelectedCommand { get; set; }
-        public ICommand AppearingPageCommand { get; set; }
-        public ICommand DisappearingPageCommand { get; set; }
 
         #endregion
 
@@ -35,8 +33,6 @@ namespace GetSanger.ViewModels
         public CategoriesViewModel()
         {
             CategorySelectedCommand = new Command(categorySelected);
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -48,13 +44,9 @@ namespace GetSanger.ViewModels
             Shell.Current.GoToAsync($"jobOffer?category={current.Category}");
         }
 
-        protected void appearing(object i_Param)
+        public override void Appearing()
         {
             CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
-        }
-
-        protected void disappearing(object i_Param)
-        {
         }
         #endregion
     }

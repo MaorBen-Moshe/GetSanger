@@ -12,9 +12,6 @@ namespace GetSanger.ViewModels
 
         public ICommand SangerCommand { get; private set; }
 
-        public ICommand AppearingPageCommand { get; set; }
-
-        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -22,8 +19,6 @@ namespace GetSanger.ViewModels
         {
             UserCommand = new Command(userCommandHelper);
             SangerCommand = new Command(sangerCommandHelper);
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -52,11 +47,7 @@ namespace GetSanger.ViewModels
             Application.Current.MainPage = i_ChosenShell;
         }
 
-        protected void appearing(object i_Param)
-        {
-        }
-
-        protected void disappearing(object i_Param)
+        public override void Appearing()
         {
         }
         #endregion

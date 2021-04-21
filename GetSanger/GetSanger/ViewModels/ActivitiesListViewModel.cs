@@ -36,8 +36,6 @@ namespace GetSanger.ViewModels
         public ICommand RejectActivityCommand { get; set; }
         public ICommand RefreshingCommand { get; set; }
         public ICommand SelectedActivityCommand { get; set; }
-        public ICommand AppearingPageCommand { get; set; }
-        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -48,8 +46,6 @@ namespace GetSanger.ViewModels
             RejectActivityCommand = new Command(rejectActivity);
             RefreshingCommand = new Command(refreshList);
             SelectedActivityCommand = new Command(selectedActivity);
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -134,11 +130,7 @@ namespace GetSanger.ViewModels
             Shell.Current.GoToAsync($"activitydetail?activity={i_Param as Activity}");
         }
 
-        protected void appearing(object i_Param)
-        {
-        }
-
-        protected void disappearing(object i_Param)
+        public override void Appearing()
         {
         }
         #endregion

@@ -12,17 +12,10 @@
             <converters:CategoryToStringConverter x:Key="CategoryToStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <ContentPage.BindingContext>
         <vm:SettingViewModel />
     </ContentPage.BindingContext>
-
-    <ContentPage.Behaviors>
-        <behaviors:EventToCommandBehavior EventName="Appearing"
-                                          Command="{Binding AppearingPageCommand}" />
-        <behaviors:EventToCommandBehavior EventName="Disappearing"
-                                          Command="{Binding DisappearingPageCommand}" />
-    </ContentPage.Behaviors>
 
     <ContentPage.Content>
         <StackLayout>

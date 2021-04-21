@@ -74,10 +74,6 @@ namespace GetSanger.ViewModels
 
         public ICommand GmailLoginCommand { get; set; }
 
-        public ICommand AppearingPageCommand { get; set; }
-
-        public ICommand DisappearingPageCommand { get; set; }
-
         #endregion
 
         #region methods
@@ -134,13 +130,9 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected void appearing(object i_Param)
+        public override void Appearing()
         {
             // auto log in if connected
-        }
-
-        protected void disappearing(object i_Param)
-        {
         }
 
         #endregion

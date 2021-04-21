@@ -14,5 +14,11 @@ namespace GetSanger.Views
 
             BindingContext = new JobOfferViewModel();
         }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as BaseViewModel).Appearing();
+            base.OnAppearing();
+        }
     }
 }

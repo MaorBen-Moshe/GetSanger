@@ -74,6 +74,8 @@ namespace GetSanger.ViewModels
                 throw ex;
             }
         }
+
+        public abstract void Appearing();
         #endregion
     }
 }

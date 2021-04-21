@@ -12,5 +12,11 @@ namespace GetSanger.Views.Registration
         {
             InitializeComponent();
         }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as BaseViewModel).Appearing();
+            base.OnAppearing();
+        }
     }
 }

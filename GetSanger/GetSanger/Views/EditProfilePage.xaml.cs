@@ -23,5 +23,11 @@ namespace GetSanger.Views
             (BindingContext as EditProfileViewModel).BackButtonCommand.Execute(null);
             return true;
         }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as BaseViewModel).Appearing();
+            base.OnAppearing();
+        }
     }
 }

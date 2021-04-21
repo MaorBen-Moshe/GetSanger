@@ -16,13 +16,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.Behaviors>
-        <behaviors:EventToCommandBehavior EventName="Appearing"
-                                          Command="{Binding AppearingPageCommand}" />
-        <behaviors:EventToCommandBehavior EventName="Disappearing"
-                                          Command="{Binding DisappearingPageCommand}" />
-    </ContentPage.Behaviors>
-
     <ContentPage.Content>
         <AbsoluteLayout>
             <StackLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 0.35"

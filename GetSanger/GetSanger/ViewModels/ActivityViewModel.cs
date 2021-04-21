@@ -71,8 +71,6 @@ namespace GetSanger.ViewModels
         public ICommand LocationCommand { get; private set; }
 
         public ICommand EndActivityCommand { get; private set; }
-        public ICommand AppearingPageCommand { get; set; }
-        public ICommand DisappearingPageCommand { get; set; }
 
         #endregion
 
@@ -81,8 +79,6 @@ namespace GetSanger.ViewModels
         {
             ProfileCommand = new Command(profilePage);
             EndActivityCommand = new Command(endActivity);
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -223,7 +219,7 @@ namespace GetSanger.ViewModels
             await Shell.Current.GoToAsync($"/profile?user={user}");
         }
 
-        protected void appearing(object i_Param)
+        public override void Appearing()
         {
             setLocationsLabels();
             initialPhoneNumber();
@@ -231,10 +227,6 @@ namespace GetSanger.ViewModels
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
                                    AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
                                    ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
-        }
-
-        protected void disappearing(object i_Param)
-        {
         }
 
         #endregion

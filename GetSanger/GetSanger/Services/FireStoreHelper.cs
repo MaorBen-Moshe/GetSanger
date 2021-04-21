@@ -296,7 +296,7 @@ namespace GetSanger.Services
             return user;
         }
 
-        public static async void AddUser(User i_User)
+        public static async Task AddUser(User i_User)
         {
             string server_uri = "Cloud Function Of FireStore Here";
             string json = JsonSerializer.Serialize(i_User);

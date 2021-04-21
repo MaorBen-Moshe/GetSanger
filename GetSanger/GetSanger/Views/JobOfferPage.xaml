@@ -2,15 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sys ="clr-namespace:System;assembly=mscorlib"
-             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.JobOfferPage">
     
-    <ContentPage.Behaviors>
-        <behaviors:EventToCommandBehavior EventName="Appearing"
-                                          Command="{Binding AppearingPageCommand}" />
-        <behaviors:EventToCommandBehavior EventName="Disappearing"
-                                          Command="{Binding DisappearingPageCommand}" />
-    </ContentPage.Behaviors>
 
     <ContentPage.Content>
         <Grid>
