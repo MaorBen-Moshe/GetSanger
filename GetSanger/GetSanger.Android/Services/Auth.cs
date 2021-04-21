@@ -50,7 +50,7 @@ namespace GetSanger.Droid.Services
 
         public void SignOut()
         {
-            if (IsLoggedIn())
+            if (getUser() != null)
             {
                 FirebaseAuth.Instance.SignOut();
             }
@@ -61,10 +61,10 @@ namespace GetSanger.Droid.Services
             return getUser() != null && !IsAnonymousUser();
         }
 
-        public void SignInWithCustomToken(string i_Token)
+        public async Task SignInWithCustomToken(string i_Token)
         {
             SignOut();
-            FirebaseAuth.Instance.SignInWithCustomTokenAsync(i_Token);
+            await FirebaseAuth.Instance.SignInWithCustomTokenAsync(i_Token);
         }
 
         public bool IsAnonymousUser()

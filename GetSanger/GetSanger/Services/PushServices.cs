@@ -51,10 +51,9 @@ namespace GetSanger.Services
             }
         }
 
-        public async void RegisterTopics(string i_UserId, params string[] i_Topics)
+        public async Task RegisterTopics(string i_UserId, params string[] i_Topics)
         {
-
-            string uri = "Cloud uri here!";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SubscribeToTopics";
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
                 ["UserId"] = i_UserId,
@@ -62,7 +61,8 @@ namespace GetSanger.Services
             };
 
             string json = JsonSerializer.Serialize(pushData);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -89,6 +89,11 @@ namespace GetSanger.Services
         public override void SetDependencies()
         {
             // do nothing
+        }
+
+        public string GetRegistrationToken()
+        {
+            return sr_Push.GetRegistrationToken();
         }
     }
 }
