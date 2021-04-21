@@ -80,13 +80,22 @@ namespace GetSanger.ViewModels
 
         private async void LoginClicked(object obj)
         {
-            if(Email == null || Password == null)
+            if (Email == null || Password == null)
             {
                 await r_PageService.DisplayAlert("Error", "Please enter valid values.", "OK");
                 return;
             }
 
-            await RunTaskWhileLoading(AuthHelper.LoginViaEmail(Email, Password.ToString()));
+            try
+            {
+                await AuthHelper.LoginViaEmail(Email, Password.ToString());
+                await r_PageService.DisplayAlert("Ok", "Log in successful!", "OK");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                await r_PageService.DisplayAlert("Error", e.Message, "OK");
+            }
             // check if login succeeded
         }
 
