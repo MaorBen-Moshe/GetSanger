@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using GetSanger.Constants;
-using GetSanger.UI_pages.signup;
-using GetSanger.UI_pages.common;
+using GetSanger.Views.Registration;
+using GetSanger.Views;
 using System.Linq;
 
 namespace GetSanger.AppShell

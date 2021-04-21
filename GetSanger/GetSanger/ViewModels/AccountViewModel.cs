@@ -36,6 +36,10 @@ namespace GetSanger.ViewModels
         public ICommand ChangeModeCommand { get; set; }
 
         public ICommand LogoutCommand { get; set; }
+
+        public ICommand AppearingPageCommand { get; set; }
+
+        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -45,6 +49,8 @@ namespace GetSanger.ViewModels
             SettingCommand = new Command(setting);
             ChangeModeCommand = new Command(changeMode);
             LogoutCommand = new Command(logout);
+            AppearingPageCommand = new Command(appearing);
+            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -72,13 +78,13 @@ namespace GetSanger.ViewModels
             await Shell.Current.GoToAsync($"/editProfile");
         }
 
-        protected override void appearing(object i_Param)
+        protected void appearing(object i_Param)
         {
             CurrentUser = AppManager.Instance.ConnectedUser ?? throw new ArgumentException("User details are not available!");
             UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
         }
 
-        protected override void disappearing(object i_Param)
+        protected void disappearing(object i_Param)
         {
         }
         #endregion

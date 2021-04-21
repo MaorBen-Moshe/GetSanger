@@ -1,7 +1,7 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Interfaces;
 using GetSanger.Services;
-using GetSanger.UI_pages.signup;
+using GetSanger.Views.Registration;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -74,6 +74,10 @@ namespace GetSanger.ViewModels
 
         public ICommand GmailLoginCommand { get; set; }
 
+        public ICommand AppearingPageCommand { get; set; }
+
+        public ICommand DisappearingPageCommand { get; set; }
+
         #endregion
 
         #region methods
@@ -121,11 +125,12 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected override void appearing(object i_Param)
+        protected void appearing(object i_Param)
         {
+            // auto log in if connected
         }
 
-        protected override void disappearing(object i_Param)
+        protected void disappearing(object i_Param)
         {
         }
 

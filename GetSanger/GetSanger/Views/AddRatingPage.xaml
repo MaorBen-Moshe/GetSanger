@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             x:Class="GetSanger.Views.AddRatingPage">
+
+    <ContentPage.BindingContext>
+        <vm:AddRatingViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior EventName="Appearing"
+                                          Command="{Binding AppearingPageCommand}" />
+        <behaviors:EventToCommandBehavior EventName="Disappearing"
+                                          Command="{Binding DisappearingPageCommand}" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <controls:RatingStars Rating="{Binding Rating}"/> <!--need to implement choosing how many starts to rate-->
+            <Frame
+                       VerticalOptions="FillAndExpand"
+                       HasShadow="True">
+                <Editor IsSpellCheckEnabled="True"
+                            IsTextPredictionEnabled="True"
+                            Placeholder="Job Description"
+                            VerticalOptions="FillAndExpand"
+                            Text="{Binding Review}">
+                    <Editor.Keyboard>
+                        <Keyboard x:FactoryMethod="Create" >
+                            <x:Arguments>
+                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                            </x:Arguments>
+                        </Keyboard>
+                    </Editor.Keyboard>
+                </Editor>
+            </Frame>
+            <Button Text="Send" Command="{Binding AddRatingCommand}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

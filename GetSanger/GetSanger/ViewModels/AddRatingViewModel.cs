@@ -34,12 +34,16 @@ namespace GetSanger.ViewModels
 
         #region Commands
         public ICommand AddRatingCommand { get; set; }
+        public ICommand AppearingPageCommand { get; set; }
+        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
         public AddRatingViewModel()
         {
             AddRatingCommand = new Command(addRating);
+            AppearingPageCommand = new Command(appearing);
+            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -59,12 +63,12 @@ namespace GetSanger.ViewModels
             await GoBack();
         }
 
-        protected override void appearing(object i_Param)
+        protected void appearing(object i_Param)
         {
             Rating = 1;
         }
 
-        protected override void disappearing(object i_Param)
+        protected void disappearing(object i_Param)
         {
         }
         #endregion

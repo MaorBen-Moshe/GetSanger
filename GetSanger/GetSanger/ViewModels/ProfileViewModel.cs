@@ -97,6 +97,10 @@ namespace GetSanger.ViewModels
         public ICommand ReportUserCommand { get; set; }
 
         public ICommand AddRatingCommand { get; set; }
+
+        public ICommand AppearingPageCommand { get; set; }
+
+        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -113,7 +117,9 @@ namespace GetSanger.ViewModels
             CallCommand = new Command(callUser);
             AddRatingCommand = new Command(addRating);
             ReportUserCommand = new Command(reportUser);
-            SendMessageCommand = new Command(sendMessageToUser); 
+            SendMessageCommand = new Command(sendMessageToUser);
+            AppearingPageCommand = new Command(appearing);
+            DisappearingPageCommand = new Command(disappearing);
         }
 
         private async void setUser()
@@ -212,12 +218,12 @@ namespace GetSanger.ViewModels
             await Shell.Current.GoToAsync($"{ShellRoutes.AddRating}?ratedUser={CurrentUser}");
         }
 
-        protected override void appearing(object i_Param)
+        protected void appearing(object i_Param)
         {
             setUser();
         }
 
-        protected override void disappearing(object i_Param)
+        protected void disappearing(object i_Param)
         {
         }
         #endregion

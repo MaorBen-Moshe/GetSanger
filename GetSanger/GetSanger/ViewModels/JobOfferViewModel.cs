@@ -1,6 +1,6 @@
 ﻿using GetSanger.Interfaces;
 using GetSanger.Services;
-using GetSanger.UI_pages.common;
+using GetSanger.Views;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -28,6 +28,8 @@ namespace GetSanger.ViewModels
         public ICommand CurrentLocation { get; private set; }
         public ICommand JobLocation { get; private set; }
         public ICommand SendJobCommand { get; private set; }
+        public ICommand AppearingPageCommand { get; set; }
+        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Properties
@@ -89,6 +91,7 @@ namespace GetSanger.ViewModels
             get => m_JobCategory;
             set => SetStructProperty(ref m_JobCategory, value);
         }
+
         #endregion
 
         #region Constructor
@@ -97,6 +100,8 @@ namespace GetSanger.ViewModels
             CurrentLocation = new Command(GetCurrentLocation);
             JobLocation = new Command(GetJobLocation);
             SendJobCommand = new Command(SendJob);
+            AppearingPageCommand = new Command(appearing);
+            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -157,13 +162,13 @@ namespace GetSanger.ViewModels
             return toRet;
         }
 
-        protected override void appearing(object i_Param)
+        protected void appearing(object i_Param)
         {
             JobDate = DateTime.Now;
             IntialCurrentLocation();
         }
 
-        protected override void disappearing(object i_Param)
+        protected void disappearing(object i_Param)
         {
         }
         #endregion

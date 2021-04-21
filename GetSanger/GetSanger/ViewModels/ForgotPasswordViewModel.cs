@@ -1,4 +1,5 @@
 ﻿using GetSanger.Services;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -29,7 +30,7 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Command
-        public Command SendCommand { get; set; }
+        public ICommand SendCommand { get; set; }
         #endregion
 
         #region Methods

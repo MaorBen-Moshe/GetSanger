@@ -42,12 +42,6 @@ namespace GetSanger.ViewModels
         }
         #endregion
 
-        #region GenericCommands
-        public ICommand AppearingPageCommand { get; set; }
-
-        public ICommand DisappearingPageCommand { get; set; }
-        #endregion
-
         #region Constructor
         protected BaseViewModel()
         {
@@ -56,9 +50,6 @@ namespace GetSanger.ViewModels
             LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             r_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
             r_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            //set commands
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -83,10 +74,6 @@ namespace GetSanger.ViewModels
                 throw ex;
             }
         }
-
-        protected abstract void appearing(object i_Param);
-
-        protected abstract void disappearing(object i_Param);
         #endregion
     }
 }

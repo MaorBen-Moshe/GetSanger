@@ -88,6 +88,8 @@ namespace GetSanger.ViewModels
         #region Commands
         public ICommand ImageChosenCommand { get; set; }
         public ICommand BackButtonCommand { get; set; }
+        public ICommand AppearingPageCommand { get; set; }
+        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -95,6 +97,8 @@ namespace GetSanger.ViewModels
         {
             ImageChosenCommand = new Command(imageChanged);
             BackButtonCommand = new Command(backButtonBehavior);
+            AppearingPageCommand = new Command(appearing);
+            DisappearingPageCommand = new Command(disappearing);
         }
 
         #endregion
@@ -137,13 +141,13 @@ namespace GetSanger.ViewModels
             ProfileImage = ImageSource.FromStream(() => stream);
         }
 
-        protected override void appearing(object i_Param)
+        protected void appearing(object i_Param)
         {
             initialData();
             GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
         }
 
-        protected override void disappearing(object i_Param)
+        protected void disappearing(object i_Param)
         {
         }
         #endregion
