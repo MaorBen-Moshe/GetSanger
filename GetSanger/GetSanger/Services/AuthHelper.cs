@@ -83,6 +83,11 @@ namespace GetSanger.Services
             return s_Auth.IsLoggedIn();
         }
 
+        public static bool IsVerifiedEmail()
+        {
+            return true;
+        }
+
         public static string GetLoggedInUserId()
         {
             return s_Auth.GetUserId();

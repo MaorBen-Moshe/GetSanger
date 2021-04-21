@@ -196,9 +196,15 @@ namespace GetSanger.ViewModels
                 };
 
                 mailMessage.To.Add(Constants.Constants.GetSangerMail);
-                smtp.Send(mailMessage);
-                await r_PageService.DisplayAlert("Note", "Your report has sent to us. we will contact you.", "Thanks");
+                smtp.SendCompleted += Smtp_SendCompleted;                
+                smtp.SendAsync(mailMessage, null);
+                //smtp.Send(mailMessage);
             }
+        }
+
+        private async void Smtp_SendCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            await r_PageService.DisplayAlert("Note", "Your report has sent to us. we will contact you.", "Thanks");
         }
 
         private async void addRating(object i_Param)
