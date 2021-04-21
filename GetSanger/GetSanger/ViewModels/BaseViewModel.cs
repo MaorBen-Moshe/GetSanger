@@ -3,13 +3,13 @@ using GetSanger.Services;
 using System;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
     [Preserve(AllMembers = true)]
-    [DataContract]
     public abstract class BaseViewModel : PropertySetter
     {
         #region Fields
@@ -34,11 +34,18 @@ namespace GetSanger.ViewModels
             }
             get => m_IsLoading;
         }
+
         protected bool IsNotLoading
         {
             set => SetStructProperty(ref m_IsNotLoading, value);
             get => m_IsNotLoading;
         }
+        #endregion
+
+        #region GenericCommands
+        public ICommand AppearingPageCommand { get; set; }
+
+        public ICommand DisappearingPageCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -49,6 +56,9 @@ namespace GetSanger.ViewModels
             LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             r_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
             r_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            //set commands
+            AppearingPageCommand = new Command(appearing);
+            DisappearingPageCommand = new Command(disappearing);
         }
         #endregion
 
@@ -73,6 +83,10 @@ namespace GetSanger.ViewModels
                 throw ex;
             }
         }
+
+        protected abstract void appearing(object i_Param);
+
+        protected abstract void disappearing(object i_Param);
         #endregion
     }
 }

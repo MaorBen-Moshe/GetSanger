@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -51,12 +52,7 @@ namespace GetSanger.ViewModels
 
         public SignUpPageViewModel()
         {
-            EmailPartCommand = new Command(emailPartClicked);
-            PersonalDetailPartCommand = new Command(personalDetailPartClicked);
-            CategoriesPartCommand = new Command(categoriesPartClicked);
-            AllCategoriesCommand = new Command(allCategoriesChecked);
-            ImagePickerCommand = new Command(imagePicker);
-            BackButtonBehaviorCommand = new Command(backButtonBehavior);
+            setCommands();
             Birthday = DateTime.Now;
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
             CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance
@@ -147,6 +143,16 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
+        private void setCommands()
+        {
+            EmailPartCommand = new Command(emailPartClicked);
+            PersonalDetailPartCommand = new Command(personalDetailPartClicked);
+            CategoriesPartCommand = new Command(categoriesPartClicked);
+            AllCategoriesCommand = new Command(allCategoriesChecked);
+            ImagePickerCommand = new Command(imagePicker);
+            BackButtonBehaviorCommand = new Command(backButtonBehavior);
+        }
+
         private async void backButtonBehavior(object i_Param) // when move from email page back to registration page
         {
             bool answer =
@@ -205,7 +211,7 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    await AuthHelper.RegisterViaEmail(Email, Password);
+                    await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(Email, Password));
                     m_CreatedUser = new User
                     {
                         UserID = AuthHelper.GetLoggedInUserId()
@@ -248,7 +254,7 @@ namespace GetSanger.ViewModels
 
             m_CreatedUser.Categories = (List<Category>) m_CheckedItems;
             r_PushService.RegisterTopics(UserId, (m_CheckedItems.Select(category => category.ToString())).ToArray());
-            FireStoreHelper.AddUser(m_CreatedUser);
+            await RunTaskWhileLoading(FireStoreHelper.AddUser(m_CreatedUser));
             await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
         }
 

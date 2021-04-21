@@ -1,13 +1,19 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.Constants;
+using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using System.Net.Mail;
 
 namespace GetSanger.ViewModels
 {
+    public enum ReportOption { Abuse, Harassment, Unprofessional, Ads, Other }; // need to fully implement
+
     [QueryProperty(nameof(UserId), "userid")]
     public class ProfileViewModel : BaseViewModel
     {
@@ -84,44 +90,31 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
+        public ICommand CallCommand { get; set; }
+
+        public ICommand SendMessageCommand { get; set; }
+
+        public ICommand ReportUserCommand { get; set; }
+
+        public ICommand AddRatingCommand { get; set; }
         #endregion
 
         #region Constructor
         public ProfileViewModel()
         {
-            //setUser();
-            //test - should be deleted
-            CurrentUser = new User
-            {
-                PersonalDetails = new PersonalDetails
-                {
-                    Nickname = "Refael",
-                    Gender = GenderType.Male, 
-                    Birthday = new DateTime(1993,9,13),
-                    Phone = new ContactPhone("0526460006")
-                }
-            };
-            m_NickName = CurrentUser.PersonalDetails.Nickname;
-            m_PhonNumber = CurrentUser.PersonalDetails.Phone;
-            m_Geneder = CurrentUser.PersonalDetails.Gender;
-            m_Birthday = CurrentUser.PersonalDetails.Birthday;
-            //m_UserImage = new Image(m_CurrenUser.ProfilePictureUri);
-            m_RatingList = CurrentUser.Ratings;
-
-            Ratings = new List<Rating>
-            {
-                new Rating
-                {
-                    Score = 3,
-                    Description = "Refael is not good enough :)",
-                    RatingOwnerId = "10"
-                }
-            };
-
+            setCommands();
         }
         #endregion
 
         #region Methods
+
+        private void setCommands()
+        {
+            CallCommand = new Command(callUser);
+            AddRatingCommand = new Command(addRating);
+            ReportUserCommand = new Command(reportUser);
+            SendMessageCommand = new Command(sendMessageToUser); 
+        }
 
         private async void setUser()
         {
@@ -147,6 +140,85 @@ namespace GetSanger.ViewModels
             }
 
             return avg / ratings.Count;
+        }
+
+        private async void callUser(object i_Param)
+        {
+            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone.PhoneNumber))
+            {
+                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone.PhoneNumber;
+                r_DialService.Call();
+                return;
+            }
+
+            await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+        }
+
+        private async void sendMessageToUser(object i_Param)
+        {
+            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone.PhoneNumber))
+            {
+                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone.PhoneNumber;
+                bool succeeded = await r_DialService.SendWhatsapp();
+                if (!succeeded)
+                {
+                    r_DialService.SendDefMsg();
+                }
+
+                return;
+            }
+
+            await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+        }
+
+        private async void reportUser(object i_Param)
+        {
+            string response = await r_PageService.DisplayActionSheet("Please choose the reason:", "Cancel", null, AppManager.Instance.GetListOfEnumNames(typeof(ReportOption)).ToArray());
+            if(Enum.TryParse(response, out ReportOption option))
+            {
+                SmtpClient smtp = new SmtpClient
+                {
+                    Host = "Mail",
+                    Port = 25,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    Credentials = System.Net.CredentialCache.DefaultNetworkCredentials
+                };
+
+                string body = $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} with id: {AppManager.Instance.ConnectedUser.UserID} report on: \n" +
+                                 $"{CurrentUser.PersonalDetails.Nickname} with id: {CurrentUser.UserID}, about the reason: {option.ToString()}.";
+
+                var mailMessage = new MailMessage
+                {
+                    Body = body,
+                    From = new MailAddress(AppManager.Instance.ConnectedUser.Email),
+                    Subject = $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} Report Message",
+                    Priority = MailPriority.Normal
+                };
+
+                mailMessage.To.Add(Constants.Constants.GetSangerMail);
+                smtp.SendCompleted += Smtp_SendCompleted;                
+                smtp.SendAsync(mailMessage, null);
+                //smtp.Send(mailMessage);
+            }
+        }
+
+        private async void Smtp_SendCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            await r_PageService.DisplayAlert("Note", "Your report has sent to us. we will contact you.", "Thanks");
+        }
+
+        private async void addRating(object i_Param)
+        {
+            await Shell.Current.GoToAsync($"{ShellRoutes.AddRating}?ratedUser={CurrentUser}");
+        }
+
+        protected override void appearing(object i_Param)
+        {
+            setUser();
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
     }

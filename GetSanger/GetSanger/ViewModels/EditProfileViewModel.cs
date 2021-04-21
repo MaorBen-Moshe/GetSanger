@@ -93,8 +93,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public EditProfileViewModel()
         {
-            initialData();
-            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
             ImageChosenCommand = new Command(imageChanged);
             BackButtonCommand = new Command(backButtonBehavior);
         }
@@ -126,7 +124,7 @@ namespace GetSanger.ViewModels
                     ConnectedUser.PersonalDetails.Gender = Gender;
                     ConnectedUser.PersonalDetails.Phone = Phone;
                     //ConnectedUser.ProfilePictureUri = 
-                    FireStoreHelper.UpdateUser(ConnectedUser);
+                    await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser));
                 }
             }
 
@@ -137,6 +135,16 @@ namespace GetSanger.ViewModels
         {
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
             ProfileImage = ImageSource.FromStream(() => stream);
+        }
+
+        protected override void appearing(object i_Param)
+        {
+            initialData();
+            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
     }

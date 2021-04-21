@@ -24,21 +24,34 @@ namespace GetSanger.ViewModels
         #region Methods
         private void userCommandHelper()
         {
-            setUserMode(AppMode.Client);
-            App.Current.MainPage = new UserShell();
+            setUserMode(AppMode.Client, new UserShell());
         }
 
         private void sangerCommandHelper()
         {
-            setUserMode(AppMode.Sanger);
-            App.Current.MainPage = new SangerShell();
+            setUserMode(AppMode.Sanger, new SangerShell());
         }
 
-        private void setUserMode(AppMode i_Mode)
+        private async void setUserMode(AppMode i_Mode, Shell i_ChosenShell)
         {
+            if(AuthHelper.IsVerifiedEmail() == false)
+            {
+                await r_PageService.DisplayAlert("Note", "Please verify your email address to continue!", "OK");
+                return;
+            }
+
             AppManager.Instance.CurrentMode = i_Mode;
             AppManager.Instance.ConnectedUser.LastUserMode = i_Mode;
-            FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
+            Application.Current.MainPage = i_ChosenShell;
+        }
+
+        protected override void appearing(object i_Param)
+        {
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
     }

@@ -66,7 +66,7 @@ namespace GetSanger.Services
         private async void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
         {
             AppManager.Instance.ConnectedUser.UserLocation = await GetCurrentLocation();
-            FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
         }
 
         public override void SetDependencies()

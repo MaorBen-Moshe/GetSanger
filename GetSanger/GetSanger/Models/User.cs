@@ -10,8 +10,10 @@ namespace GetSanger.Models
     public class User
     {
         public string UserID { get; set; }
+        [JsonIgnore]
+        public string Email { get; set; }
         public Uri ProfilePictureUri { get; set; }
-        public AppMode LastUserMode { get; set; } // if null open mode page else open client/sanger shell
+        public AppMode? LastUserMode { get; set; } // if null open mode page else open client/sanger shell
         public List<Category> Categories { get; set; }
         public bool IsGenericNotifications { get; set; }
         public Location UserLocation { get; set; }
@@ -31,6 +33,7 @@ namespace GetSanger.Models
             Activities = new List<Activity>();
             Ratings = new List<Rating>();
             IsGenericNotifications = true; // default generic notifications 
+            LastUserMode = null;
         }
 
         public override bool Equals(object obj)

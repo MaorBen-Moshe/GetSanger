@@ -41,8 +41,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public AccountViewModel()
         {
-            CurrentUser = AppManager.Instance.ConnectedUser ?? throw new ArgumentException("User details are not available!");
-            UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
             EditProfileCommand = new Command(editProfile);
             SettingCommand = new Command(setting);
             ChangeModeCommand = new Command(changeMode);
@@ -72,6 +70,16 @@ namespace GetSanger.ViewModels
         private async void editProfile(object i_Param)
         {
             await Shell.Current.GoToAsync($"/editProfile");
+        }
+
+        protected override void appearing(object i_Param)
+        {
+            CurrentUser = AppManager.Instance.ConnectedUser ?? throw new ArgumentException("User details are not available!");
+            UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
+        }
+
+        protected override void disappearing(object i_Param)
+        {
         }
         #endregion
 
