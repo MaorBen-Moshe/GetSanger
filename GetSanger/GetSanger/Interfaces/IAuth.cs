@@ -11,7 +11,7 @@ namespace GetSanger.Interfaces
         string GetUserId();
         void SignOut();
         bool IsLoggedIn();
-        void SignInWithCustomToken(string i_Token);
+        Task SignInWithCustomToken(string i_Token);
         bool IsAnonymousUser();
     }
 }

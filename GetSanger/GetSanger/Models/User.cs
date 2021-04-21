@@ -10,6 +10,7 @@ namespace GetSanger.Models
     public class User
     {
         public string UserID { get; set; }
+        public string RegistrationToken { get; set; }
         [JsonIgnore]
         public string Email { get; set; }
         public Uri ProfilePictureUri { get; set; }

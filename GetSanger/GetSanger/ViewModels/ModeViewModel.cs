@@ -35,7 +35,7 @@ namespace GetSanger.ViewModels
 
         private async void setUserMode(AppMode i_Mode, Shell i_ChosenShell)
         {
-            if(AuthHelper.IsVerifiedEmail() == false)
+            if(await AuthHelper.IsVerifiedEmail() == false)
             {
                 await r_PageService.DisplayAlert("Note", "Please verify your email address to continue!", "OK");
                 return;

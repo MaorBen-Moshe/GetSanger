@@ -211,7 +211,8 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(Email, Password));
+                    //await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(Email, Password));
+                    await AuthHelper.RegisterViaEmail(Email, Password);
                     m_CreatedUser = new User
                     {
                         UserID = AuthHelper.GetLoggedInUserId()
@@ -253,9 +254,20 @@ namespace GetSanger.ViewModels
                 select category.Category).ToList();
 
             m_CreatedUser.Categories = (List<Category>) m_CheckedItems;
-            r_PushService.RegisterTopics(UserId, (m_CheckedItems.Select(category => category.ToString())).ToArray());
-            await RunTaskWhileLoading(FireStoreHelper.AddUser(m_CreatedUser));
-            await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
+            m_CreatedUser.RegistrationToken = r_PushService.GetRegistrationToken();
+
+            try
+            {
+                //await RunTaskWhileLoading(FireStoreHelper.AddUser(m_CreatedUser));
+                await FireStoreHelper.AddUser(m_CreatedUser);
+                await r_PushService.RegisterTopics(UserId,
+                    (m_CheckedItems.Select(category => category.ToString())).ToArray());
+                await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
+            }
+            catch (Exception e)
+            {
+                await r_PageService.DisplayAlert("Notice", e.Message, "OK");
+            }
         }
 
         private async void imagePicker(object i_Param)
