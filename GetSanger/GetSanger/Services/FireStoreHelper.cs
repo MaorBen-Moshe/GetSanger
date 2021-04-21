@@ -317,7 +317,13 @@ namespace GetSanger.Services
         public static async Task AddUser(User i_User)
         {
             string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddUserToDatabase";
-            string json = JsonSerializer.Serialize(i_User);
+
+            Dictionary<string, User> requestDictionary = new Dictionary<string, User>()
+            {
+                ["User"] = i_User
+            };
+
+            string json = JsonSerializer.Serialize(requestDictionary);
             string idToken = await AuthHelper.GetIdTokenAsync();
 
             HttpResponseMessage response =
