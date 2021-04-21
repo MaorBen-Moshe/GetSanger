@@ -54,7 +54,7 @@
                            Margin="10,0,0,0" />
                 </Grid>
                 <Grid>
-                    <Label Text="{Binding Birthday, StringFormat='{}{0:MM/dd/yyyy}'}" 
+                    <Label Text="{Binding Birthday, StringFormat='{0:MM/dd/yyyy}'}" 
                            Grid.Column="0" 
                            Margin="10,0,0,0" />
                 </Grid>

@@ -200,11 +200,16 @@ namespace GetSanger.ViewModels
             };
         }
 
-        protected void appearing(object i_Param)
+        protected async void appearing(object i_Param)
         {
             createMapSpan();
             IsSearch = ConnecetedPage is JobOfferViewModel;
             IsTrip = ConnecetedPage is ActivityViewModel;
+            if (IsSearch)
+            {
+                await r_PageService.DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK");
+            }
+
             if (IsTrip) // we already checked if sanger gave permission to client to see location
             {
                 LocationServices.StartTripThread(handleTrip, 350000);
@@ -216,6 +221,11 @@ namespace GetSanger.ViewModels
             if (IsTrip)
             {
                 LocationServices.LeaveTripThread(handleTrip);
+            }
+
+            if (IsSearch)
+            {
+                Cancelation();
             }
         }
         #endregion

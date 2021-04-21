@@ -15,17 +15,5 @@ namespace GetSanger.Views
 
             BindingContext = new MapViewModel();
         }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            await DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK", FlowDirection.MatchParent);
-        }
-
-        protected override void OnDisappearing()
-        {
-            (BindingContext as MapViewModel).Cancelation();
-            base.OnDisappearing();
-        }
     }
 }
