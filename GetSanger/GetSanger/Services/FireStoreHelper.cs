@@ -318,7 +318,7 @@ namespace GetSanger.Services
         {
             string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddUserToDatabase";
             string json = JsonSerializer.Serialize(i_User);
-            string idToken = await AuthHelper.GetIdToken();
+            string idToken = await AuthHelper.GetIdTokenAsync();
 
             HttpResponseMessage response =
                 await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);

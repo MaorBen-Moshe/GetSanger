@@ -30,7 +30,7 @@ namespace GetSanger.Services
                 ["password"] = i_Password
             };
 
-            string idToken = await GetIdToken();
+            string idToken = await GetIdTokenAsync();
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/RegisterUserWithEmailAndPassword";
 
             string json = JsonSerializer.Serialize(details);
@@ -43,6 +43,27 @@ namespace GetSanger.Services
             }
 
             await LoginViaEmail(i_Email, i_Password);
+            await SendVerificationEmail();
+        }
+
+        public static void SignOut()
+        {
+            s_Auth.SignOut();
+        }
+
+        public static async Task SendVerificationEmail()
+        {
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendVerificationEmail";
+            string idToken = await GetIdTokenAsync();
+
+            HttpResponseMessage response =
+                await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string responseMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(responseMessage);
+            }
         }
 
         public static async Task LoginViaEmail(string i_Email, string i_Password)
@@ -65,7 +86,7 @@ namespace GetSanger.Services
             }
 
             string customToken = await response.Content.ReadAsStringAsync();
-            s_Auth.SignInWithCustomToken(customToken);
+            await s_Auth.SignInWithCustomToken(customToken);
         }
 
         public static Task<Dictionary<string, string>> LoginViaGoogle()
@@ -83,9 +104,23 @@ namespace GetSanger.Services
             return s_Auth.IsLoggedIn();
         }
 
-        public static bool IsVerifiedEmail()
+        public static async Task<bool> IsVerifiedEmail()
         {
-            return true;
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsEmailVerified";
+            string idToken = await GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                bool result = JsonSerializer.Deserialize<bool>(responseBody);
+                return result;
+            }
+            else
+            {
+                throw new Exception(responseBody);
+            }
         }
 
         public static string GetLoggedInUserId()
@@ -103,7 +138,7 @@ namespace GetSanger.Services
             };
             string json = JsonSerializer.Serialize(dictionary);
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserInDatabase";
-            string idToken = await GetIdToken();
+            string idToken = await GetIdTokenAsync();
 
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
 
@@ -182,7 +217,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task<string> GetIdToken()
+        public static async Task<string> GetIdTokenAsync()
         {
             return await s_Auth.GetIdToken();
         }
