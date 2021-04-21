@@ -30,7 +30,7 @@ namespace GetSanger.Services
                 ["password"] = i_Password
             };
 
-            string idToken = await s_Auth.GetIdToken();
+            string idToken = await GetIdToken();
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/RegisterUserWithEmailAndPassword";
 
             string json = JsonSerializer.Serialize(details);
@@ -103,7 +103,7 @@ namespace GetSanger.Services
             };
             string json = JsonSerializer.Serialize(dictionary);
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserInDatabase";
-            string idToken = await s_Auth.GetIdToken();
+            string idToken = await GetIdToken();
 
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
 
@@ -180,6 +180,11 @@ namespace GetSanger.Services
                 string error = await response.Content.ReadAsStringAsync();
                 throw new Exception(error);
             }
+        }
+
+        public static async Task<string> GetIdToken()
+        {
+            return await s_Auth.GetIdToken();
         }
     }
 }

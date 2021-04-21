@@ -8,11 +8,17 @@ using GetSanger.Models;
 
 namespace GetSanger.Services
 {
-    public enum CollectionType { Activity, JobOffer, Rating };
+    public enum CollectionType
+    {
+        Activity,
+        JobOffer,
+        Rating
+    };
 
     public static class FireStoreHelper
     {
         // experiment
+
         #region Generic_Methods
 
         public static async Task<List<T>> GetCollection<T>(string i_UserId, CollectionType i_Type)
@@ -37,6 +43,7 @@ namespace GetSanger.Services
         #endregion
 
         #region Activities
+
         public static async Task<List<Activity>> GetActivities(string i_UserID)
         {
             string uri = "uri here";
@@ -75,7 +82,7 @@ namespace GetSanger.Services
 
         public async static Task AddActivity(params Activity[] i_Activity)
         {
-            if(i_Activity == null)
+            if (i_Activity == null)
             {
                 throw new ArgumentNullException("Activity is null");
             }
@@ -89,14 +96,16 @@ namespace GetSanger.Services
             }
         }
 
-        public async static Task DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
+        public async static Task
+            DeleteActivity(Activity i_Activity,
+                string i_UserId = null) // delete activity from user list and from server data base
         {
             if (i_Activity == null)
             {
                 throw new ArgumentNullException("Activity is null");
             }
 
-            if(i_UserId != null) // we want to remove the activity just from sanger
+            if (i_UserId != null) // we want to remove the activity just from sanger
             {
                 if (i_Activity.ClientID.Equals(i_UserId)) // here we want to delete from client
                 {
@@ -117,7 +126,8 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
+        public static async Task
+            UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_Activity);
@@ -127,9 +137,11 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
+
         #endregion
 
         #region JobOffers
+
         public static async Task<List<JobOffer>> GetJobOffers(string i_UserID)
         {
             string uri = "uri here";
@@ -198,7 +210,8 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
+        public static async Task
+            UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_JobOffer);
@@ -208,9 +221,11 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
+
         #endregion
 
         #region Ratings
+
         public static async Task<List<Rating>> GetRatings(string i_UserID)
         {
             string uri = "uri here";
@@ -245,7 +260,8 @@ namespace GetSanger.Services
             }
         }
 
-        public async static Task DeleteRating(Rating i_Rating) // delete activity from user list and from server data base
+        public async static Task
+            DeleteRating(Rating i_Rating) // delete activity from user list and from server data base
         {
             if (i_Rating == null)
             {
@@ -261,7 +277,8 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
+        public static async Task
+            UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_Rating);
@@ -275,6 +292,7 @@ namespace GetSanger.Services
         #endregion
 
         #region User
+
         public static async Task<User> GetUser(string i_UserID)
         {
             string server_uri = "Cloud Function Of FireStore Here";
@@ -296,11 +314,15 @@ namespace GetSanger.Services
             return user;
         }
 
-        public static async void AddUser(User i_User)
+        public static async Task AddUser(User i_User)
         {
-            string server_uri = "Cloud Function Of FireStore Here";
+            string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddUserToDatabase";
             string json = JsonSerializer.Serialize(i_User);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdToken();
+
+            HttpResponseMessage response =
+                await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -338,6 +360,7 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
+
         #endregion
     }
 }
