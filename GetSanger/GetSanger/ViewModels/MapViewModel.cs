@@ -51,9 +51,6 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
-        public ICommand AppearingPageCommand { get; private set; }
-
-        public ICommand DisappearingPageCommand { get; private set; }
 
         public ICommand SearchCommand { get; private set; }
 
@@ -62,20 +59,16 @@ namespace GetSanger.ViewModels
         public ICommand PinClicked { get; private set; }
 
         public ICommand CallTripCommand { get; private set; }
+
         #endregion
 
         #region Constructor
         public MapViewModel()
         {
-            AppearingPageCommand = new Command(appearing);
-            DisappearingPageCommand = new Command(disappearing);
             SearchCommand = new Command(SearchCom);
             MapClicked = new Command(MapClickedHelper);
             PinClicked = new Command(PinClickedHelper);
             CallTripCommand = new Command(CallTripHelper);
-            createMapSpan();
-            IsSearch = ConnecetedPage is JobOfferViewModel;
-            IsTrip = ConnecetedPage is ActivityViewModel;
         }
         #endregion
 
@@ -167,6 +160,7 @@ namespace GetSanger.ViewModels
             // when sanger is near to us we want to stop asking for location, 0.3 kilometers
             if (Location.CalculateDistance(await LocationServices.GetCurrentLocation(), sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
             {
+                await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
                 LocationServices.LeaveTripThread(handleTrip);
                 (ConnecetedPage as ActivityViewModel).IsActivatedLocationButton = false;
                 await GoBack();
@@ -201,19 +195,32 @@ namespace GetSanger.ViewModels
             };
         }
 
-        private void appearing()
+        public override async void Appearing()
         {
+            createMapSpan();
+            IsSearch = ConnecetedPage is JobOfferViewModel;
+            IsTrip = ConnecetedPage is ActivityViewModel;
+            if (IsSearch)
+            {
+                await r_PageService.DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK");
+            }
+
             if (IsTrip) // we already checked if sanger gave permission to client to see location
             {
                 LocationServices.StartTripThread(handleTrip, 350000);
             }
         }
 
-        private void disappearing()
+        public void Disappearing()
         {
             if (IsTrip)
             {
                 LocationServices.LeaveTripThread(handleTrip);
+            }
+
+            if (IsSearch)
+            {
+                Cancelation();
             }
         }
         #endregion

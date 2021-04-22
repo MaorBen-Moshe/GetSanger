@@ -6,6 +6,7 @@ using Android.Util;
 using Firebase.Messaging;
 using System.Collections.Generic;
 using Android.Support.V4.App;
+using System.Threading.Tasks;
 
 namespace GetSanger.Droid.Services.FCM
 {
@@ -15,13 +16,16 @@ namespace GetSanger.Droid.Services.FCM
     public class AndroidFirebaseMessagingService : FirebaseMessagingService
     {
         const string TAG = "MyFirebaseMsgService";
+
         public override void OnMessageReceived(RemoteMessage message)
         {//Sets how the app handles messages and notifications in foreground (background messages are not passed here)
+            base.OnMessageReceived(message);
             SendNotification(message.GetNotification().Body, message.Data);
         }
 
         public override void OnNewToken(string newToken)
         {
+            base.OnNewToken(newToken);
             string oldToken = PushService.FCMToken;
             PushService.FCMToken = newToken;
             SendRegistrationToServer(newToken, oldToken);

@@ -43,7 +43,8 @@ namespace GetSanger.Droid.Services
             //var res =  (string)FirebaseMessaging.Instance.GetToken() as string;
             //return (string)FirebaseInstallations.Instance.GetToken(false);
             //return res;
-            return FCMToken;    
+            return FCMToken;  
+            
         }
         
 

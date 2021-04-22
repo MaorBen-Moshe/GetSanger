@@ -77,14 +77,8 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ActivityViewModel()
         {
-            setLocationsLabels();
-            initialPhoneNumber();
             ProfileCommand = new Command(profilePage);
             EndActivityCommand = new Command(endActivity);
-            IsActivatedLocationButton = true;
-            IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
-                                   AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
-                                   ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
         }
         #endregion
 
@@ -129,28 +123,29 @@ namespace GetSanger.ViewModels
             if (sangerInuser && activated)
             {
                 // sanger ends location
-                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
+                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.Nickname}?", "OK", "cancel");
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, false);
                     ConnectedActivity.LocationActivatedBySanger = false;
-                    FireStoreHelper.UpdateActivity(ConnectedActivity);
-                    FireStoreHelper.UpdateUser(user);
+                    await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
+                    await RunTaskWhileLoading(FireStoreHelper.UpdateUser(user));
                     LocationServices.LeaveTripThread();
-                    // we can send push to user to tell that if he is in the map 
+                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} stopped sharing the location with you!");
                     ActivatedButtonText = "Enable Location";
                 }
             }
             else
             {
                 // sanger starts location
-                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.Nickname}?", "ok", "cancel");
+                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.Nickname}?", "OK", "cancel");
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
                     ConnectedActivity.LocationActivatedBySanger = true;
-                    FireStoreHelper.UpdateActivity(ConnectedActivity);
-                    FireStoreHelper.UpdateUser(user);
+                    await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
+                    await RunTaskWhileLoading(FireStoreHelper.UpdateUser(user));
+                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} shared the location with you!");
                     LocationServices.StartTripThread();
                     ActivatedButtonText = "Disable Location";
                 }
@@ -210,7 +205,7 @@ namespace GetSanger.ViewModels
                 ConnectedActivity.Status = ActivityStatus.Completed;
                 ConnectedActivity.LocationActivatedBySanger = false;
                 LocationServices.LeaveTripThread(); // sanger stop sharing location
-                FireStoreHelper.UpdateActivity(ConnectedActivity);
+                await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
                 IsActivatedEndButton = false;
             }
         }
@@ -222,6 +217,16 @@ namespace GetSanger.ViewModels
                         await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
 
             await Shell.Current.GoToAsync($"/profile?user={user}");
+        }
+
+        public override void Appearing()
+        {
+            setLocationsLabels();
+            initialPhoneNumber();
+            IsActivatedLocationButton = true;
+            IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
+                                   AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
+                                   ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
         }
 
         #endregion

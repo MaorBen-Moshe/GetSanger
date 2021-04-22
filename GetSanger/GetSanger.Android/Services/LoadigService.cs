@@ -1,6 +1,6 @@
 ﻿using GetSanger.Droid.Services;
 using GetSanger.Interfaces;
-using GetSanger.UI_pages.common;
+using GetSanger.Views;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(LoadingService))]

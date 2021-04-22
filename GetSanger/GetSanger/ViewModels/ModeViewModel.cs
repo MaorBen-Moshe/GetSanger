@@ -11,6 +11,7 @@ namespace GetSanger.ViewModels
         public ICommand UserCommand { get; private set; }
 
         public ICommand SangerCommand { get; private set; }
+
         #endregion
 
         #region Constructor
@@ -24,21 +25,30 @@ namespace GetSanger.ViewModels
         #region Methods
         private void userCommandHelper()
         {
-            setUserMode(AppMode.Client);
-            App.Current.MainPage = new UserShell();
+            setUserMode(AppMode.Client, new UserShell());
         }
 
         private void sangerCommandHelper()
         {
-            setUserMode(AppMode.Sanger);
-            App.Current.MainPage = new SangerShell();
+            setUserMode(AppMode.Sanger, new SangerShell());
         }
 
-        private void setUserMode(AppMode i_Mode)
+        private async void setUserMode(AppMode i_Mode, Shell i_ChosenShell)
         {
+            if(await AuthHelper.IsVerifiedEmail() == false)
+            {
+                await r_PageService.DisplayAlert("Note", "Please verify your email address to continue!", "OK");
+                return;
+            }
+
             AppManager.Instance.CurrentMode = i_Mode;
             AppManager.Instance.ConnectedUser.LastUserMode = i_Mode;
-            FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
+            Application.Current.MainPage = i_ChosenShell;
+        }
+
+        public override void Appearing()
+        {
         }
         #endregion
     }

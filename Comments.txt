@@ -4,4 +4,7 @@ Modal pages of the app
 1. job offer page
 2. edit profile page
 3. edit job offer page
-4. 
+
+
+כאשר מעדכנים אובייקט אקטיביטי אצל
+משתמש מסוים צריך לשלוח הודעת פוש שרק תגרום לעדכון אצל המשתמש השני של הרשימה המתאימה 

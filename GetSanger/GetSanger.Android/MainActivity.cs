@@ -16,9 +16,7 @@ namespace GetSanger.Droid
     [Activity(Label = "GetSanger", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        static readonly string TAG = "MainActivity";
         internal static readonly string CHANNEL_ID = "notification_channel";
-
         internal static readonly int NOTIFICATION_ID = 100;
         internal static MainActivity Instance { get; private set; }
 
@@ -62,6 +60,23 @@ namespace GetSanger.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+
+            // Save FCM Token
+            string token = Services.PushService.FCMToken;
+            outState.PutString("FCMToken", Services.PushService.FCMToken);
+        }
+
+        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            base.OnRestoreInstanceState(savedInstanceState);
+
+            // Restore FCM Token
+            Services.PushService.FCMToken = savedInstanceState.GetString("FCMToken");
         }
     }
 }

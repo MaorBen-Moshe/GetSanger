@@ -1,6 +1,6 @@
 ﻿using GetSanger.Interfaces;
 using GetSanger.Services;
-using GetSanger.UI_pages.common;
+using GetSanger.Views;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -89,6 +89,7 @@ namespace GetSanger.ViewModels
             get => m_JobCategory;
             set => SetStructProperty(ref m_JobCategory, value);
         }
+
         #endregion
 
         #region Constructor
@@ -97,8 +98,6 @@ namespace GetSanger.ViewModels
             CurrentLocation = new Command(GetCurrentLocation);
             JobLocation = new Command(GetJobLocation);
             SendJobCommand = new Command(SendJob);
-            JobDate = DateTime.Now;
-            IntialCurrentLocation();
         }
         #endregion
 
@@ -131,20 +130,31 @@ namespace GetSanger.ViewModels
             await Shell.Current.GoToAsync($"/map?connectedpage={this}");
         }
 
-        public void SendJob()
+        public async void SendJob()
         {
-            JobOffer job = new JobOffer
+            // check all entries are fill with data
+            Activity current = new Activity
             {
-                Category = JobCategory,
-                Location = MyPlaceMark.Location,
-                JobLocation = JobPlaceMark.Location,
+                JobDetails = new JobOffer
+                {
+                    Category = JobCategory,
+                    Location = MyPlaceMark.Location,
+                    JobLocation = JobPlaceMark.Location,
+                    ClientID = AuthHelper.GetLoggedInUserId(),
+                    ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone,
+                    Date = JobDate,
+                    Description = JobDescription
+                },
+
+                Status = ActivityStatus.Pending,
                 ClientID = AuthHelper.GetLoggedInUserId(),
-                ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone,
-                Date = JobDate,
-                Description = JobDescription
+                Title = $"{JobCategory} job on {JobDate}"
             };
 
-            r_PushService.SendTAllTopic(job.Category.ToString(), job);
+            AppManager.Instance.ConnectedUser.Activities.Add(current);
+            await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(current.JobDetails));
+            await RunTaskWhileLoading(FireStoreHelper.AddActivity(current));
+            r_PushService.SendTAllTopic(current.JobDetails.Category.ToString(), current);
         }
 
         private string placemarkValidation(Placemark i_Placemark)
@@ -157,6 +167,12 @@ namespace GetSanger.ViewModels
 
             toRet = string.Format("{0}, {1} {2}", i_Placemark.Locality, i_Placemark.Thoroughfare, i_Placemark.SubThoroughfare);
             return toRet;
+        }
+
+        public override void Appearing()
+        {
+            JobDate = DateTime.Now;
+            IntialCurrentLocation();
         }
         #endregion
     }

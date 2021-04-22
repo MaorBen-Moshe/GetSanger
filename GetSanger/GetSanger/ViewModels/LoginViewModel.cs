@@ -1,7 +1,7 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Interfaces;
 using GetSanger.Services;
-using GetSanger.UI_pages.signup;
+using GetSanger.Views.Registration;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,7 +15,7 @@ namespace GetSanger.ViewModels
     {
         #region Events
 
-        public event Action DisplayInvalidLoginPrompt;
+        //public event Action DisplayInvalidLoginPrompt;
 
         #endregion
 
@@ -80,13 +80,22 @@ namespace GetSanger.ViewModels
 
         private async void LoginClicked(object obj)
         {
-            if(Email == null || Password == null)
+            if (Email == null || Password == null)
             {
                 await r_PageService.DisplayAlert("Error", "Please enter valid values.", "OK");
                 return;
             }
 
-            await AuthHelper.LoginViaEmail(Email, Password.ToString());
+            try
+            {
+                await AuthHelper.LoginViaEmail(Email, Password.ToString());
+                await r_PageService.DisplayAlert("Ok", "Log in successful!", "OK");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                await r_PageService.DisplayAlert("Error", e.Message, "OK");
+            }
             // check if login succeeded
         }
 
@@ -100,22 +109,30 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
         }
 
-        private void FaceBookClicked(object obj)
+        private async void FaceBookClicked(object obj)
         {
-            AuthHelper.LoginViaFacebook();
-            if (AuthHelper.IsFirstTimeLogIn())
+            await AuthHelper.LoginViaFacebook();
+            bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
+            if (isFirstLoggedin)
             {
-                // go to sign up personal details!
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
         }
 
-        private void GmailClicked(object obj)
+        private async void GmailClicked(object obj)
         {
-            AuthHelper.LoginViaGoogle();
-            if (AuthHelper.IsFirstTimeLogIn())
+            await AuthHelper.LoginViaGoogle();
+            bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
+            if (isFirstLoggedin)
             {
                 // go to sign up personal details!
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
+        }
+
+        public override void Appearing()
+        {
+            // auto log in if connected
         }
 
         #endregion

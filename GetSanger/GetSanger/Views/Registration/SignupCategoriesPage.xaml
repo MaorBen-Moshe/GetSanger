@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:GetSanger.Converters"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors;assembly=GetSanger"
+             x:Class="GetSanger.Views.Registration.SignupCategoriesPage"
+             x:Name="SignUpCategories">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <ContentPage.Content>
+
+        <StackLayout Orientation="Vertical" Spacing="20">
+
+            <Label 
+                   Margin="14,17,20,0" 
+                   HeightRequest="54"
+                   WidthRequest="350"
+                   HorizontalTextAlignment="Center" 
+                   Text="Choose Categories:" 
+                   FontSize="21"
+                   TextColor="Black"
+                   HorizontalOptions="CenterAndExpand" />
+
+            <StackLayout  
+                   Spacing="10" 
+                   Orientation="Vertical" 
+                   VerticalOptions="FillAndExpand" 
+                   HorizontalOptions="FillAndExpand">
+
+                <ListView SeparatorVisibility="None" 
+                          Margin="0"
+                          RowHeight="55"
+                          ItemsSource="{Binding CategoriesItems}"
+                          BackgroundColor="Transparent"
+                          HasUnevenRows="True">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame WidthRequest="327" Padding="2" CornerRadius="07" HasShadow="false" BackgroundColor="Silver" Margin="24,10,34,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+                                    <Frame WidthRequest="327" Padding="0" CornerRadius="07" HasShadow="false" OutlineColor="Transparent">
+                                        <StackLayout WidthRequest="327" Orientation="Horizontal" Spacing="0">
+                                            <Label HeightRequest="30" WidthRequest="120" FontSize="20" Margin="22,0,0,0" Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray"  VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" />
+                                            <CheckBox HeightRequest="27" 
+                                                      WidthRequest="31" 
+                                                      Margin="24,0,0,0" 
+                                                      VerticalOptions="CenterAndExpand" 
+                                                      HorizontalOptions="End"
+                                                      IsChecked="{Binding Checked}">
+                                                <CheckBox.Behaviors>
+                                                    <behaviors:EventToCommandBehavior Command="{Binding BindingContext.AllCategoriesCommand, Source={x:Reference SignUpCategories}}"
+                                                                                      EventName="CheckedChanged"
+                                                                                      CommandParameter="{Binding}"/>
+                                                </CheckBox.Behaviors>
+                                            </CheckBox>
+                                        </StackLayout>
+                                    </Frame>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout>
+                    <Button Text="Done" 
+                            TextColor="White" 
+                            HeightRequest="62" 
+                            WidthRequest="201" 
+                            VerticalOptions="EndAndExpand"
+                            HorizontalOptions="CenterAndExpand"
+                            BackgroundColor="#3DBDA0" 
+                            Margin="0,0,0,62"
+                            Command="{Binding CategoriesPartCommand}"/>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+
+
+    <!--<ContentPage.Content>
+        <StackLayout HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Padding="5">
+            <Grid HorizontalOptions="CenterAndExpand"
+                     VerticalOptions="CenterAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+                <ListView Grid.Row="1"
+                          Grid.Column="1"
+                          HasUnevenRows="true"
+                          ItemsSource="{Binding CategoriesItems}">
+                    <ListView.Header>
+                        <Label Text="Choose Categories:" />
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Padding="10">
+                                    <Label Text="{Binding}" HorizontalOptions="StartAndExpand"/>
+                                    <CheckBox>
+                                        <CheckBox.Behaviors>
+                                            <behaviors:EventToCommandBehavior Command="{Binding CategoryCheckedCommand}"
+                                                                              CommandParameter="{x:StaticResource CheckBoxConverter}"
+                                                                              EventName="CheckedChanged"/>
+                                        </CheckBox.Behaviors>
+                                    </CheckBox>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <StackLayout HorizontalOptions="Center" 
+                         VerticalOptions="Center" 
+                         Margin="10">
+                <Button Text="Continue" 
+                        Padding="5"
+                        HeightRequest="55" 
+                        WidthRequest="90"
+                        Command="{Binding CategoriesPartCommand}"/>
+            </StackLayout>
+        </StackLayout>
+
+    </ContentPage.Content>-->
+</ContentPage>
