@@ -1,4 +1,5 @@
-﻿using GetSanger.Interfaces;
+﻿using GetSanger.Constants;
+using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
 using System;
@@ -88,6 +89,7 @@ namespace GetSanger.ViewModels
         #region Commands
         public ICommand ImageChosenCommand { get; set; }
         public ICommand BackButtonCommand { get; set; }
+        public ICommand ChangePasswordCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -95,6 +97,7 @@ namespace GetSanger.ViewModels
         {
             ImageChosenCommand = new Command(imageChanged);
             BackButtonCommand = new Command(backButtonBehavior);
+            ChangePasswordCommand = new Command(changePassword);
         }
 
         #endregion
@@ -135,6 +138,11 @@ namespace GetSanger.ViewModels
         {
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
             ProfileImage = ImageSource.FromStream(() => stream);
+        }
+
+        private async void changePassword(object i_Param)
+        {
+            await r_NavigationService.NavigateTo(ShellRoutes.ChangePassword);
         }
 
         public override void Appearing()

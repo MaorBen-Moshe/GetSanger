@@ -221,5 +221,16 @@ namespace GetSanger.Services
         {
             return await s_Auth.GetIdToken();
         }
+
+        public static async Task<bool> IsUserPassword(string i_Password)
+        {
+            return true;
+        }
+
+        public static async Task ChangePassword(string i_OldPassword, string i_NewPassword)
+        {
+            string userID = GetLoggedInUserId();
+            //change password
+        }
     }
 }

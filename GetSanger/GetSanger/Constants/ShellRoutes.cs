@@ -43,6 +43,8 @@ namespace GetSanger.Constants
 
         public const string ForgotPassword = "forgotPassword";
 
+        public const string ChangePassword = "changePassword";
+
         public const string AddRating = "profile/addRating";
     }
 }
