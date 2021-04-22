@@ -130,20 +130,31 @@ namespace GetSanger.ViewModels
             await Shell.Current.GoToAsync($"/map?connectedpage={this}");
         }
 
-        public void SendJob()
+        public async void SendJob()
         {
-            JobOffer job = new JobOffer
+            // check all entries are fill with data
+            Activity current = new Activity
             {
-                Category = JobCategory,
-                Location = MyPlaceMark.Location,
-                JobLocation = JobPlaceMark.Location,
+                JobDetails = new JobOffer
+                {
+                    Category = JobCategory,
+                    Location = MyPlaceMark.Location,
+                    JobLocation = JobPlaceMark.Location,
+                    ClientID = AuthHelper.GetLoggedInUserId(),
+                    ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone,
+                    Date = JobDate,
+                    Description = JobDescription
+                },
+
+                Status = ActivityStatus.Pending,
                 ClientID = AuthHelper.GetLoggedInUserId(),
-                ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone,
-                Date = JobDate,
-                Description = JobDescription
+                Title = $"{JobCategory} job on {JobDate}"
             };
 
-            r_PushService.SendTAllTopic(job.Category.ToString(), job);
+            AppManager.Instance.ConnectedUser.Activities.Add(current);
+            await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(current.JobDetails));
+            await RunTaskWhileLoading(FireStoreHelper.AddActivity(current));
+            r_PushService.SendTAllTopic(current.JobDetails.Category.ToString(), current);
         }
 
         private string placemarkValidation(Placemark i_Placemark)

@@ -77,11 +77,11 @@ namespace GetSanger.ViewModels
             }
             else if (activity.Status.Equals(ActivityStatus.ConfirmedBySanger)) // user mode
             {
+                ActivitiesSource.Remove(activity);
+                AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                 activity.Status = ActivityStatus.Active;
                 AppManager.Instance.ConnectedUser.ActivatedMap.Add(activity.ActivityId, false);
-                ActivitiesSource.Remove(activity);
                 ActivitiesSource.Add(activity);
-                AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                 AppManager.Instance.ConnectedUser.Activities.Add(activity);
                 await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
@@ -105,16 +105,17 @@ namespace GetSanger.ViewModels
             Activity activity = i_Param as Activity;
             if (activity.Status.Equals(ActivityStatus.Pending)) // sanger mode
             {
+                activity.Status = ActivityStatus.Rejected;
                 ActivitiesSource.Remove(activity);
                 AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                 await RunTaskWhileLoading(FireStoreHelper.DeleteActivity(activity));
             }
             else if (activity.Status.Equals(ActivityStatus.ConfirmedBySanger)) // user mode
             {
+                activity.Status = ActivityStatus.Rejected;
                 ActivitiesSource.Remove(activity);
                 AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                 await RunTaskWhileLoading(FireStoreHelper.DeleteActivity(activity));
-                activity.Status = ActivityStatus.Rejected;
                 r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} rejected your job offer.");
             }
         }
@@ -130,8 +131,16 @@ namespace GetSanger.ViewModels
             Shell.Current.GoToAsync($"activitydetail?activity={i_Param as Activity}");
         }
 
-        public override void Appearing()
+        public async override void Appearing()
         {
+            List<Activity> activities = await FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId());
+            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            {
+                // client should not see pending activities because it is like job offers
+                activities = activities.Where(activity => activity.Status.Equals(ActivityStatus.Pending) == false).ToList();
+            }
+
+            ActivitiesSource = new ObservableCollection<Activity>(activities);
         }
         #endregion
     }
