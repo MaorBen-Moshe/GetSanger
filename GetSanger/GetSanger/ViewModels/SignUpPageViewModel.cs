@@ -53,7 +53,7 @@ namespace GetSanger.ViewModels
         public SignUpPageViewModel()
         {
             setCommands();
-            Birthday = DateTime.Now;
+            Birthday = DateTime.Now.Date.ToUniversalTime();
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
             CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance
                 .GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell
@@ -260,8 +260,8 @@ namespace GetSanger.ViewModels
             {
                 //await RunTaskWhileLoading(FireStoreHelper.AddUser(m_CreatedUser));
                 await FireStoreHelper.AddUser(m_CreatedUser);
-                await r_PushService.RegisterTopics(UserId,
-                    (m_CheckedItems.Select(category => category.ToString())).ToArray());
+                //await r_PushService.RegisterTopics(UserId,
+                //    (m_CheckedItems.Select(category => category.ToString())).ToArray());
                 await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
             }
             catch (Exception e)
