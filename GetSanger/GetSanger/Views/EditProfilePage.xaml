@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             x:Class="GetSanger.Views.EditProfilePage">
+
+    <ContentPage.BindingContext>
+        <vm:EditProfileViewModel />
+    </ContentPage.BindingContext>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackButtonCommand}"/>
+    </Shell.BackButtonBehavior>
+
+
+    <ContentPage.Content>
+        <StackLayout>
+            <ImageButton Source="{Binding ProfileImage, Mode=TwoWay}" Command="{Binding ImageChosenCommand}"/>
+            <Entry Text="{Binding NickName}" />
+            <Entry Text="{Binding Phone}" Keyboard="Numeric"/>
+            <DatePicker Date="{Binding Birthday}" Format="dd mm yy"/>
+            <Picker ItemsSource="{Binding GenderItems}" SelectedItem="{Binding Gender}"/>
+            <Button Text="Change password" Command="{Binding ChangePasswordCommand}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

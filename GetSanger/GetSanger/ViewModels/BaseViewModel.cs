@@ -3,13 +3,13 @@ using GetSanger.Services;
 using System;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
     [Preserve(AllMembers = true)]
-    [DataContract]
     public abstract class BaseViewModel : PropertySetter
     {
         #region Fields
@@ -34,6 +34,7 @@ namespace GetSanger.ViewModels
             }
             get => m_IsLoading;
         }
+
         protected bool IsNotLoading
         {
             set => SetStructProperty(ref m_IsNotLoading, value);
@@ -44,11 +45,11 @@ namespace GetSanger.ViewModels
         #region Constructor
         protected BaseViewModel()
         {
-            r_PageService = new PageServices();
-            r_DialService = new DialServices();
-            LocationServices = new LocationService();
-            r_PushService = new PushServices();
-            r_NavigationService = new NavigationService();
+            r_PageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+            r_DialService = AppManager.Instance.Services.GetService(typeof(DialServices)) as DialServices;
+            LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            r_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
+            r_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
         }
         #endregion
 
@@ -73,6 +74,8 @@ namespace GetSanger.ViewModels
                 throw ex;
             }
         }
+
+        public abstract void Appearing();
         #endregion
     }
 }

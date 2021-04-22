@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GetSanger.Views.Registration.SignupEmailPage">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackButtonBehaviorCommand}"/>
+    </Shell.BackButtonBehavior>
+
+
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" Padding="5">
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <Label Text="Registration" FontSize="Title" />
+            </StackLayout>
+            <Entry Placeholder="Email" Keyboard="Email" Text="{Binding Email}"/>
+            <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}" />
+            <Entry IsPassword="True" Placeholder="Confirm Password" Text="{Binding ConfirmPassword}" />
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">
+                <Button Text="Continue" Padding="5" HeightRequest="55" WidthRequest="90" Command="{Binding EmailPartCommand}"/>
+            </StackLayout>
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

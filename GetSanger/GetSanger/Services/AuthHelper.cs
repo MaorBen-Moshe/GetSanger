@@ -16,6 +16,7 @@ namespace GetSanger.Services
     public static class AuthHelper
     {
         private static readonly IAuth s_Auth = DependencyService.Get<IAuth>();
+
         public static async Task RegisterViaEmail(string i_Email, string i_Password)
         {
             if (!s_Auth.IsAnonymousUser())
@@ -29,7 +30,7 @@ namespace GetSanger.Services
                 ["password"] = i_Password
             };
 
-            string idToken = await s_Auth.GetIdToken();
+            string idToken = await GetIdTokenAsync();
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/RegisterUserWithEmailAndPassword";
 
             string json = JsonSerializer.Serialize(details);
@@ -40,7 +41,29 @@ namespace GetSanger.Services
                 string responseMessage = await response.Content.ReadAsStringAsync();
                 throw new Exception(responseMessage);
             }
+
             await LoginViaEmail(i_Email, i_Password);
+            await SendVerificationEmail();
+        }
+
+        public static void SignOut()
+        {
+            s_Auth.SignOut();
+        }
+
+        public static async Task SendVerificationEmail()
+        {
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendVerificationEmail";
+            string idToken = await GetIdTokenAsync();
+
+            HttpResponseMessage response =
+                await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string responseMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(responseMessage);
+            }
         }
 
         public static async Task LoginViaEmail(string i_Email, string i_Password)
@@ -63,15 +86,15 @@ namespace GetSanger.Services
             }
 
             string customToken = await response.Content.ReadAsStringAsync();
-            s_Auth.SignInWithCustomToken(customToken);
+            await s_Auth.SignInWithCustomToken(customToken);
         }
 
-        public static void LoginViaGoogle()
+        public static Task<Dictionary<string, string>> LoginViaGoogle()
         {
             throw new NotImplementedException();
         }
 
-        public static void LoginViaFacebook()
+        public static Task<Dictionary<string, string>> LoginViaFacebook()
         {
             throw new NotImplementedException();
         }
@@ -81,14 +104,54 @@ namespace GetSanger.Services
             return s_Auth.IsLoggedIn();
         }
 
+        public static async Task<bool> IsVerifiedEmail()
+        {
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsEmailVerified";
+            string idToken = await GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                bool result = JsonSerializer.Deserialize<bool>(responseBody);
+                return result;
+            }
+            else
+            {
+                throw new Exception(responseBody);
+            }
+        }
+
         public static string GetLoggedInUserId()
         {
             return s_Auth.GetUserId();
         }
 
-        public static bool IsFirstTimeLogIn()
+        public static async Task<bool> IsFirstTimeLogIn()
         {
-            throw new NotImplementedException();
+            string uid = GetLoggedInUserId();
+
+            Dictionary<string, string> dictionary = new Dictionary<string, string>()
+            {
+                ["userId"] = uid
+            };
+            string json = JsonSerializer.Serialize(dictionary);
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserInDatabase";
+            string idToken = await GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseMessage = await response.Content.ReadAsStringAsync();
+                bool result = JsonSerializer.Deserialize<bool>(responseMessage);
+                return result;
+            }
+            else
+            {
+                throw new Exception("Error");
+            }
         }
 
         public static bool IsValidEmail(string i_Verify)
@@ -102,7 +165,7 @@ namespace GetSanger.Services
             {
                 // Normalize the domain
                 i_Verify = Regex.Replace(i_Verify, @"(@)(.+)$", DomainMapper,
-                                      RegexOptions.None, TimeSpan.FromMilliseconds(200));
+                    RegexOptions.None, TimeSpan.FromMilliseconds(200));
 
                 // Examines the domain part of the email and normalizes it.
                 string DomainMapper(Match match)
@@ -116,11 +179,11 @@ namespace GetSanger.Services
                     return match.Groups[1].Value + domainName;
                 }
             }
-            catch (RegexMatchTimeoutException e)
+            catch (RegexMatchTimeoutException)
             {
                 return false;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return false;
             }
@@ -137,9 +200,37 @@ namespace GetSanger.Services
             }
         }
 
-        public static void ForgotPassword(string i_Email)
+        public static async Task ForgotPassword(string i_Email)
         {
-            throw new NotImplementedException();
+            Dictionary<string, string> dictionary = new Dictionary<string, string>()
+            {
+                ["email"] = i_Email
+            };
+            string json = JsonSerializer.Serialize(dictionary);
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPasswordResetEmail";
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string error = await response.Content.ReadAsStringAsync();
+                throw new Exception(error);
+            }
+        }
+
+        public static async Task<string> GetIdTokenAsync()
+        {
+            return await s_Auth.GetIdToken();
+        }
+
+        public static async Task<bool> IsUserPassword(string i_Password)
+        {
+            return true;
+        }
+
+        public static async Task ChangePassword(string i_OldPassword, string i_NewPassword)
+        {
+            string userID = GetLoggedInUserId();
+            //change password
         }
     }
 }

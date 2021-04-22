@@ -33,7 +33,6 @@ namespace GetSanger.ViewModels
         public CategoriesViewModel()
         {
             CategorySelectedCommand = new Command(categorySelected);
-            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
         }
         #endregion
 
@@ -43,6 +42,11 @@ namespace GetSanger.ViewModels
             CategoryCell current = i_Param as CategoryCell;
 
             Shell.Current.GoToAsync($"jobOffer?category={current.Category}");
+        }
+
+        public override void Appearing()
+        {
+            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
         }
         #endregion
     }
