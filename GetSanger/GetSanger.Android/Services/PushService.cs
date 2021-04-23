@@ -16,8 +16,14 @@ using Android.Content.PM;
 using ImageCircle.Forms.Plugin.Droid;
 using System.Threading.Tasks;
 using System.IO;
+using Android.Gms.Extensions;
+using Android.Gms.Tasks;
+using Firebase.Messaging;
+using Java.Lang;
+using Task = Android.Gms.Tasks.Task;
 
 [assembly: Dependency(typeof(GetSanger.Droid.Services.PushService))]
+
 namespace GetSanger.Droid.Services
 {
     class PushService : IPushService
@@ -28,27 +34,21 @@ namespace GetSanger.Droid.Services
 
         public static string FCMToken
         {
-            get
-            {
-                return m_FCMToken;
-            }
-            set
-            {
-                m_FCMToken = value;
-            }
+            get { return m_FCMToken; }
+            set { m_FCMToken = value; }
         }
 
-        public string GetRegistrationToken()
+        public async Task<string> GetRegistrationToken()
         {
-            //var res =  (string)FirebaseMessaging.Instance.GetToken() as string;
-            //return (string)FirebaseInstallations.Instance.GetToken(false);
-            //return res;
-            return FCMToken;  
-            
-        }
-        
+            Task getTokenTask = FirebaseMessaging.Instance.GetToken();
+            string token = (string) await getTokenTask;
 
-        internal void PushHelper(Intent intent, MainActivity invoker)
+            return token;
+        }
+
+
+        internal void PushHelper(Intent intent,
+            MainActivity invoker)
         {
             if (intent.Extras != null)
             {
@@ -65,6 +65,7 @@ namespace GetSanger.Droid.Services
                 int exceptionParam = 0;
                 throw new GooglePlayServicesNotAvailableException(exceptionParam);
             }
+
             CreateNotificationChannel();
         }
 
@@ -73,7 +74,6 @@ namespace GetSanger.Droid.Services
             int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Invoker);
             if (resultCode != ConnectionResult.Success)
             {
-
                 //"This device is not supported"; 
                 //Finish();
 
@@ -100,12 +100,11 @@ namespace GetSanger.Droid.Services
                 "FCM Notifications",
                 NotificationImportance.Default)
             {
-
                 Description = "Firebase Cloud Messages appear in this channel"
             };
 
             var notificationManager =
-                (NotificationManager)Android.App.Application.Context.GetSystemService(Android.Content.Context.NotificationService);
+                (NotificationManager) Android.App.Application.Context.GetSystemService(Android.Content.Context.NotificationService);
             notificationManager.CreateNotificationChannel(channel);
         }
     }
