@@ -103,6 +103,12 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Methods
+        public override void Appearing()
+        {
+            initialData();
+            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
+        }
+
         private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
@@ -143,12 +149,6 @@ namespace GetSanger.ViewModels
         private async void changePassword(object i_Param)
         {
             await r_NavigationService.NavigateTo(ShellRoutes.ChangePassword);
-        }
-
-        public override void Appearing()
-        {
-            initialData();
-            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
         }
 
         #endregion

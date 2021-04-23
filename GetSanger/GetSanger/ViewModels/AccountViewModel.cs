@@ -49,6 +49,13 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Methods
+
+        public override void Appearing()
+        {
+            CurrentUser = AppManager.Instance.ConnectedUser ?? throw new ArgumentException("User details are not available!");
+            UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
+        }
+
         private void logout(object i_Param)
         {
             // do logout
@@ -70,12 +77,6 @@ namespace GetSanger.ViewModels
         private async void editProfile(object i_Param)
         {
             await Shell.Current.GoToAsync($"/editProfile");
-        }
-
-        public override void Appearing()
-        {
-            CurrentUser = AppManager.Instance.ConnectedUser ?? throw new ArgumentException("User details are not available!");
-            UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
         }
         #endregion
 

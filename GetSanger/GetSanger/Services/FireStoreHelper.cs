@@ -21,7 +21,8 @@ namespace GetSanger.Services
 
         #region Generic_Methods
 
-        public static async Task<List<T>> GetCollection<T>(string i_UserId, CollectionType i_Type)
+        public static async Task<List<T>> GetCollection<T>(string i_UserId,
+            CollectionType i_Type)
         {
             string uri = "uri here";
             Dictionary<string, string> id = new Dictionary<string, string>
@@ -80,25 +81,27 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static Task AddActivity(params Activity[] i_Activity)
+        public static async Task AddActivity(params Activity[] i_Activity)
         {
             if (i_Activity == null)
             {
                 throw new ArgumentNullException("Activity is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddActivities";
             string json = JsonSerializer.Serialize(i_Activity);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public async static Task
-            DeleteActivity(Activity i_Activity,
-                string i_UserId = null) // delete activity from user list and from server data base
+        public async static Task DeleteActivity(Activity i_Activity,
+            string i_UserId = null) // delete activity from user list and from server data base
         {
             if (i_Activity == null)
             {
@@ -126,8 +129,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task
-            UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
+        public static async Task UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_Activity);
@@ -210,8 +212,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task
-            UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
+        public static async Task UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_JobOffer);

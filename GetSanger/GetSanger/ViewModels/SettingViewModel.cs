@@ -49,6 +49,23 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Methods
+        public override void Appearing()
+        {
+            CategoriesItems = new ObservableCollection<CategoryCell>(
+            (from
+                category in AppManager.Instance.GetListOfEnumNames(typeof(Category))
+             where
+                !category.Equals(Category.All.ToString())
+             select
+                new CategoryCell
+                {
+                    Category = (Category)Enum.Parse(typeof(Category), category),
+                    Checked = AppManager.Instance.ConnectedUser.Categories.Contains((Category)Enum.Parse(typeof(Category), category))
+                }
+            ).ToList());
+            IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
+        }
+
         private async void toggled(object i_Param)
         {
             if (i_Param is CategoryCell)
@@ -93,22 +110,6 @@ namespace GetSanger.ViewModels
             }
         }
 
-        public override void Appearing()
-        {
-            CategoriesItems = new ObservableCollection<CategoryCell>(
-            (from
-                category in AppManager.Instance.GetListOfEnumNames(typeof(Category))
-             where
-                !category.Equals(Category.All.ToString())
-             select
-                new CategoryCell
-                {
-                    Category = (Category)Enum.Parse(typeof(Category), category),
-                    Checked = AppManager.Instance.ConnectedUser.Categories.Contains((Category)Enum.Parse(typeof(Category), category))
-                }
-            ).ToList());
-            IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
-        }
         #endregion
     }
 }

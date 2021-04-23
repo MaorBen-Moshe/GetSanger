@@ -23,6 +23,11 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Methods
+
+        public override void Appearing()
+        {
+        }
+
         private void userCommandHelper()
         {
             setUserMode(AppMode.Client, new UserShell());
@@ -47,9 +52,6 @@ namespace GetSanger.ViewModels
             Application.Current.MainPage = i_ChosenShell;
         }
 
-        public override void Appearing()
-        {
-        }
         #endregion
     }
 }

@@ -50,6 +50,19 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Methods
+
+        public async override void Appearing()
+        {
+            List<Activity> activities = await FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId());
+            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            {
+                // client should not see pending activities because it is like job offers
+                activities = activities.Where(activity => activity.Status.Equals(ActivityStatus.Pending) == false).ToList();
+            }
+
+            ActivitiesSource = new ObservableCollection<Activity>(activities);
+        }
+
         private void searchActivity(object i_Param)
         {
             string text = i_Param as string;
@@ -129,18 +142,6 @@ namespace GetSanger.ViewModels
         private void selectedActivity(object i_Param)
         {
             Shell.Current.GoToAsync($"activitydetail?activity={i_Param as Activity}");
-        }
-
-        public async override void Appearing()
-        {
-            List<Activity> activities = await FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId());
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
-            {
-                // client should not see pending activities because it is like job offers
-                activities = activities.Where(activity => activity.Status.Equals(ActivityStatus.Pending) == false).ToList();
-            }
-
-            ActivitiesSource = new ObservableCollection<Activity>(activities);
         }
         #endregion
     }

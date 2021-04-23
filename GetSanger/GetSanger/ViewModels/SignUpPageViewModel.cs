@@ -254,7 +254,7 @@ namespace GetSanger.ViewModels
                 select category.Category).ToList();
 
             m_CreatedUser.Categories = (List<Category>) m_CheckedItems;
-            m_CreatedUser.RegistrationToken = r_PushService.GetRegistrationToken();
+            m_CreatedUser.RegistrationToken = await r_PushService.GetRegistrationToken();
 
             try
             {
