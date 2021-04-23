@@ -14,7 +14,9 @@ namespace GetSanger.Services
     {
         private readonly static IPushService sr_Push = DependencyService.Get<IPushService>();
 
-        public async void SendToDevice<T>(string i_UserId, T i_Data, string i_Message = null)
+        public async void SendToDevice<T>(string i_UserId,
+            T i_Data,
+            string i_Message = null)
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
             i_Message = user.IsGenericNotifications ? i_Message : null;
@@ -33,7 +35,9 @@ namespace GetSanger.Services
             }
         }
 
-        public async void SendTAllTopic<T>(string i_Topic, T i_Data, string i_Message = null)
+        public async void SendTAllTopic<T>(string i_Topic,
+            T i_Data,
+            string i_Message = null)
         {
             string uri = "Cloud uri here!";
             Dictionary<string, object> pushData = new Dictionary<string, object>
@@ -51,7 +55,8 @@ namespace GetSanger.Services
             }
         }
 
-        public async Task RegisterTopics(string i_UserId, params string[] i_Topics)
+        public async Task RegisterTopics(string i_UserId,
+            params string[] i_Topics)
         {
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SubscribeToTopics";
             Dictionary<string, object> pushData = new Dictionary<string, object>
@@ -69,7 +74,8 @@ namespace GetSanger.Services
             }
         }
 
-        public async void UnsubscribeTopics(string i_UserId, params string[] i_Topics)
+        public async void UnsubscribeTopics(string i_UserId,
+            params string[] i_Topics)
         {
             string uri = "Cloud uri here!";
             Dictionary<string, object> pushData = new Dictionary<string, object>
@@ -91,9 +97,9 @@ namespace GetSanger.Services
             // do nothing
         }
 
-        public string GetRegistrationToken()
+        public async Task<string> GetRegistrationToken()
         {
-            return sr_Push.GetRegistrationToken();
+            return await sr_Push.GetRegistrationToken();
         }
     }
 }

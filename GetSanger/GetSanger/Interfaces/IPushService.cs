@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GetSanger.Interfaces
 {
     public interface IPushService
     {
-        string GetRegistrationToken();
+        Task<string> GetRegistrationToken();
     }
 }

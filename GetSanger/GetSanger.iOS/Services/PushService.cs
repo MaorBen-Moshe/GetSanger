@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using UIKit;
 using GetSanger.Interfaces;
 using Xamarin.Forms;
 using GetSanger.iOS.Services;
 
 [assembly: Dependency(typeof(GetSanger.iOS.Services.PushService))]
+
 namespace GetSanger.iOS.Services
 {
     class PushService : IPushService
@@ -18,19 +20,14 @@ namespace GetSanger.iOS.Services
 
         public static string FCMToken
         {
-            get 
-            {
-                return m_FCMToken;
-            }
-            set
-            {
-                m_FCMToken = value;
-            }
+            get { return m_FCMToken; }
+            set { m_FCMToken = value; }
         }
 
-        public string GetRegistrationToken()
+        public Task<string> GetRegistrationToken()
         {
-            return FCMToken;
+            throw new NotImplementedException();
+            //return FCMToken;
         }
     }
 }
