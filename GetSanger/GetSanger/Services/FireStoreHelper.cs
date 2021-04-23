@@ -261,8 +261,7 @@ namespace GetSanger.Services
             }
         }
 
-        public async static Task
-            DeleteRating(Rating i_Rating) // delete activity from user list and from server data base
+        public static async Task DeleteRating(Rating i_Rating) // delete activity from user list and from server data base
         {
             if (i_Rating == null)
             {
@@ -278,8 +277,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task
-            UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
+        public static async Task UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
         {
             string uri = "uri here";
             string json = JsonSerializer.Serialize(i_Rating);
@@ -296,13 +294,15 @@ namespace GetSanger.Services
 
         public static async Task<User> GetUser(string i_UserID)
         {
-            string server_uri = "Cloud Function Of FireStore Here";
+            string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUser";
             Dictionary<string, string> details = new Dictionary<string, string>()
             {
-                ["userid"] = i_UserID,
+                ["UserId"] = i_UserID,
             };
             string json = JsonSerializer.Serialize(details);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
