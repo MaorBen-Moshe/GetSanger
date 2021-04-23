@@ -336,16 +336,18 @@ namespace GetSanger.Services
             }
         }
 
-        public async static Task DeleteUser(string i_UserId)
+        public static async Task DeleteUser(string i_UserId)
         {
-            string uri = "server uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteUser";
             Dictionary<string, string> data = new Dictionary<string, string>
             {
-                ["userid"] = i_UserId
+                ["UserId"] = i_UserId
             };
 
             string json = JsonSerializer.Serialize(data);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
