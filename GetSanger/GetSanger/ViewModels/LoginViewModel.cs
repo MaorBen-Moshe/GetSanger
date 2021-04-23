@@ -77,6 +77,10 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region methods
+        public override void Appearing()
+        {
+            // auto log in if connected
+        }
 
         private async void LoginClicked(object obj)
         {
@@ -128,11 +132,6 @@ namespace GetSanger.ViewModels
                 // go to sign up personal details!
                 await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
-        }
-
-        public override void Appearing()
-        {
-            // auto log in if connected
         }
 
         #endregion

@@ -44,6 +44,11 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Methods
+        public override void Appearing()
+        {
+            Rating = 1;
+        }
+
         private async void addRating(object i_Param)
         {
             Rating current = new Rating
@@ -57,11 +62,6 @@ namespace GetSanger.ViewModels
             await RunTaskWhileLoading(FireStoreHelper.AddRating(current));
             await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
             await GoBack();
-        }
-
-        public override void Appearing()
-        {
-            Rating = 1;
         }
         #endregion
     }

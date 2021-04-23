@@ -108,6 +108,11 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
+        public override void Appearing()
+        {
+            setUser();
+        }
+
         private void setCommands()
         {
             CallCommand = new Command(callUser);
@@ -210,11 +215,6 @@ namespace GetSanger.ViewModels
         private async void addRating(object i_Param)
         {
             await Shell.Current.GoToAsync($"{ShellRoutes.AddRating}?ratedUser={CurrentUser}");
-        }
-
-        public override void Appearing()
-        {
-            setUser();
         }
         #endregion
     }

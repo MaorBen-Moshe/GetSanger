@@ -84,6 +84,16 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
+        public override void Appearing()
+        {
+            setLocationsLabels();
+            initialPhoneNumber();
+            IsActivatedLocationButton = true;
+            IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
+                                   AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
+                                   ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
+        }
+
         private async void setLocationsLabels()
         {
             Location = await getLocationString(ConnectedActivity.JobDetails.Location);
@@ -217,16 +227,6 @@ namespace GetSanger.ViewModels
                         await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
 
             await Shell.Current.GoToAsync($"/profile?user={user}");
-        }
-
-        public override void Appearing()
-        {
-            setLocationsLabels();
-            initialPhoneNumber();
-            IsActivatedLocationButton = true;
-            IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
-                                   AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
-                                   ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
         }
 
         #endregion

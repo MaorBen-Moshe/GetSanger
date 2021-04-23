@@ -95,13 +95,19 @@ namespace GetSanger.ViewModels
         #region Constructor
         public JobOfferViewModel()
         {
-            CurrentLocation = new Command(GetCurrentLocation);
-            JobLocation = new Command(GetJobLocation);
-            SendJobCommand = new Command(SendJob);
+            CurrentLocation = new Command(getCurrentLocation);
+            JobLocation = new Command(getJobLocation);
+            SendJobCommand = new Command(sendJob);
         }
         #endregion
 
         #region Methods
+
+        public override void Appearing()
+        {
+            JobDate = DateTime.Now;
+            IntialCurrentLocation();
+        }
 
         public async void IntialCurrentLocation()
         {
@@ -114,7 +120,7 @@ namespace GetSanger.ViewModels
             _ = m_IsMyLocation == true ? MyPlaceMark = i_PlaceMark : JobPlaceMark = i_PlaceMark;
         }
 
-        public async void GetCurrentLocation()
+        private async void getCurrentLocation()
         {
             m_IsMyLocation = true;
             bool answer = await r_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
@@ -124,13 +130,13 @@ namespace GetSanger.ViewModels
             }
         }
 
-        public async void GetJobLocation()
+        private async void getJobLocation()
         {
             m_IsMyLocation = false;
             await Shell.Current.GoToAsync($"/map?connectedpage={this}");
         }
 
-        public async void SendJob()
+        private async void sendJob()
         {
             // check all entries are fill with data
             Activity current = new Activity
@@ -169,11 +175,6 @@ namespace GetSanger.ViewModels
             return toRet;
         }
 
-        public override void Appearing()
-        {
-            JobDate = DateTime.Now;
-            IntialCurrentLocation();
-        }
         #endregion
     }
 }
