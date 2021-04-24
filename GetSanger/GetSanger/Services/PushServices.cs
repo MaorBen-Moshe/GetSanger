@@ -12,7 +12,7 @@ namespace GetSanger.Services
 {
     public class PushServices : Service
     {
-        private readonly static IPushService sr_Push = DependencyService.Get<IPushService>();
+        private static readonly IPushService sr_Push = DependencyService.Get<IPushService>();
 
         public async void SendToDevice<T>(string i_UserId,
             T i_Data,
