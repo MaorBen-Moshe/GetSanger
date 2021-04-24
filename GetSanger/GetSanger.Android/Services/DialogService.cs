@@ -11,9 +11,9 @@ namespace GetSanger.Droid.Services
     {
         protected Android.Views.View _nativeView;
 
+        protected bool _isInitialized;
         protected Dialog _dialog;
 
-        protected bool _isInitialized;
 
         public void InitDialogPage(ContentPage i_DialogIndicatorPage)
         {
@@ -56,7 +56,7 @@ namespace GetSanger.Droid.Services
             var renderer = Platform.GetRenderer(bindable);
             if (renderer == null)
             {
-                renderer = Platform.CreateRendererWithContext(bindable, null);
+                renderer = Platform.CreateRenderer(bindable);
                 Platform.SetRenderer(bindable, renderer);
             }
             return renderer;

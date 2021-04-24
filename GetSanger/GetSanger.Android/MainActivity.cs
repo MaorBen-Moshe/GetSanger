@@ -10,6 +10,7 @@ using Android.Content;
 
 //TEMPORARY
 using Firebase.Messaging;
+using Plugin.CurrentActivity;
 
 namespace GetSanger.Droid
 {
@@ -35,6 +36,7 @@ namespace GetSanger.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             ImageCircleRenderer.Init();
             LoadApplication(new App());
             Services.PushService pushService = new Services.PushService();
