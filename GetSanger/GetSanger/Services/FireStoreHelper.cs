@@ -263,7 +263,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task DeleteRating(params Rating[] i_Rating) // delete activity from user list and from server data base
+        public static async Task DeleteRating(params Rating[] i_Rating) // delete rating from user list and from server data base
         {
             if (i_Rating == null)
             {
@@ -281,11 +281,13 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
+        public static async Task UpdateRating(params Rating[] i_Rating) // update rating in user list and in server data base
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateRating";
             string json = JsonSerializer.Serialize(i_Rating);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
