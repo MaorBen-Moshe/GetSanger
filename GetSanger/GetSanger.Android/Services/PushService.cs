@@ -32,12 +32,6 @@ namespace GetSanger.Droid.Services
 
         internal static readonly string CHANNEL_ID = "notification_channel";
 
-        public static string FCMToken
-        {
-            get { return m_FCMToken; }
-            set { m_FCMToken = value; }
-        }
-
         public async Task<string> GetRegistrationToken()
         {
             Task getTokenTask = FirebaseMessaging.Instance.GetToken();
