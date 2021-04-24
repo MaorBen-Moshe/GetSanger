@@ -229,14 +229,16 @@ namespace GetSanger.Services
 
         public static async Task<List<Rating>> GetRatings(string i_UserID)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetRatings";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
-                ["userid"] = i_UserID
+                ["UserId"] = i_UserID
             };
 
             string json = JsonSerializer.Serialize(id);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
