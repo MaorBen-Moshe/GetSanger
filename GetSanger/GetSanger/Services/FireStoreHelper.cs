@@ -356,14 +356,17 @@ namespace GetSanger.Services
 
         public static async Task UpdateUser(User i_User)
         {
-            string server_uri = "Cloud Function Of FireStore Here";
+            string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateUser";
+
             // the three are not serialized with the user, we update the manually
             await UpdateActivity(i_User.Activities.ToArray());
             await UpdateJobOffer(i_User.JobOffers.ToArray());
             await UpdateRating(i_User.Ratings.ToArray());
 
             string json = JsonSerializer.Serialize(i_User);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
