@@ -245,16 +245,18 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static Task AddRating(params Rating[] i_Rating)
+        public static async Task AddRating(params Rating[] i_Rating)
         {
             if (i_Rating == null)
             {
-                throw new ArgumentNullException("Activity is null");
+                throw new ArgumentNullException("Rating is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddRating";
             string json = JsonSerializer.Serialize(i_Rating);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
