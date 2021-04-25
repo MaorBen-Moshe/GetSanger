@@ -77,6 +77,7 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region methods
+
         public override void Appearing()
         {
             // auto log in if connected
@@ -92,7 +93,7 @@ namespace GetSanger.ViewModels
 
             try
             {
-                await AuthHelper.LoginViaEmail(Email, Password.ToString());
+                await RunTaskWhileLoading(AuthHelper.LoginViaEmail(Email, Password));
                 await r_PageService.DisplayAlert("Ok", "Log in successful!", "OK");
             }
             catch (Exception e)

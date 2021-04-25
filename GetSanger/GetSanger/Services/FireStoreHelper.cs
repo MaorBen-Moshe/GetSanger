@@ -229,14 +229,16 @@ namespace GetSanger.Services
 
         public static async Task<List<Rating>> GetRatings(string i_UserID)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetRatings";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
-                ["userid"] = i_UserID
+                ["UserId"] = i_UserID
             };
 
             string json = JsonSerializer.Serialize(id);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -245,43 +247,49 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static Task AddRating(params Rating[] i_Rating)
+        public static async Task AddRating(params Rating[] i_Rating)
         {
             if (i_Rating == null)
             {
-                throw new ArgumentNullException("Activity is null");
+                throw new ArgumentNullException("Rating is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddRating";
             string json = JsonSerializer.Serialize(i_Rating);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public static async Task DeleteRating(Rating i_Rating) // delete activity from user list and from server data base
+        public static async Task DeleteRating(params Rating[] i_Rating) // delete rating from user list and from server data base
         {
             if (i_Rating == null)
             {
-                throw new ArgumentNullException("Activity is null");
+                throw new ArgumentNullException("Rating is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteRating";
             string json = JsonSerializer.Serialize(i_Rating);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public static async Task UpdateRating(params Rating[] i_Rating) // update activity in user list and in server data base
+        public static async Task UpdateRating(params Rating[] i_Rating) // update rating in user list and in server data base
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateRating";
             string json = JsonSerializer.Serialize(i_Rating);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
