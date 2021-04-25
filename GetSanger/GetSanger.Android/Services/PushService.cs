@@ -28,8 +28,6 @@ namespace GetSanger.Droid.Services
 {
     class PushService : IPushService
     {
-        private static string m_FCMToken = null;
-
         internal static readonly string CHANNEL_ID = "notification_channel";
 
         public async Task<string> GetRegistrationToken()
@@ -39,7 +37,6 @@ namespace GetSanger.Droid.Services
 
             return token;
         }
-
 
         internal void PushHelper(Intent intent,
             MainActivity invoker)

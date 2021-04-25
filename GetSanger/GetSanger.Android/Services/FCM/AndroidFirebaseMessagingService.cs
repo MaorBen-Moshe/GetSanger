@@ -7,6 +7,10 @@ using Firebase.Messaging;
 using System.Collections.Generic;
 using Android.Support.V4.App;
 using System.Threading.Tasks;
+using Android.Widget;
+using GetSanger.Services;
+using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace GetSanger.Droid.Services.FCM
 {
@@ -61,18 +65,59 @@ namespace GetSanger.Droid.Services.FCM
             notificationManager.Notify(MainActivity.NOTIFICATION_ID, notificationBuilder.Build());
         }
 
-        async Task DataManipulationExample(RemoteMessage remoteMessage)
+        internal async void DataManipulationExample(RemoteMessage remoteMessage)
         {
             string dataExample = "";
             foreach (var key in remoteMessage.Data.Keys)
             {
-                if(key == "data")
+                if (key == "data")
                 {
                     dataExample = remoteMessage.Data[key];
                     break;
                 }
             }
-            await App.Current.MainPage.DisplayAlert("Example", string.Format("Using data that was passed through push notification, data: "+ dataExample), "OK");
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await App.Current.MainPage.DisplayAlert(
+                 "Example",
+                 string.Format
+                 ("Using data that was passed through push notification, data: " + dataExample), "OK");
+            });
+
+            /*
+            string dataExample = "";
+            var intent = new Intent(this, typeof(MainActivity));
+            foreach (var key in remoteMessage.Data.Keys)
+            {
+                if(key == "data")
+                {
+                    dataExample = remoteMessage.Data[key];
+                    intent.PutExtra(key, dataExample);
+                    break;
+                }
+            }
+            StartActivity(intent);
+            /*
+            //await MainActivity.Instance.ShowAlert(dataExample);
+            //Toast.MakeText(this.ApplicationContext, dataExample, ToastLength.Short).Show();
+            /*
+            await App.Current.MainPage.DisplayAlert(
+                "Example",
+                string.Format
+                ("Using data that was passed through push notification, data: "+ dataExample), "OK");
+            */
+            /*
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            AlertDialog alert = dialog.Create();
+            alert.SetTitle("Example");
+            alert.SetMessage("Using data that was passed through push notification, data: " + dataExample);
+            alert.SetButton("OK", (c, ev) =>
+            {
+                alert.Cancel();
+                // We can add other logic here
+            });
+            alert.Show();
+            */
         }
     }
 }
