@@ -32,7 +32,7 @@ namespace GetSanger.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-
+            Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
@@ -62,23 +62,6 @@ namespace GetSanger.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
-        protected override void OnSaveInstanceState(Bundle outState)
-        {
-            base.OnSaveInstanceState(outState);
-
-            // Save FCM Token
-            string token = Services.PushService.FCMToken;
-            outState.PutString("FCMToken", Services.PushService.FCMToken);
-        }
-
-        protected override void OnRestoreInstanceState(Bundle savedInstanceState)
-        {
-            base.OnRestoreInstanceState(savedInstanceState);
-
-            // Restore FCM Token
-            Services.PushService.FCMToken = savedInstanceState.GetString("FCMToken");
         }
     }
 }
