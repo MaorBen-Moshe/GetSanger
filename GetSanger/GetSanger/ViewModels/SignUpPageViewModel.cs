@@ -211,8 +211,8 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    //await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(Email, Password));
-                    await AuthHelper.RegisterViaEmail(Email, Password);
+                    await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(Email, Password));
+                    //await AuthHelper.RegisterViaEmail(Email, Password);
                     m_CreatedUser = new User
                     {
                         UserID = AuthHelper.GetLoggedInUserId()
@@ -258,8 +258,8 @@ namespace GetSanger.ViewModels
 
             try
             {
-                //await RunTaskWhileLoading(FireStoreHelper.AddUser(m_CreatedUser));
-                await FireStoreHelper.AddUser(m_CreatedUser);
+                await RunTaskWhileLoading(FireStoreHelper.AddUser(m_CreatedUser));
+                //await FireStoreHelper.AddUser(m_CreatedUser);
                 //await r_PushService.RegisterTopics(UserId,
                 //    (m_CheckedItems.Select(category => category.ToString())).ToArray());
                 await r_NavigationService.NavigateTo(ShellRoutes.ModePage);

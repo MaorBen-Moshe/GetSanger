@@ -6,6 +6,8 @@ namespace GetSanger.Models
 {
     public class Rating
     {
+        public string RatingId { get; set; }
+
         // score between 1-5.
         public int Score { get; set; }
 
@@ -17,7 +19,7 @@ namespace GetSanger.Models
 
         public override bool Equals(object obj)
         {
-            if(!(obj is Rating))
+            if (!(obj is Rating))
             {
                 throw new ArgumentException("Argument is not of type rating");
             }

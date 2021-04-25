@@ -86,6 +86,8 @@ namespace GetSanger.Services
             }
 
             string customToken = await response.Content.ReadAsStringAsync();
+
+            SignOut();
             await s_Auth.SignInWithCustomToken(customToken);
         }
 
