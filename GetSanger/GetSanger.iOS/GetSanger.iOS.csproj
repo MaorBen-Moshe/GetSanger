@@ -73,6 +73,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Push\MessagingDelegate.cs" />
+    <Compile Include="Services\AuthIOs.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
     <Compile Include="Services\PushService.cs" />
     <None Include="Entitlements.plist" />

@@ -1,43 +1,44 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using Foundation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GetSanger.Interfaces;
 using System.Threading.Tasks;
-using Android.Gms.Extensions;
 using Firebase.Auth;
-using GetSanger.Droid.Services;
+using GetSanger.Interfaces;
+using GetSanger.iOS.Services;
+using UIKit;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(Auth))]
+[assembly: Dependency(typeof(AuthIOs))]
 
-namespace GetSanger.Droid.Services
+namespace GetSanger.iOS.Services
 {
-    class Auth : IAuth
+    class AuthIOs : IAuth
     {
         public async Task<string> GetIdToken()
         {
-            FirebaseUser user = getUser();
+            User user = getUser();
 
             if (user == null)
             {
-                await FirebaseAuth.Instance.SignInAnonymouslyAsync();
+                await Auth.DefaultInstance.SignInAnonymouslyAsync();
                 user = getUser();
             }
 
-            await user.GetIdToken(true);
-            return user.Zzh();
+            string idToken = await user.GetIdTokenAsync(true);
+
+            return idToken;
+        }
+
+        private User getUser()
+        {
+            return Auth.DefaultInstance.CurrentUser;
         }
 
         public string GetUserId()
         {
-            FirebaseUser user = getUser();
+            User user = getUser();
             string uid = null;
 
             if (user != null)
@@ -52,7 +53,8 @@ namespace GetSanger.Droid.Services
         {
             if (getUser() != null)
             {
-                FirebaseAuth.Instance.SignOut();
+                NSError? error;
+                Auth.DefaultInstance.SignOut(out error);
             }
         }
 
@@ -63,7 +65,7 @@ namespace GetSanger.Droid.Services
 
         public async Task SignInWithCustomToken(string i_Token)
         {
-            await FirebaseAuth.Instance.SignInWithCustomTokenAsync(i_Token);
+            await Auth.DefaultInstance.SignInWithCustomTokenAsync(i_Token);
         }
 
         public bool IsAnonymousUser()
@@ -76,11 +78,6 @@ namespace GetSanger.Droid.Services
             }
 
             return result;
-        }
-
-        private FirebaseUser getUser()
-        {
-            return FirebaseAuth.Instance.CurrentUser;
         }
     }
 }
