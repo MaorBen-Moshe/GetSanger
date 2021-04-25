@@ -114,7 +114,7 @@ namespace GetSanger.Controls
         //Set the correct images for the stars based on the rating 
         public void updateStarsDisplay()
         {
-            for (int i = 0; i < Rating; i++)
+            for (int i = 0; i < 5; i++) // "rating" insated of 5 will show just fulll stars. 
             {
                 StarImages[i].Source = GetStarFileName(i);
             }
@@ -123,19 +123,15 @@ namespace GetSanger.Controls
         //uses zero based position for stars 
         private string GetStarFileName(int position)
         {
-            int currentStarMaxRating = (position + 1) * 2;
-            //Rating is out of 10 
+            int currentStarMaxRating = (position + 1) ;
+            //Rating is out of 5
             if (Rating >= currentStarMaxRating)
             {
-                return "drawable/rating_star_on.png";
-            }
-            else if (Rating >= currentStarMaxRating - 1)
-            {
-                return "drawable/rating_star_half.png";
+                return "drawable/ratingStarOn.png";
             }
             else
             {
-                return "drawable/rating_star_off.png";
+                return "drawable/ratingStarOff.png";
             }
         }
 

@@ -237,7 +237,7 @@ namespace GetSanger.ViewModels
             PersonalDetails personal = new PersonalDetails
             {
                 Phone = new ContactPhone(PhoneNumber),
-                Nickname = Name,
+                NickName = Name,
                 Gender = (GenderType) Enum.Parse(typeof(GenderType), PickedGender),
                 Birthday = Birthday
             };

@@ -86,7 +86,7 @@ namespace GetSanger.ViewModels
                 ActivitiesSource.Remove(activity);
                 AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                 await RunTaskWhileLoading(FireStoreHelper.DeleteActivity(activity));
-                r_PushService.SendToDevice(activity.ClientID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} confirmed your job.");
+                r_PushService.SendToDevice(activity.ClientID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} confirmed your job.");
             }
             else if (activity.Status.Equals(ActivityStatus.ConfirmedBySanger)) // user mode
             {
@@ -98,14 +98,14 @@ namespace GetSanger.ViewModels
                 AppManager.Instance.ConnectedUser.Activities.Add(activity);
                 await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
-                r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} confirmed your job.\n You can see it now on your list.");
+                r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} confirmed your job.\n You can see it now on your list.");
                 IList<Activity> rejected = (from Rejectactivity in AppManager.Instance.ConnectedUser.Activities
                                             where Rejectactivity.JobDetails.JobId.Equals(activity.JobDetails.JobId) && Rejectactivity.Equals(activity) == false
                                             select Rejectactivity).ToList();
                 foreach(Activity reject in rejected)
                 {
                     reject.Status = ActivityStatus.Rejected;
-                    r_PushService.SendToDevice(reject.SangerID, reject, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} rejected your job offer.");
+                    r_PushService.SendToDevice(reject.SangerID, reject, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer.");
                     ActivitiesSource.Remove(activity);
                     AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                     await RunTaskWhileLoading(FireStoreHelper.DeleteActivity(reject));
@@ -129,7 +129,7 @@ namespace GetSanger.ViewModels
                 ActivitiesSource.Remove(activity);
                 AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                 await RunTaskWhileLoading(FireStoreHelper.DeleteActivity(activity));
-                r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} rejected your job offer.");
+                r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer.");
             }
         }
 

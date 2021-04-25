@@ -9,6 +9,8 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Net.Mail;
+using System.Collections.ObjectModel;
+
 
 namespace GetSanger.ViewModels
 {
@@ -26,7 +28,11 @@ namespace GetSanger.ViewModels
         private ContactPhone m_PhonNumber;
         private GenderType m_Geneder;
         private DateTime m_Birthday;
-        private List<Rating> m_RatingList;
+        private ObservableCollection<Rating> m_RatingList;
+
+        private bool m_IsListRefreshing;
+        //private ObservableCollection<Rating> m_RatingsSource;
+
 
         #endregion
 
@@ -82,10 +88,17 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Location, value);
         }
 
-        public List<Rating> Ratings
+     
+        public ObservableCollection<Rating> Ratings
         {
             get => m_RatingList;
             set => SetClassProperty(ref m_RatingList, value);
+        }
+
+        public bool IsListRefreshing
+        {
+            get => m_IsListRefreshing;
+            set => SetStructProperty(ref m_IsListRefreshing, value);
         }
         #endregion
 
@@ -97,6 +110,8 @@ namespace GetSanger.ViewModels
         public ICommand ReportUserCommand { get; set; }
 
         public ICommand AddRatingCommand { get; set; }
+
+        public ICommand RefreshingCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -110,7 +125,55 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            setUser();
+            //setUser();
+            Test();
+           
+
+
+        }
+        public void Test()
+        {
+            CurrentUser = new User();
+            CurrentUser.PersonalDetails = new PersonalDetails
+            {
+                NickName = "Refael",
+                Gender = GenderType.Male,
+                Phone = new ContactPhone("0526460006"),
+                Birthday = new DateTime(1993, 09, 13)
+            };
+
+            UserImage = ImageSource.FromFile("drawable/defaultAvatar.png");
+            
+           // UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri) ?? ImageSource.FromResource("Drawable/defaultAvatar.png") ;
+            Rating rating = new Rating
+            {
+                Score = 4,
+                RatingOwnerId = "311219372",
+                Description = "Refael Will Be good"
+
+            };
+            Rating rating2 = new Rating
+            {
+                Score = 5,
+                RatingOwnerId = "308431725",
+                Description = "Maor is a Hoder"
+
+            };
+            CurrentUser.Ratings.Add(rating);
+            CurrentUser.Ratings.Add(rating2);
+
+            //AverageRating = 4;
+
+
+           // UserImage = CurrentUser.ProfilePictureUri;
+            NickName = CurrentUser.PersonalDetails.NickName;
+            Gender = CurrentUser.PersonalDetails.Gender;
+            PhoneNumber = CurrentUser.PersonalDetails.Phone;
+            Birthday = CurrentUser.PersonalDetails.Birthday;
+            Ratings = new ObservableCollection<Rating>(CurrentUser.Ratings);
+
+            AverageRating = 3; // we will use getAverage 
+
         }
 
         private void setCommands()
@@ -119,17 +182,22 @@ namespace GetSanger.ViewModels
             AddRatingCommand = new Command(addRating);
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
+
+            RefreshingCommand = new Command(refreshList);
         }
 
         private async void setUser()
         {
             if (String.IsNullOrEmpty(UserId))
-            {
+           {
                 throw new ArgumentException("User details aren't available.");
-            }
+           }
 
-            CurrentUser = await FireStoreHelper.GetUser(UserId);
             UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
+            if(UserImage == null) // if there isn't profile picture - we set an defalt avatar
+            {
+                
+            }
             Placemark placemark = await LocationServices.PickedLocation(CurrentUser.UserLocation);
             UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
             AverageRating = getAverage(CurrentUser);
@@ -189,14 +257,14 @@ namespace GetSanger.ViewModels
                     Credentials = System.Net.CredentialCache.DefaultNetworkCredentials
                 };
 
-                string body = $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} with id: {AppManager.Instance.ConnectedUser.UserID} report on: \n" +
-                                 $"{CurrentUser.PersonalDetails.Nickname} with id: {CurrentUser.UserID}, about the reason: {option.ToString()}.";
+                string body = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} with id: {AppManager.Instance.ConnectedUser.UserID} report on: \n" +
+                                 $"{CurrentUser.PersonalDetails.NickName} with id: {CurrentUser.UserID}, about the reason: {option.ToString()}.";
 
                 var mailMessage = new MailMessage
                 {
                     Body = body,
                     From = new MailAddress(AppManager.Instance.ConnectedUser.Email),
-                    Subject = $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} Report Message",
+                    Subject = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} Report Message",
                     Priority = MailPriority.Normal
                 };
 
@@ -216,6 +284,15 @@ namespace GetSanger.ViewModels
         {
             await Shell.Current.GoToAsync($"{ShellRoutes.AddRating}?ratedUser={CurrentUser}");
         }
+
+        private async void refreshList()
+        {
+            //RatingsSource = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserID));
+            CurrentUser.Ratings.RemoveAt(0);
+            Ratings.RemoveAt(0);
+            IsListRefreshing = false;
+        }
+
         #endregion
     }
 }

@@ -133,7 +133,7 @@ namespace GetSanger.ViewModels
             if (sangerInuser && activated)
             {
                 // sanger ends location
-                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.Nickname}?", "OK", "cancel");
+                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to stop sharing your location with {user.PersonalDetails.NickName}?", "OK", "cancel");
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, false);
@@ -141,21 +141,21 @@ namespace GetSanger.ViewModels
                     await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
                     await RunTaskWhileLoading(FireStoreHelper.UpdateUser(user));
                     LocationServices.LeaveTripThread();
-                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} stopped sharing the location with you!");
+                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!");
                     ActivatedButtonText = "Enable Location";
                 }
             }
             else
             {
                 // sanger starts location
-                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.Nickname}?", "OK", "cancel");
+                bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.NickName}?", "OK", "cancel");
                 if (agreed)
                 {
                     user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
                     ConnectedActivity.LocationActivatedBySanger = true;
                     await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
                     await RunTaskWhileLoading(FireStoreHelper.UpdateUser(user));
-                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.Nickname} shared the location with you!");
+                    r_PushService.SendToDevice<string>(user.UserID, null, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
                     LocationServices.StartTripThread();
                     ActivatedButtonText = "Disable Location";
                 }
@@ -173,7 +173,7 @@ namespace GetSanger.ViewModels
             else
             {
                 User sanger = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
-                await r_PageService.DisplayAlert("Note", $"{sanger.PersonalDetails.Nickname} did not share with you location, please contact him to share with you the location!", "OK");
+                await r_PageService.DisplayAlert("Note", $"{sanger.PersonalDetails.NickName} did not share with you location, please contact him to share with you the location!", "OK");
             }
         }
 

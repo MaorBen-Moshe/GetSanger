@@ -8,7 +8,7 @@ namespace GetSanger.Models
     public enum GenderType { Male, Female, Other };
     public class PersonalDetails
     {
-        public string Nickname { get; set; }
+        public string NickName { get; set; }
         public GenderType Gender { get; set; }
         public ContactPhone Phone { get; set; }
         public DateTime Birthday { get; set; }
@@ -24,7 +24,7 @@ namespace GetSanger.Models
             return Birthday.Equals(other.Birthday) &&
                    Phone.PhoneNumber == other.Phone.PhoneNumber &&
                    Gender.Equals(other.Gender) &&
-                   Nickname == other.Nickname;
+                   NickName == other.NickName;
         }
 
         public override int GetHashCode()

@@ -112,7 +112,7 @@ namespace GetSanger.ViewModels
         private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
-            NickName = ConnectedUser.PersonalDetails.Nickname;
+            NickName = ConnectedUser.PersonalDetails.NickName;
             Birthday = ConnectedUser.PersonalDetails.Birthday;
             Gender = ConnectedUser.PersonalDetails.Gender;
             Phone = ConnectedUser.PersonalDetails.Phone;
@@ -128,7 +128,7 @@ namespace GetSanger.ViewModels
                 if (answer)
                 {
                     // check for empty entries
-                    ConnectedUser.PersonalDetails.Nickname = NickName;
+                    ConnectedUser.PersonalDetails.NickName = NickName;
                     ConnectedUser.PersonalDetails.Birthday = Birthday;
                     ConnectedUser.PersonalDetails.Gender = Gender;
                     ConnectedUser.PersonalDetails.Phone = Phone;

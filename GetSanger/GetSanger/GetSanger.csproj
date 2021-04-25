@@ -112,6 +112,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="drawable\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>

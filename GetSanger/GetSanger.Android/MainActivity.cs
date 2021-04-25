@@ -41,7 +41,7 @@ namespace GetSanger.Droid
             pushService.PushHelper(Intent, this);
 
             //TEMPORARY
-            FirebaseMessaging.Instance.SubscribeToTopic("Topic");
+         //   FirebaseMessaging.Instance.SubscribeToTopic("Topic");
         }
 
         protected override void OnStart()
