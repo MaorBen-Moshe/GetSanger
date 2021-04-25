@@ -22,17 +22,11 @@ namespace GetSanger.ViewModels
     {
         #region Fields
 
-        private string m_Name;
-
         private string m_Password;
 
         private string m_ConfirmPassword;
 
-        private string m_PhoneNumber;
-
-        private Image m_PersonalImage;
-
-        private DateTime m_Birthday;
+        private ImageSource m_PersonalImage;
 
         private IList<string> m_GenderItems;
 
@@ -44,8 +38,6 @@ namespace GetSanger.ViewModels
 
         private string m_PickedGender;
 
-        private User m_CreatedUser;
-
         #endregion
 
         #region Constructor
@@ -53,7 +45,8 @@ namespace GetSanger.ViewModels
         public SignUpPageViewModel()
         {
             setCommands();
-            Birthday = DateTime.Now.Date.ToUniversalTime();
+            CreatedUser = new User();
+            CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
             CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance
                 .GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell
@@ -65,15 +58,9 @@ namespace GetSanger.ViewModels
 
         #region Property
 
+        public User CreatedUser { get; set; }
+
         public bool IsFacebookGamil { get; set; }
-
-        public string Name
-        {
-            get => m_Name;
-            set => SetClassProperty(ref m_Name, value);
-        }
-
-        public string UserId { get; set; }
 
         public new string Password
         {
@@ -87,22 +74,10 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_ConfirmPassword, value);
         }
 
-        public string PhoneNumber
-        {
-            get => m_PhoneNumber;
-            set => SetClassProperty(ref m_PhoneNumber, value);
-        }
-
-        public Image PersonalImage
+        public ImageSource PersonalImage
         {
             get => m_PersonalImage;
             set => SetClassProperty(ref m_PersonalImage, value);
-        }
-
-        public DateTime Birthday
-        {
-            get => m_Birthday;
-            set => SetStructProperty(ref m_Birthday, value);
         }
 
         public IList<string> GenderItems
@@ -159,9 +134,9 @@ namespace GetSanger.ViewModels
                 await r_PageService.DisplayAlert("Warning", "Are you sure?\n any detail will be lost.", "Yes", "No");
             if (answer)
             {
+                CreatedUser = new User();
                 PropertyInfo[] properties = GetType()
                     .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-                Email = null; // property of base class
                 foreach (var property in properties)
                 {
                     if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(GenderItems)))
@@ -186,12 +161,6 @@ namespace GetSanger.ViewModels
                         continue;
                     }
 
-                    else if (property.Name.Equals(nameof(Birthday)))
-                    {
-                        property.SetValue(this, DateTime.Now);
-                        continue;
-                    }
-
                     property.SetValue(this, null);
                 }
 
@@ -201,7 +170,7 @@ namespace GetSanger.ViewModels
 
         private async void emailPartClicked()
         {
-            if (AuthHelper.IsValidEmail(Email) == false)
+            if (AuthHelper.IsValidEmail(CreatedUser.Email) == false)
             {
                 await r_PageService.DisplayAlert("Notice", "Please enter a valid email address!", "OK");
                 return;
@@ -211,13 +180,9 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(Email, Password));
+                    await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(CreatedUser.Email, Password));
                     //await AuthHelper.RegisterViaEmail(Email, Password);
-                    m_CreatedUser = new User
-                    {
-                        UserID = AuthHelper.GetLoggedInUserId()
-                    };
-
+                    CreatedUser.UserID = AuthHelper.GetLoggedInUserId();
                     await r_NavigationService.NavigateTo(
                         ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
                 }
@@ -234,16 +199,10 @@ namespace GetSanger.ViewModels
 
         private async void personalDetailPartClicked()
         {
-            PersonalDetails personal = new PersonalDetails
-            {
-                Phone = new ContactPhone(PhoneNumber),
-                NickName = Name,
-                Gender = (GenderType) Enum.Parse(typeof(GenderType), PickedGender),
-                Birthday = Birthday
-            };
+            CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
             //  need to set the image also
             // need to set the user location
-            m_CreatedUser.PersonalDetails = personal;
+            // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }
 
@@ -253,15 +212,14 @@ namespace GetSanger.ViewModels
                 where category.Checked == true && category.Category.Equals(Category.All) == false
                 select category.Category).ToList();
 
-            m_CreatedUser.Categories = (List<Category>) m_CheckedItems;
-            m_CreatedUser.RegistrationToken = await r_PushService.GetRegistrationToken();
+            CreatedUser.Categories = new ObservableCollection<Category>(m_CheckedItems);
+            CreatedUser.RegistrationToken = await r_PushService.GetRegistrationToken();
 
             try
             {
-                await RunTaskWhileLoading(FireStoreHelper.AddUser(m_CreatedUser));
-                //await FireStoreHelper.AddUser(m_CreatedUser);
-                //await r_PushService.RegisterTopics(UserId,
-                //    (m_CheckedItems.Select(category => category.ToString())).ToArray());
+                await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
+                await r_PushService.RegisterTopics(CreatedUser.UserID,
+                    (m_CheckedItems.Select(category => category.ToString())).ToArray());
                 await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
             }
             catch (Exception e)
@@ -277,7 +235,7 @@ namespace GetSanger.ViewModels
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
             if (stream != null)
             {
-                PersonalImage.Source = ImageSource.FromStream(() => stream);
+                PersonalImage = ImageSource.FromStream(() => stream);
             }
             else
             {

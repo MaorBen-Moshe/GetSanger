@@ -19,8 +19,8 @@
                    Grid.Row="0"/>
 
             <StackLayout Grid.Row="1" >
-                <Grid >
-                    <Entry Text="{Binding JobCategory}" IsReadOnly="True" Grid.Column="0"/>
+                <Grid>
+                    <Entry Text="{Binding NewJobOffer.Category}" IsReadOnly="True" Grid.Column="0"/>
                 </Grid>
 
                 <Grid>
@@ -49,7 +49,7 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Format="dd MMM yyyy" Date="{Binding JobDate}" Grid.Column="1"/>
+                    <DatePicker Format="dd MMM yyyy" Date="{Binding NewJobOffer.Date}" Grid.Column="1"/>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"
@@ -58,7 +58,7 @@
                             IsTextPredictionEnabled="True"
                             Placeholder="Job Description"
                             VerticalOptions="FillAndExpand"
-                            Text="{Binding JobDescription}">
+                            Text="{Binding NewJobOffer.Description}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >
                                 <x:Arguments>

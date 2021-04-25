@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm ="clr-namespace:GetSanger.ViewModels"
-             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.ActivityDetailPage">
 
     <ContentPage.BindingContext>
@@ -72,12 +71,12 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Format="dd MMM yyyy" Date="{Binding Date}" Grid.Column="1" IsEnabled="False"/>
+                    <DatePicker Format="dd MMM yyyy" Date="{Binding ConnectedActivity.JobDetails.Date}" Grid.Column="1" IsEnabled="False"/>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"
                        HasShadow="True">
-                    <Editor Text="{Binding Description}"
+                    <Editor Text="{Binding ConnectedActivity.JobDetails.Description}"
                         IsSpellCheckEnabled="True"
                         IsTextPredictionEnabled="True"
                         Placeholder="Job Description"

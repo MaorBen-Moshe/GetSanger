@@ -60,8 +60,6 @@ namespace GetSanger.ViewModels
         }
 
         public string Category { get => ConnectedActivity.JobDetails.Category.ToString(); }
-        public DateTime Date { get => ConnectedActivity.JobDetails.Date; }
-        public string Description { get => ConnectedActivity.JobDetails.Description; }
         #endregion
 
         #region Commands
@@ -87,7 +85,6 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             setLocationsLabels();
-            initialPhoneNumber();
             IsActivatedLocationButton = true;
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
                                    AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
@@ -148,6 +145,7 @@ namespace GetSanger.ViewModels
             else
             {
                 // sanger starts location
+                // sanger always write his location to DB - on start the application
                 bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.NickName}?", "OK", "cancel");
                 if (agreed)
                 {
@@ -174,25 +172,6 @@ namespace GetSanger.ViewModels
             {
                 User sanger = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
                 await r_PageService.DisplayAlert("Note", $"{sanger.PersonalDetails.NickName} did not share with you location, please contact him to share with you the location!", "OK");
-            }
-        }
-
-        private async void initialPhoneNumber()
-        {
-            AppMode mode = AppManager.Instance.CurrentMode;
-            User user;
-            switch (mode)
-            {
-                case AppMode.Client:
-                    user = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
-                    Phone = user.PersonalDetails.Phone.PhoneNumber;
-                    break;
-                case AppMode.Sanger:
-                    user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
-                    Phone = user.PersonalDetails.Phone.PhoneNumber;
-                    break;
-                default:
-                    throw new ArgumentException("No Phone were in DB");
             }
         }
 

@@ -13,7 +13,7 @@
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                 <Label Text="Registration" FontSize="Title" />
             </StackLayout>
-            <Entry Placeholder="Email" Keyboard="Email" Text="{Binding Email}"/>
+            <Entry Placeholder="Email" Keyboard="Email" Text="{Binding CreatedUser.Email}"/>
             <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}" />
             <Entry IsPassword="True" Placeholder="Confirm Password" Text="{Binding ConfirmPassword}" />
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">

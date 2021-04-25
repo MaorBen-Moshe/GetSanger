@@ -11,25 +11,10 @@ namespace GetSanger.ViewModels
     [QueryProperty(nameof(RatedUser), "ratedUser")]
     public class AddRatingViewModel : BaseViewModel
     {
-        #region Fields
-        private int m_Rating;
-        private string m_Review;
-        #endregion
-
         #region Properties
         public User RatedUser { get; set; }
 
-        public int Rating
-        {
-            get => m_Rating;
-            set => SetStructProperty(ref m_Rating, value);
-        }
-
-        public string Review
-        {
-            get => m_Review;
-            set => SetClassProperty(ref m_Review, value);
-        }
+        public Rating NewRating { get; set; }
         #endregion
 
         #region Commands
@@ -46,20 +31,18 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            Rating = 1;
+            NewRating = new Rating
+            {
+                Score = 1
+            };
         }
 
         private async void addRating(object i_Param)
         {
-            Rating current = new Rating
-            {
-                Score = Rating,
-                Description = Review,
-                RatingWriterId = AppManager.Instance.ConnectedUser.UserID,
-                RatingOwnerId = RatedUser.UserID
-            };
+            NewRating.RatingWriterId = AppManager.Instance.ConnectedUser.UserID;
+            NewRating.RatingOwnerId = RatedUser.UserID;
 
-            await RunTaskWhileLoading(FireStoreHelper.AddRating(current));
+            await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
             await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
             await GoBack();
         }

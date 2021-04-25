@@ -104,7 +104,7 @@ namespace GetSanger.ViewModels
             if (answer)
             {
                 await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserID));
-                // do delete 
+                //do delete
                 await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
                 Application.Current.MainPage = new AuthShell();
             }

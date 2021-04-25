@@ -7,9 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
@@ -18,12 +16,7 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private ImageSource m_ProfileImage;
-        private string m_NickName;
-        private DateTime m_Birthday;
-        private GenderType m_Gender;
-        private ObservableCollection<GenderType> m_GenderItems;
-        private ContactPhone m_Phone;
-        private bool m_DataChanged;
+        private IList<GenderType> m_GenderItems;
         #endregion
 
         #region Properties
@@ -34,55 +27,14 @@ namespace GetSanger.ViewModels
             get => m_ProfileImage;
             set
             {
-                m_DataChanged = true;
                 SetClassProperty(ref m_ProfileImage, value);
             }
         }
 
-        public string NickName
-        {
-            get => m_NickName;
-            set
-            {
-                m_DataChanged = true;
-                SetClassProperty(ref m_NickName, value);
-            }
-        }
-
-        public DateTime Birthday
-        {
-            get => m_Birthday;
-            set
-            {
-                m_DataChanged = true;
-                SetStructProperty(ref m_Birthday, value);
-            }
-        }
-
-        public GenderType Gender
-        {
-            get => m_Gender;
-            set
-            {
-                m_DataChanged = true;
-                SetStructProperty(ref m_Gender, value);
-            }
-        }
-
-        public ObservableCollection<GenderType> GenderItems
+        public IList<GenderType> GenderItems
         {
             get => m_GenderItems;
             set => SetClassProperty(ref m_GenderItems, value);
-        }
-
-        public ContactPhone Phone
-        {
-            get => m_Phone;
-            set
-            {
-                m_DataChanged = true;
-                SetClassProperty(ref m_Phone, value);
-            }
         }
         #endregion
 
@@ -112,31 +64,12 @@ namespace GetSanger.ViewModels
         private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
-            NickName = ConnectedUser.PersonalDetails.NickName;
-            Birthday = ConnectedUser.PersonalDetails.Birthday;
-            Gender = ConnectedUser.PersonalDetails.Gender;
-            Phone = ConnectedUser.PersonalDetails.Phone;
             ProfileImage = ImageSource.FromUri(ConnectedUser.ProfilePictureUri);
-            m_DataChanged = false;
         }
 
         private async void backButtonBehavior(object i_Param)
         {
-            if (m_DataChanged)
-            {
-                bool answer = await r_PageService.DisplayAlert("Note", "Do you want to save data?", "Yes", "No");
-                if (answer)
-                {
-                    // check for empty entries
-                    ConnectedUser.PersonalDetails.NickName = NickName;
-                    ConnectedUser.PersonalDetails.Birthday = Birthday;
-                    ConnectedUser.PersonalDetails.Gender = Gender;
-                    ConnectedUser.PersonalDetails.Phone = Phone;
-                    //ConnectedUser.ProfilePictureUri = 
-                    await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser));
-                }
-            }
-
+            await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser));
             await GoBack();
         }
 
@@ -144,6 +77,7 @@ namespace GetSanger.ViewModels
         {
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
             ProfileImage = ImageSource.FromStream(() => stream);
+            // set User Image uri to this stream
         }
 
         private async void changePassword(object i_Param)

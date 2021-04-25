@@ -57,6 +57,7 @@ namespace GetSanger.Models
             ActivatedMap = new Dictionary<string, bool>();
             Activities = new ObservableCollection<Activity>();
             Ratings = new ObservableCollection<Rating>();
+            PersonalDetails = new PersonalDetails();
             IsGenericNotifications = true; // default generic notifications 
             LastUserMode = null;
         }

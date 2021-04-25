@@ -1,7 +1,4 @@
 ﻿using GetSanger.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -59,9 +56,16 @@ namespace GetSanger.ViewModels
                 // also need to check if the new password follow the convention of right password.
                 if (NewPassword.Equals(ConfirmPassword))
                 {
-                    await AuthHelper.ChangePassword(OldPassword, NewPassword);
-                    await r_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
-                    await GoBack();
+                    try
+                    {
+                        await AuthHelper.ChangePassword(OldPassword, NewPassword);
+                        await r_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
+                        await GoBack();
+                    }
+                    catch
+                    {
+                        await r_PageService.DisplayAlert("Note", "Please check if you wrote the write confirm password", "OK");
+                    }
                 }
 
                 await r_PageService.DisplayAlert("Note", "Please check if you wrote the write confirm password", "OK");

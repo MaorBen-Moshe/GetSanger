@@ -17,10 +17,7 @@ namespace GetSanger.ViewModels
         private Placemark m_JobPlacemark;
         private string m_MyLocation;
         private string m_JobLocation;
-        private Category m_JobCategory;
         private bool m_IsMyLocation = true;
-        private DateTime m_JobDate;
-        private string m_JobDescription;
         #endregion
 
         #region Commands
@@ -32,17 +29,7 @@ namespace GetSanger.ViewModels
 
         #region Properties
 
-        public DateTime JobDate
-        {
-            get => m_JobDate;
-            set => SetStructProperty(ref m_JobDate, value);
-        }
-
-        public string JobDescription
-        {
-            get => m_JobDescription;
-            set => SetClassProperty(ref m_JobDescription, value);
-        }
+        public JobOffer NewJobOffer { get; set; }
 
         public Placemark MyPlaceMark
         {
@@ -86,8 +73,8 @@ namespace GetSanger.ViewModels
 
         public Category JobCategory
         {
-            get => m_JobCategory;
-            set => SetStructProperty(ref m_JobCategory, value);
+            get => NewJobOffer.Category;
+            set => NewJobOffer.Category = value;
         }
 
         #endregion
@@ -105,7 +92,11 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            JobDate = DateTime.Now;
+            NewJobOffer = new JobOffer
+            {
+                Date = DateTime.Now
+            };
+
             IntialCurrentLocation();
         }
 
@@ -139,22 +130,16 @@ namespace GetSanger.ViewModels
         private async void sendJob()
         {
             // check all entries are fill with data
+            NewJobOffer.Location = MyPlaceMark.Location;
+            NewJobOffer.JobLocation = JobPlaceMark.Location;
+            NewJobOffer.ClientID = AuthHelper.GetLoggedInUserId();
+            NewJobOffer.ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone;
             Activity current = new Activity
             {
-                JobDetails = new JobOffer
-                {
-                    Category = JobCategory,
-                    Location = MyPlaceMark.Location,
-                    JobLocation = JobPlaceMark.Location,
-                    ClientID = AuthHelper.GetLoggedInUserId(),
-                    ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone,
-                    Date = JobDate,
-                    Description = JobDescription
-                },
-
+                JobDetails = NewJobOffer,
                 Status = ActivityStatus.Pending,
                 ClientID = AuthHelper.GetLoggedInUserId(),
-                Title = $"{JobCategory} job on {JobDate}"
+                Title = $"{JobCategory} job on {NewJobOffer.Date}"
             };
 
             AppManager.Instance.ConnectedUser.Activities.Add(current);
