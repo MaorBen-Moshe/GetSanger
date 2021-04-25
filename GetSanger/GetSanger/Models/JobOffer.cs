@@ -1,19 +1,57 @@
-﻿using System;
+﻿using GetSanger.Services;
+using System;
 using Xamarin.Essentials;
 
 namespace GetSanger.Models
 { 
-    public class JobOffer
+    public class JobOffer : PropertySetter
     {
+        #region Fields
+        private string m_ClientId;
+        private Location m_Location;
+        private Location m_JobLocation;
+        private Category m_Category;
+        private ContactPhone m_Phone;
+        private DateTime m_Date;
+        private string m_Description;
+        #endregion
+
         public string JobId { get; set; }
-        public string ClientID { get; set; }
-        public Location Location { get; set; }
-        public Location JobLocation { get; set; }
-        public Category Category { get; set; }
-        public ContactPhone ClientPhoneNumber { get; set; }
-        public DateTime Date { get; set; }
-        public string Description { get; set; }
-        public float JobTimeEstimation { get; set; }
+        public string ClientID
+        {
+            get => m_ClientId;
+            set => SetClassProperty(ref m_ClientId, value);
+        }
+        public Location Location
+        {
+            get => m_Location;
+            set => SetClassProperty(ref m_Location, value);
+        }
+        public Location JobLocation
+        {
+            get => m_JobLocation;
+            set => SetClassProperty(ref m_JobLocation, value);
+        }
+        public Category Category
+        {
+            get => m_Category;
+            set => SetStructProperty(ref m_Category, value);
+        }
+        public ContactPhone ClientPhoneNumber
+        {
+            get => m_Phone;
+            set => SetClassProperty(ref m_Phone, value);
+        }
+        public DateTime Date
+        {
+            get => m_Date;
+            set => SetStructProperty(ref m_Date, value);
+        }
+        public string Description
+        {
+            get => m_Description;
+            set => SetClassProperty(ref m_Description, value);
+        }
 
         public override bool Equals(object obj)
         {

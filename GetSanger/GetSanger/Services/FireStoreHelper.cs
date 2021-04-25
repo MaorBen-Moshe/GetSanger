@@ -298,6 +298,25 @@ namespace GetSanger.Services
 
         #endregion
 
+        #region Reports
+        public static async Task AddReport(Report i_Report)
+        {
+            if (i_Report == null)
+            {
+                throw new ArgumentNullException("Rating is null");
+            }
+
+            string uri = "uri here";
+            string json = JsonSerializer.Serialize(i_Report);
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+        }
+        #endregion
+
         #region User
 
         public static async Task<User> GetUser(string i_UserID)

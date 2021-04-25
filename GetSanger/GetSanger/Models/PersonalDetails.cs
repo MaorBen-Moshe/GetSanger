@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GetSanger.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Essentials;
@@ -6,12 +7,35 @@ using Xamarin.Essentials;
 namespace GetSanger.Models
 {
     public enum GenderType { Male, Female, Other };
-    public class PersonalDetails
+    public class PersonalDetails : PropertySetter
     {
-        public string NickName { get; set; }
-        public GenderType Gender { get; set; }
-        public ContactPhone Phone { get; set; }
-        public DateTime Birthday { get; set; }
+        #region Fields
+        private string m_NickName;
+        private GenderType m_Gender;
+        private ContactPhone m_Phone;
+        private DateTime m_Birthday;
+        #endregion
+
+        public string NickName
+        {
+            get => m_NickName;
+            set => SetClassProperty(ref m_NickName, value);
+        }
+        public GenderType Gender
+        {
+            get => m_Gender;
+            set => SetStructProperty(ref m_Gender, value);
+        }
+        public ContactPhone Phone
+        {
+            get => m_Phone;
+            set => SetClassProperty(ref m_Phone, value);
+        }
+        public DateTime Birthday
+        {
+            get => m_Birthday;
+            set => SetStructProperty(ref m_Birthday, value);
+        }
 
         public override bool Equals(object obj)
         {

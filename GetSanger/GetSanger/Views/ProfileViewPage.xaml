@@ -25,24 +25,24 @@
                     <controls:RatingStars Rating="{Binding AverageRating}"
                                           Review="" />
                     </StackLayout>
-          
-            <Label Text="{Binding NickName}"
-                           Margin="10,10,0,0" />
-               
 
-                    <Label Text="{Binding PhoneNumber}" 
+            <Label Text="{Binding CurrentUser.NickName}"
+                           Margin="10,10,0,0" />
+
+
+            <Label Text="{Binding  CurrentUser.PhoneNumber}" 
                            Margin="10,0,0,0" />
-              
-               
-                    <Label Text="{Binding Gender}"  
+
+
+            <Label Text="{Binding  CurrentUser.Gender}"  
                            Margin="10,0,0,0" />
-             
-                    <Label Text="{Binding Birthday, StringFormat='{0:MM/dd/yyyy}'}"  
+
+            <Label Text="{Binding  CurrentUser.Birthday, StringFormat='{0:MM/dd/yyyy}'}"  
                            Margin="10,0,0,0"/>
             
                      <Label Text="Ratings:" FontSize="Title"/>
 
-                    <ListView ItemsSource="{Binding Ratings}"
+            <ListView ItemsSource="{Binding  CurrentUser.Ratings}"
                                             HasUnevenRows="True"
                                             RefreshCommand="{Binding RefreshingCommand}"
                                             IsRefreshing="{Binding IsListRefreshing}"

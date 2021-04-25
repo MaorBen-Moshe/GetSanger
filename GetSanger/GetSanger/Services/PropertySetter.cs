@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace GetSanger.ViewModels
+namespace GetSanger.Services
 {
     public class PropertySetter : INotifyPropertyChanged
     {

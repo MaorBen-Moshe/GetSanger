@@ -11,5 +11,7 @@ namespace GetSanger.Constants
         public static string GenericNotificationTopic { get; } = "Generic";
 
         public static string GetSangerMail { get; } = "GetSanger@gmail.com";
+
+        public static string GetSangerMailPassword { get; } = "$MRGS44$";
     }
 }
