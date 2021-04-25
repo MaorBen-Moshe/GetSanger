@@ -13,6 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="drawable\**" />
+    <EmbeddedResource Remove="drawable\**" />
+    <None Remove="drawable\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Apis" Version="1.51.0" />
     <PackageReference Include="SkiaSharp.Extended" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
@@ -112,7 +118,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="drawable\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>
