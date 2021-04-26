@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -336,9 +337,9 @@ namespace GetSanger.Services
             }
 
             User user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            user.Activities = await GetActivities(user.UserID);
-            user.JobOffers = await GetJobOffers(user.UserID);
-            user.Ratings = await GetRatings(user.UserID);
+            user.Activities = new ObservableCollection<Activity>(await GetActivities(user.UserID));
+            user.JobOffers = new ObservableCollection<JobOffer>(await GetJobOffers(user.UserID));
+            user.Ratings = new ObservableCollection<Rating>(await GetRatings(user.UserID));
             return user;
         }
 
