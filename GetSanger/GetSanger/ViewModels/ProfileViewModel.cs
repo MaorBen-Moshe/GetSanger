@@ -22,16 +22,7 @@ namespace GetSanger.ViewModels
         private int m_AverageRating;
         private ImageSource m_UserImage;
         private string m_Location;
-        private string m_NickName;
-        private ContactPhone m_PhonNumber;
-        private GenderType m_Geneder;
-        private DateTime m_Birthday;
-        private ObservableCollection<Rating> m_RatingList;
-
         private bool m_IsListRefreshing;
-        //private ObservableCollection<Rating> m_RatingsSource;
-
-
         #endregion
 
         #region Properties
@@ -85,6 +76,7 @@ namespace GetSanger.ViewModels
         public ProfileViewModel()
         {
             setCommands();
+            //Test();
         }
         #endregion
 
