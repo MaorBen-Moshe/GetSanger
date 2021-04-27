@@ -20,7 +20,7 @@
 
             <StackLayout Grid.Row="1" >
                 <Grid>
-                    <Entry Text="{Binding NewJobOffer.Category}" IsReadOnly="True" Grid.Column="0"/>
+                    <Entry Text="{Binding JobCategory}" IsReadOnly="True" Grid.Column="0"/>
                 </Grid>
 
                 <Grid>
@@ -30,7 +30,9 @@
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" />
                     <Button Text="Get Location" Grid.Column="2" Command="{Binding CurrentLocation}"
-                            CornerRadius="20"/>
+                            CornerRadius="20"
+                            IsVisible="{Binding IsCreate}"
+                            IsEnabled="{Binding IsCreate}"/>
                 </Grid>
 
                 <Grid>
@@ -40,16 +42,18 @@
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" />
                     <Button Text="Get Location" Grid.Column="2" Command="{Binding JobLocation}"
-                            CornerRadius="20"/>
+                            CornerRadius="20"
+                            IsVisible="{Binding IsCreate}"
+                            IsEnabled="{Binding IsCreate}"/>
                 </Grid>
 
-                <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone"/>
+                <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone" IsEnabled="{Binding IsCreate}"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Format="dd MMM yyyy" Date="{Binding NewJobOffer.Date}" Grid.Column="1"/>
+                    <DatePicker Format="dd MMM yyyy" Date="{Binding NewJobOffer.Date}" Grid.Column="1" IsEnabled="{Binding IsCreate}"/>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"
@@ -58,7 +62,8 @@
                             IsTextPredictionEnabled="True"
                             Placeholder="Job Description"
                             VerticalOptions="FillAndExpand"
-                            Text="{Binding NewJobOffer.Description}">
+                            Text="{Binding NewJobOffer.Description}"
+                            IsEnabled="{Binding IsCreate}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >
                                 <x:Arguments>
@@ -73,7 +78,9 @@
                     VerticalOptions="End"
                     CornerRadius="20"
                     Margin="5"
-                    Command="{Binding SendJobCommand}"/>
+                    Command="{Binding SendJobCommand}"
+                    IsVisible="{Binding IsCreate}"
+                    IsEnabled="{Binding IsCreate}"/>
             </StackLayout>
 
         </Grid>

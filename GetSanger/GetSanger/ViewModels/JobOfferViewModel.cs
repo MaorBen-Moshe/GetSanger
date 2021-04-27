@@ -6,9 +6,12 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using System;
 using GetSanger.Models;
+using System.Collections.ObjectModel;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(NewJobOffer), "jobOffer")]
+    [QueryProperty(nameof(IsCreate), "isCreate")]
     [QueryProperty(nameof(JobCategory), "category")]
     public class JobOfferViewModel : BaseViewModel
     {
@@ -29,7 +32,7 @@ namespace GetSanger.ViewModels
 
         #region Properties
 
-        public JobOffer NewJobOffer { get; set; }
+        public JobOffer NewJobOffer { get; set; } // if IsCreate == true than the job offer is sent from the previews page
 
         public Placemark MyPlaceMark
         {
@@ -77,6 +80,8 @@ namespace GetSanger.ViewModels
             set => NewJobOffer.Category = value;
         }
 
+        public bool IsCreate { get; set; } // create job offer or view exist job offer
+
         #endregion
 
         #region Constructor
@@ -85,6 +90,17 @@ namespace GetSanger.ViewModels
             CurrentLocation = new Command(getCurrentLocation);
             JobLocation = new Command(getJobLocation);
             SendJobCommand = new Command(sendJob);
+            if(IsCreate == true)
+            {
+                NewJobOffer = new JobOffer
+                {
+                    Date = DateTime.Now
+                };
+            }
+            else
+            {
+                JobCategory = NewJobOffer.Category;
+            }
         }
         #endregion
 
@@ -92,16 +108,31 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            NewJobOffer = new JobOffer
+            if(IsCreate == false)
             {
-                Date = DateTime.Now
-            };
+                JobCategory = NewJobOffer.Category;
+            }
 
             IntialCurrentLocation();
         }
 
+        public void Disappearing()
+        {
+            NewJobOffer = new JobOffer
+            {
+                Date = DateTime.Now
+            };
+        }
+
         public async void IntialCurrentLocation()
         {
+            if (IsCreate == false)
+            {
+                MyPlaceMark = await LocationServices.PickedLocation(NewJobOffer.Location);
+                JobPlaceMark = await LocationServices.PickedLocation(NewJobOffer.JobLocation);
+                return;
+            }
+
             Location location = await LocationServices.GetCurrentLocation();
             MyPlaceMark = await LocationServices.PickedLocation(location);
         }
@@ -129,23 +160,12 @@ namespace GetSanger.ViewModels
 
         private async void sendJob()
         {
-            // check all entries are fill with data
+            // check validation of fields!
             NewJobOffer.Location = MyPlaceMark.Location;
-            NewJobOffer.JobLocation = JobPlaceMark.Location;
-            NewJobOffer.ClientID = AuthHelper.GetLoggedInUserId();
-            NewJobOffer.ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone;
-            Activity current = new Activity
-            {
-                JobDetails = NewJobOffer,
-                Status = ActivityStatus.Pending,
-                ClientID = AuthHelper.GetLoggedInUserId(),
-                Title = $"{JobCategory} job on {NewJobOffer.Date}"
-            };
-
-            AppManager.Instance.ConnectedUser.Activities.Add(current);
-            await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(current.JobDetails));
-            await RunTaskWhileLoading(FireStoreHelper.AddActivity(current));
-            r_PushService.SendTAllTopic(current.JobDetails.Category.ToString(), current);
+            NewJobOffer.JobLocation = MyPlaceMark.Location;
+            NewJobOffer.Category = JobCategory;
+            // create job offer title
+            AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers, new ObservableCollection<JobOffer>(await FireStoreHelper.AddJobOffer(NewJobOffer)));
         }
 
         private string placemarkValidation(Placemark i_Placemark)

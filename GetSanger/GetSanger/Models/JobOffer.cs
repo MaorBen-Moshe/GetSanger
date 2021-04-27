@@ -8,15 +8,22 @@ namespace GetSanger.Models
     {
         #region Fields
         private string m_ClientId;
+        private string m_Title;
         private Location m_Location;
         private Location m_JobLocation;
         private Category m_Category;
         private ContactPhone m_Phone;
         private DateTime m_Date;
         private string m_Description;
+        private string m_SangerNotes;
         #endregion
 
         public string JobId { get; set; }
+        public string Title
+        {
+            get => m_Title;
+            set => SetClassProperty(ref m_Title, value);
+        }
         public string ClientID
         {
             get => m_ClientId;
@@ -51,6 +58,11 @@ namespace GetSanger.Models
         {
             get => m_Description;
             set => SetClassProperty(ref m_Description, value);
+        }
+        public string SangerNotes
+        {
+            get => m_SangerNotes;
+            set => SetClassProperty(ref m_SangerNotes, value);
         }
 
         public override bool Equals(object obj)

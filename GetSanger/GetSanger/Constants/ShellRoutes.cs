@@ -21,6 +21,8 @@ namespace GetSanger.Constants
 
         public const string Activities = "activities";
 
+        public const string JobOffers = "jobOffers";
+
         public const string HistoryActivities = "historyActivities";
 
         public const string Account = "account";
@@ -46,5 +48,7 @@ namespace GetSanger.Constants
         public const string ChangePassword = "changePassword";
 
         public const string AddRating = "profile/addRating";
+
+        public const string SangerNotes = "jobOffers/sangerNotes";
     }
 }

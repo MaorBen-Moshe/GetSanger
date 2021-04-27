@@ -85,10 +85,10 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             setLocationsLabels();
-            IsActivatedLocationButton = true;
+            IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
                                    AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
-                                   ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
+                                   ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
         }
 
         private async void setLocationsLabels()
@@ -195,7 +195,10 @@ namespace GetSanger.ViewModels
                 ConnectedActivity.LocationActivatedBySanger = false;
                 LocationServices.LeaveTripThread(); // sanger stop sharing location
                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
+                string message = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} completed your job :)";
+                r_PushService.SendToDevice(ConnectedActivity.ClientID, ConnectedActivity, message);
                 IsActivatedEndButton = false;
+                await GoBack();
             }
         }
 

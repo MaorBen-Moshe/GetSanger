@@ -82,7 +82,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
         }
 
-        public static async Task AddActivity(params Activity[] i_Activity)
+        public static async Task<List<Activity>> AddActivity(params Activity[] i_Activity)
         {
             if (i_Activity == null)
             {
@@ -99,6 +99,8 @@ namespace GetSanger.Services
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
+
+            return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
         }
 
         public async static Task DeleteActivity(Activity i_Activity,
@@ -145,12 +147,31 @@ namespace GetSanger.Services
 
         #region JobOffers
 
-        public static async Task<List<JobOffer>> GetJobOffers(string i_UserID)
+        public static async Task<List<JobOffer>> GetUserJobOffers(string i_UserID)
         {
             string uri = "uri here";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
                 ["userid"] = i_UserID
+            };
+
+            string json = JsonSerializer.Serialize(id);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+
+            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+        }
+
+        public static async Task<List<JobOffer>> GetAllJobOffers(List<Category> i_Categories = null)
+        {
+            // if i_Categories == null than get all job offers in data base else filter by the categories
+            string uri = "uri here";
+            Dictionary<string, List<Category>> id = new Dictionary<string, List<Category>>
+            {
+                ["categories"] = i_Categories
             };
 
             string json = JsonSerializer.Serialize(id);
@@ -181,7 +202,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static Task AddJobOffer(params JobOffer[] i_JobOffer)
+        public async static Task<List<JobOffer>> AddJobOffer(params JobOffer[] i_JobOffer)
         {
             if (i_JobOffer == null)
             {
@@ -195,6 +216,8 @@ namespace GetSanger.Services
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
+
+            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
         }
 
         public async static Task DeleteJobOffer(JobOffer i_JobOffer)
@@ -248,7 +271,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
         }
 
-        public static async Task AddRating(params Rating[] i_Rating)
+        public static async Task<List<Rating>> AddRating(params Rating[] i_Rating)
         {
             if (i_Rating == null)
             {
@@ -264,6 +287,8 @@ namespace GetSanger.Services
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
+
+            return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
         }
 
         public static async Task DeleteRating(params Rating[] i_Rating) // delete rating from user list and from server data base
@@ -339,7 +364,7 @@ namespace GetSanger.Services
 
             User user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
             user.Activities = new ObservableCollection<Activity>(await GetActivities(user.UserID));
-            user.JobOffers = new ObservableCollection<JobOffer>(await GetJobOffers(user.UserID));
+            user.JobOffers = new ObservableCollection<JobOffer>(await GetUserJobOffers(user.UserID));
             user.Ratings = new ObservableCollection<Rating>(await GetRatings(user.UserID));
             return user;
         }

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             xmlns:converters ="clr-namespace:GetSanger.Converters"
+             x:Class="GetSanger.Views.JobOffersListView">
+
+    <ContentPage.BindingContext>
+        <vm:JobOffersViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:SelectedItemConverter x:Key="SelectedItemConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <ListView x:Name="m_ListView" 
+                      ItemsSource="{Binding JobOffersSource}"
+                      IsRefreshing="{Binding IsListRefreshing}"
+                      IsPullToRefreshEnabled="True" 
+                      RefreshCommand="{Binding RefreshingCommand}"
+                      HasUnevenRows="true">
+                    <ListView.Behaviors>
+                        <behaviors:EventToCommandBehavior Command="{Binding SelectedJobOfferCommand}" 
+                                                          EventName="ItemSelected"
+                                                          Converter="{StaticResource SelectedItemConverter}"/>
+                    </ListView.Behaviors>
+                    <ListView.Header>
+                        <SearchBar x:Name="search"
+                               Placeholder="Search..." 
+                               HorizontalOptions="Start"
+                               SearchCommand="{Binding SearchJobOffer}"
+                               SearchCommandParameter="{Binding Source={x:Reference search}, Path=Text}">
+                        </SearchBar>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Text="Confirm" Command="{Binding ConfirmJobOfferCommand}" CommandParameter="{Binding .}" />
+                                    <MenuItem Text="Delete" Command="{Binding DeleteMyJobOfferCommand}" CommandParameter="{Binding .}" IsDestructive="True"/>
+                                </ViewCell.ContextActions>
+                                <StackLayout>
+                                    <Image />
+                                    <Label Text="{Binding Title}"/>
+                                    <Label Text="{Binding Description}" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
