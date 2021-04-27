@@ -211,41 +211,22 @@ namespace GetSanger.ViewModels
             string response = await r_PageService.DisplayActionSheet("Please choose the reason:", "Cancel", null, AppManager.Instance.GetListOfEnumNames(typeof(ReportOption)).ToArray());
             if(Enum.TryParse(response, out ReportOption option))
             {
-                Report report = new Report
+                try
                 {
-                    ReporterId = AppManager.Instance.ConnectedUser.UserID,
-                    ReportedId = CurrentUser.UserID, 
-                    Reason = option
-                };
-                await FireStoreHelper.AddReport(report);
-                sendMail(report.Reason);
-                await r_PageService.DisplayAlert("Note", "Your Report has been sent.", "Thanks");
+                    Report report = new Report
+                    {
+                        ReporterId = AppManager.Instance.ConnectedUser.UserID,
+                        ReportedId = CurrentUser.UserID,
+                        Reason = option
+                    };
+                    await FireStoreHelper.AddReport(report);
+                    await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
+                }
+                catch (Exception e)
+                {
+                    await r_PageService.DisplayAlert("Oh No", e.Message, "Sorry");
+                }
             }
-        }
-
-        private void sendMail(ReportOption i_Reason)
-        {
-            SmtpClient smtp = new SmtpClient
-            {
-                Host = "Mail",
-                Port = 25,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential(Constants.Constants.GetSangerMail, Constants.Constants.GetSangerMailPassword)
-            };
-
-            string body = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} with id: {AppManager.Instance.ConnectedUser.UserID} report on: \n" +
-                             $"{CurrentUser.PersonalDetails.NickName} with id: {CurrentUser.UserID}, about the reason: {i_Reason}.";
-
-            var mailMessage = new MailMessage
-            {
-                Body = body,
-                From = new MailAddress(Constants.Constants.GetSangerMail),
-                Subject = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} Report Message",
-                Priority = MailPriority.Normal
-            };
-
-            mailMessage.To.Add(AppManager.Instance.ConnectedUser.Email);
-            smtp.SendAsync(mailMessage, null);
         }
 
         private async void addRating(object i_Param)
