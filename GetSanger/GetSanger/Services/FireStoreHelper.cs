@@ -18,32 +18,6 @@ namespace GetSanger.Services
 
     public static class FireStoreHelper
     {
-        // experiment
-
-        #region Generic_Methods
-
-        public static async Task<List<T>> GetCollection<T>(string i_UserId,
-            CollectionType i_Type)
-        {
-            string uri = "uri here";
-            Dictionary<string, string> id = new Dictionary<string, string>
-            {
-                ["userid"] = i_UserId,
-                ["type"] = i_Type.ToString()
-            };
-
-            string json = JsonSerializer.Serialize(id);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
-            }
-
-            return JsonSerializer.Deserialize<List<T>>(await response.Content.ReadAsStringAsync());
-        }
-
-        #endregion
-
         #region Activities
 
         public static async Task<List<Activity>> GetActivities(string i_UserID)
@@ -332,7 +306,7 @@ namespace GetSanger.Services
                 throw new ArgumentNullException("Rating is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddReport";
             string json = JsonSerializer.Serialize(i_Report);
             string idToken = await AuthHelper.GetIdTokenAsync();
 

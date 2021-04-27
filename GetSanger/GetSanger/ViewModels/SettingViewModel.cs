@@ -74,12 +74,12 @@ namespace GetSanger.ViewModels
                 if (current.Checked)
                 {
                     AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
-                    await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, current.Category.ToString());
+                    await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString());
                 }
                 else
                 {
                     AppManager.Instance.ConnectedUser.Categories.Remove(current.Category);
-                    r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, current.Category.ToString());
+                    r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString());
                 }
             }
             else // generic notifications

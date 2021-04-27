@@ -219,7 +219,7 @@ namespace GetSanger.ViewModels
             {
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await r_PushService.RegisterTopics(CreatedUser.UserID,
-                    (m_CheckedItems.Select(category => category.ToString())).ToArray());
+                    (m_CheckedItems.Select(category => ((int)category).ToString())).ToArray());
                 await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
             }
             catch (Exception e)
