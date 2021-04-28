@@ -50,5 +50,9 @@ namespace GetSanger.Constants
         public const string AddRating = "profile/addRating";
 
         public const string SangerNotes = "jobOffers/sangerNotes";
+
+        public const string ChatsList = "chatsList";
+
+        public const string ChatView = "chat";
     }
 }

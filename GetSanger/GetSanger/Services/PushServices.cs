@@ -39,7 +39,7 @@ namespace GetSanger.Services
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SubscribeToTopics";
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
-                ["UserId"] = i_UserId,
+                ["FromId"] = i_UserId,
                 ["Topics"] = i_Topics
             };
 
@@ -58,7 +58,7 @@ namespace GetSanger.Services
             string uri = "Cloud uri here!";
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
-                ["UserId"] = i_UserId,
+                ["FromId"] = i_UserId,
                 ["Topics"] = i_Topics
             };
 
