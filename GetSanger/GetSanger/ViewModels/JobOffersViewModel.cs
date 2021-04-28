@@ -112,8 +112,8 @@ namespace GetSanger.ViewModels
                     currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId()));
                     break;
                 case AppMode.Sanger:
-                    IEnumerable<JobOffer> obsCollection = (IEnumerable<JobOffer>)AppManager.Instance.ConnectedUser.Categories;
-                    currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetAllJobOffers((List<Category>)obsCollection));
+                    IEnumerable<Category> obsCollection = (IEnumerable<Category>)AppManager.Instance.ConnectedUser.Categories;
+                    currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetAllJobOffers(obsCollection.ToList()));
                     break;
             }
 
