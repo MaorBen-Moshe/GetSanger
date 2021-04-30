@@ -256,7 +256,7 @@ namespace GetSanger.Services
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetRatings";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
-                ["FromId"] = i_UserID
+                ["UserId"] = i_UserID
             };
 
             string json = JsonSerializer.Serialize(id);
@@ -332,7 +332,7 @@ namespace GetSanger.Services
                 throw new ArgumentNullException("Rating is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddReport";
             string json = JsonSerializer.Serialize(i_Report);
             string idToken = await AuthHelper.GetIdTokenAsync();
 
@@ -351,7 +351,7 @@ namespace GetSanger.Services
             string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUser";
             Dictionary<string, string> details = new Dictionary<string, string>()
             {
-                ["FromId"] = i_UserID,
+                ["UserId"] = i_UserID,
             };
             string json = JsonSerializer.Serialize(details);
             string idToken = await AuthHelper.GetIdTokenAsync();
@@ -395,7 +395,7 @@ namespace GetSanger.Services
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteUser";
             Dictionary<string, string> data = new Dictionary<string, string>
             {
-                ["FromId"] = i_UserId
+                ["UserId"] = i_UserId
             };
 
             string json = JsonSerializer.Serialize(data);
