@@ -52,7 +52,7 @@
                               HorizontalOptions="CenterAndExpand"
                               IsVisible="{Binding PendingMessageCountVisible}"
                               VerticalTextAlignment="Center"
-                              TextColor="{DynamicResource primary}"/>
+                              TextColor="Red"/>
                     <Image Source="ic_scrolldown"
                                WidthRequest="30"
                                HeightRequest="30"

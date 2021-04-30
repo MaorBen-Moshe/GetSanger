@@ -197,7 +197,7 @@ namespace GetSanger.ViewModels
                 bool succeeded = await r_DialService.SendWhatsapp();
                 if (!succeeded)
                 {
-                    r_DialService.SendDefMsg();
+                    r_DialService.SendDefAppMsg();
                 }
 
                 return;

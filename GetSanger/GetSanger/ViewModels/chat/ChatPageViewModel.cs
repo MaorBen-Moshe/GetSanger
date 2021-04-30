@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -15,21 +16,40 @@ namespace GetSanger.ViewModels.chat
     {
         #region Fields
         private string m_TextToSend;
+        private User m_UserToChat;
+        private bool m_ShowScrollTap;
+        private bool m_LastMessageVisible;
         #endregion
 
         #region Properties
-        public ObservableCollection<Message> MessagesSource { get; set; }
         public string TextToSend
         {
             get => m_TextToSend;
             set => SetClassProperty(ref m_TextToSend, value);
         }
-        public User UserToChat { get; set; }
-        public bool ShowScrollTap { get; set; } = false; //Show the jump icon 
-        public bool LastMessageVisible { get; set; } = true;
-        public int PendingMessageCount { get; set; } = 0;
+
+        public User UserToChat
+        {
+            get => m_UserToChat;
+            set => SetClassProperty(ref m_UserToChat, value);
+        }
+
+        public bool ShowScrollTap
+        {
+            get => m_ShowScrollTap;
+            set => SetStructProperty(ref m_ShowScrollTap, value);
+        }
+
+        public bool LastMessageVisible
+        {
+            get => m_LastMessageVisible;
+            set => SetStructProperty(ref m_LastMessageVisible, value);
+        }
+
+        public ObservableCollection<Message> MessagesSource { get; set; }
+        public int PendingMessageCount { get; set; }
         public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
-        public Queue<Message> DelayedMessages { get; set; } = new Queue<Message>();
+        public Queue<Message> DelayedMessages { get; set; }
         #endregion
 
         #region Commands
@@ -48,22 +68,42 @@ namespace GetSanger.ViewModels.chat
         #endregion
 
         #region Methods
-        public override void Appearing()
+        public async override void Appearing()
         {
-            // set message of this chat 
+            var db = ChatDatabase.ChatDatabase.CreateOrGetDataBase(UserToChat.UserID);
+            List<Message> messages = await db.Value.Result.GetItemsAsync();
+            MessagesSource = new ObservableCollection<Message>((from item in messages
+                                                                orderby item.TimeSent ascending
+                                                                select item).ToList()
+                                                               );
+            ShowScrollTap = false;
+            DelayedMessages = new Queue<Message>();
+            PendingMessageCount = 0;
+            LastMessageVisible = true;
         }
 
-        private void sendMessage(object i_Param)
+        private async void sendMessage(object i_Param)
         {
             if (!string.IsNullOrWhiteSpace(TextToSend))
             {
-                MessagesSource.Insert(0, new Message
+                Message msg = new Message
                 {
                     Text = TextToSend,
                     FromId = AppManager.Instance.ConnectedUser.UserID,
-                    ToId = UserToChat.UserID
-                });
+                    ToId = UserToChat.UserID,
+                    TimeSent = DateTime.UtcNow
+                };
 
+                var db = ChatDatabase.ChatDatabase.CreateOrGetDataBase(msg.ToId);
+                if(db.Value.Result.DBCount == 0) // new chat
+                {
+                    AppManager.Instance.ConnectedUser.ChatWithUsers.Add(msg.ToId);
+                    await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                }
+
+                MessagesSource.Insert(0, msg);
+                await db.Value.Result.SaveItemAsync(msg);
+                r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
                 TextToSend = string.Empty;
             }
         }

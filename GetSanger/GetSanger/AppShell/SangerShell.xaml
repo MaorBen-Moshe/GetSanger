@@ -9,6 +9,10 @@
              Route="account">
             <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
         </Tab>
+        <Tab Title="Chat"
+             Route="chatList">
+            <ShellContent ContentTemplate="{DataTemplate chat:ChatsListView}" />
+        </Tab>
         <Tab Title="Activities"
              Route="activities">
             <ShellContent ContentTemplate="{DataTemplate views:ActivitiesListPage}" />
