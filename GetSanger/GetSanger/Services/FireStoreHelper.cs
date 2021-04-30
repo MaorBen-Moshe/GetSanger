@@ -202,16 +202,18 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static Task<List<JobOffer>> AddJobOffer(params JobOffer[] i_JobOffer)
+        public static async Task<List<JobOffer>> AddJobOffer(params JobOffer[] i_JobOffer)
         {
             if (i_JobOffer == null)
             {
                 throw new ArgumentNullException("JobDetails is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddJobOffer";
             string json = JsonSerializer.Serialize(i_JobOffer);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -256,7 +258,7 @@ namespace GetSanger.Services
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetRatings";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
-                ["FromId"] = i_UserID
+                ["UserId"] = i_UserID
             };
 
             string json = JsonSerializer.Serialize(id);
@@ -325,6 +327,7 @@ namespace GetSanger.Services
         #endregion
 
         #region Reports
+
         public static async Task AddReport(Report i_Report)
         {
             if (i_Report == null)
@@ -332,7 +335,7 @@ namespace GetSanger.Services
                 throw new ArgumentNullException("Rating is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddReport";
             string json = JsonSerializer.Serialize(i_Report);
             string idToken = await AuthHelper.GetIdTokenAsync();
 
@@ -342,6 +345,7 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
+
         #endregion
 
         #region User
@@ -351,7 +355,7 @@ namespace GetSanger.Services
             string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUser";
             Dictionary<string, string> details = new Dictionary<string, string>()
             {
-                ["FromId"] = i_UserID,
+                ["UserId"] = i_UserID,
             };
             string json = JsonSerializer.Serialize(details);
             string idToken = await AuthHelper.GetIdTokenAsync();
@@ -395,7 +399,7 @@ namespace GetSanger.Services
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteUser";
             Dictionary<string, string> data = new Dictionary<string, string>
             {
-                ["FromId"] = i_UserId
+                ["UserId"] = i_UserId
             };
 
             string json = JsonSerializer.Serialize(data);
