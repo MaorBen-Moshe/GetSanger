@@ -10,7 +10,7 @@ namespace GetSanger.Interfaces
 
         Task<bool> SendWhatsapp();
 
-        void SendDefMsg();
+        void SendDefAppMsg();
 
         void Call();
     }

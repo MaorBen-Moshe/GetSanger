@@ -44,7 +44,7 @@ namespace GetSanger.Services
             PhoneDialer.Open(PhoneNumber);
         }
 
-        public async void SendDefMsg()
+        public async void SendDefAppMsg()
         {
             await Xamarin.Essentials.Sms.ComposeAsync(new SmsMessage(Message, PhoneNumber));
         }
