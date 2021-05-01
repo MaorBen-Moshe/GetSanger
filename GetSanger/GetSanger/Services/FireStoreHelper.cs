@@ -48,38 +48,56 @@ namespace GetSanger.Services
 
         public static async Task<List<Activity>> GetActivities(string i_UserID)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivities";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
-                ["userid"] = i_UserID
+                ["UserId"] = i_UserID
             };
 
             string json = JsonSerializer.Serialize(id);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
+            List<Activity> activities = JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
+            convertDateTimeToLocalTime(activities);
+
+            return activities;
+        }
+
+        private static void convertDateTimeToLocalTime(List<Activity> i_Activities)
+        {
+            foreach (var activity in i_Activities)
+            {
+                activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
+            }
         }
 
         public static async Task<Activity> GetActivity(string i_ActivityId)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivity";
             Dictionary<string, string> data = new Dictionary<string, string>
             {
-                ["activityid"] = i_ActivityId
+                ["ActivityId"] = i_ActivityId
             };
 
             string json = JsonSerializer.Serialize(data);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
+            Activity activity = JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
+            activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
+
+            return activity;
         }
 
         public static async Task<List<Activity>> AddActivity(params Activity[] i_Activity)
@@ -149,57 +167,72 @@ namespace GetSanger.Services
 
         public static async Task<List<JobOffer>> GetUserJobOffers(string i_UserID)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUserJobOffers";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
-                ["userid"] = i_UserID
+                ["UserId"] = i_UserID
             };
 
             string json = JsonSerializer.Serialize(id);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            convertDateTimeToLocalTime(jobOffers);
+
+            return jobOffers;
         }
 
         public static async Task<List<JobOffer>> GetAllJobOffers(List<Category> i_Categories = null)
         {
             // if i_Categories == null than get all job offers in data base else filter by the categories
-            string uri = "uri here";
-            Dictionary<string, List<Category>> id = new Dictionary<string, List<Category>>
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetAllJobOffers";
+            Dictionary<string, List<Category>> categoriesDictionary = new Dictionary<string, List<Category>>
             {
-                ["categories"] = i_Categories
+                ["Categories"] = i_Categories
             };
 
-            string json = JsonSerializer.Serialize(id);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string json = JsonSerializer.Serialize(categoriesDictionary);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            convertDateTimeToLocalTime(jobOffers);
+
+            return jobOffers;
         }
 
         public static async Task<JobOffer> GetJobOffer(string i_JobId)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetJobOffer";
             Dictionary<string, string> data = new Dictionary<string, string>
             {
-                ["jobid"] = i_JobId
+                ["JobId"] = i_JobId
             };
 
             string json = JsonSerializer.Serialize(data);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
+            JobOffer jobOffer = JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
+            jobOffer.Date = jobOffer.Date.ToLocalTime();
+
+            return jobOffer;
         }
 
         public static async Task<List<JobOffer>> AddJobOffer(params JobOffer[] i_JobOffer)
@@ -219,7 +252,18 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            convertDateTimeToLocalTime(jobOffers);
+
+            return jobOffers;
+        }
+
+        private static void convertDateTimeToLocalTime(List<JobOffer> i_JobOffers)
+        {
+            foreach (var jobOffer in i_JobOffers)
+            {
+                jobOffer.Date = jobOffer.Date.ToLocalTime();
+            }
         }
 
         public async static Task DeleteJobOffer(JobOffer i_JobOffer)

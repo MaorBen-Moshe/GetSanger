@@ -16,11 +16,13 @@ namespace GetSanger.ViewModels
     public class JobOfferViewModel : BaseViewModel
     {
         #region Fields
+
         private Placemark m_MyPlacemark;
         private Placemark m_JobPlacemark;
         private string m_MyLocation;
         private string m_JobLocation;
         private bool m_IsMyLocation = true;
+
         #endregion
 
         #region Commands
@@ -28,6 +30,7 @@ namespace GetSanger.ViewModels
         public ICommand CurrentLocation { get; private set; }
         public ICommand JobLocation { get; private set; }
         public ICommand SendJobCommand { get; private set; }
+
         #endregion
 
         #region Properties
@@ -36,10 +39,7 @@ namespace GetSanger.ViewModels
 
         public Placemark MyPlaceMark
         {
-            get
-            {
-                return m_MyPlacemark;
-            }
+            get { return m_MyPlacemark; }
 
             set
             {
@@ -50,10 +50,7 @@ namespace GetSanger.ViewModels
 
         public Placemark JobPlaceMark
         {
-            get
-            {
-                return m_JobPlacemark;
-            }
+            get { return m_JobPlacemark; }
 
             set
             {
@@ -85,12 +82,13 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Constructor
+
         public JobOfferViewModel()
         {
             CurrentLocation = new Command(getCurrentLocation);
             JobLocation = new Command(getJobLocation);
             SendJobCommand = new Command(sendJob);
-            if(IsCreate == true)
+            if (IsCreate == true)
             {
                 NewJobOffer = new JobOffer
                 {
@@ -102,13 +100,14 @@ namespace GetSanger.ViewModels
                 JobCategory = NewJobOffer.Category;
             }
         }
+
         #endregion
 
         #region Methods
 
         public override void Appearing()
         {
-            if(IsCreate == false)
+            if (IsCreate == false)
             {
                 JobCategory = NewJobOffer.Category;
             }
@@ -164,8 +163,10 @@ namespace GetSanger.ViewModels
             NewJobOffer.Location = MyPlaceMark.Location;
             NewJobOffer.JobLocation = MyPlaceMark.Location;
             NewJobOffer.Category = JobCategory;
+            NewJobOffer.CategoryName = JobCategory.ToString();
             // create job offer title
-            AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers, new ObservableCollection<JobOffer>(await FireStoreHelper.AddJobOffer(NewJobOffer)));
+            AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
+                new ObservableCollection<JobOffer>(await FireStoreHelper.AddJobOffer(NewJobOffer)));
         }
 
         private string placemarkValidation(Placemark i_Placemark)
