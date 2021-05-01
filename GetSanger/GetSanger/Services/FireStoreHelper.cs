@@ -149,20 +149,25 @@ namespace GetSanger.Services
 
         public static async Task<List<JobOffer>> GetUserJobOffers(string i_UserID)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUserJobOffers";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
-                ["userid"] = i_UserID
+                ["UserId"] = i_UserID
             };
 
             string json = JsonSerializer.Serialize(id);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            convertDateTimeToLocalTime(jobOffers);
+
+            return jobOffers;
         }
 
         public static async Task<List<JobOffer>> GetAllJobOffers(List<Category> i_Categories = null)
