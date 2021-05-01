@@ -43,7 +43,8 @@ namespace GetSanger.Droid
             pushService.PushHelper(Intent, this);
 
             //TEMPORARY
-         //   FirebaseMessaging.Instance.SubscribeToTopic("Topic");
+            FirebaseMessaging.Instance.SubscribeToTopic("Topic");
+            
         }
 
         protected override void OnStart()
@@ -62,6 +63,12 @@ namespace GetSanger.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+
         }
     }
 }

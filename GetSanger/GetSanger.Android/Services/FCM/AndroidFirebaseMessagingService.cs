@@ -11,6 +11,7 @@ using Android.Widget;
 using GetSanger.Services;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using GetSanger.Constants;
 
 namespace GetSanger.Droid.Services.FCM
 {
@@ -67,57 +68,37 @@ namespace GetSanger.Droid.Services.FCM
 
         internal async void DataManipulationExample(RemoteMessage remoteMessage)
         {
-            string dataExample = "";
+            string pageToNavigate = "";
             foreach (var key in remoteMessage.Data.Keys)
             {
-                if (key == "data")
+                if (key == "type")
                 {
-                    dataExample = remoteMessage.Data[key];
+                    pageToNavigate = remoteMessage.Data[key];
                     break;
                 }
             }
+            NavigationService nservice = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            bool choice = false;
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                await App.Current.MainPage.DisplayAlert(
-                 "Example",
-                 string.Format
-                 ("Using data that was passed through push notification, data: " + dataExample), "OK");
-            });
-
-            /*
-            string dataExample = "";
-            var intent = new Intent(this, typeof(MainActivity));
-            foreach (var key in remoteMessage.Data.Keys)
-            {
-                if(key == "data")
+                choice = await App.Current.MainPage.DisplayAlert
+                 (string.Format("Move to ", pageToNavigate, "?"), "Do you wish to navigate to the page?", "Yes", "No");
+                if (choice)
                 {
-                    dataExample = remoteMessage.Data[key];
-                    intent.PutExtra(key, dataExample);
-                    break;
+                    if (pageToNavigate == ShellRoutes.JobOffer && AppManager.Instance.CurrentMode == AppMode.Client)
+                    {
+                        // navigate to Mode page, if the user swaps to Sanger mode, then navigate to the JobOffer page
+                        await nservice.NavigateTo("mode");
+
+
+                    }
+                    else if(pageToNavigate == "signupEmail")
+                    {
+                        await nservice.NavigateTo(ShellRoutes.SignupEmail);
+                    }
                 }
-            }
-            StartActivity(intent);
-            /*
-            //await MainActivity.Instance.ShowAlert(dataExample);
-            //Toast.MakeText(this.ApplicationContext, dataExample, ToastLength.Short).Show();
-            /*
-            await App.Current.MainPage.DisplayAlert(
-                "Example",
-                string.Format
-                ("Using data that was passed through push notification, data: "+ dataExample), "OK");
-            */
-            /*
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            AlertDialog alert = dialog.Create();
-            alert.SetTitle("Example");
-            alert.SetMessage("Using data that was passed through push notification, data: " + dataExample);
-            alert.SetButton("OK", (c, ev) =>
-            {
-                alert.Cancel();
-                // We can add other logic here
             });
-            alert.Show();
-            */
+            
         }
     }
 }
