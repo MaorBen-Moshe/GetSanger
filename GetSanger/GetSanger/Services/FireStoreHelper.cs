@@ -66,20 +66,25 @@ namespace GetSanger.Services
 
         public static async Task<Activity> GetActivity(string i_ActivityId)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivity";
             Dictionary<string, string> data = new Dictionary<string, string>
             {
-                ["activityid"] = i_ActivityId
+                ["ActivityId"] = i_ActivityId
             };
 
             string json = JsonSerializer.Serialize(data);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
+            Activity activity = JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
+            activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
+
+            return activity;
         }
 
         public static async Task<List<Activity>> AddActivity(params Activity[] i_Activity)
