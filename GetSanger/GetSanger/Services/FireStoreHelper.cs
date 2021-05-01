@@ -219,7 +219,18 @@ namespace GetSanger.Services
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+            convertDateTimeToLocalTime(jobOffers);
+
+            return jobOffers;
+        }
+
+        private static void convertDateTimeToLocalTime(List<JobOffer> i_JobOffers)
+        {
+            foreach (var jobOffer in i_JobOffers)
+            {
+                jobOffer.Date = jobOffer.Date.ToLocalTime();
+            }
         }
 
         public async static Task DeleteJobOffer(JobOffer i_JobOffer)
