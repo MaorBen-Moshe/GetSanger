@@ -95,15 +95,15 @@ namespace GetSanger.ViewModels.chat
                     TimeSent = DateTime.UtcNow
                 };
 
-                var db = ChatDatabase.ChatDatabase.CreateOrGetDataBase(msg.ToId);
-                if(db.Value.Result.DBCount == 0) // new chat
+                var db = await ChatDatabase.ChatDatabase.CreateOrGetDataBase(msg.ToId);
+                if(db.DBCount == 0) // new chat
                 {
                     AppManager.Instance.ConnectedUser.ChatWithUsers.Add(msg.ToId);
                     //await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                 }
 
                 MessagesSource.Insert(0, msg);
-                await db.Value.Result.SaveItemAsync(msg);
+                await db.SaveItemAsync(msg);
                 //r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
                 TextToSend = string.Empty;
             }
