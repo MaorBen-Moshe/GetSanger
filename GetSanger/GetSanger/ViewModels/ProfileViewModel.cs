@@ -236,12 +236,8 @@ namespace GetSanger.ViewModels
 
         private async void refreshList()
         {
-            //RatingsSource = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserID));
+            CurrentUser.Ratings = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserID));
             IsListRefreshing = false;
-            // for tests only 
-            CurrentUser.Ratings.RemoveAt(0);
-            Ratings.RemoveAt(0);
-            
         }
 
         #endregion
