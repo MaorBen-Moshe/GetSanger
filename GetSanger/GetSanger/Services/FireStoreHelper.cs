@@ -48,20 +48,33 @@ namespace GetSanger.Services
 
         public static async Task<List<Activity>> GetActivities(string i_UserID)
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivities";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
-                ["userid"] = i_UserID
+                ["UserId"] = i_UserID
             };
 
             string json = JsonSerializer.Serialize(id);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
 
-            return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
+            List<Activity> activities = JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
+            convertDateTimeToLocalTime(activities);
+
+            return activities;
+        }
+
+        private static void convertDateTimeToLocalTime(List<Activity> i_Activities)
+        {
+            foreach (var activity in i_Activities)
+            {
+                activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
+            }
         }
 
         public static async Task<Activity> GetActivity(string i_ActivityId)
