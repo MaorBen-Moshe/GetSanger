@@ -183,6 +183,7 @@ namespace GetSanger.ViewModels
                 {
                     Type = PinType.Generic,
                     Position = Span.Center,
+                    Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpej"),
                     // add icon to pin
                 }
             };
@@ -220,7 +221,7 @@ namespace GetSanger.ViewModels
                 {
                     Type = PinType.Generic,
                     Position = Span.Center,
-                    Label = "My Location"
+                    Label = "My Location",
                 }
             };
         }

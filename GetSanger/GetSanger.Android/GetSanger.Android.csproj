@@ -201,7 +201,13 @@
     <AndroidResource Include="Resources\Drawable\ratingStarOn2x.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Drawable\defaultAvatar.png" />
+    <AndroidResource Include="Resources\Drawable\profile.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\PinIcon.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\ic_scrolldown.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

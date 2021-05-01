@@ -142,7 +142,7 @@ namespace GetSanger.ViewModels
                 Birthday = new DateTime(1993, 09, 13)
             };
 
-            UserImage = ImageSource.FromFile("drawable/defaultAvatar.png");
+            UserImage = ImageSource.FromFile("profile.jpg");
             
            // UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri) ?? ImageSource.FromResource("Drawable/defaultAvatar.png") ;
             Rating rating = new Rating
@@ -288,9 +288,11 @@ namespace GetSanger.ViewModels
         private async void refreshList()
         {
             //RatingsSource = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserID));
+            IsListRefreshing = false;
+            // for tests only 
             CurrentUser.Ratings.RemoveAt(0);
             Ratings.RemoveAt(0);
-            IsListRefreshing = false;
+            
         }
 
         #endregion
