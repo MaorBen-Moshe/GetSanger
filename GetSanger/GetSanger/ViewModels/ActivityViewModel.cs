@@ -60,8 +60,6 @@ namespace GetSanger.ViewModels
         }
 
         public string Category { get => ConnectedActivity.JobDetails.Category.ToString(); }
-        public DateTime Date { get => ConnectedActivity.JobDetails.Date; }
-        public string Description { get => ConnectedActivity.JobDetails.Description; }
         #endregion
 
         #region Commands
@@ -87,11 +85,10 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             setLocationsLabels();
-            initialPhoneNumber();
-            IsActivatedLocationButton = true;
+            IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
                                    AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
-                                   ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
+                                   ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
         }
 
         private async void setLocationsLabels()
@@ -148,6 +145,7 @@ namespace GetSanger.ViewModels
             else
             {
                 // sanger starts location
+                // sanger always write his location to DB - on start the application
                 bool agreed = await r_PageService.DisplayAlert("Note", $"Do you want to share your location with {user.PersonalDetails.NickName}?", "OK", "cancel");
                 if (agreed)
                 {
@@ -177,25 +175,6 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private async void initialPhoneNumber()
-        {
-            AppMode mode = AppManager.Instance.CurrentMode;
-            User user;
-            switch (mode)
-            {
-                case AppMode.Client:
-                    user = await FireStoreHelper.GetUser(ConnectedActivity.SangerID);
-                    Phone = user.PersonalDetails.Phone.PhoneNumber;
-                    break;
-                case AppMode.Sanger:
-                    user = await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
-                    Phone = user.PersonalDetails.Phone.PhoneNumber;
-                    break;
-                default:
-                    throw new ArgumentException("No Phone were in DB");
-            }
-        }
-
         private async Task<string> getLocationString(Location i_Location)
         {
             Placemark placemark = await LocationServices.PickedLocation(i_Location);
@@ -216,7 +195,10 @@ namespace GetSanger.ViewModels
                 ConnectedActivity.LocationActivatedBySanger = false;
                 LocationServices.LeaveTripThread(); // sanger stop sharing location
                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
+                string message = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} completed your job :)";
+                r_PushService.SendToDevice(ConnectedActivity.ClientID, ConnectedActivity, message);
                 IsActivatedEndButton = false;
+                await GoBack();
             }
         }
 

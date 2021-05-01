@@ -20,8 +20,8 @@
                     x:Name="UploadButton"
                     Command="{Binding ImagePickerCommand}"
                     CommandParameter="{x:Reference UploadButton}"/>
-            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding Name}"/>
-            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding PhoneNumber}" />
+            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName}"/>
+            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone}" />
             <Picker SelectedIndex="1" 
                     Title="Gender"
                     ItemsSource="{Binding GenderItems}"
@@ -34,7 +34,7 @@
                 </Grid.ColumnDefinitions>
                
                 <Label Text="Birthday" Padding="5" Grid.Column="0" />
-                <DatePicker Format="dd MMM yyyy" Date="{Binding Birthday, Mode=TwoWay}"  Grid.Column="1"/>
+                <DatePicker Format="dd MMM yyyy" Date="{Binding CreatedUser.PersonalDetails.Birthday, Mode=TwoWay}"  Grid.Column="1"/>
             </Grid>
             
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">

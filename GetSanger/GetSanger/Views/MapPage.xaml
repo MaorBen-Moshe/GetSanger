@@ -41,7 +41,9 @@
                WidthRequest="300"
                HorizontalOptions="Center"
                VerticalOptions="Start"
-               Margin="0, 20, 0, 0">
+               Margin="0, 20, 0, 0"
+               IsVisible="{Binding IsSearch}"
+               IsEnabled="{Binding IsSearch}">
             <SearchBar x:Name="AddressSearchBar" 
                    Placeholder="כתובת"
                    IsVisible="{Binding IsSearch}"

@@ -2,38 +2,27 @@
 using GetSanger.Models;
 using GetSanger.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Net.Mail;
 using System.Collections.ObjectModel;
-
+using System.Net;
 
 namespace GetSanger.ViewModels
 {
-    public enum ReportOption { Abuse, Harassment, Unprofessional, Ads, Other }; // need to fully implement
+    
 
     [QueryProperty(nameof(UserId), "userid")]
     public class ProfileViewModel : BaseViewModel
     {
         #region Fields
         private User m_CurrenUser;
+        private int m_AverageRating;
         private ImageSource m_UserImage;
         private string m_Location;
-        private int m_AverageRating;
-        private string m_NickName;
-        private ContactPhone m_PhonNumber;
-        private GenderType m_Geneder;
-        private DateTime m_Birthday;
-        private ObservableCollection<Rating> m_RatingList;
-
         private bool m_IsListRefreshing;
-        //private ObservableCollection<Rating> m_RatingsSource;
-
-
         #endregion
 
         #region Properties
@@ -45,36 +34,11 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_CurrenUser, value);
         }
 
-        public GenderType Gender
-        {
-            get => m_Geneder;
-            set => SetStructProperty(ref m_Geneder, value);
-        }
-
         public int AverageRating
         {
             get => m_AverageRating;
             set => SetStructProperty(ref m_AverageRating, value);
         }
-
-        public  DateTime Birthday
-        {
-            get => m_Birthday;
-            set => SetStructProperty(ref m_Birthday,value);
-        }
-
-        public ContactPhone PhoneNumber
-        {
-            get => m_PhonNumber;
-            set => SetClassProperty(ref m_PhonNumber, value);
-        }
-
-        public string NickName
-        {
-            get => m_NickName;
-            set => SetClassProperty(ref m_NickName, value);
-        }
-
 
         public ImageSource UserImage
         {
@@ -88,18 +52,12 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Location, value);
         }
 
-     
-        public ObservableCollection<Rating> Ratings
-        {
-            get => m_RatingList;
-            set => SetClassProperty(ref m_RatingList, value);
-        }
-
         public bool IsListRefreshing
         {
             get => m_IsListRefreshing;
             set => SetStructProperty(ref m_IsListRefreshing, value);
         }
+
         #endregion
 
         #region Commands
@@ -118,6 +76,7 @@ namespace GetSanger.ViewModels
         public ProfileViewModel()
         {
             setCommands();
+            //Test();
         }
         #endregion
 
@@ -127,9 +86,6 @@ namespace GetSanger.ViewModels
         {
             //setUser();
             Test();
-           
-
-
         }
         public void Test()
         {
@@ -166,11 +122,11 @@ namespace GetSanger.ViewModels
 
 
            // UserImage = CurrentUser.ProfilePictureUri;
-            NickName = CurrentUser.PersonalDetails.NickName;
-            Gender = CurrentUser.PersonalDetails.Gender;
-            PhoneNumber = CurrentUser.PersonalDetails.Phone;
-            Birthday = CurrentUser.PersonalDetails.Birthday;
-            Ratings = new ObservableCollection<Rating>(CurrentUser.Ratings);
+            //NickName = CurrentUser.PersonalDetails.NickName;
+            //Gender = CurrentUser.PersonalDetails.Gender;
+            //PhoneNumber = CurrentUser.PersonalDetails.Phone;
+            //Birthday = CurrentUser.PersonalDetails.Birthday;
+            //Ratings = new ObservableCollection<Rating>(CurrentUser.Ratings);
 
             AverageRating = 3; // we will use getAverage 
 
@@ -182,16 +138,22 @@ namespace GetSanger.ViewModels
             AddRatingCommand = new Command(addRating);
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
-
             RefreshingCommand = new Command(refreshList);
         }
 
         private async void setUser()
         {
             if (String.IsNullOrEmpty(UserId))
-           {
+            {
                 throw new ArgumentException("User details aren't available.");
-           }
+            }
+
+
+            CurrentUser = await FireStoreHelper.GetUser(UserId);
+            if(CurrentUser == null)
+            {
+                throw new ArgumentException("User details aren't available.");
+            }
 
             UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
             if(UserImage == null) // if there isn't profile picture - we set an defalt avatar
@@ -200,19 +162,19 @@ namespace GetSanger.ViewModels
             }
             Placemark placemark = await LocationServices.PickedLocation(CurrentUser.UserLocation);
             UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
-            AverageRating = getAverage(CurrentUser);
+            AverageRating = getAverage();
+            IsListRefreshing = false;
         }
 
-        private int getAverage(User i_User)
+        private int getAverage()
         {
-            List<Rating> ratings = i_User.Ratings;
             int avg = 0;
-            foreach(var rating in ratings)
+            foreach(var rating in CurrentUser.Ratings)
             {
                 avg += rating.Score;
             }
 
-            return avg / ratings.Count;
+            return avg / CurrentUser.Ratings.Count;
         }
 
         private async void callUser(object i_Param)
@@ -235,7 +197,7 @@ namespace GetSanger.ViewModels
                 bool succeeded = await r_DialService.SendWhatsapp();
                 if (!succeeded)
                 {
-                    r_DialService.SendDefMsg();
+                    r_DialService.SendDefAppMsg();
                 }
 
                 return;
@@ -245,39 +207,26 @@ namespace GetSanger.ViewModels
         }
 
         private async void reportUser(object i_Param)
-        {
+        {   
             string response = await r_PageService.DisplayActionSheet("Please choose the reason:", "Cancel", null, AppManager.Instance.GetListOfEnumNames(typeof(ReportOption)).ToArray());
             if(Enum.TryParse(response, out ReportOption option))
             {
-                SmtpClient smtp = new SmtpClient
+                try
                 {
-                    Host = "Mail",
-                    Port = 25,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    Credentials = System.Net.CredentialCache.DefaultNetworkCredentials
-                };
-
-                string body = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} with id: {AppManager.Instance.ConnectedUser.UserID} report on: \n" +
-                                 $"{CurrentUser.PersonalDetails.NickName} with id: {CurrentUser.UserID}, about the reason: {option.ToString()}.";
-
-                var mailMessage = new MailMessage
+                    Report report = new Report
+                    {
+                        ReporterId = AppManager.Instance.ConnectedUser.UserID,
+                        ReportedId = CurrentUser.UserID,
+                        Reason = option
+                    };
+                    await FireStoreHelper.AddReport(report);
+                    await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
+                }
+                catch (Exception e)
                 {
-                    Body = body,
-                    From = new MailAddress(AppManager.Instance.ConnectedUser.Email),
-                    Subject = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} Report Message",
-                    Priority = MailPriority.Normal
-                };
-
-                mailMessage.To.Add(Constants.Constants.GetSangerMail);
-                smtp.SendCompleted += Smtp_SendCompleted;                
-                smtp.SendAsync(mailMessage, null);
-                //smtp.Send(mailMessage);
+                    await r_PageService.DisplayAlert("Oh No", e.Message, "Sorry");
+                }
             }
-        }
-
-        private async void Smtp_SendCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            await r_PageService.DisplayAlert("Note", "Your report has sent to us. we will contact you.", "Thanks");
         }
 
         private async void addRating(object i_Param)

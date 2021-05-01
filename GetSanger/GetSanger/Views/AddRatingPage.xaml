@@ -11,7 +11,7 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <controls:RatingStars Rating="{Binding Rating}"/> <!--need to implement choosing how many starts to rate-->
+            <controls:RatingStars Rating="{Binding NewRating.Score}"/> <!--need to implement choosing how many starts to rate-->
             <Frame
                        VerticalOptions="FillAndExpand"
                        HasShadow="True">
@@ -19,7 +19,7 @@
                             IsTextPredictionEnabled="True"
                             Placeholder="Job Description"
                             VerticalOptions="FillAndExpand"
-                            Text="{Binding Review}">
+                            Text="{Binding NewRating.Description}">
                     <Editor.Keyboard>
                         <Keyboard x:FactoryMethod="Create" >
                             <x:Arguments>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -81,7 +82,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
         }
 
-        public static async Task AddActivity(params Activity[] i_Activity)
+        public static async Task<List<Activity>> AddActivity(params Activity[] i_Activity)
         {
             if (i_Activity == null)
             {
@@ -98,6 +99,8 @@ namespace GetSanger.Services
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
+
+            return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
         }
 
         public async static Task DeleteActivity(Activity i_Activity,
@@ -144,12 +147,31 @@ namespace GetSanger.Services
 
         #region JobOffers
 
-        public static async Task<List<JobOffer>> GetJobOffers(string i_UserID)
+        public static async Task<List<JobOffer>> GetUserJobOffers(string i_UserID)
         {
             string uri = "uri here";
             Dictionary<string, string> id = new Dictionary<string, string>
             {
                 ["userid"] = i_UserID
+            };
+
+            string json = JsonSerializer.Serialize(id);
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+
+            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+        }
+
+        public static async Task<List<JobOffer>> GetAllJobOffers(List<Category> i_Categories = null)
+        {
+            // if i_Categories == null than get all job offers in data base else filter by the categories
+            string uri = "uri here";
+            Dictionary<string, List<Category>> id = new Dictionary<string, List<Category>>
+            {
+                ["categories"] = i_Categories
             };
 
             string json = JsonSerializer.Serialize(id);
@@ -180,20 +202,24 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static Task AddJobOffer(params JobOffer[] i_JobOffer)
+        public static async Task<List<JobOffer>> AddJobOffer(params JobOffer[] i_JobOffer)
         {
             if (i_JobOffer == null)
             {
                 throw new ArgumentNullException("JobDetails is null");
             }
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddJobOffer";
             string json = JsonSerializer.Serialize(i_JobOffer);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
+
+            return JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
         }
 
         public async static Task DeleteJobOffer(JobOffer i_JobOffer)
@@ -247,7 +273,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
         }
 
-        public static async Task AddRating(params Rating[] i_Rating)
+        public static async Task<List<Rating>> AddRating(params Rating[] i_Rating)
         {
             if (i_Rating == null)
             {
@@ -263,6 +289,8 @@ namespace GetSanger.Services
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
+
+            return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
         }
 
         public static async Task DeleteRating(params Rating[] i_Rating) // delete rating from user list and from server data base
@@ -298,6 +326,28 @@ namespace GetSanger.Services
 
         #endregion
 
+        #region Reports
+
+        public static async Task AddReport(Report i_Report)
+        {
+            if (i_Report == null)
+            {
+                throw new ArgumentNullException("Rating is null");
+            }
+
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddReport";
+            string json = JsonSerializer.Serialize(i_Report);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        #endregion
+
         #region User
 
         public static async Task<User> GetUser(string i_UserID)
@@ -317,9 +367,9 @@ namespace GetSanger.Services
             }
 
             User user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            user.Activities = await GetActivities(user.UserID);
-            user.JobOffers = await GetJobOffers(user.UserID);
-            user.Ratings = await GetRatings(user.UserID);
+            user.Activities = new ObservableCollection<Activity>(await GetActivities(user.UserID));
+            user.JobOffers = new ObservableCollection<JobOffer>(await GetUserJobOffers(user.UserID));
+            user.Ratings = new ObservableCollection<Rating>(await GetRatings(user.UserID));
             return user;
         }
 
