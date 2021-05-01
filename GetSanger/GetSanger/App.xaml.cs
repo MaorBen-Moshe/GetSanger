@@ -1,5 +1,6 @@
 using Xamarin.Forms;
 using GetSanger.AppShell;
+using GetSanger.Views.chat;
 
 namespace GetSanger
 {
@@ -9,7 +10,7 @@ namespace GetSanger
         {
             InitializeComponent();
 
-           MainPage = new UserShell(); // need to check first if the user is already connected and what mode the user is in.
+           MainPage = new ChatView(); // need to check first if the user is already connected and what mode the user is in.
         }
 
         protected override void OnStart()

@@ -21,12 +21,13 @@ namespace GetSanger.ChatDatabase
                 return new FileInfo(m_Database.DatabasePath).Length;
             }
         }
+
         #endregion
 
         #region Constructor
-        public ChatDatabase(string i_ToId = null)
+        public ChatDatabase(string i_ToId)
         {
-            string dbPath = Path.Combine(Constants.SqliteConstants.DatabasePath, "/" + i_ToId);
+            string dbPath = Path.Combine(Constants.SqliteConstants.DatabasePath, ("/" + i_ToId));
             m_Database = new SQLiteAsyncConnection(dbPath, Constants.SqliteConstants.Flags);
         }
         #endregion

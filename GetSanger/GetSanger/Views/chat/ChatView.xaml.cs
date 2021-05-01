@@ -12,6 +12,12 @@ namespace GetSanger.Views.chat
             InitializeComponent();
         }
 
+        protected override void OnAppearing()
+        {
+            (BindingContext as ChatPageViewModel).Appearing();
+            base.OnAppearing();
+        }
+
         public void ScrollTap(object sender, System.EventArgs e)
         {
             lock (new object())

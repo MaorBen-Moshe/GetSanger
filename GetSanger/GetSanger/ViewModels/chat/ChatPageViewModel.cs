@@ -64,14 +64,15 @@ namespace GetSanger.ViewModels.chat
             SendMessageCommand = new Command(sendMessage);
             MessageAppearingCommand = new Command(messageAppearing);
             MessageDisappearingCommand = new Command(messageDisappearing);
+            Test();
         }
         #endregion
 
         #region Methods
         public async override void Appearing()
         {
-            var db = ChatDatabase.ChatDatabase.CreateOrGetDataBase(UserToChat.UserID);
-            List<Message> messages = await db.Value.Result.GetItemsAsync();
+            var db = await ChatDatabase.ChatDatabase.CreateOrGetDataBase(UserToChat.UserID);
+            List<Message> messages = await db.GetItemsAsync();
             MessagesSource = new ObservableCollection<Message>((from item in messages
                                                                 orderby item.TimeSent ascending
                                                                 select item).ToList()
@@ -98,12 +99,12 @@ namespace GetSanger.ViewModels.chat
                 if(db.Value.Result.DBCount == 0) // new chat
                 {
                     AppManager.Instance.ConnectedUser.ChatWithUsers.Add(msg.ToId);
-                    await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                    //await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                 }
 
                 MessagesSource.Insert(0, msg);
                 await db.Value.Result.SaveItemAsync(msg);
-                r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
+                //r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
                 TextToSend = string.Empty;
             }
         }
@@ -140,6 +141,27 @@ namespace GetSanger.ViewModels.chat
                 });
 
             }
+        }
+
+        private void Test()
+        {
+            UserToChat = new User
+            {
+                UserID = "1",
+                PersonalDetails = new PersonalDetails
+                {
+                    NickName = "maor"
+                }
+            };
+
+            AppManager.Instance.ConnectedUser = new User
+            {
+                UserID = "0",
+                PersonalDetails = new PersonalDetails
+                {
+                    NickName = "Me1"
+                }
+            };
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GetSanger.ViewModels.chat;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,12 @@ namespace GetSanger.Views.chat
         public ChatsListView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as ChatListViewModel).Appearing();
+            base.OnAppearing();
         }
     }
 }
