@@ -27,7 +27,7 @@ namespace GetSanger.ChatDatabase
         #region Constructor
         public ChatDatabase(string i_ToId)
         {
-            string dbPath = Path.Combine(Constants.SqliteConstants.DatabasePath, ("/" + i_ToId));
+            string dbPath = Constants.SqliteConstants.DatabasePath + "/" + i_ToId;
             m_Database = new SQLiteAsyncConnection(dbPath, Constants.SqliteConstants.Flags);
         }
         #endregion

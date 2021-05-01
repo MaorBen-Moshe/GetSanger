@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Xamarin.Forms;
 
 namespace GetSanger.Constants
 {
@@ -21,8 +22,23 @@ namespace GetSanger.Constants
         {
             get
             {
-                var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                return Path.Combine(basePath, DatabaseFilename);
+                string folder = string.Empty, databasePath;
+                if (Device.RuntimePlatform.Equals(Device.iOS))
+                {
+                    folder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                    folder = folder + ".." + "Library";
+                }
+                else if (Device.RuntimePlatform.Equals(Device.Android))
+                {
+                    folder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                }
+                    
+                databasePath = folder + '/' + DatabaseFilename;
+                return databasePath;
+
+                //var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                //var to = basePath + DatabaseFilename;
+                //return to;
             }
         }
     }
