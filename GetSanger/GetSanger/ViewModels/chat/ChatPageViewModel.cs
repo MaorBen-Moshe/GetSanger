@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
+using GetSanger.ChatDatabase;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -46,6 +47,8 @@ namespace GetSanger.ViewModels.chat
             set => SetStructProperty(ref m_LastMessageVisible, value);
         }
 
+        public ChatDatabase.ChatDatabase DB { get; set; } = new ChatDatabase.ChatDatabase();
+
         public ObservableCollection<Message> MessagesSource { get; set; }
         public int PendingMessageCount { get; set; }
         public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
@@ -71,8 +74,8 @@ namespace GetSanger.ViewModels.chat
         #region Methods
         public async override void Appearing()
         {
-            var db = await ChatDatabase.ChatDatabase.CreateOrGetDataBase(UserToChat.UserID);
-            List<Message> messages = await db.GetItemsAsync();
+            
+            List<Message> messages = await DB.GetItemsAsync(UserToChat.UserID);
             MessagesSource = new ObservableCollection<Message>((from item in messages
                                                                 orderby item.TimeSent ascending
                                                                 select item).ToList()
@@ -95,15 +98,8 @@ namespace GetSanger.ViewModels.chat
                     TimeSent = DateTime.UtcNow
                 };
 
-                var db = await ChatDatabase.ChatDatabase.CreateOrGetDataBase(msg.ToId);
-                if(db.DBCount == 0) // new chat
-                {
-                    AppManager.Instance.ConnectedUser.ChatWithUsers.Add(msg.ToId);
-                    //await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                }
-
                 MessagesSource.Insert(0, msg);
-                await db.SaveItemAsync(msg);
+                await DB.SaveItemAsync(msg, msg.ToId);
                 //r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
                 TextToSend = string.Empty;
             }
