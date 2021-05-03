@@ -18,15 +18,21 @@ namespace GetSanger.Services
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
             i_Message = user.IsGenericNotifications ? i_Message : null;
-            string uri = "Cloud uri here!";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPushToToken";
+
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
+                ["UserId"] = i_UserId,
                 ["Data"] = i_Data,
-                ["message"] = i_Message
+                ["Body"] = i_Message,
+                ["Title"] = "New notification"
             };
 
             string json = JsonSerializer.Serialize(pushData);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
