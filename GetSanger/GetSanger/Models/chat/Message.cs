@@ -3,7 +3,6 @@ using SQLite;
 using System;
 namespace GetSanger.Models.chat
 {
-    [Table("Messages")]
     public class Message : PropertySetter
     {
         private string m_Text;
@@ -11,10 +10,6 @@ namespace GetSanger.Models.chat
         private string m_ToId; // who receive the message
         private DateTime m_TimeSent;
 
-        [PrimaryKey, AutoIncrement]
-        public int UniqueId { get; set; }
-
-        [MaxLength(255)]
         public string Text
         {
             get => m_Text;
@@ -37,6 +32,25 @@ namespace GetSanger.Models.chat
         {
             get => m_TimeSent;
             set => SetStructProperty(ref m_TimeSent, value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(!(obj is Message))
+            {
+                throw new ArgumentException("obj must be of type Message!");
+            }
+
+            Message other = obj as Message;
+            return Text.Equals(other.Text) && 
+                   FromId.Equals(other.FromId) &&
+                   ToId.Equals(other.ToId) &&
+                   TimeSent.Equals(other.TimeSent);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

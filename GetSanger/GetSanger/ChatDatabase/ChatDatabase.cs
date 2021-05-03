@@ -63,7 +63,7 @@ namespace GetSanger.ChatDatabase
         public async Task DeleteItemAsync(Message i_Item, string i_ToID)
         {
             List<Message> messages = await getDB(i_ToID);
-            messages = messages.Where(msg => msg.UniqueId != i_Item.UniqueId).ToList();
+            messages = messages.Where(msg => msg.Equals(i_Item) == false).ToList();
             await setDB(messages, i_ToID);
         }
 

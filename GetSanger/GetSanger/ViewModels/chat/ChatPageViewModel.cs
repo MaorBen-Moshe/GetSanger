@@ -99,7 +99,8 @@ namespace GetSanger.ViewModels.chat
                 };
 
                 MessagesSource.Insert(0, msg);
-                await DB.SaveItemAsync(msg, msg.ToId);
+                MessagesSource.Add(msg);
+                //await DB.SaveItemAsync(msg, msg.ToId);
                 //r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
                 TextToSend = string.Empty;
             }
