@@ -275,7 +275,7 @@ namespace GetSanger.Services
                 ["JobId"] = i_JobId
             };
 
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteJobOffer";
             string json = JsonSerializer.Serialize(data);
             string idToken = await AuthHelper.GetIdTokenAsync();
 
