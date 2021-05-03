@@ -1,11 +1,9 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Models;
 using GetSanger.Services;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -43,11 +41,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public JobOffersViewModel()
         {
-            SearchJobOffer = new Command(searchJobOffer);
-            ConfirmJobOfferCommand = new Command(confirmJobOffer);
-            RefreshingCommand = new Command(refreshList);
-            SelectedJobOfferCommand = new Command(selectedJobOffer);
-            DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
+            setCommands();
         }
         #endregion
 
@@ -58,8 +52,18 @@ namespace GetSanger.ViewModels
             setJobOffers();
         }
 
+        private void setCommands()
+        {
+            SearchJobOffer = new Command(searchJobOffer);
+            ConfirmJobOfferCommand = new Command(confirmJobOffer);
+            RefreshingCommand = new Command(refreshList);
+            SelectedJobOfferCommand = new Command(selectedJobOffer);
+            DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
+        }
+
         private void searchJobOffer(object i_Param)
         {
+            // implement it according to the view of a job offer in the list
             string text = i_Param as string;
             if (!string.IsNullOrWhiteSpace(text) && text.Length >= 5)
             {
@@ -87,7 +91,7 @@ namespace GetSanger.ViewModels
                     JobOffer job = i_Param as JobOffer;
                     AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
                     JobOffersSource.Remove(job);
-                    await FireStoreHelper.DeleteJobOffer(job); 
+                    await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job)); 
                 }
             }
         }
@@ -98,9 +102,9 @@ namespace GetSanger.ViewModels
             IsListRefreshing = false;
         }
 
-        private void selectedJobOffer(object i_Param)
+        private async void selectedJobOffer(object i_Param)
         {
-            Shell.Current.GoToAsync($"activitydetail?activity={i_Param as JobOffer}&&isCreate={false}");
+            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"activity={i_Param as JobOffer}&&isCreate={false}");
         }
 
         private async void setJobOffers()
@@ -112,7 +116,7 @@ namespace GetSanger.ViewModels
                     currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId()));
                     break;
                 case AppMode.Sanger:
-                    IEnumerable<Category> obsCollection = (IEnumerable<Category>)AppManager.Instance.ConnectedUser.Categories;
+                    IEnumerable<Category> obsCollection = AppManager.Instance.ConnectedUser.Categories;
                     currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetAllJobOffers(obsCollection.ToList()));
                     break;
             }

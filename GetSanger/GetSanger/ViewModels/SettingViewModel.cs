@@ -43,8 +43,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public SettingViewModel()
         {
-            ToggledCommand = new Command(toggled);
-            DeleteAccountCommand = new Command(deleteAccount);
+            setCommands();
         }
         #endregion
 
@@ -64,6 +63,12 @@ namespace GetSanger.ViewModels
                 }
             ).ToList());
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
+        }
+
+        private void setCommands()
+        {
+            ToggledCommand = new Command(toggled);
+            DeleteAccountCommand = new Command(deleteAccount);
         }
 
         private async void toggled(object i_Param)

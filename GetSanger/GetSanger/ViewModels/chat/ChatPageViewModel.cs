@@ -20,6 +20,7 @@ namespace GetSanger.ViewModels.chat
         private User m_UserToChat;
         private bool m_ShowScrollTap;
         private bool m_LastMessageVisible;
+        private ObservableCollection<Message> m_MessagesSource;
         #endregion
 
         #region Properties
@@ -47,11 +48,18 @@ namespace GetSanger.ViewModels.chat
             set => SetStructProperty(ref m_LastMessageVisible, value);
         }
 
-        public ChatDatabase.ChatDatabase DB { get; set; } = new ChatDatabase.ChatDatabase();
+        public ChatDatabase.ChatDatabase DB { get; set; }
 
-        public ObservableCollection<Message> MessagesSource { get; set; }
+        public ObservableCollection<Message> MessagesSource
+        {
+            get => m_MessagesSource;
+            set => SetClassProperty(ref m_MessagesSource, value);
+        }
+
         public int PendingMessageCount { get; set; }
-        public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
+
+        public bool PendingMessageCountVisible { get { return PendingMessageCount > 2; } }
+
         public Queue<Message> DelayedMessages { get; set; }
         #endregion
 
@@ -67,7 +75,7 @@ namespace GetSanger.ViewModels.chat
             SendMessageCommand = new Command(sendMessage);
             MessageAppearingCommand = new Command(messageAppearing);
             MessageDisappearingCommand = new Command(messageDisappearing);
-            Test();
+            DB = new ChatDatabase.ChatDatabase(); ;
         }
         #endregion
 
@@ -95,13 +103,12 @@ namespace GetSanger.ViewModels.chat
                     Text = TextToSend,
                     FromId = AppManager.Instance.ConnectedUser.UserID,
                     ToId = UserToChat.UserID,
-                    TimeSent = DateTime.UtcNow
+                    TimeSent = DateTime.Now
                 };
 
                 MessagesSource.Insert(0, msg);
-                MessagesSource.Add(msg);
-                //await DB.SaveItemAsync(msg, msg.ToId);
-                //r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
+                await DB.SaveItemAsync(msg, msg.ToId);
+                r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
                 TextToSend = string.Empty;
             }
         }
@@ -138,27 +145,6 @@ namespace GetSanger.ViewModels.chat
                 });
 
             }
-        }
-
-        private void Test()
-        {
-            UserToChat = new User
-            {
-                UserID = "1",
-                PersonalDetails = new PersonalDetails
-                {
-                    NickName = "maor"
-                }
-            };
-
-            AppManager.Instance.ConnectedUser = new User
-            {
-                UserID = "0",
-                PersonalDetails = new PersonalDetails
-                {
-                    NickName = "Me1"
-                }
-            };
         }
         #endregion
     }

@@ -17,18 +17,20 @@ namespace GetSanger.ViewModels
         #region Fields
         private ImageSource m_ProfileImage;
         private IList<GenderType> m_GenderItems;
+        private User m_ConnectedUser;
         #endregion
 
         #region Properties
-        private User ConnectedUser { get; set; } 
+        private User ConnectedUser
+        {
+            get => m_ConnectedUser;
+            set => SetClassProperty(ref m_ConnectedUser, value);
+        }
 
         public ImageSource ProfileImage
         {
             get => m_ProfileImage;
-            set
-            {
-                SetClassProperty(ref m_ProfileImage, value);
-            }
+            set => SetClassProperty(ref m_ProfileImage, value);
         }
 
         public IList<GenderType> GenderItems
@@ -47,9 +49,8 @@ namespace GetSanger.ViewModels
         #region Constructor
         public EditProfileViewModel()
         {
-            ImageChosenCommand = new Command(imageChanged);
-            BackButtonCommand = new Command(backButtonBehavior);
-            ChangePasswordCommand = new Command(changePassword);
+            setCommands();
+            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
         }
 
         #endregion
@@ -58,7 +59,13 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             initialData();
-            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
+        }
+
+        private void setCommands()
+        {
+            ImageChosenCommand = new Command(imageChanged);
+            BackButtonCommand = new Command(backButtonBehavior);
+            ChangePasswordCommand = new Command(changePassword);
         }
 
         private void initialData()

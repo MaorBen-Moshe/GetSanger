@@ -5,7 +5,6 @@ using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    [Preserve(AllMembers = true)]
     public class ForgotPasswordViewModel : LoginViewModel
     {
         #region Fields
@@ -16,7 +15,7 @@ namespace GetSanger.ViewModels
 
         public ForgotPasswordViewModel()
         {
-            this.SendCommand = new Command(this.SendClicked);
+            setCommands();
         }
 
         #endregion
@@ -34,6 +33,11 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Methods
+        private void setCommands()
+        {
+            SendCommand = new Command(this.SendClicked);
+        }
+
         private async void SendClicked()
         {
             if (AuthHelper.IsValidEmail(Email) == false || Email.Equals(ConfirmEmail) == false)

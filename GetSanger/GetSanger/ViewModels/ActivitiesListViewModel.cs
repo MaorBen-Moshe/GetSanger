@@ -42,11 +42,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ActivitiesListViewModel()
         {
-            SearchActivity = new Command(searchActivity);
-            ConfirmActivityCommand = new Command(confirmActivity);
-            RejectActivityCommand = new Command(rejectActivity);
-            RefreshingCommand = new Command(refreshList);
-            SelectedActivityCommand = new Command(selectedActivity);
+            setCommands();
         }
         #endregion
 
@@ -57,8 +53,18 @@ namespace GetSanger.ViewModels
             setActivities();
         }
 
+        private void setCommands()
+        {
+            SearchActivity = new Command(searchActivity);
+            ConfirmActivityCommand = new Command(confirmActivity);
+            RejectActivityCommand = new Command(rejectActivity);
+            RefreshingCommand = new Command(refreshList);
+            SelectedActivityCommand = new Command(selectedActivity);
+        }
+
         private void searchActivity(object i_Param)
         {
+            // change the implementation in order to the activity view in the list
             string text = i_Param as string;
             if (!string.IsNullOrWhiteSpace(text) && text.Length >= 5)
             {
@@ -132,9 +138,9 @@ namespace GetSanger.ViewModels
             IsListRefreshing = false;
         }
 
-        private void selectedActivity(object i_Param)
+        private async void selectedActivity(object i_Param)
         {
-            Shell.Current.GoToAsync($"activitydetail?activity={i_Param as Activity}");
+            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={i_Param as Activity}");
         }
 
         private async void setActivities()

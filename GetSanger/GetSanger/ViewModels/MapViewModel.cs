@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
 using Xamarin.Essentials;
@@ -65,10 +64,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public MapViewModel()
         {
-            SearchCommand = new Command(searchCom);
-            MapClicked = new Command(mapClickedHelper);
-            PinClicked = new Command(pinClickedHelper);
-            CallTripCommand = new Command(callTripHelper);
+            setCommands();
         }
         #endregion
 
@@ -103,6 +99,14 @@ namespace GetSanger.ViewModels
             }
         }
 
+        private void setCommands()
+        {
+            SearchCommand = new Command(searchCom);
+            MapClicked = new Command(mapClickedHelper);
+            PinClicked = new Command(pinClickedHelper);
+            CallTripCommand = new Command(callTripHelper);
+        }
+
         private void mapClickedHelper(object i_Args)
         {
             if (IsSearch)
@@ -124,16 +128,16 @@ namespace GetSanger.ViewModels
             try
             {
                 User sanger = await FireStoreHelper.GetUser((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerID);
-                r_DialService.PhoneNumber = sanger.PersonalDetails.Phone.PhoneNumber;
+                r_DialService.PhoneNumber = sanger.PersonalDetails.Phone.PhoneNumber; // check for null value
                 r_DialService.Call();
             }
             catch(ArgumentNullException anex)
             {
-                await r_PageService.DisplayAlert("Error", anex.Message, "Ok", null);
+                await r_PageService.DisplayAlert("Error", anex.Message, "Ok");
             }
             catch(FeatureNotSupportedException fnx)
             {
-                await r_PageService.DisplayAlert("Error", fnx.Message, "Ok", null);
+                await r_PageService.DisplayAlert("Error", fnx.Message, "Ok");
             }
             catch
             {
@@ -159,6 +163,7 @@ namespace GetSanger.ViewModels
                         Label = $"Chosen Place"
                         }
                     };
+
                     Span = new MapSpan(position, 0.01, 0.01);
                 }
             }
@@ -177,16 +182,12 @@ namespace GetSanger.ViewModels
             Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
             Span = new MapSpan(position, 0.01, 0.01);
             Pins.Clear();
-            Pins = new ObservableCollection<Pin>
+            Pins.Add(new Pin
             {
-                new Pin
-                {
-                    Type = PinType.Generic,
-                    Position = Span.Center,
-                    Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpej"),
-                    // add icon to pin
-                }
-            };
+                Type = PinType.Generic,
+                Position = Span.Center,
+                Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpej")
+            });
 
             // when sanger is near to us we want to stop asking for location, 0.3 kilometers
             if (Location.CalculateDistance(await LocationServices.GetCurrentLocation(), sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
@@ -215,15 +216,12 @@ namespace GetSanger.ViewModels
             Location location = await LocationServices.GetCurrentLocation();
             Position position = new Position(location.Latitude, location.Longitude);
             Span = new MapSpan(position, 0.01, 0.01);
-            Pins = new ObservableCollection<Pin>
-            {
-                new Pin
-                {
+            Pins.Clear();
+            Pins.Add(new Pin {
                     Type = PinType.Generic,
                     Position = Span.Center,
                     Label = "My Location",
-                }
-            };
+            });
         }
         #endregion
     }

@@ -1,9 +1,6 @@
 ﻿using GetSanger.Models;
 using GetSanger.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -14,6 +11,7 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private string m_Notes;
+        private JobOffer m_JobOffer;
         #endregion
 
         #region Properties
@@ -22,7 +20,11 @@ namespace GetSanger.ViewModels
             get => m_Notes;
             set => SetClassProperty(ref m_Notes, value);
         }
-        public JobOffer CurrentJob { get; set; }
+        public JobOffer CurrentJob
+        {
+            get => m_JobOffer;
+            set => SetClassProperty(ref m_JobOffer, value);
+        }
         #endregion 
         #region Commands
         public ICommand SendNotesCommand { get; set; }
@@ -30,12 +32,17 @@ namespace GetSanger.ViewModels
         #region Constructor
         public SangerNotesViewModel()
         {
-            SendNotesCommand = new Command(sendNotes);
+            setCommands();
         }
         #endregion
         #region Methods
         public override void Appearing()
         {
+        }
+
+        private void setCommands()
+        {
+            SendNotesCommand = new Command(sendNotes);
         }
 
         private async void sendNotes()

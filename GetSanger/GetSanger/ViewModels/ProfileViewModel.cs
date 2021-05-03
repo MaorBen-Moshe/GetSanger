@@ -8,12 +8,9 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Net.Mail;
 using System.Collections.ObjectModel;
-using System.Net;
 
 namespace GetSanger.ViewModels
 {
-    
-
     [QueryProperty(nameof(UserId), "userid")]
     public class ProfileViewModel : BaseViewModel
     {
@@ -76,7 +73,6 @@ namespace GetSanger.ViewModels
         public ProfileViewModel()
         {
             setCommands();
-            //Test();
         }
         #endregion
 
@@ -84,52 +80,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            //setUser();
-            Test();
-        }
-        public void Test()
-        {
-            CurrentUser = new User();
-            CurrentUser.PersonalDetails = new PersonalDetails
-            {
-                NickName = "Refael",
-                Gender = GenderType.Male,
-                Phone = new ContactPhone("0526460006"),
-                Birthday = new DateTime(1993, 09, 13)
-            };
-
-            UserImage = ImageSource.FromFile("profile.jpg");
-            
-           // UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri) ?? ImageSource.FromResource("Drawable/defaultAvatar.png") ;
-            Rating rating = new Rating
-            {
-                Score = 4,
-                RatingOwnerId = "311219372",
-                Description = "Refael Will Be good"
-
-            };
-            Rating rating2 = new Rating
-            {
-                Score = 5,
-                RatingOwnerId = "308431725",
-                Description = "Maor is a Hoder"
-
-            };
-            CurrentUser.Ratings.Add(rating);
-            CurrentUser.Ratings.Add(rating2);
-
-            //AverageRating = 4;
-
-
-           // UserImage = CurrentUser.ProfilePictureUri;
-            //NickName = CurrentUser.PersonalDetails.NickName;
-            //Gender = CurrentUser.PersonalDetails.Gender;
-            //PhoneNumber = CurrentUser.PersonalDetails.Phone;
-            //Birthday = CurrentUser.PersonalDetails.Birthday;
-            //Ratings = new ObservableCollection<Rating>(CurrentUser.Ratings);
-
-            AverageRating = 3; // we will use getAverage 
-
+            setUser();
         }
 
         private void setCommands()
@@ -158,8 +109,9 @@ namespace GetSanger.ViewModels
             UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
             if(UserImage == null) // if there isn't profile picture - we set an defalt avatar
             {
-                
+                UserImage = ImageSource.FromFile("profile.jpg"); // default picture
             }
+
             Placemark placemark = await LocationServices.PickedLocation(CurrentUser.UserLocation);
             UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
             AverageRating = getAverage();
@@ -191,6 +143,8 @@ namespace GetSanger.ViewModels
 
         private async void sendMessageToUser(object i_Param)
         {
+            // navigate to app chat
+            //await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={CurrentUser}");
             if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone.PhoneNumber))
             {
                 r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone.PhoneNumber;
@@ -231,13 +185,20 @@ namespace GetSanger.ViewModels
 
         private async void addRating(object i_Param)
         {
-            await Shell.Current.GoToAsync($"{ShellRoutes.AddRating}?ratedUser={CurrentUser}");
+            await r_NavigationService.NavigateTo(ShellRoutes.AddRating + $"ratedUser={CurrentUser}");
         }
 
         private async void refreshList()
         {
-            CurrentUser.Ratings = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserID));
-            IsListRefreshing = false;
+            try
+            {
+                CurrentUser.Ratings = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserID));
+                IsListRefreshing = false;
+            }
+            catch
+            {
+                IsListRefreshing = false;
+            }
         }
 
         #endregion

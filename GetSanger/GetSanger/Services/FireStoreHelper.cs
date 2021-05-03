@@ -121,8 +121,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static Task DeleteActivity(Activity i_Activity,
-            string i_UserId = null) // delete activity from user list and from server data base
+        public async static Task DeleteActivity(Activity i_Activity,string i_UserId = null) // delete activity from user list and from server data base
         {
             if (i_Activity == null)
             {
@@ -382,7 +381,7 @@ namespace GetSanger.Services
         {
             if (i_Report == null)
             {
-                throw new ArgumentNullException("Rating is null");
+                throw new ArgumentNullException("Report is null");
             }
 
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddReport";

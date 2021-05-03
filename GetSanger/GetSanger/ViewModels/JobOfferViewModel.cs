@@ -1,12 +1,11 @@
-﻿using GetSanger.Interfaces;
-using GetSanger.Services;
-using GetSanger.Views;
+﻿using GetSanger.Services;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System;
 using GetSanger.Models;
 using System.Collections.ObjectModel;
+using GetSanger.Constants;
 
 namespace GetSanger.ViewModels
 {
@@ -17,12 +16,13 @@ namespace GetSanger.ViewModels
     {
         #region Fields
 
+        private JobOffer m_NewJobOffer;
         private Placemark m_MyPlacemark;
         private Placemark m_JobPlacemark;
         private string m_MyLocation;
         private string m_JobLocation;
         private bool m_IsMyLocation = true;
-
+        private bool m_IsCreate;
         #endregion
 
         #region Commands
@@ -35,7 +35,12 @@ namespace GetSanger.ViewModels
 
         #region Properties
 
-        public JobOffer NewJobOffer { get; set; } // if IsCreate == true than the job offer is sent from the previews page
+        // if IsCreate == true than the job offer is sent from the previews page
+        public JobOffer NewJobOffer 
+        {
+            get => m_NewJobOffer;
+            set => SetClassProperty(ref m_NewJobOffer, value);
+        } 
 
         public Placemark MyPlaceMark
         {
@@ -61,14 +66,14 @@ namespace GetSanger.ViewModels
 
         public string MyLocation
         {
-            get { return m_MyLocation; }
-            set { SetClassProperty(ref m_MyLocation, value); }
+            get => m_MyLocation; 
+            set => SetClassProperty(ref m_MyLocation, value); 
         }
 
         public string WorkLocation
         {
-            get { return m_JobLocation; }
-            set { SetClassProperty(ref m_JobLocation, value); }
+            get => m_JobLocation; 
+            set => SetClassProperty(ref m_JobLocation, value); 
         }
 
         public Category JobCategory
@@ -77,7 +82,11 @@ namespace GetSanger.ViewModels
             set => NewJobOffer.Category = value;
         }
 
-        public bool IsCreate { get; set; } // create job offer or view exist job offer
+        public bool IsCreate // create job offer or view exist job offer
+        {
+            get => m_IsCreate;
+            set => SetStructProperty(ref m_IsCreate, value);
+        }
 
         #endregion
 
@@ -85,9 +94,15 @@ namespace GetSanger.ViewModels
 
         public JobOfferViewModel()
         {
-            CurrentLocation = new Command(getCurrentLocation);
-            JobLocation = new Command(getJobLocation);
-            SendJobCommand = new Command(sendJob);
+            setCommands();
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override void Appearing()
+        {
             if (IsCreate == true)
             {
                 NewJobOffer = new JobOffer
@@ -99,20 +114,15 @@ namespace GetSanger.ViewModels
             {
                 JobCategory = NewJobOffer.Category;
             }
-        }
-
-        #endregion
-
-        #region Methods
-
-        public override void Appearing()
-        {
-            if (IsCreate == false)
-            {
-                JobCategory = NewJobOffer.Category;
-            }
 
             IntialCurrentLocation();
+        }
+
+        private void setCommands()
+        {
+            CurrentLocation = new Command(getCurrentLocation);
+            JobLocation = new Command(getJobLocation);
+            SendJobCommand = new Command(sendJob);
         }
 
         public void Disappearing()
@@ -147,14 +157,14 @@ namespace GetSanger.ViewModels
             bool answer = await r_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
             if (answer)
             {
-                await Shell.Current.GoToAsync($"/map?connectedpage={this}");
+                await r_NavigationService.NavigateTo(ShellRoutes.Map + $"?connectedpage={this}");
             }
         }
 
         private async void getJobLocation()
         {
             m_IsMyLocation = false;
-            await Shell.Current.GoToAsync($"/map?connectedpage={this}");
+            await r_NavigationService.NavigateTo(ShellRoutes.Map + $"?connectedpage={this}");
         }
 
         private async void sendJob()
