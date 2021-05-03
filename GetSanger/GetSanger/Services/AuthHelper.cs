@@ -254,8 +254,23 @@ namespace GetSanger.Services
 
         public static async Task ChangePassword(string i_OldPassword, string i_NewPassword)
         {
-            string userID = GetLoggedInUserId();
-            //change password
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/ChangeUserPassword";
+
+            Dictionary<string, string> details = new Dictionary<string, string>()
+            {
+                ["OldPassword"] = i_OldPassword,
+                ["NewPassword"] = i_NewPassword
+            };
+
+            string json = JsonSerializer.Serialize(details);
+            string idToken = await GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
         }
     }
 }
