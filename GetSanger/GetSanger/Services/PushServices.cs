@@ -45,7 +45,9 @@ namespace GetSanger.Services
 
             string json = JsonSerializer.Serialize(pushData);
             string idToken = await AuthHelper.GetIdTokenAsync();
+
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -55,7 +57,7 @@ namespace GetSanger.Services
         // i_Topics = a representation of the int value of the enum or "Generic" string that represent generic notifications
         public async void UnsubscribeTopics(string i_UserId, params string[] i_Topics)
         {
-            string uri = "Cloud uri here!";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UnsubscribeFromTopics";
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
                 ["UserId"] = i_UserId,
@@ -63,7 +65,9 @@ namespace GetSanger.Services
             };
 
             string json = JsonSerializer.Serialize(pushData);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
