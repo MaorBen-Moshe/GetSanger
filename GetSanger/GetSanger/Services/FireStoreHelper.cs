@@ -121,7 +121,7 @@ namespace GetSanger.Services
             return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
         }
 
-        public async static Task DeleteActivity(Activity i_Activity,string i_UserId = null) // delete activity from user list and from server data base
+        public async static Task DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
         {
             if (i_Activity == null)
             {
@@ -268,16 +268,19 @@ namespace GetSanger.Services
             }
         }
 
-        public async static Task DeleteJobOffer(JobOffer i_JobOffer)
+        public static async Task DeleteJobOffer(string i_JobId)
         {
-            if (i_JobOffer == null)
+            Dictionary<string, string> data = new Dictionary<string, string>()
             {
-                throw new ArgumentNullException("Job offer is null");
-            }
+                ["JobId"] = i_JobId
+            };
 
-            string uri = "uri here";
-            string json = JsonSerializer.Serialize(i_JobOffer);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteJobOffer";
+            string json = JsonSerializer.Serialize(data);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
