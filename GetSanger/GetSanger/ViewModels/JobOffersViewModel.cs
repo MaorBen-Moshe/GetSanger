@@ -91,7 +91,7 @@ namespace GetSanger.ViewModels
                     JobOffer job = i_Param as JobOffer;
                     AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
                     JobOffersSource.Remove(job);
-                    await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job)); 
+                    await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId)); 
                 }
             }
         }
