@@ -1,9 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Shell xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:page="clr-namespace:GetSanger.Views"
+             xmlns:chat="clr-namespace:GetSanger.Views.chat"
+             xmlns:views="clr-namespace:GetSanger.Views"
              x:Class="GetSanger.AppShell.SangerShell">
-    <TabBar>
-        <ShellContent ContentTemplate="{DataTemplate page:SangerMainPage}" />
+    
+    <TabBar Shell.NavBarIsVisible="False">
+        <Tab Title="Account"
+             Route="account">
+            <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
+        </Tab>
+        <Tab Title="Chat"
+             Route="chatList">
+            <ShellContent ContentTemplate="{DataTemplate chat:ChatsListView}" />
+        </Tab>
+        <Tab Title="Activities"
+             Route="activities">
+            <ShellContent ContentTemplate="{DataTemplate views:ActivitiesListPage}" />
+        </Tab>
+        <Tab Title="Pending Jobs"
+             Route="jobOffers">
+            <ShellContent ContentTemplate="{DataTemplate views:JobOffersListView}" />
+        </Tab>
     </TabBar>
 </Shell>

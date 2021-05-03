@@ -1,4 +1,6 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.AppShell;
+using GetSanger.Constants;
+using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Windows.Input;
@@ -54,6 +56,10 @@ namespace GetSanger.ViewModels
         {
             CurrentUser = AppManager.Instance.ConnectedUser ?? throw new ArgumentException("User details are not available!");
             UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
+            if(UserImage == null)
+            {
+                UserImage = ImageSource.FromFile("profile.jpg");
+            }
         }
 
         private void logout(object i_Param)
@@ -65,20 +71,27 @@ namespace GetSanger.ViewModels
 
         private void changeMode(object i_Param)
         {
-            string goTo = AppManager.Instance.CurrentMode.Equals(AppMode.Client) ? "SangerShell" : "UserShell";
-            Shell.Current.GoToAsync(goTo);
+            // may be in the shell code;
+            //AppManager.Instance.CurrentMode = AppManager.Instance.CurrentMode.Equals(AppMode.Client) ? AppMode.Sanger : AppMode.Client;
+            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            {
+                Application.Current.MainPage = new SangerShell();
+            }
+            else
+            {
+                Application.Current.MainPage = new UserShell();
+            }
         }
 
         private async void setting(object i_Param)
         {
-            await Shell.Current.GoToAsync($"/settings");
+            await r_NavigationService.NavigateTo(ShellRoutes.Settings);
         }
 
         private async void editProfile(object i_Param)
         {
-            await Shell.Current.GoToAsync($"/editProfile");
+            await r_NavigationService.NavigateTo(ShellRoutes.EditProfile);
         }
         #endregion
-
     }
 }

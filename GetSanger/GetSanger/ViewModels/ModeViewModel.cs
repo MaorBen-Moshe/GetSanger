@@ -17,8 +17,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ModeViewModel()
         {
-            UserCommand = new Command(userCommandHelper);
-            SangerCommand = new Command(sangerCommandHelper);
+            setCommands();
         }
         #endregion
 
@@ -28,17 +27,23 @@ namespace GetSanger.ViewModels
         {
         }
 
+        private void setCommands()
+        {
+            UserCommand = new Command(userCommandHelper);
+            SangerCommand = new Command(sangerCommandHelper);
+        }
+
         private void userCommandHelper()
         {
-            setUserMode(AppMode.Client, new UserShell());
+            setMode(AppMode.Client, new UserShell());
         }
 
         private void sangerCommandHelper()
         {
-            setUserMode(AppMode.Sanger, new SangerShell());
+            setMode(AppMode.Sanger, new SangerShell());
         }
 
-        private async void setUserMode(AppMode i_Mode, Shell i_ChosenShell)
+        private async void setMode(AppMode i_Mode, Shell i_ChosenShell)
         {
             if(await AuthHelper.IsVerifiedEmail() == false)
             {

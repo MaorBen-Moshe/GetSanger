@@ -6,7 +6,7 @@ using Xamarin.Essentials;
 
 namespace GetSanger.Models
 {
-    public enum ActivityStatus { Pending, ConfirmedBySanger, Active, Rejected, Completed };
+    public enum ActivityStatus { Pending, Active, Rejected, Completed };
 
     public class Activity : PropertySetter
     {

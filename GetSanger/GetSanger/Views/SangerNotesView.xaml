@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             x:Class="GetSanger.Views.SangerNotesView">
+
+    <ContentPage.BindingContext>
+        <vm:SangerNotesViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame
+                VerticalOptions="FillAndExpand"
+                HasShadow="True">
+                <Editor IsSpellCheckEnabled="True"
+                            IsTextPredictionEnabled="True"
+                            Placeholder="Your notes here..."
+                            VerticalOptions="FillAndExpand"
+                            Text="{Binding Notes}">
+                    <Editor.Keyboard>
+                        <Keyboard x:FactoryMethod="Create" >
+                            <x:Arguments>
+                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                            </x:Arguments>
+                        </Keyboard>
+                    </Editor.Keyboard>
+                </Editor>
+            </Frame>
+            <Button Text="Send" Command="{Binding SendNotesCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

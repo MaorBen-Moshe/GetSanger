@@ -1,15 +1,12 @@
 ﻿using GetSanger.Interfaces;
 using GetSanger.Services;
 using System;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    [Preserve(AllMembers = true)]
     public abstract class BaseViewModel : PropertySetter
     {
         #region Fields

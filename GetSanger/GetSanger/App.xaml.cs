@@ -1,6 +1,5 @@
 using Xamarin.Forms;
 using GetSanger.AppShell;
-using GetSanger.Views;
 
 namespace GetSanger
 {

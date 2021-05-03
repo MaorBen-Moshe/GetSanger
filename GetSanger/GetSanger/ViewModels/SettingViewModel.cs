@@ -43,8 +43,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public SettingViewModel()
         {
-            ToggledCommand = new Command(toggled);
-            DeleteAccountCommand = new Command(deleteAccount);
+            setCommands();
         }
         #endregion
 
@@ -66,6 +65,12 @@ namespace GetSanger.ViewModels
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
         }
 
+        private void setCommands()
+        {
+            ToggledCommand = new Command(toggled);
+            DeleteAccountCommand = new Command(deleteAccount);
+        }
+
         private async void toggled(object i_Param)
         {
             if (i_Param is CategoryCell)
@@ -74,12 +79,12 @@ namespace GetSanger.ViewModels
                 if (current.Checked)
                 {
                     AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
-                    await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, current.Category.ToString());
+                    await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString());
                 }
                 else
                 {
                     AppManager.Instance.ConnectedUser.Categories.Remove(current.Category);
-                    r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, current.Category.ToString());
+                    r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString());
                 }
             }
             else // generic notifications

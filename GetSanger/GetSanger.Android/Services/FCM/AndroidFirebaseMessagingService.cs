@@ -79,26 +79,41 @@ namespace GetSanger.Droid.Services.FCM
             }
             NavigationService nservice = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             bool choice = false;
-            MainThread.BeginInvokeOnMainThread(async () =>
+            if (AppManager.Instance.CurrentMode == AppMode.Client)
             {
-                choice = await App.Current.MainPage.DisplayAlert
-                 (string.Format("Move to ", pageToNavigate, "?"), "Do you wish to navigate to the page?", "Yes", "No");
-                if (choice)
+                MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    if (pageToNavigate == ShellRoutes.JobOffer && AppManager.Instance.CurrentMode == AppMode.Client)
+                    choice = await App.Current.MainPage.DisplayAlert
+                     (string.Format("Move to ", pageToNavigate, "?"), "Do you wish to navigate to the page?", "Yes", "No");
+                    if (choice)
                     {
-                        // navigate to Mode page, if the user swaps to Sanger mode, then navigate to the JobOffer page
-                        await nservice.NavigateTo("mode");
+                        if (pageToNavigate == ShellRoutes.JobOffer)
+                        {
+                            // navigate to Mode page, if the user swaps to Sanger mode, then navigate to the JobOffer page
+                            await nservice.NavigateTo("mode");
+                            // Need more logic
 
+                        }
+                        else if (pageToNavigate == "signupEmail")
+                        {
+                            await nservice.NavigateTo(ShellRoutes.SignupEmail);
+                        }
 
                     }
-                    else if(pageToNavigate == "signupEmail")
+                });
+            }
+            else if (AppManager.Instance.CurrentMode == AppMode.Sanger)
+            {
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    choice = await App.Current.MainPage.DisplayAlert
+                     (string.Format("Move to ", pageToNavigate, "?"), "Do you wish to navigate to the page?", "Yes", "No");
+                    if (choice)
                     {
-                        await nservice.NavigateTo(ShellRoutes.SignupEmail);
+
                     }
-                }
-            });
-            
+                });
+            }
         }
     }
 }

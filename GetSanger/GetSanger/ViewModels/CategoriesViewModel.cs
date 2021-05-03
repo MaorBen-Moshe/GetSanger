@@ -1,4 +1,5 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.Constants;
+using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Collections.Generic;
@@ -31,21 +32,25 @@ namespace GetSanger.ViewModels
         #region Constructor
         public CategoriesViewModel()
         {
-            CategorySelectedCommand = new Command(categorySelected);
+            setCommands();
+            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
         }
         #endregion
 
         #region Methods
         public override void Appearing()
         {
-            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
         }
 
-        private void categorySelected(object i_Param)
+        private void setCommands()
+        {
+            CategorySelectedCommand = new Command(categorySelected);
+        }
+
+        private async void categorySelected(object i_Param)
         {
             CategoryCell current = i_Param as CategoryCell;
-
-            Shell.Current.GoToAsync($"jobOffer?category={current.Category}");
+            await r_NavigationService.NavigateTo(ShellRoutes.JobOffer + $"?category={current.Category}&&isCreate={true}");
         }
         #endregion
     }

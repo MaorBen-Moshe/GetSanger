@@ -14,49 +14,33 @@ namespace GetSanger.Services
     {
         private static readonly IPushService sr_Push = DependencyService.Get<IPushService>();
 
-        public async void SendToDevice<T>(string i_UserId,
-            T i_Data,
-            string i_Message = null)
+        public async void SendToDevice<T>(string i_UserId, T i_Data, string i_Message = null)
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
             i_Message = user.IsGenericNotifications ? i_Message : null;
-            string uri = "Cloud uri here!";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPushToToken";
+
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
+                ["UserId"] = i_UserId,
                 ["Data"] = i_Data,
-                ["message"] = i_Message
+                ["Body"] = i_Message,
+                ["Title"] = "New notification"
             };
 
             string json = JsonSerializer.Serialize(pushData);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public async void SendTAllTopic<T>(string i_Topic,
-            T i_Data,
-            string i_Message = null)
-        {
-            string uri = "Cloud uri here!";
-            Dictionary<string, object> pushData = new Dictionary<string, object>
-            {
-                ["Topic"] = i_Topic,
-                ["Data"] = i_Data,
-                ["Message"] = i_Message
-            };
-
-            string json = JsonSerializer.Serialize(pushData);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
-            }
-        }
-
-        public async Task RegisterTopics(string i_UserId,
-            params string[] i_Topics)
+        // i_Topics = a representation of the int value of the enum or "Generic" string that represent generic notifications
+        public async Task RegisterTopics(string i_UserId, params string[] i_Topics)
         {
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SubscribeToTopics";
             Dictionary<string, object> pushData = new Dictionary<string, object>
@@ -67,17 +51,19 @@ namespace GetSanger.Services
 
             string json = JsonSerializer.Serialize(pushData);
             string idToken = await AuthHelper.GetIdTokenAsync();
+
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public async void UnsubscribeTopics(string i_UserId,
-            params string[] i_Topics)
+        // i_Topics = a representation of the int value of the enum or "Generic" string that represent generic notifications
+        public async void UnsubscribeTopics(string i_UserId, params string[] i_Topics)
         {
-            string uri = "Cloud uri here!";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UnsubscribeFromTopics";
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
                 ["UserId"] = i_UserId,
@@ -85,7 +71,9 @@ namespace GetSanger.Services
             };
 
             string json = JsonSerializer.Serialize(pushData);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());

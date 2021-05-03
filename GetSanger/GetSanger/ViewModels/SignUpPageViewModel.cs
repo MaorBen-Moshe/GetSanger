@@ -8,15 +8,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    [Preserve(AllMembers = true)]
     [QueryProperty(nameof(IsFacebookGamil), "isFacebookGamail")]
     public class SignUpPageViewModel : LoginViewModel
     {
@@ -45,8 +42,6 @@ namespace GetSanger.ViewModels
         public SignUpPageViewModel()
         {
             setCommands();
-            CreatedUser = new User();
-            CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
             CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance
                 .GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell
@@ -118,6 +113,12 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
+        public override void Appearing()
+        {
+            CreatedUser = new User();
+            CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
+        }
+
         private void setCommands()
         {
             EmailPartCommand = new Command(emailPartClicked);
@@ -183,8 +184,7 @@ namespace GetSanger.ViewModels
                     await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(CreatedUser.Email, Password));
                     //await AuthHelper.RegisterViaEmail(Email, Password);
                     CreatedUser.UserID = AuthHelper.GetLoggedInUserId();
-                    await r_NavigationService.NavigateTo(
-                        ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
+                    await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
                 }
                 catch (Exception e)
                 {
@@ -219,7 +219,7 @@ namespace GetSanger.ViewModels
             {
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await r_PushService.RegisterTopics(CreatedUser.UserID,
-                    (m_CheckedItems.Select(category => category.ToString())).ToArray());
+                    (m_CheckedItems.Select(category => ((int)category).ToString())).ToArray());
                 await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
             }
             catch (Exception e)

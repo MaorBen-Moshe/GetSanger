@@ -25,5 +25,11 @@ namespace GetSanger.Views.Registration
             (BindingContext as SignUpPageViewModel).BackButtonBehaviorCommand.Execute(null);
             return true;
         }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as SignUpPageViewModel).Appearing();
+            base.OnAppearing();
+        }
     }
 }

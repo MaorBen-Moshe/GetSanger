@@ -3,6 +3,7 @@ using GetSanger.Interfaces;
 using GetSanger.Services;
 using GetSanger.Views.Registration;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -10,19 +11,11 @@ using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    [Preserve(AllMembers = true)]
     public class LoginViewModel : BaseViewModel
     {
-        #region Events
-
-        //public event Action DisplayInvalidLoginPrompt;
-
-        #endregion
-
         #region Fields
 
         private string m_Email;
-        private bool m_IsInvalidEmail;
         private string m_Password;
 
         #endregion
@@ -31,11 +24,7 @@ namespace GetSanger.ViewModels
 
         public LoginViewModel()
         {
-            this.LoginCommand = new Command(this.LoginClicked);
-            this.SignUpCommand = new Command(this.SignUpClicked);
-            this.ForgotPasswordCommand = new Command(this.ForgotPasswordClicked);
-            this.FaceBookLoginCommand = new Command(this.FaceBookClicked);
-            this.GmailLoginCommand = new Command(this.GmailClicked);
+            setCommands();
         }
 
         #endregion
@@ -46,12 +35,6 @@ namespace GetSanger.ViewModels
         {
             get => m_Email;
             set => SetClassProperty(ref m_Email, value);
-        }
-
-        public bool IsInvalidEmail
-        {
-            get => m_IsInvalidEmail;
-            set => SetStructProperty(ref m_IsInvalidEmail, value);
         }
 
         public string Password
@@ -81,6 +64,15 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             // auto log in if connected
+        }
+
+        private void setCommands()
+        {
+            this.LoginCommand = new Command(this.LoginClicked);
+            this.SignUpCommand = new Command(this.SignUpClicked);
+            this.ForgotPasswordCommand = new Command(this.ForgotPasswordClicked);
+            this.FaceBookLoginCommand = new Command(this.FaceBookClicked);
+            this.GmailLoginCommand = new Command(this.GmailClicked);
         }
 
         private async void LoginClicked(object obj)
@@ -116,7 +108,7 @@ namespace GetSanger.ViewModels
 
         private async void FaceBookClicked(object obj)
         {
-            await AuthHelper.LoginViaFacebook();
+            Dictionary<string, string> details = await AuthHelper.LoginViaFacebook(); 
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
@@ -126,7 +118,7 @@ namespace GetSanger.ViewModels
 
         private async void GmailClicked(object obj)
         {
-            await AuthHelper.LoginViaGoogle();
+            Dictionary<string, string> details = await AuthHelper.LoginViaGoogle();
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {

@@ -127,11 +127,11 @@ namespace GetSanger.Controls
             //Rating is out of 5
             if (Rating >= currentStarMaxRating)
             {
-                return "drawable/ratingStarOn.png";
+                return "ratingStarOn.png";
             }
             else
             {
-                return "drawable/ratingStarOff.png";
+                return "ratingStarOff.png";
             }
         }
 

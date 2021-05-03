@@ -71,8 +71,8 @@ namespace GetSanger.Services
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithPassword";
             Dictionary<string, string> details = new Dictionary<string, string>()
             {
-                ["email"] = i_Email,
-                ["password"] = i_Password
+                ["Email"] = i_Email,
+                ["Password"] = i_Password
             };
 
             string json = JsonSerializer.Serialize(details);
@@ -226,13 +226,51 @@ namespace GetSanger.Services
 
         public static async Task<bool> IsUserPassword(string i_Password)
         {
-            return true;
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserPassword";
+
+            Dictionary<string, string> details = new Dictionary<string, string>()
+            {
+                ["Password"] = i_Password
+            };
+
+            string json = JsonSerializer.Serialize(details);
+            string idToken = await GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+            string responseMessage = await response.Content.ReadAsStringAsync();
+            bool result = false;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(responseMessage);
+            }
+            else
+            {
+                result = JsonSerializer.Deserialize<bool>(responseMessage);
+            }
+
+            return result;
         }
 
         public static async Task ChangePassword(string i_OldPassword, string i_NewPassword)
         {
-            string userID = GetLoggedInUserId();
-            //change password
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/ChangeUserPassword";
+
+            Dictionary<string, string> details = new Dictionary<string, string>()
+            {
+                ["OldPassword"] = i_OldPassword,
+                ["NewPassword"] = i_NewPassword
+            };
+
+            string json = JsonSerializer.Serialize(details);
+            string idToken = await GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
         }
     }
 }

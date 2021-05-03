@@ -1,4 +1,5 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.Constants;
+using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace GetSanger.ViewModels
     public class ActivityViewModel : BaseViewModel
     {
         #region Fields
+        private Activity m_ConnectedActivity;
         private string m_Location;
         private string m_JobLocation;
         private string m_Phone;
@@ -21,7 +23,11 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Properties
-        public Activity ConnectedActivity { get; set; }
+        public Activity ConnectedActivity
+        {
+            get => m_ConnectedActivity;
+            set => SetClassProperty(ref m_ConnectedActivity, value);
+        }
 
         public bool IsActivatedEndButton
         {
@@ -43,14 +49,14 @@ namespace GetSanger.ViewModels
 
         public string Location
         {
-            get { return m_Location; }
-            set { SetClassProperty(ref m_Location, value); }
+            get => m_Location; 
+            set => SetClassProperty(ref m_Location, value); 
         }
 
         public string JobLocation
         {
-            get { return m_JobLocation; }
-            set { SetClassProperty(ref m_JobLocation, value); }
+            get => m_JobLocation; 
+            set => SetClassProperty(ref m_JobLocation, value); 
         }
 
         public string Phone
@@ -75,8 +81,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ActivityViewModel()
         {
-            ProfileCommand = new Command(profilePage);
-            EndActivityCommand = new Command(endActivity);
+            setCommands();
         }
         #endregion
 
@@ -85,17 +90,23 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             setLocationsLabels();
-            IsActivatedLocationButton = true;
+            IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserID.Equals(ConnectedActivity.SangerID) &&
                                    AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
-                                   ConnectedActivity.Status.Equals(ActivityStatus.Completed) == false;
+                                   ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
+        }
+
+        private void setCommands()
+        {
+            ProfileCommand = new Command(profilePage);
+            EndActivityCommand = new Command(endActivity);
+            LocationCommand = new Command(locationCommandHelper);
         }
 
         private async void setLocationsLabels()
         {
             Location = await getLocationString(ConnectedActivity.JobDetails.Location);
             JobLocation = await getLocationString(ConnectedActivity.JobDetails.JobLocation);
-            LocationCommand = new Command(locationCommandHelper);
             if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
             {
                 ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask the sanger to active")} Location");
@@ -166,7 +177,7 @@ namespace GetSanger.ViewModels
             bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
             if (sangerInUser && activated)
             {
-                await Shell.Current.GoToAsync($"/map?connectedpage={this}");
+                await r_NavigationService.NavigateTo(ShellRoutes.Map + $"?connectedpage={this}");
             }
             else
             {
@@ -195,7 +206,10 @@ namespace GetSanger.ViewModels
                 ConnectedActivity.LocationActivatedBySanger = false;
                 LocationServices.LeaveTripThread(); // sanger stop sharing location
                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
+                string message = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} completed your job :)";
+                r_PushService.SendToDevice(ConnectedActivity.ClientID, ConnectedActivity, message);
                 IsActivatedEndButton = false;
+                await GoBack();
             }
         }
 
@@ -205,7 +219,7 @@ namespace GetSanger.ViewModels
                         await FireStoreHelper.GetUser(ConnectedActivity.SangerID) :
                         await FireStoreHelper.GetUser(ConnectedActivity.ClientID);
 
-            await Shell.Current.GoToAsync($"/profile?user={user}");
+            await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?user={user}");
         }
 
         #endregion

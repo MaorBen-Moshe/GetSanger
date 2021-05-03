@@ -39,13 +39,18 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ChangePasswordViewModel()
         {
-            ChangePasswordCommand = new Command(changePassword);
+            setCommands();
         }
         #endregion
 
         #region Methods
         public override void Appearing()
         {
+        }
+
+        private void setCommands()
+        {
+            ChangePasswordCommand = new Command(changePassword);
         }
 
         private async void changePassword(object i_Param)
@@ -58,7 +63,7 @@ namespace GetSanger.ViewModels
                 {
                     try
                     {
-                        await AuthHelper.ChangePassword(OldPassword, NewPassword);
+                        await RunTaskWhileLoading(AuthHelper.ChangePassword(OldPassword, NewPassword));
                         await r_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
                         await GoBack();
                     }

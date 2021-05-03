@@ -15,12 +15,11 @@
             
             <Label Text="Profile"
                    FontSize="Title"
-                   Padding="50"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"/>
 
-                    <Image Source="{Binding UserImage}" Aspect="AspectFill" Background="red" />
-                    <!--User average rating-->
+                     <Image Source="{Binding UserImage}" HeightRequest="64" WidthRequest="64"/>
+                     <!--User average rating-->
                     <StackLayout HorizontalOptions="Center">
                     <controls:RatingStars Rating="{Binding AverageRating}"
                                           Review="" />
