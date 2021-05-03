@@ -152,9 +152,12 @@ namespace GetSanger.Services
 
         public static async Task UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateActivity";
             string json = JsonSerializer.Serialize(i_Activity);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -284,9 +287,12 @@ namespace GetSanger.Services
 
         public static async Task UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
         {
-            string uri = "uri here";
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateJobOffer";
             string json = JsonSerializer.Serialize(i_JobOffer);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string idToken = await AuthHelper.GetIdTokenAsync();
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
