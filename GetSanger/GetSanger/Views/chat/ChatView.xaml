@@ -4,7 +4,8 @@
              xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:vm="clr-namespace:GetSanger.ViewModels.chat"
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
-             x:Class="GetSanger.Views.chat.ChatView">
+             x:Class="GetSanger.Views.chat.ChatView"
+             Title="{Binding UserToChat.PersonalDetails.NickName}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <controls:ChatTemplateSelector x:Key="MessageTemplateSelector"/>

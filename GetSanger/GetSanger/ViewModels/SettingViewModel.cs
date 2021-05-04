@@ -96,7 +96,7 @@ namespace GetSanger.ViewModels
                 }
                 else
                 {
-                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic);
+                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic));
                 }
             }
 

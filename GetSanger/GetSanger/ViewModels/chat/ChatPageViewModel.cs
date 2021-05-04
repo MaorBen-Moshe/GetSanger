@@ -58,7 +58,7 @@ namespace GetSanger.ViewModels.chat
 
         public int PendingMessageCount { get; set; }
 
-        public bool PendingMessageCountVisible { get { return PendingMessageCount > 2; } }
+        public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
 
         public Queue<Message> DelayedMessages { get; set; }
         #endregion
@@ -85,7 +85,6 @@ namespace GetSanger.ViewModels.chat
             
             List<Message> messages = await DB.GetItemsAsync(UserToChat.UserID);
             MessagesSource = new ObservableCollection<Message>((from item in messages
-                                                                orderby item.TimeSent ascending
                                                                 select item).ToList()
                                                                );
             ShowScrollTap = false;

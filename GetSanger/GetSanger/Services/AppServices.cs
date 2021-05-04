@@ -29,12 +29,6 @@ namespace GetSanger.Services
                 service.SetDependencies();
             }
         }
-
-        internal void Add(Type type, object )
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
     }

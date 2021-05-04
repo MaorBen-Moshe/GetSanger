@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using System.Text.Json;
 using System.Linq;
 using GetSanger.Services;
+using Xamarin.Essentials;
 
 namespace GetSanger.ChatDatabase
 {
@@ -39,37 +40,26 @@ namespace GetSanger.ChatDatabase
         {
             List<Message> messages = await getDB(i_ToID);
             messages.Insert(0, i_Item);
-            await setDB(messages, i_ToID);
+            setDB(messages, i_ToID);
         }
 
         public async Task DeleteItemAsync(Message i_Item, string i_ToID)
         {
             List<Message> messages = await getDB(i_ToID);
             messages = messages.Where(msg => msg.Equals(i_Item) == false).ToList();
-            await setDB(messages, i_ToID);
+            setDB(messages, i_ToID);
         }
 
         private async Task<IFolder> createMessagesFolder()
         {
-            IFolder root = FileSystem.Current.LocalStorage;
+            IFolder root = PCLStorage.FileSystem.Current.LocalStorage;
             return await root.CreateFolderAsync("Messages", CreationCollisionOption.OpenIfExists);
         }
 
         private async Task<IFile> openMessagesDB(string i_ToID)
         {
             IFolder current = await createMessagesFolder();
-            ExistenceCheckResult result = await current.CheckExistsAsync(i_ToID);
-            IFile MessagesFile;
-            if (result == ExistenceCheckResult.NotFound)
-            {
-                MessagesFile = await current.CreateFileAsync(i_ToID, CreationCollisionOption.OpenIfExists);
-            }
-            else
-            {
-                MessagesFile = await current.GetFileAsync(i_ToID);
-            }
-
-            return MessagesFile;
+            return await current.CreateFileAsync(i_ToID, CreationCollisionOption.OpenIfExists); ;
         }
 
         private async Task<List<Message>> getDB(string i_ToID)
@@ -89,11 +79,15 @@ namespace GetSanger.ChatDatabase
             return messages;
         }
 
-        private async Task setDB(List<Message> i_Data, string i_ToID)
+        private void setDB(List<Message> i_Data, string i_ToID)
         {
-            IFile current = await openMessagesDB(i_ToID);
-            string json = JsonSerializer.Serialize(i_Data);
-            await current.WriteAllTextAsync(json);
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                IFile current = await openMessagesDB(i_ToID);
+                string json = JsonSerializer.Serialize(i_Data);
+                await current.WriteAllTextAsync(json);
+            });
+
         }
         #endregion
     }
