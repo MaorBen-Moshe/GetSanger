@@ -8,35 +8,14 @@ using PCLStorage;
 using Xamarin.Forms;
 using System.Text.Json;
 using System.Linq;
+using GetSanger.Services;
 
 namespace GetSanger.ChatDatabase
 {
-    public class ChatDatabase
+    public class ChatDatabase : Service
     {
         #region Fields
         private const string k_DatabaseFilename = "ChatMessages.db3";
-        #endregion
-
-        #region Properties
-        //public static string DatabasePath
-        //{
-        //    get
-        //    {
-        //        string folder = string.Empty, databasePath;
-        //        if (Device.RuntimePlatform.Equals(Device.iOS))
-        //        {
-        //            folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        //            folder = folder + ".." + "Library";
-        //        }
-        //        else if (Device.RuntimePlatform.Equals(Device.Android))
-        //        {
-        //            folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        //        }
-
-        //        databasePath = Path.Combine(folder, k_DatabaseFilename);
-        //        return databasePath;
-        //    }
-        //}
         #endregion
 
         #region Constructor
@@ -46,6 +25,9 @@ namespace GetSanger.ChatDatabase
         #endregion
 
         #region Methods
+        public override void SetDependencies()
+        {
+        }
 
         public async Task<List<Message>> GetItemsAsync(string i_ToID)
         {

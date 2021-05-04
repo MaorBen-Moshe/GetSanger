@@ -218,7 +218,7 @@ namespace GetSanger.ViewModels
             try
             {
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
-                await r_PushService.RegisterTopics(CreatedUser.UserID,
+                await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserID,
                     (m_CheckedItems.Select(category => ((int)category).ToString())).ToArray());
                 await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
             }

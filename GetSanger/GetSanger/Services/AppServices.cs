@@ -30,6 +30,11 @@ namespace GetSanger.Services
             }
         }
 
+        internal void Add(Type type, object )
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
     }

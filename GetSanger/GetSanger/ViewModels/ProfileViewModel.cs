@@ -173,7 +173,7 @@ namespace GetSanger.ViewModels
                         ReportedId = CurrentUser.UserID,
                         Reason = option
                     };
-                    await FireStoreHelper.AddReport(report);
+                    await RunTaskWhileLoading(FireStoreHelper.AddReport(report));
                     await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
                 }
                 catch (Exception e)
@@ -192,7 +192,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                CurrentUser.Ratings = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserID));
+                CurrentUser.Ratings = new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.GetRatings(CurrentUser.UserID)));
                 IsListRefreshing = false;
             }
             catch

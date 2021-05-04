@@ -113,11 +113,11 @@ namespace GetSanger.ViewModels
             switch (AppManager.Instance.CurrentMode)
             {
                 case AppMode.Client:
-                    currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId()));
+                    currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId())));
                     break;
                 case AppMode.Sanger:
                     IEnumerable<Category> obsCollection = AppManager.Instance.ConnectedUser.Categories;
-                    currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetAllJobOffers(obsCollection.ToList()));
+                    currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetAllJobOffers(obsCollection.ToList())));
                     break;
             }
 

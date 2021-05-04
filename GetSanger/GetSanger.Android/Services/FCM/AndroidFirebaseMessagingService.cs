@@ -12,6 +12,8 @@ using GetSanger.Services;
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using GetSanger.Constants;
+using GetSanger.Models;
+using GetSanger.Models.chat;
 
 namespace GetSanger.Droid.Services.FCM
 {
@@ -24,6 +26,8 @@ namespace GetSanger.Droid.Services.FCM
 
         public override void OnMessageReceived(RemoteMessage message)
         {//Sets how the app handles messages and notifications in foreground (background messages are not passed here)
+            handleDataReceived(message);
+
             base.OnMessageReceived(message);
             //SendNotification(message.GetNotification().Body, message.Data);
             DataManipulationExample(message);
@@ -65,6 +69,13 @@ namespace GetSanger.Droid.Services.FCM
             var notificationManager = NotificationManagerCompat.From(this);
             notificationManager.Notify(MainActivity.NOTIFICATION_ID, notificationBuilder.Build());
         }
+
+        private void handleDataReceived(RemoteMessage i_Message)
+        {
+            // validation of data first
+            PushServices.HandleDataReceived(i_Message.Data);
+        }
+
 
         internal async void DataManipulationExample(RemoteMessage remoteMessage)
         {

@@ -3,6 +3,7 @@ using GetSanger.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GetSanger.ChatDatabase;
 
 namespace GetSanger.Services
 {
@@ -41,6 +42,7 @@ namespace GetSanger.Services
             Services.Add(typeof(NavigationService), new NavigationService());
             Services.Add(typeof(PageServices), new PageServices());
             Services.Add(typeof(PushServices), new PushServices());
+            Services.Add(typeof(ChatDatabase.ChatDatabase), new ChatDatabase.ChatDatabase());
         }
 
         public void RefreshAppManager()

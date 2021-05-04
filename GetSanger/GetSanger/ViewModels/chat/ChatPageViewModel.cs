@@ -75,7 +75,7 @@ namespace GetSanger.ViewModels.chat
             SendMessageCommand = new Command(sendMessage);
             MessageAppearingCommand = new Command(messageAppearing);
             MessageDisappearingCommand = new Command(messageDisappearing);
-            DB = new ChatDatabase.ChatDatabase(); ;
+            DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
         }
         #endregion
 
@@ -108,7 +108,7 @@ namespace GetSanger.ViewModels.chat
 
                 MessagesSource.Insert(0, msg);
                 await DB.SaveItemAsync(msg, msg.ToId);
-                r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
+                await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
                 TextToSend = string.Empty;
             }
         }

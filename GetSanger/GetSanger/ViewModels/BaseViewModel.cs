@@ -72,6 +72,23 @@ namespace GetSanger.ViewModels
             }
         }
 
+        public async Task<T> RunTaskWhileLoading<T>(Task<T> i_InnerTask, ContentPage i_OptionalLoading = null)
+        {
+            try
+            {
+                DependencyService.Get<ILoadingService>().InitLoadingPage(i_OptionalLoading);
+                DependencyService.Get<ILoadingService>().ShowLoadingPage();
+                T result = await i_InnerTask;
+                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                throw ex;
+            }
+        }
+
         public abstract void Appearing();
         #endregion
     }

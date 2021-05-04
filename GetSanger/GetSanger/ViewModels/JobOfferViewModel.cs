@@ -176,7 +176,7 @@ namespace GetSanger.ViewModels
             NewJobOffer.CategoryName = JobCategory.ToString();
             // create job offer title
             AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
-                new ObservableCollection<JobOffer>(await FireStoreHelper.AddJobOffer(NewJobOffer)));
+                new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer))));
         }
 
         private string placemarkValidation(Placemark i_Placemark)

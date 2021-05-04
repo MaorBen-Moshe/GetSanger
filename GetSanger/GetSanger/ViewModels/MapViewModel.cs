@@ -127,7 +127,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                User sanger = await FireStoreHelper.GetUser((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerID);
+                User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerID));
                 r_DialService.PhoneNumber = sanger.PersonalDetails.Phone.PhoneNumber; // check for null value
                 r_DialService.Call();
             }
@@ -178,7 +178,7 @@ namespace GetSanger.ViewModels
         private async void handleTrip(object sender, System.Timers.ElapsedEventArgs e)
         {
             var activity = (ConnecetedPage as ActivityViewModel).ConnectedActivity;
-            User sanger = await FireStoreHelper.GetUser(activity.SangerID);
+            User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(activity.SangerID));
             Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
             Span = new MapSpan(position, 0.01, 0.01);
             Pins.Clear();

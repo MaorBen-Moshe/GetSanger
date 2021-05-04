@@ -79,12 +79,12 @@ namespace GetSanger.ViewModels
                 if (current.Checked)
                 {
                     AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
-                    await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString());
+                    await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString()));
                 }
                 else
                 {
                     AppManager.Instance.ConnectedUser.Categories.Remove(current.Category);
-                    r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString());
+                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString()));
                 }
             }
             else // generic notifications
@@ -92,11 +92,11 @@ namespace GetSanger.ViewModels
                 AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
                 if (IsGenericNotificatons)
                 {
-                    await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic);
+                    await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic));
                 }
                 else
                 {
-                    r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic);
+                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic);
                 }
             }
 

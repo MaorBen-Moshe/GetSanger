@@ -56,7 +56,7 @@ namespace GetSanger.ViewModels
             NewRating.RatingWriterId = AppManager.Instance.ConnectedUser.UserID;
             NewRating.RatingOwnerId = RatedUser.UserID;
 
-            AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.Ratings, new ObservableCollection<Rating>(await FireStoreHelper.AddRating(NewRating)));
+            AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.Ratings, new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating))));
             await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
             await GoBack();
         }

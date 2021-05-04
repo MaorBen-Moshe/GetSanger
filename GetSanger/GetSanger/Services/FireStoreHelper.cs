@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GetSanger.Models;
+using Xamarin.Essentials;
+using GetSanger.Exceptions;
 
 namespace GetSanger.Services
 {
@@ -48,25 +50,32 @@ namespace GetSanger.Services
 
         public static async Task<List<Activity>> GetActivities(string i_UserID)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivities";
-            Dictionary<string, string> id = new Dictionary<string, string>
+            if(Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["UserId"] = i_UserID
-            };
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivities";
+                Dictionary<string, string> id = new Dictionary<string, string>
+                {
+                    ["UserId"] = i_UserID
+                };
 
-            string json = JsonSerializer.Serialize(id);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                string json = JsonSerializer.Serialize(id);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                List<Activity> activities = JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
+                convertDateTimeToLocalTime(activities);
+
+                return activities;
             }
-
-            List<Activity> activities = JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
-            convertDateTimeToLocalTime(activities);
-
-            return activities;
+            else
+            {
+               throw new NoInternetException("No Internet");
+            } 
         }
 
         private static void convertDateTimeToLocalTime(List<Activity> i_Activities)
@@ -79,87 +88,117 @@ namespace GetSanger.Services
 
         public static async Task<Activity> GetActivity(string i_ActivityId)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivity";
-            Dictionary<string, string> data = new Dictionary<string, string>
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivity";
+                Dictionary<string, string> data = new Dictionary<string, string>
+                {
                 ["ActivityId"] = i_ActivityId
-            };
+                };
 
-            string json = JsonSerializer.Serialize(data);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                string json = JsonSerializer.Serialize(data);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                 Activity activity = JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
+                 activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
+
+                 return activity;
             }
-
-            Activity activity = JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
-            activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
-
-            return activity;
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
         }
 
         public static async Task<List<Activity>> AddActivity(params Activity[] i_Activity)
         {
-            if (i_Activity == null)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new ArgumentNullException("Activity is null");
+                if (i_Activity == null)
+                {
+                    throw new ArgumentNullException("Activity is null");
+                }
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddActivities";
+                string json = JsonSerializer.Serialize(i_Activity);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
             }
-
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddActivities";
-            string json = JsonSerializer.Serialize(i_Activity);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
-            if (!response.IsSuccessStatusCode)
+            else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                throw new NoInternetException("No Internet");
             }
-
-            return JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
+            
         }
 
         public async static Task DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
         {
-            if (i_Activity == null)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new ArgumentNullException("Activity is null");
-            }
-
-            if (i_UserId != null) // we want to remove the activity just from sanger
-            {
-                if (i_Activity.ClientID.Equals(i_UserId)) // here we want to delete from client
+                if (i_Activity == null)
                 {
-                    i_Activity.SangerID = null;
+                    throw new ArgumentNullException("Activity is null");
                 }
-                else if (i_Activity.SangerID.Equals(i_UserId)) // here we want to delete from sanger
-                {
-                    i_Activity.ClientID = null;
-                }
-            }
 
-            string uri = "uri here";
-            string json = JsonSerializer.Serialize(i_Activity);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                if (i_UserId != null) // we want to remove the activity just from sanger
+                {
+                    if (i_Activity.ClientID.Equals(i_UserId)) // here we want to delete from client
+                    {
+                        i_Activity.SangerID = null;
+                    }
+                    else if (i_Activity.SangerID.Equals(i_UserId)) // here we want to delete from sanger
+                    {
+                        i_Activity.ClientID = null;
+                    }
+                }
+
+                string uri = "uri here";
+                string json = JsonSerializer.Serialize(i_Activity);
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+            
         }
 
         public static async Task UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateActivity";
-            string json = JsonSerializer.Serialize(i_Activity);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
-            if (!response.IsSuccessStatusCode)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateActivity";
+                string json = JsonSerializer.Serialize(i_Activity);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
             }
         }
 
@@ -169,95 +208,126 @@ namespace GetSanger.Services
 
         public static async Task<List<JobOffer>> GetUserJobOffers(string i_UserID)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUserJobOffers";
-            Dictionary<string, string> id = new Dictionary<string, string>
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["UserId"] = i_UserID
-            };
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUserJobOffers";
+                Dictionary<string, string> id = new Dictionary<string, string>
+                {
+                    ["UserId"] = i_UserID
+                };
 
-            string json = JsonSerializer.Serialize(id);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                string json = JsonSerializer.Serialize(id);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+                convertDateTimeToLocalTime(jobOffers);
+
+                return jobOffers;
             }
-
-            List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
-            convertDateTimeToLocalTime(jobOffers);
-
-            return jobOffers;
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
         }
 
         public static async Task<List<JobOffer>> GetAllJobOffers(List<Category> i_Categories = null)
         {
-            // if i_Categories == null than get all job offers in data base else filter by the categories
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetAllJobOffers";
-            Dictionary<string, List<Category>> categoriesDictionary = new Dictionary<string, List<Category>>
+            if(Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["Categories"] = i_Categories
-            };
+                // if i_Categories == null than get all job offers in data base else filter by the categories
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetAllJobOffers";
+                Dictionary<string, List<Category>> categoriesDictionary = new Dictionary<string, List<Category>>
+                {
+                    ["Categories"] = i_Categories
+                };
 
-            string json = JsonSerializer.Serialize(categoriesDictionary);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                string json = JsonSerializer.Serialize(categoriesDictionary);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+                convertDateTimeToLocalTime(jobOffers);
+
+                return jobOffers;
             }
-
-            List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
-            convertDateTimeToLocalTime(jobOffers);
-
-            return jobOffers;
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+            
         }
 
         public static async Task<JobOffer> GetJobOffer(string i_JobId)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetJobOffer";
-            Dictionary<string, string> data = new Dictionary<string, string>
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["JobId"] = i_JobId
-            };
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetJobOffer";
+                Dictionary<string, string> data = new Dictionary<string, string>
+                {
+                    ["JobId"] = i_JobId
+                };
 
-            string json = JsonSerializer.Serialize(data);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                string json = JsonSerializer.Serialize(data);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                JobOffer jobOffer = JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
+                jobOffer.Date = jobOffer.Date.ToLocalTime();
+
+                return jobOffer;
             }
-
-            JobOffer jobOffer = JsonSerializer.Deserialize<JobOffer>(await response.Content.ReadAsStringAsync());
-            jobOffer.Date = jobOffer.Date.ToLocalTime();
-
-            return jobOffer;
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+            
         }
 
         public static async Task<List<JobOffer>> AddJobOffer(params JobOffer[] i_JobOffer)
         {
-            if (i_JobOffer == null)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new ArgumentNullException("JobDetails is null");
+                if (i_JobOffer == null)
+                {
+                    throw new ArgumentNullException("JobDetails is null");
+                }
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddJobOffer";
+                string json = JsonSerializer.Serialize(i_JobOffer);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+                convertDateTimeToLocalTime(jobOffers);
+
+                return jobOffers;
             }
-
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddJobOffer";
-            string json = JsonSerializer.Serialize(i_JobOffer);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
+            else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                throw new NoInternetException("No Internet");
             }
-
-            List<JobOffer> jobOffers = JsonSerializer.Deserialize<List<JobOffer>>(await response.Content.ReadAsStringAsync());
-            convertDateTimeToLocalTime(jobOffers);
-
-            return jobOffers;
+            
         }
 
         private static void convertDateTimeToLocalTime(List<JobOffer> i_JobOffers)
@@ -270,35 +340,51 @@ namespace GetSanger.Services
 
         public static async Task DeleteJobOffer(string i_JobId)
         {
-            Dictionary<string, string> data = new Dictionary<string, string>()
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["JobId"] = i_JobId
-            };
+                Dictionary<string, string> data = new Dictionary<string, string>()
+                {
+                    ["JobId"] = i_JobId
+                };
 
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteJobOffer";
-            string json = JsonSerializer.Serialize(data);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteJobOffer";
+                string json = JsonSerializer.Serialize(data);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+            
         }
 
         public static async Task UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateJobOffer";
-            string json = JsonSerializer.Serialize(i_JobOffer);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
-            if (!response.IsSuccessStatusCode)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateJobOffer";
+                string json = JsonSerializer.Serialize(i_JobOffer);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+            
         }
 
         #endregion
@@ -307,73 +393,105 @@ namespace GetSanger.Services
 
         public static async Task<List<Rating>> GetRatings(string i_UserID)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetRatings";
-            Dictionary<string, string> id = new Dictionary<string, string>
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["UserId"] = i_UserID
-            };
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetRatings";
+                Dictionary<string, string> id = new Dictionary<string, string>
+                {
+                    ["UserId"] = i_UserID
+                };
 
-            string json = JsonSerializer.Serialize(id);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                string json = JsonSerializer.Serialize(id);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
             }
-
-            return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+            
         }
 
         public static async Task<List<Rating>> AddRating(params Rating[] i_Rating)
         {
-            if (i_Rating == null)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new ArgumentNullException("Rating is null");
+                if (i_Rating == null)
+                {
+                    throw new ArgumentNullException("Rating is null");
+                }
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddRating";
+                string json = JsonSerializer.Serialize(i_Rating);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
             }
-
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddRating";
-            string json = JsonSerializer.Serialize(i_Rating);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
+            else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                throw new NoInternetException("No Internet");
             }
-
-            return JsonSerializer.Deserialize<List<Rating>>(await response.Content.ReadAsStringAsync());
+            
         }
 
         public static async Task DeleteRating(params Rating[] i_Rating) // delete rating from user list and from server data base
         {
-            if (i_Rating == null)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new ArgumentNullException("Rating is null");
+                if (i_Rating == null)
+                {
+                    throw new ArgumentNullException("Rating is null");
+                }
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteRating";
+                string json = JsonSerializer.Serialize(i_Rating);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
-
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteRating";
-            string json = JsonSerializer.Serialize(i_Rating);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
+            else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                throw new NoInternetException("No Internet");
             }
+           
         }
 
         public static async Task UpdateRating(params Rating[] i_Rating) // update rating in user list and in server data base
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateRating";
-            string json = JsonSerializer.Serialize(i_Rating);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateRating";
+                string json = JsonSerializer.Serialize(i_Rating);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+            
         }
 
         #endregion
@@ -382,20 +500,28 @@ namespace GetSanger.Services
 
         public static async Task AddReport(Report i_Report)
         {
-            if (i_Report == null)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new ArgumentNullException("Report is null");
+                if (i_Report == null)
+                {
+                    throw new ArgumentNullException("Report is null");
+                }
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddReport";
+                string json = JsonSerializer.Serialize(i_Report);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
-
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddReport";
-            string json = JsonSerializer.Serialize(i_Report);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
+            else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                throw new NoInternetException("No Internet");
             }
+            
         }
 
         #endregion
@@ -404,83 +530,110 @@ namespace GetSanger.Services
 
         public static async Task<User> GetUser(string i_UserID)
         {
-            string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUser";
-            Dictionary<string, string> details = new Dictionary<string, string>()
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["UserId"] = i_UserID,
-            };
-            string json = JsonSerializer.Serialize(details);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
+                string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetUser";
+                Dictionary<string, string> details = new Dictionary<string, string>()
+                {
+                    ["UserId"] = i_UserID,
+                };
+                string json = JsonSerializer.Serialize(details);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+
+                User user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
+                user.Activities = new ObservableCollection<Activity>(await GetActivities(user.UserID));
+                user.JobOffers = new ObservableCollection<JobOffer>(await GetUserJobOffers(user.UserID));
+                user.Ratings = new ObservableCollection<Rating>(await GetRatings(user.UserID));
+                return user;
             }
-
-            User user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-            user.Activities = new ObservableCollection<Activity>(await GetActivities(user.UserID));
-            user.JobOffers = new ObservableCollection<JobOffer>(await GetUserJobOffers(user.UserID));
-            user.Ratings = new ObservableCollection<Rating>(await GetRatings(user.UserID));
-            return user;
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+          
         }
 
         public static async Task AddUser(User i_User)
         {
-            string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddUserToDatabase";
-
-            Dictionary<string, User> requestDictionary = new Dictionary<string, User>()
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["User"] = i_User
-            };
+                string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddUserToDatabase";
 
-            string json = JsonSerializer.Serialize(requestDictionary);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                Dictionary<string, User> requestDictionary = new Dictionary<string, User>()
+                {
+                    ["User"] = i_User
+                };
 
-            HttpResponseMessage response =
-                await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
+                string json = JsonSerializer.Serialize(requestDictionary);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                HttpResponseMessage response =
+                    await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+         
         }
 
         public static async Task DeleteUser(string i_UserId)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteUser";
-            Dictionary<string, string> data = new Dictionary<string, string>
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["UserId"] = i_UserId
-            };
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteUser";
+                Dictionary<string, string> data = new Dictionary<string, string>
+                {
+                    ["UserId"] = i_UserId
+                };
 
-            string json = JsonSerializer.Serialize(data);
-            string idToken = await AuthHelper.GetIdTokenAsync();
+                string json = JsonSerializer.Serialize(data);
+                string idToken = await AuthHelper.GetIdTokenAsync();
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+           
         }
 
         public static async Task UpdateUser(User i_User)
         {
-            string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateUser";
-
-            // the three are not serialized with the user, we update the manually
-            await UpdateActivity(i_User.Activities.ToArray());
-            await UpdateJobOffer(i_User.JobOffers.ToArray());
-            await UpdateRating(i_User.Ratings.ToArray());
-
-            string json = JsonSerializer.Serialize(i_User);
-            string idToken = await AuthHelper.GetIdTokenAsync();
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateUser";
+
+                string json = JsonSerializer.Serialize(i_User);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
             }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+           
         }
 
         #endregion
