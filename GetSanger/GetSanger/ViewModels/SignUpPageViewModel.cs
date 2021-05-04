@@ -217,6 +217,7 @@ namespace GetSanger.ViewModels
 
             try
             {
+                CreatedUser.UserID = AuthHelper.GetLoggedInUserId();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserID,
                     (m_CheckedItems.Select(category => ((int)category).ToString())).ToArray()));

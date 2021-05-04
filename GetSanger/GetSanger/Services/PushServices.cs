@@ -16,18 +16,22 @@ namespace GetSanger.Services
     {
         private static readonly IPushService sr_Push = DependencyService.Get<IPushService>();
 
-        public async Task SendToDevice<T>(string i_UserId, T i_Data, Type i_DataType, string i_Title = "", string i_Message = null)
+        public async Task SendToDevice<T>(string i_UserId, T i_Data, Type i_DataType, string i_Title = "", string i_Message = null) where T : class
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
             i_Message = user.IsGenericNotifications ? i_Message : null;
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPushToToken";
 
             string dataJson = JsonSerializer.Serialize(i_Data);
-            Dictionary<string, string> data = new Dictionary<string, string>
+            Dictionary<string, string> data = null;
+            if(i_Data != null)
             {
-                ["Type"] = i_DataType.ToString(),
-                ["Json"] = dataJson
-            };
+                data = new Dictionary<string, string>
+                {
+                    ["Type"] = i_DataType?.ToString(),
+                    ["Json"] = dataJson
+                };
+            }
 
 
             Dictionary<string, object> pushData = new Dictionary<string, object>

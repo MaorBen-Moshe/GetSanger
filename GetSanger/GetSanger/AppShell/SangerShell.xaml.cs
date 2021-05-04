@@ -16,6 +16,7 @@ namespace GetSanger.AppShell
         {
             InitializeComponent();
 
+            CurrentItem = Pending;
             r_Routes = new Dictionary<string, Type>();
             registerRoutes();
         }

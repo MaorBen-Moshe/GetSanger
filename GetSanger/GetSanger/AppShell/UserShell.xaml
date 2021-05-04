@@ -23,7 +23,8 @@
             <ShellContent ContentTemplate="{DataTemplate views:ActivitiesListPage}" />
         </Tab>
         <Tab Title="Categories"
-             Route="categories">
+             Route="categories"
+             x:Name="CategoriesPage">
             <ShellContent ContentTemplate="{DataTemplate views:CategoriesPage}" />
         </Tab>
     </TabBar>

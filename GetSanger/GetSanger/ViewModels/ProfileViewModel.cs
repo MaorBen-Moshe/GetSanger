@@ -131,9 +131,9 @@ namespace GetSanger.ViewModels
 
         private async void callUser(object i_Param)
         {
-            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone.PhoneNumber))
+            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone))
             {
-                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone.PhoneNumber;
+                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
                 r_DialService.Call();
                 return;
             }
@@ -145,9 +145,9 @@ namespace GetSanger.ViewModels
         {
             // navigate to app chat
             //await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={CurrentUser}");
-            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone.PhoneNumber))
+            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone))
             {
-                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone.PhoneNumber;
+                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
                 bool succeeded = await r_DialService.SendWhatsapp();
                 if (!succeeded)
                 {

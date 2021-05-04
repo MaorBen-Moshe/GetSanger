@@ -128,7 +128,7 @@ namespace GetSanger.ViewModels
             try
             {
                 User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerID));
-                r_DialService.PhoneNumber = sanger.PersonalDetails.Phone.PhoneNumber; // check for null value
+                r_DialService.PhoneNumber = sanger.PersonalDetails.Phone; // check for null value
                 r_DialService.Call();
             }
             catch(ArgumentNullException anex)

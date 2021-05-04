@@ -107,6 +107,7 @@ namespace GetSanger.ViewModels.chat
 
                 MessagesSource.Insert(0, msg);
                 await DB.SaveItemAsync(msg, msg.ToId);
+                // try catch for no internet
                 await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
                 TextToSend = string.Empty;
             }

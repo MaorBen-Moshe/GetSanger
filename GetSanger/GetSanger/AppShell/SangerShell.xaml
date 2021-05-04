@@ -19,7 +19,8 @@
             <ShellContent ContentTemplate="{DataTemplate views:ActivitiesListPage}" />
         </Tab>
         <Tab Title="Pending Jobs"
-             Route="jobOffers">
+             Route="jobOffers"
+             x:Name="Pending">
             <ShellContent ContentTemplate="{DataTemplate views:JobOffersListView}" />
         </Tab>
     </TabBar>
