@@ -182,8 +182,6 @@ namespace GetSanger.ViewModels
                 try
                 {
                     await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(CreatedUser.Email, Password));
-                    //await AuthHelper.RegisterViaEmail(Email, Password);
-                    CreatedUser.UserID = AuthHelper.GetLoggedInUserId();
                     await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
                 }
                 catch (Exception e)
