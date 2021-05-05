@@ -1,5 +1,4 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GetSanger.Models.chat;
@@ -40,6 +39,21 @@ namespace GetSanger.ChatDatabase
         {
             List<Message> messages = await getDB(i_ToID);
             messages.Insert(0, i_Item);
+            setDB(messages, i_ToID);
+        }
+
+        public async Task UpdateSentItemAsync(Message i_Item, string i_ToID)
+        {
+            List<Message> messages = await getDB(i_ToID);
+            foreach(Message msg in messages)
+            {
+                if (msg.Equals(i_Item))
+                {
+                    msg.MessageSent = true;
+                    break;
+                }
+            }
+
             setDB(messages, i_ToID);
         }
 

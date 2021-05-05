@@ -2,13 +2,20 @@
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GetSanger.Views.chat.OutgoingViewCell">
+
     <Frame BackgroundColor="Gray"
             Rotation="180"
             FlowDirection="LeftToRight"
             Padding="10"
             HasShadow="false"
             Margin="80,10,10,10">
-        <Label Text="{Binding Text}"
-                  TextColor="White"/>
+        <Grid>
+            <Label Text="{Binding Text}"
+                  TextColor="White" 
+                   Grid.Column="0"/>
+            <Label Text="!"
+                   TextColor="Red"
+                   IsVisible="{Binding MessageSent, Converter={StaticResource InverseBoolConverter}, Mode=TwoWay}" />
+        </Grid>
     </Frame>
 </ViewCell>
