@@ -50,7 +50,7 @@ namespace GetSanger.ViewModels
         private async void categorySelected(object i_Param)
         {
             CategoryCell current = i_Param as CategoryCell;
-            await r_NavigationService.NavigateTo(ShellRoutes.JobOffer + $"?category={current.Category}&&isCreate={true}");
+            await r_NavigationService.NavigateTo(ShellRoutes.JobOffer + $"?category={current.Category}&isCreate={true}");
         }
         #endregion
     }

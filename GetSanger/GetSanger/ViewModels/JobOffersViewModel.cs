@@ -104,7 +104,7 @@ namespace GetSanger.ViewModels
 
         private async void selectedJobOffer(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"activity={i_Param as JobOffer}&&isCreate={false}");
+            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"activity={i_Param as JobOffer}&isCreate={false}");
         }
 
         private async void setJobOffers()
