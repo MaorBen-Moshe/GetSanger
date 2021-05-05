@@ -174,7 +174,7 @@ namespace GetSanger.ViewModels
             NewJobOffer.JobLocation = MyPlaceMark.Location;
             NewJobOffer.Category = JobCategory;
             NewJobOffer.CategoryName = JobCategory.ToString();
-            // create job offer title
+            NewJobOffer.ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone;
             AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
                 new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer))));
         }

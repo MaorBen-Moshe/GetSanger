@@ -21,6 +21,7 @@
             <StackLayout Grid.Row="1" >
                 <Grid>
                     <Entry Text="{Binding JobCategory}" IsReadOnly="True" Grid.Column="0"/>
+                    <Entry Text="{Binding NewJobOffer.Title}" Placeholder="Job Title" IsVisible="{Binding IsCreate}" Grid.Column="1" />
                 </Grid>
 
                 <Grid>
