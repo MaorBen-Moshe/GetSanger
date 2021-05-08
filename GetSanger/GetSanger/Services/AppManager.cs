@@ -43,6 +43,7 @@ namespace GetSanger.Services
             Services.Add(typeof(PageServices), new PageServices());
             Services.Add(typeof(PushServices), new PushServices());
             Services.Add(typeof(ChatDatabase.ChatDatabase), new ChatDatabase.ChatDatabase());
+            Services.Add(typeof(StorageHelper), new StorageHelper());
         }
 
         public void RefreshAppManager()

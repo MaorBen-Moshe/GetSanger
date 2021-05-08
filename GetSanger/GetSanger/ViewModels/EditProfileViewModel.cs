@@ -84,7 +84,7 @@ namespace GetSanger.ViewModels
         {
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
             ProfileImage = ImageSource.FromStream(() => stream);
-            // set User Image uri to this stream
+            r_StorageHelper.SetUserProfileImage(ConnectedUser, stream);
         }
 
         private async void changePassword(object i_Param)
