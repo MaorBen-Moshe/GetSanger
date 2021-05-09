@@ -72,6 +72,7 @@ namespace GetSanger.ViewModels
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
             ProfileImage = ImageSource.FromUri(ConnectedUser.ProfilePictureUri);
+
         }
 
         private async void backButtonBehavior(object i_Param)
