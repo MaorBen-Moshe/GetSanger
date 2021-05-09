@@ -169,8 +169,8 @@ namespace GetSanger.ViewModels
                 {
                     Report report = new Report
                     {
-                        ReporterId = AppManager.Instance.ConnectedUser.UserID,
-                        ReportedId = CurrentUser.UserID,
+                        ReporterId = AppManager.Instance.ConnectedUser.UserId,
+                        ReportedId = CurrentUser.UserId,
                         Reason = option
                     };
                     await RunTaskWhileLoading(FireStoreHelper.AddReport(report));
@@ -192,7 +192,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                CurrentUser.Ratings = new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.GetRatings(CurrentUser.UserID)));
+                CurrentUser.Ratings = new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.GetRatings(CurrentUser.UserId)));
                 IsListRefreshing = false;
             }
             catch

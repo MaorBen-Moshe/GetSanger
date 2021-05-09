@@ -79,12 +79,12 @@ namespace GetSanger.ViewModels
                 if (current.Checked)
                 {
                     AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
-                    await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString()));
+                    await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, ((int)current.Category).ToString()));
                 }
                 else
                 {
                     AppManager.Instance.ConnectedUser.Categories.Remove(current.Category);
-                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, ((int)current.Category).ToString()));
+                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, ((int)current.Category).ToString()));
                 }
             }
             else // generic notifications
@@ -92,11 +92,11 @@ namespace GetSanger.ViewModels
                 AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
                 if (IsGenericNotificatons)
                 {
-                    await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic));
+                    await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic));
                 }
                 else
                 {
-                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserID, Constants.Constants.GenericNotificationTopic));
+                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic));
                 }
             }
 
@@ -108,7 +108,7 @@ namespace GetSanger.ViewModels
             bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
             if (answer)
             {
-                await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserID));
+                await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
                 //do delete
                 await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
                 Application.Current.MainPage = new AuthShell();

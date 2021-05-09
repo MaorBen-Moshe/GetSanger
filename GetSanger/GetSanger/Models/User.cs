@@ -17,7 +17,7 @@ namespace GetSanger.Models
         private Location m_UserLocation;
         #endregion
 
-        public string UserID { get; set; }
+        public string UserId { get; set; }
         public string RegistrationToken { get; set; }
         [JsonIgnore]
         public string Email
@@ -70,7 +70,7 @@ namespace GetSanger.Models
             }
 
             User other = obj as User;
-            return UserID == other.UserID;
+            return UserId == other.UserId;
         }
 
         public override int GetHashCode()

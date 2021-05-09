@@ -162,6 +162,11 @@ namespace GetSanger.ViewModels
                         continue;
                     }
 
+                    if(PersonalImage != null)
+                    {
+                        r_StorageHelper.DeleteProfileImage(AuthHelper.GetLoggedInUserId());
+                    }
+
                     property.SetValue(this, null);
                 }
 
@@ -198,7 +203,6 @@ namespace GetSanger.ViewModels
         private async void personalDetailPartClicked()
         {
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-            //  need to set the image also
             // need to set the user location
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
@@ -215,9 +219,9 @@ namespace GetSanger.ViewModels
 
             try
             {
-                CreatedUser.UserID = AuthHelper.GetLoggedInUserId();
+                CreatedUser.UserId = AuthHelper.GetLoggedInUserId();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
-                await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserID,
+                await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserId,
                     (m_CheckedItems.Select(category => ((int)category).ToString())).ToArray()));
                 await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
             }
@@ -235,6 +239,7 @@ namespace GetSanger.ViewModels
             if (stream != null)
             {
                 PersonalImage = ImageSource.FromStream(() => stream);
+                r_StorageHelper.SetUserProfileImage(CreatedUser, stream);
             }
             else
             {

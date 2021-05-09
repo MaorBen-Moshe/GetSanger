@@ -79,7 +79,7 @@ namespace GetSanger.ViewModels.chat
             DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             AppManager.Instance.ConnectedUser = new User
             {
-                UserID = "Maor",
+                UserId = "Maor",
                 PersonalDetails = new PersonalDetails
                 {
                     NickName = "Maor"
@@ -88,7 +88,7 @@ namespace GetSanger.ViewModels.chat
 
             UserToChat = new User
             {
-                UserID = "Yossi",
+                UserId = "Yossi",
                 PersonalDetails = new PersonalDetails
                 {
                     NickName = "Yossi"
@@ -101,7 +101,7 @@ namespace GetSanger.ViewModels.chat
         public async override void Appearing()
         {
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-            List<Message> messages = await DB.GetItemsAsync(UserToChat.UserID);
+            List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>((from item in messages
                                                                 select item).ToList()
                                                                );
@@ -123,8 +123,8 @@ namespace GetSanger.ViewModels.chat
                 Message msg = new Message
                 {
                     Text = TextToSend,
-                    FromId = AppManager.Instance.ConnectedUser.UserID,
-                    ToId = UserToChat.UserID,
+                    FromId = AppManager.Instance.ConnectedUser.UserId,
+                    ToId = UserToChat.UserId,
                     TimeSent = DateTime.Now
                 };
 
