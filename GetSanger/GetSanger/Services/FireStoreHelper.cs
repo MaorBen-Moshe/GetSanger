@@ -50,7 +50,7 @@ namespace GetSanger.Services
 
         public static async Task<List<Activity>> GetActivities(string i_UserID)
         {
-            if(Connectivity.NetworkAccess == NetworkAccess.Internet)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivities";
                 Dictionary<string, string> id = new Dictionary<string, string>
@@ -62,20 +62,22 @@ namespace GetSanger.Services
                 string idToken = await AuthHelper.GetIdTokenAsync();
 
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                string responseJson = await response.Content.ReadAsStringAsync();
+
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception(await response.Content.ReadAsStringAsync());
+                    throw new Exception(responseJson);
                 }
 
-                List<Activity> activities = JsonSerializer.Deserialize<List<Activity>>(await response.Content.ReadAsStringAsync());
+                List<Activity> activities = JsonSerializer.Deserialize<List<Activity>>(responseJson);
                 convertDateTimeToLocalTime(activities);
 
                 return activities;
             }
             else
             {
-               throw new NoInternetException("No Internet");
-            } 
+                throw new NoInternetException("No Internet");
+            }
         }
 
         private static void convertDateTimeToLocalTime(List<Activity> i_Activities)
@@ -93,7 +95,7 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetActivity";
                 Dictionary<string, string> data = new Dictionary<string, string>
                 {
-                ["ActivityId"] = i_ActivityId
+                    ["ActivityId"] = i_ActivityId
                 };
 
                 string json = JsonSerializer.Serialize(data);
@@ -105,10 +107,10 @@ namespace GetSanger.Services
                     throw new Exception(await response.Content.ReadAsStringAsync());
                 }
 
-                 Activity activity = JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
-                 activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
+                Activity activity = JsonSerializer.Deserialize<Activity>(await response.Content.ReadAsStringAsync());
+                activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
 
-                 return activity;
+                return activity;
             }
             else
             {
@@ -142,7 +144,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         public async static Task DeleteActivity(Activity i_Activity, string i_UserId = null) // delete activity from user list and from server data base
@@ -178,7 +179,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         public static async Task UpdateActivity(params Activity[] i_Activity) // update activity in user list and in server data base
@@ -219,7 +219,7 @@ namespace GetSanger.Services
                 string json = JsonSerializer.Serialize(id);
                 string idToken = await AuthHelper.GetIdTokenAsync();
 
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
@@ -238,7 +238,7 @@ namespace GetSanger.Services
 
         public static async Task<List<JobOffer>> GetAllJobOffers(List<Category> i_Categories = null)
         {
-            if(Connectivity.NetworkAccess == NetworkAccess.Internet)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 // if i_Categories == null than get all job offers in data base else filter by the categories
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetAllJobOffers";
@@ -265,7 +265,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         public static async Task<JobOffer> GetJobOffer(string i_JobId)
@@ -296,7 +295,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         public static async Task<List<JobOffer>> AddJobOffer(params JobOffer[] i_JobOffer)
@@ -327,7 +325,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         private static void convertDateTimeToLocalTime(List<JobOffer> i_JobOffers)
@@ -362,7 +359,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         public static async Task UpdateJobOffer(params JobOffer[] i_JobOffer) // update jobOffer in user list and in server data base
@@ -384,7 +380,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         #endregion
@@ -416,7 +411,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         public static async Task<List<Rating>> AddRating(params Rating[] i_Rating)
@@ -444,7 +438,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         public static async Task DeleteRating(params Rating[] i_Rating) // delete rating from user list and from server data base
@@ -470,7 +463,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-           
         }
 
         public static async Task UpdateRating(params Rating[] i_Rating) // update rating in user list and in server data base
@@ -491,7 +483,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         #endregion
@@ -521,7 +512,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         #endregion
@@ -540,23 +530,23 @@ namespace GetSanger.Services
                 string json = JsonSerializer.Serialize(details);
                 string idToken = await AuthHelper.GetIdTokenAsync();
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
+                string responseJson = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception(await response.Content.ReadAsStringAsync());
+                    throw new Exception(responseJson);
                 }
 
-                User user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-                user.Activities = new ObservableCollection<Activity>(await GetActivities(user.UserId));
-                user.JobOffers = new ObservableCollection<JobOffer>(await GetUserJobOffers(user.UserId));
-                user.Ratings = new ObservableCollection<Rating>(await GetRatings(user.UserId));
+                User user = JsonSerializer.Deserialize<User>(responseJson);
+                user.Activities = new ObservableCollection<Activity>(await GetActivities(i_UserID));
+                user.JobOffers = new ObservableCollection<JobOffer>(await GetUserJobOffers(i_UserID));
+                user.Ratings = new ObservableCollection<Rating>(await GetRatings(i_UserID));
                 return user;
             }
             else
             {
                 throw new NoInternetException("No Internet");
             }
-          
         }
 
         public static async Task AddUser(User i_User)
@@ -585,7 +575,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-         
         }
 
         public static async Task DeleteUser(string i_UserId)
@@ -611,7 +600,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-           
         }
 
         public static async Task UpdateUser(User i_User)
@@ -633,7 +621,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-           
         }
 
         #endregion
