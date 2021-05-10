@@ -57,6 +57,8 @@ namespace GetSanger.ViewModels
 
         public bool IsFacebookGamil { get; set; }
 
+        public bool InPersonalPage { get; set; }
+
         public new string Password
         {
             get => m_Password;
@@ -116,6 +118,7 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             CreatedUser = new User();
+            PersonalImage = ImageSource.FromFile("profile.jpg");
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
         }
 
@@ -131,46 +134,50 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior(object i_Param) // when move from email page back to registration page
         {
-            bool answer =
-                await r_PageService.DisplayAlert("Warning", "Are you sure?\n any detail will be lost.", "Yes", "No");
-            if (answer)
+            if (IsFacebookGamil == false && InPersonalPage == true)
             {
-                CreatedUser = new User();
-                PropertyInfo[] properties = GetType()
-                    .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-                foreach (var property in properties)
+                await GoBack();
+            }
+            else
+            {
+                bool answer =
+              await r_PageService.DisplayAlert("Warning", "Are you sure?\n any detail will be lost.", "Yes", "No");
+                if (answer)
                 {
-                    if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(GenderItems)))
+                    CreatedUser = new User();
+                    PropertyInfo[] properties = GetType()
+                        .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+                    foreach (var property in properties)
                     {
-                        continue;
-                    }
-
-                    else if (IsFacebookGamil && (property.Name.Equals(nameof(Email)) ||
-                                                 property.Name.Equals(nameof(Password)) ||
-                                                 property.Name.Equals(nameof(ConfirmPassword))))
-                    {
-                        continue;
-                    }
-
-                    else if (property.Name.Equals(nameof(CategoriesItems)))
-                    {
-                        foreach (var cell in CategoriesItems)
+                        if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(GenderItems)))
                         {
-                            cell.Checked = false;
+                            continue;
+                        }
+                        else if (IsFacebookGamil && (property.Name.Equals(nameof(Email)) ||
+                                                     property.Name.Equals(nameof(Password)) ||
+                                                     property.Name.Equals(nameof(ConfirmPassword))))
+                        {
+                            continue;
+                        }
+                        else if (property.Name.Equals(nameof(CategoriesItems)))
+                        {
+                            foreach (var cell in CategoriesItems)
+                            {
+                                cell.Checked = false;
+                            }
+
+                            continue;
+                        }
+                        else if (CreatedUser?.ProfilePictureUri != null)
+                        {
+                            r_StorageHelper.DeleteProfileImage(CreatedUser.UserId);
                         }
 
-                        continue;
+                        property.SetValue(this, null);
                     }
 
-                    if(PersonalImage != null)
-                    {
-                        r_StorageHelper.DeleteProfileImage(AuthHelper.GetLoggedInUserId());
-                    }
-
-                    property.SetValue(this, null);
+                    await GoBack();
                 }
-
-                await GoBack();
             }
         }
 
@@ -234,19 +241,26 @@ namespace GetSanger.ViewModels
         private async void imagePicker(object i_Param)
         {
             (i_Param as Button).IsEnabled = false;
-
-            Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
-            if (stream != null)
+            try
             {
-                PersonalImage = ImageSource.FromStream(() => stream);
-                r_StorageHelper.SetUserProfileImage(CreatedUser, stream);
+                Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
+                if (stream != null)
+                {
+                    PersonalImage = ImageSource.FromStream(() => stream);
+                    r_StorageHelper.SetUserProfileImage(CreatedUser, stream);
+                }
+                else
+                {
+                    await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "Ok");
+                }
+
+                (i_Param as Button).IsEnabled = true;
             }
-            else
+            catch(Exception e)
             {
                 await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "Ok");
+                (i_Param as Button).IsEnabled = true;
             }
-
-            (i_Param as Button).IsEnabled = true;
         }
 
         private void allCategoriesChecked(object i_Param)
