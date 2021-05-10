@@ -17,14 +17,29 @@ namespace GetSanger.Views.Registration
 
         protected override bool OnBackButtonPressed()
         {
-            (BindingContext as SignUpPageViewModel).BackButtonBehaviorCommand.Execute(null);
+            if ((BindingContext as SignUpPageViewModel).IsFacebookGamil)
+            {
+                (BindingContext as SignUpPageViewModel).BackButtonBehaviorCommand.Execute(null);
+            }
+            else
+            {
+                base.OnBackButtonPressed();
+            }
+
             return true;
         }
 
         protected override void OnAppearing()
         {
             (BindingContext as SignUpPageViewModel).Appearing();
+            (BindingContext as SignUpPageViewModel).InPersonalPage = true;
             base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as SignUpPageViewModel).InPersonalPage = false;
+            base.OnDisappearing();
         }
     }
 }
