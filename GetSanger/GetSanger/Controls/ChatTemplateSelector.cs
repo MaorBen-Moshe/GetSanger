@@ -23,7 +23,7 @@ namespace GetSanger.Controls
                 return null;
 
 
-            return (messageVm.FromId == AppManager.Instance.ConnectedUser.UserID) ? outgoingDataTemplate : incomingDataTemplate;
+            return (messageVm.FromId == AppManager.Instance.ConnectedUser.UserId) ? outgoingDataTemplate : incomingDataTemplate;
         }
 
     }

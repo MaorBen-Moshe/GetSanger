@@ -17,6 +17,7 @@ namespace GetSanger.ViewModels
         protected readonly IDialService r_DialService;
         protected readonly PushServices r_PushService;
         protected readonly NavigationService r_NavigationService;
+        protected readonly StorageHelper r_StorageHelper;
         #endregion
 
         #region Properties
@@ -47,6 +48,7 @@ namespace GetSanger.ViewModels
             LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             r_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
             r_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            r_StorageHelper = AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
         }
         #endregion
 

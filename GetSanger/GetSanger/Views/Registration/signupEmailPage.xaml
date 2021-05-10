@@ -1,14 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GetSanger.Views.Registration.SignupEmailPage">
 
+
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackButtonBehaviorCommand}"/>
     </Shell.BackButtonBehavior>
+    <!--STYLE - test START -->
+        <ContentPage.Resources>
+        <Style TargetType="Entry">
+            <Style.Triggers>
+                <Trigger TargetType="Entry" Property="IsFocused" Value="True">
+                    <Setter Property="BackgroundColor" Value="BlanchedAlmond"/>
+                </Trigger>
 
+            </Style.Triggers>
+        </Style>
+
+
+    </ContentPage.Resources>
+    <!--STYLE - test END -->
 
     <ContentPage.Content>
+        
         <StackLayout VerticalOptions="Center" Padding="5">
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                 <Label Text="Registration" FontSize="Title" />

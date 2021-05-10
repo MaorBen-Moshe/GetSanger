@@ -547,9 +547,9 @@ namespace GetSanger.Services
                 }
 
                 User user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
-                user.Activities = new ObservableCollection<Activity>(await GetActivities(user.UserID));
-                user.JobOffers = new ObservableCollection<JobOffer>(await GetUserJobOffers(user.UserID));
-                user.Ratings = new ObservableCollection<Rating>(await GetRatings(user.UserID));
+                user.Activities = new ObservableCollection<Activity>(await GetActivities(user.UserId));
+                user.JobOffers = new ObservableCollection<JobOffer>(await GetUserJobOffers(user.UserId));
+                user.Ratings = new ObservableCollection<Rating>(await GetRatings(user.UserId));
                 return user;
             }
             else
