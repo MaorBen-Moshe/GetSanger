@@ -5,6 +5,7 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <UserSecretsId>047e4893-b242-403a-90cb-e4d103929e3a</UserSecretsId>
     <LangVersion>8.0</LangVersion>
+    <ApplicationIcon>SangerIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
