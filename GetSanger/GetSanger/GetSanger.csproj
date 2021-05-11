@@ -131,7 +131,7 @@
     <EmbeddedResource Update="Views\Registration\SignupCategoriesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Registration\signupEmailPage.xaml">
+    <EmbeddedResource Update="Views\Registration\SignupEmailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Registration\SignupPersonalDetailPage.xaml">

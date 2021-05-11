@@ -1,6 +1,6 @@
 using Xamarin.Forms;
 using GetSanger.AppShell;
-using GetSanger.Views;
+using GetSanger.Views.Registration;
 
 namespace GetSanger
 {
@@ -10,8 +10,8 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
-           // MainPage = new signupEmailPage();
+            //MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
+            MainPage = new SignupPersonalDetailPage();
         }
 
         protected override void OnStart()
