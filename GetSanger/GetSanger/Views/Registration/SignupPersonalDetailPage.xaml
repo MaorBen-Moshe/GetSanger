@@ -40,7 +40,7 @@
                     x:Name="UploadButton"
                     Command="{Binding ImagePickerCommand}"
                     CommandParameter="{x:Reference UploadButton}"/>
-            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName}" text/>
+            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName}"/>
 
             <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone}" />
             <Picker SelectedIndex="1" 
