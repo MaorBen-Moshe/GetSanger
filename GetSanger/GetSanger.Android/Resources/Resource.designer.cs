@@ -18103,28 +18103,28 @@ namespace GetSanger.Droid
 			public const int design_snackbar_background = 2131165310;
 			
 			// aapt resource value: 0x7F07007F
-			public const int googleg_disabled_color_18 = 2131165311;
+			public const int getSangerIcon = 2131165311;
 			
 			// aapt resource value: 0x7F070080
-			public const int googleg_standard_color_18 = 2131165312;
-			
-			// aapt resource value: 0x7F070086
-			public const int icon = 2131165318;
+			public const int googleg_disabled_color_18 = 2131165312;
 			
 			// aapt resource value: 0x7F070081
-			public const int ic_mtrl_checked_circle = 2131165313;
+			public const int googleg_standard_color_18 = 2131165313;
 			
 			// aapt resource value: 0x7F070082
-			public const int ic_mtrl_chip_checked_black = 2131165314;
+			public const int ic_mtrl_checked_circle = 2131165314;
 			
 			// aapt resource value: 0x7F070083
-			public const int ic_mtrl_chip_checked_circle = 2131165315;
+			public const int ic_mtrl_chip_checked_black = 2131165315;
 			
 			// aapt resource value: 0x7F070084
-			public const int ic_mtrl_chip_close_circle = 2131165316;
+			public const int ic_mtrl_chip_checked_circle = 2131165316;
 			
 			// aapt resource value: 0x7F070085
-			public const int ic_scrolldown = 2131165317;
+			public const int ic_mtrl_chip_close_circle = 2131165317;
+			
+			// aapt resource value: 0x7F070086
+			public const int ic_scrolldown = 2131165318;
 			
 			// aapt resource value: 0x7F070087
 			public const int material_ic_calendar_black_24dp = 2131165319;
@@ -18235,16 +18235,13 @@ namespace GetSanger.Droid
 			public const int ratingStarOn2x = 2131165354;
 			
 			// aapt resource value: 0x7F0700AB
-			public const int SangerIcon = 2131165355;
+			public const int test_custom_background = 2131165355;
 			
 			// aapt resource value: 0x7F0700AC
-			public const int test_custom_background = 2131165356;
+			public const int tooltip_frame_dark = 2131165356;
 			
 			// aapt resource value: 0x7F0700AD
-			public const int tooltip_frame_dark = 2131165357;
-			
-			// aapt resource value: 0x7F0700AE
-			public const int tooltip_frame_light = 2131165358;
+			public const int tooltip_frame_light = 2131165357;
 			
 			static Drawable()
 			{
@@ -19746,7 +19743,7 @@ namespace GetSanger.Droid
 		{
 			
 			// aapt resource value: 0x7F0C0000
-			public const int icon = 2131492864;
+			public const int getSangerIcon = 2131492864;
 			
 			static Mipmap()
 			{
