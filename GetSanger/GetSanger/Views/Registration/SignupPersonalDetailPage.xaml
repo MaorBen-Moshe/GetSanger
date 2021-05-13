@@ -13,7 +13,9 @@
     <!--STYLE - test START -->
     <ContentPage.Resources>
 
-        <Converters:IntToBoolConverter x:Key="IntToBoolConverter"/>
+        <Converters:EntryLengthToBoolConverter x:Key="EntryLengthToBoolConverter"/>
+        <Converters:DateToBoolConverter x:Key="DateToBoolConverter" />
+        <Converters:PhoneToBoolConverter x:Key="PhoneToBoolConverter" />
 
         <Style TargetType="Entry">
             <Style.Triggers>
@@ -40,9 +42,9 @@
                     x:Name="UploadButton"
                     Command="{Binding ImagePickerCommand}"
                     CommandParameter="{x:Reference UploadButton}"/>
-            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName}"/>
+            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName}" x:Name="NameEntry"/>
 
-            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone}" />
+            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone}" x:Name="PhoneEntry"/>
             <Picker SelectedIndex="1" 
                     Title="Gender"
                     ItemsSource="{Binding GenderItems}"
@@ -55,7 +57,7 @@
                 </Grid.ColumnDefinitions>
                
                 <Label Text="Birthday" Padding="5" Grid.Column="0" />
-                <DatePicker Format="dd MMM yyyy" Date="{Binding CreatedUser.PersonalDetails.Birthday, Mode=TwoWay}"  Grid.Column="1"/>
+                <DatePicker Format="dd MMM yyyy" Date="{Binding CreatedUser.PersonalDetails.Birthday, Mode=TwoWay}" x:Name="DateEntry"  Grid.Column="1"/>
             </Grid>
 
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">
@@ -68,15 +70,17 @@
                     <Button.Triggers>
                         <MultiTrigger TargetType="Button">
                             <MultiTrigger.Conditions>
-                                <BindingCondition Binding="{Binding Source={Binding CreatedUser.CreatedUser.PersonalDetails.NickName},
-                                    Path = Text.Length, Converter = {StaticResource IntToBoolConverter}}" Value="True"/>
+                                <BindingCondition Binding="{Binding Source={x:Reference NameEntry},
+                                    Path = Text.Length, Converter = {StaticResource EntryLengthToBoolConverter}}" Value="True"/>
 
-                                <BindingCondition Binding="{Binding Source={Binding CreatedUser.CreatedUser.PersonalDetails.Phone},
-                                    Path = Text.Length, Converter = {StaticResource IntToBoolConverter}}" Value="True"/>
-                             
+                                <BindingCondition Binding="{Binding Source={x:Reference PhoneEntry},
+                                    Path = Text.Length, Converter = {StaticResource PhoneToBoolConverter}}" Value="True"/>
+
+                                <BindingCondition Binding="{Binding Source={x:Reference DateEntry},
+                                    Path = Date, Converter = {StaticResource DateToBoolConverter}}" Value="True"/>
+
                             </MultiTrigger.Conditions>
                             <Setter Property="IsEnabled" Value="True"/>
-                            <Setter Property="BackgroundColor" Value="Red"/>
                         </MultiTrigger>
                     </Button.Triggers>
                  </Button>

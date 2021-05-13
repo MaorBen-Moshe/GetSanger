@@ -12,7 +12,7 @@ namespace GetSanger.Droid.Services
 
         public void InitLoadingPage(ContentPage i_LoadingIndicatorPage = null) // param just for ios implementation
         {
-            InitDialogPage(new LoadingPage());
+            InitDialogPage(i_LoadingIndicatorPage ?? new LoadingPage());
             IsLoading = false;
         }
 

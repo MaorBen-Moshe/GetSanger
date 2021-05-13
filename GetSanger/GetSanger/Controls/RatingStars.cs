@@ -11,7 +11,7 @@ namespace GetSanger.Controls
     {
         #region Fields
         private Label ReviewsLabel { get; set; }
-        private List<Image> StarImages { get; set; }
+        private List<ImageButton> StarImages { get; set; }
         #endregion
 
         #region properties
@@ -21,7 +21,7 @@ namespace GetSanger.Controls
                                                                               typeof(int),
                                                                               typeof(RatingStars),
                                                                               0,
-                                                                              BindingMode.OneWay,
+                                                                              BindingMode.TwoWay,
                                                                               propertyChanged: (bindable, oldValue, newValue) =>
                                                                               {
                                                                                   var ratingStars = (RatingStars)bindable;
@@ -43,7 +43,7 @@ namespace GetSanger.Controls
             typeof(string),
             typeof(RatingStars),
             "No Description"
-            , BindingMode.OneWay,
+            , BindingMode.TwoWay,
             propertyChanged: (bindable, oldValue, newValue) =>
             {
                 var ratingStars = (RatingStars)bindable;
@@ -55,6 +55,25 @@ namespace GetSanger.Controls
         {
             get { return (string)GetValue(ReviewProperty); }
             set { SetValue(ReviewProperty, value); }
+        }
+
+        public static BindableProperty IsImageEnabledProperty = BindableProperty.Create(
+            nameof(IsImageEnabled),
+            typeof(bool),
+            typeof(RatingStars),
+            false
+            , BindingMode.OneWay,
+            propertyChanged: (bindable, oldValue, newValue) =>
+            {
+                var ratingStars = (RatingStars)bindable;
+                ratingStars.updateIsEnabled();
+            }
+        );
+
+        public bool IsImageEnabled
+        {
+            get { return (bool)GetValue(IsImageEnabledProperty); }
+            set { SetValue(IsImageEnabledProperty, value); }
         }
         #endregion
 
@@ -77,9 +96,11 @@ namespace GetSanger.Controls
             };
 
             //Create Star Image Placeholders 
-            StarImages = new List<Image>();
+            StarImages = new List<ImageButton>();
             for (int i = 0; i < 5; i++)
-                StarImages.Add(new Image());
+            {
+                StarImages.Add(new ImageButton());
+            }
 
             //Create Horizontal Stack containing stars and review count label 
             StackLayout starsStack = new StackLayout()
@@ -99,9 +120,52 @@ namespace GetSanger.Controls
             };
 
             updateReviewsDisplay();
-
+            updateIsEnabled();
             updateStarsDisplay();
             this.Content = starsStack;
+        }
+
+        private void RatingStars_Clicked(object sender, EventArgs e)
+        {
+            ImageButton current = sender as ImageButton;
+            int counter = 0;
+            bool found = false;
+            foreach(ImageButton image in StarImages)
+            {
+                if(found == false)
+                {
+                    counter++;
+                    image.Source = "ratingStarOn.png";
+                }
+                else
+                {
+                    image.Source = "ratingStarOff.png";
+                }
+
+                if (image.Equals(current))
+                {
+                    found = true;
+                }
+            }
+
+            Rating = counter;
+        }
+
+        public void updateIsEnabled()
+        {
+            foreach (ImageButton image in StarImages)
+            {
+                if (IsImageEnabled)
+                {
+                    image.Clicked += RatingStars_Clicked;
+                    image.IsEnabled = true;
+                }
+                else
+                {
+                    image.Clicked -= RatingStars_Clicked;
+                    image.IsEnabled = false;
+                }
+            }
         }
 
         //Set the Display of the Review Label 

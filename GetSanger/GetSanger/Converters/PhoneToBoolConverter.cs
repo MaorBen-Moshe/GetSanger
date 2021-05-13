@@ -6,16 +6,16 @@ using Xamarin.Forms;
 
 namespace GetSanger.Converters
 {
-    class IntToBoolConverter : IValueConverter
+    public class PhoneToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (int)value > 0;
+            return ((int)value == 10);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

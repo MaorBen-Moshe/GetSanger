@@ -11,7 +11,7 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <controls:RatingStars Rating="{Binding NewRating.Score}"/> <!--need to implement choosing how many starts to rate-->
+            <controls:RatingStars Rating="{Binding NewRating.Score}" IsImageEnabled="True" Review=""/> <!--need to implement choosing how many starts to rate-->
             <Frame
                        VerticalOptions="FillAndExpand"
                        HasShadow="True">

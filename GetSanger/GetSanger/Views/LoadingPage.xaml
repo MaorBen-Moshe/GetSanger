@@ -17,8 +17,8 @@
                     <ActivityIndicator IsRunning="True"/>
                     <Label FontAttributes="Bold"
                            TextColor="AliceBlue"
-                           Text="Loading..."
-                           HorizontalOptions="CenterAndExpand"/>
+                           HorizontalOptions="CenterAndExpand"
+                           x:Name="loadingText"/>
                 </StackLayout>
             </Frame>
         </StackLayout>

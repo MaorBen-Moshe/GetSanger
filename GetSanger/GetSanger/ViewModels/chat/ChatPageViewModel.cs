@@ -105,6 +105,7 @@ namespace GetSanger.ViewModels.chat
             MessagesSource = new ObservableCollection<Message>((from item in messages
                                                                 select item).ToList()
                                                                );
+            sendUsentMessages();
             ShowScrollTap = false;
             DelayedMessages = new Queue<Message>();
             PendingMessageCount = 0;
@@ -138,20 +139,25 @@ namespace GetSanger.ViewModels.chat
             }
         }
 
-        private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-           if(Connectivity.NetworkAccess == NetworkAccess.Internet) // there is an internet and there are messages not sent
-           {
-                foreach(Message msg in MessagesSource.Reverse())
+            sendUsentMessages();
+        }
+
+        private async void sendUsentMessages()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet) // there is an internet and there are messages not sent
+            {
+                foreach (Message msg in MessagesSource.Reverse())
                 {
-                    if(msg.MessageSent == false)
+                    if (msg.MessageSent == false)
                     {
                         await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
                         await DB.UpdateSentItemAsync(msg, msg.ToId);
                         msg.MessageSent = true;
                     }
                 }
-           }
+            }
         }
 
         private void messageAppearing(object i_Param)
