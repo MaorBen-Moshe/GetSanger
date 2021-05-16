@@ -15,13 +15,45 @@
 
 
     <ContentPage.Content>
-        <StackLayout>
-            <ImageButton Source="{Binding ProfileImage, Mode=TwoWay}" Command="{Binding ImageChosenCommand}"/>
-            <Entry Text="{Binding ConnectedUser.PersonalDetails.NickName}" />
-            <Entry Text="{Binding ConnectedUser.PersonalDetails.Phone}" Keyboard="Numeric"/>
-            <DatePicker Date="{Binding ConnectedUser.PersonalDetails.Birthday}" Format="dd mm yy"/>
-            <Picker ItemsSource="{Binding GenderItems}" SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender}"/>
-            <Button Text="Change password" Command="{Binding ChangePasswordCommand}" />
-        </StackLayout>
+        <TableView Intent="Form" HasUnevenRows="True">
+            <TableRoot>
+                <TableSection Title="Change Picture">
+                    <ViewCell>
+                        <ImageButton Source="{Binding ProfileImage, Mode=TwoWay}" 
+                                     Command="{Binding ImageChosenCommand}"
+                                     HeightRequest="96"
+                                     WidthRequest="96"
+                                     HorizontalOptions="Center"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Details">
+                    <EntryCell Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" Placeholder="Name" />
+                    <EntryCell Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Phone number"/>
+                    <ViewCell>
+                        <DatePicker Date="{Binding ConnectedUser.PersonalDetails.Birthday, Mode=TwoWay}"
+                                            Format="dd mm yy"/>
+                    </ViewCell>
+                    <ViewCell>
+                        <Picker ItemsSource="{Binding GenderItems}" 
+                                        SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Change Password">
+                    <ViewCell>
+                        <Button Text="Change password" Command="{Binding ChangePasswordCommand}" />
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="Delete Account">
+                    <ViewCell>
+                        <Button Text="Delete Account"
+                                    TextColor="Red"
+                                    Command="{Binding DeleteAccountCommand}"
+                                    VerticalOptions="End"
+                                    HorizontalOptions="FillAndExpand"
+                                    Padding="10"/>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
     </ContentPage.Content>
 </ContentPage>

@@ -12,17 +12,11 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <controls:BindableTableView Source="{Binding CategoriesItems}" 
+            <controls:CategoriesTableView Source="{Binding CategoriesItems}" 
                                     IsGenericNotifications="{Binding IsGenericNotificatons}" 
                                     ToggledCommand="{Binding ToggledCommand}"
                                     HasUnevenRows="True"
                                     VerticalOptions="Start" />
-
-            <Button Text="Delete Account"
-                    TextColor="Red"
-                    Command="{Binding DeleteAccountCommand}"
-                    VerticalOptions="End"
-                    HorizontalOptions="FillAndExpand"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

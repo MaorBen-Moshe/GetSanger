@@ -249,10 +249,6 @@ namespace GetSanger.ViewModels
                     PersonalImage = ImageSource.FromStream(() => stream);
                     r_StorageHelper.SetUserProfileImage(CreatedUser, stream);
                 }
-                else
-                {
-                    await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "Ok");
-                }
 
                 (i_Param as Button).IsEnabled = true;
             }

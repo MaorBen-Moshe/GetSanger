@@ -7,13 +7,13 @@ using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
-    public class BindableTableView : TableView
+    public class CategoriesTableView : TableView
     {
         #region BindableProperties
         public static BindableProperty SourceProperty
            = BindableProperty.Create(nameof(Source),
                                      typeof(ObservableCollection<CategoryCell>),
-                                     typeof(BindableTableView),
+                                     typeof(CategoriesTableView),
                                      default,
                                      propertyChanged: SourceOnCollectionChanged
                                      );
@@ -21,7 +21,7 @@ namespace GetSanger.Controls
         public static BindableProperty IsGenericNotificationsProperty
         = BindableProperty.Create(nameof(IsGenericNotifications),
                                   typeof(bool),
-                                  typeof(BindableTableView),
+                                  typeof(CategoriesTableView),
                                   false,
                                   BindingMode.TwoWay,
                                   propertyChanged: IsGenericNotificationsOnChanged
@@ -29,7 +29,7 @@ namespace GetSanger.Controls
         public static BindableProperty ToggledCommandProperty
         = BindableProperty.Create(nameof(ToggledCommand),
                                   typeof(ICommand),
-                                  typeof(BindableTableView),
+                                  typeof(CategoriesTableView),
                                   default
                                   );
         #endregion
@@ -59,8 +59,9 @@ namespace GetSanger.Controls
         #endregion
 
         #region Constructor
-        public BindableTableView()
+        public CategoriesTableView()
         {
+            Intent = TableIntent.Settings;
             Root = new TableRoot()
             {
                 new TableSection("Generic Notifications"),
@@ -129,12 +130,12 @@ namespace GetSanger.Controls
 
         private static void SourceOnCollectionChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            (bindable as BindableTableView)?.setCategoriesView();
+            (bindable as CategoriesTableView)?.setCategoriesView();
         }
 
         private static void IsGenericNotificationsOnChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var binding = bindable as BindableTableView;
+            var binding = bindable as CategoriesTableView;
             var cell = binding.Root[0][0] as SwitchCell;
             if(oldValue == null || newValue == null || binding.ToggledCommand == null)
             {

@@ -94,27 +94,27 @@ namespace GetSanger.ViewModels
 
         private async void setUser()
         {
-            //if (String.IsNullOrEmpty(UserId))
-            //{
-            //    throw new ArgumentException("User details aren't available.");
-            //}
+            if (String.IsNullOrEmpty(UserId))
+            {
+                throw new ArgumentException("User details aren't available.");
+            }
 
 
-            //CurrentUser = await FireStoreHelper.GetUser(UserId);
-            //if(CurrentUser == null)
-            //{
-            //    throw new ArgumentException("User details aren't available.");
-            //}
+            CurrentUser = await FireStoreHelper.GetUser(UserId);
+            if (CurrentUser == null)
+            {
+                throw new ArgumentException("User details aren't available.");
+            }
 
-            //UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
-            //if(UserImage == null) // if there isn't profile picture - we set an defalt avatar
-            //{
-            //    UserImage = ImageSource.FromFile("profile.jpg"); // default picture
-            //}
+            UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
+            if (UserImage == null) // if there isn't profile picture - we set an defalt avatar
+            {
+                UserImage = ImageSource.FromFile("profile.jpg"); // default picture
+            }
 
-            //Placemark placemark = await LocationServices.PickedLocation(CurrentUser.UserLocation);
-            //UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
-            //AverageRating = getAverage();
+            Placemark placemark = await LocationServices.PickedLocation(CurrentUser.UserLocation);
+            UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
+            AverageRating = getAverage();
             AverageRating = 3;
             IsListRefreshing = false;
         }
