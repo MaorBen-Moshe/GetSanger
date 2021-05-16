@@ -22,7 +22,7 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Properties
-        private User ConnectedUser
+        public User ConnectedUser
         {
             get => m_ConnectedUser;
             set => SetClassProperty(ref m_ConnectedUser, value);
@@ -52,7 +52,7 @@ namespace GetSanger.ViewModels
         public EditProfileViewModel()
         {
             setCommands();
-            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList()); 
+            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
         }
 
         #endregion
@@ -60,7 +60,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            initialData();
+           initialData();
         }
 
         private void setCommands()
