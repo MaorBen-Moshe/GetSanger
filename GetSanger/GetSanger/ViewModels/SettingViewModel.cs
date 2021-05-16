@@ -50,6 +50,13 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
+            AppManager.Instance.ConnectedUser = new User
+            {
+                IsGenericNotifications = true,
+                Categories = new ObservableCollection<Category> { Category.Cleaning, Category.Electrician, Category.Delivery }
+            };
+
+            IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
             CategoriesItems = new ObservableCollection<CategoryCell>(
             (from
                 category in AppManager.Instance.GetListOfEnumNames(typeof(Category))
@@ -62,7 +69,6 @@ namespace GetSanger.ViewModels
                     Checked = AppManager.Instance.ConnectedUser.Categories.Contains((Category)Enum.Parse(typeof(Category), category))
                 }
             ).ToList());
-            IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
         }
 
         private void setCommands()
@@ -89,6 +95,11 @@ namespace GetSanger.ViewModels
             }
             else // generic notifications
             {
+                if (AppManager.Instance.ConnectedUser.IsGenericNotifications.Equals(IsGenericNotificatons))
+                {
+                    return;
+                }
+
                 AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
                 if (IsGenericNotificatons)
                 {
