@@ -90,6 +90,18 @@
     <ImageAsset Include="Assets.xcassets\defaultAvatar.imageset\defaultAvatar.png.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon (1).png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon (2).png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon.png">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\ratingStarOn.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
