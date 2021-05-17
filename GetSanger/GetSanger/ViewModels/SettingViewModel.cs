@@ -1,12 +1,8 @@
-﻿using GetSanger.AppShell;
-using GetSanger.Models;
+﻿using GetSanger.Models;
 using GetSanger.Services;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -35,8 +31,6 @@ namespace GetSanger.ViewModels
 
         #region Commands
         public ICommand ToggledCommand { get; set; }
-
-        public ICommand DeleteAccountCommand { get; set; }
 
         #endregion
 
@@ -68,7 +62,6 @@ namespace GetSanger.ViewModels
         private void setCommands()
         {
             ToggledCommand = new Command(toggled);
-            DeleteAccountCommand = new Command(deleteAccount);
         }
 
         private async void toggled(object i_Param)
@@ -89,6 +82,11 @@ namespace GetSanger.ViewModels
             }
             else // generic notifications
             {
+                if (AppManager.Instance.ConnectedUser.IsGenericNotifications.Equals(IsGenericNotificatons))
+                {
+                    return;
+                }
+
                 AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
                 if (IsGenericNotificatons)
                 {
@@ -101,18 +99,6 @@ namespace GetSanger.ViewModels
             }
 
             await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
-        }
-
-        private async void deleteAccount()
-        {
-            bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
-            if (answer)
-            {
-                await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
-                //do delete
-                await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
-                Application.Current.MainPage = new AuthShell();
-            }
         }
 
         #endregion

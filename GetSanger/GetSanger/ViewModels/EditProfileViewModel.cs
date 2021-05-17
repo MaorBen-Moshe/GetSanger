@@ -1,4 +1,5 @@
-﻿using GetSanger.Constants;
+﻿using GetSanger.AppShell;
+using GetSanger.Constants;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
@@ -21,7 +22,7 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Properties
-        private User ConnectedUser
+        public User ConnectedUser
         {
             get => m_ConnectedUser;
             set => SetClassProperty(ref m_ConnectedUser, value);
@@ -44,6 +45,7 @@ namespace GetSanger.ViewModels
         public ICommand ImageChosenCommand { get; set; }
         public ICommand BackButtonCommand { get; set; }
         public ICommand ChangePasswordCommand { get; set; }
+        public ICommand DeleteAccountCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -58,7 +60,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            initialData();
+           initialData();
         }
 
         private void setCommands()
@@ -66,13 +68,13 @@ namespace GetSanger.ViewModels
             ImageChosenCommand = new Command(imageChanged);
             BackButtonCommand = new Command(backButtonBehavior);
             ChangePasswordCommand = new Command(changePassword);
+            DeleteAccountCommand = new Command(deleteAccount);
         }
 
         private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
             ProfileImage = ImageSource.FromUri(ConnectedUser.ProfilePictureUri);
-
         }
 
         private async void backButtonBehavior(object i_Param)
@@ -84,6 +86,11 @@ namespace GetSanger.ViewModels
         private async void imageChanged(object i_Param)
         {
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
+            if(stream == null)
+            {
+                return;
+            }
+
             ProfileImage = ImageSource.FromStream(() => stream);
             r_StorageHelper.SetUserProfileImage(ConnectedUser, stream);
         }
@@ -93,6 +100,17 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo(ShellRoutes.ChangePassword);
         }
 
+        private async void deleteAccount()
+        {
+            bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
+            if (answer)
+            {
+                await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
+                //do delete
+                await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
+                Application.Current.MainPage = new AuthShell();
+            }
+        }
         #endregion
     }
 }
