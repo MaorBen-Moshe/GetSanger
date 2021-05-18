@@ -28,7 +28,7 @@ namespace GetSanger.Views.Registration
 
         protected override void OnAppearing()
         {
-            (BindingContext as SignUpPageViewModel).Appearing();
+           (BindingContext as SignUpPageViewModel).Appearing();
             base.OnAppearing();
         }
     }

@@ -15,5 +15,7 @@ namespace GetSanger.Constants
         public static string GetSangerMailPassword { get; } = "$MRGS44$";
 
         public static string FirebaseStorage = "gs://get-sanger.appspot.com";
+
+       // public static int MaxDescriptionEditorLength = 100;
     }
 }

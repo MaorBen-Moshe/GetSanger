@@ -1,7 +1,8 @@
 ﻿
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GetSanger.Views.Registration.SignupEmailPage">
+             x:Class="GetSanger.Views.Registration.SignupEmailPage"
+             xmlns:Converters="clr-namespace:GetSanger.Converters">
 
 
     <Shell.BackButtonBehavior>
@@ -17,7 +18,8 @@
 
             </Style.Triggers>
         </Style>
-
+            
+        <Converters:EntryLengthToBoolConverter x:Key="EntryLengthToBoolConverter"/>
 
     </ContentPage.Resources>
     <!--STYLE - test END -->
@@ -28,11 +30,28 @@
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                 <Label Text="Registration" FontSize="Title" />
             </StackLayout>
-            <Entry Placeholder="Email" Keyboard="Email" Text="{Binding CreatedUser.Email}"/>
-            <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}" />
-            <Entry IsPassword="True" Placeholder="Confirm Password" Text="{Binding ConfirmPassword}" />
+            <Entry Placeholder="Email" Keyboard="Email" Text="{Binding CreatedUser.Email}" x:Name="EmailEntry" />
+            <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}" x:Name="PasswordEntry" />
+            <Entry IsPassword="True" Placeholder="Confirm Password" Text="{Binding ConfirmPassword}" x:Name="ConfirmPasswordEntry" />
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">
-                <Button Text="Continue" Padding="5" HeightRequest="55" WidthRequest="90" Command="{Binding EmailPartCommand}"/>
+                <Button Text="Continue" Padding="5" HeightRequest="55" WidthRequest="90" Command="{Binding EmailPartCommand}" IsEnabled="False">
+                    <Button.Triggers>
+                        <MultiTrigger TargetType="Button">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Source ={x:Reference EmailEntry},
+                                Path= Text.Length , Converter={StaticResource EntryLengthToBoolConverter}}" Value="True"/>
+
+                                <BindingCondition Binding="{Binding Source ={x:Reference PasswordEntry},
+                                Path= Text.Length , Converter={StaticResource EntryLengthToBoolConverter}}" Value="True"/>
+
+                                <BindingCondition Binding="{Binding Source ={x:Reference ConfirmPasswordEntry},
+                                Path= Text.Length , Converter={StaticResource EntryLengthToBoolConverter}}" Value="True"/>
+
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </MultiTrigger>
+                    </Button.Triggers>
+                </Button>
             </StackLayout>
         </StackLayout>
         
