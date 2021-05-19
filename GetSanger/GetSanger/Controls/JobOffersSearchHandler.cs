@@ -1,5 +1,5 @@
 ﻿using GetSanger.Constants;
-using GetSanger.Models.chat;
+using GetSanger.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +7,10 @@ using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
-    public class ChatSearchHandler : SearchHandler
+    public class JobOffersSearchHandler : SearchHandler
     {
         #region Properties
-        public IList<ChatUser> Users { get; set; }
+        public IList<JobOffer> JobOffers { get; set; }
         #endregion
 
         #region Methods
@@ -25,8 +25,8 @@ namespace GetSanger.Controls
             }
             else
             {
-                ItemsSource = Users
-                    .Where(user => user.User.PersonalDetails.NickName.ToLower().Contains(newValue.ToLower()))
+                ItemsSource = JobOffers
+                    .Where(job => job.Title.ToLower().Contains(newValue.ToLower()) || job.CategoryName.ToLower().Contains(newValue.ToLower()))
                     .ToList();
             }
         }
@@ -40,7 +40,8 @@ namespace GetSanger.Controls
 
             ShellNavigationState state = (App.Current.MainPage as Shell).CurrentState;
             // The following route works because route names are unique in this application.
-            await Shell.Current.GoToAsync(ShellRoutes.ChatView + $"?userTo={((ChatUser)item).User}");
+            JobOffer current = (JobOffer)item;
+            await Shell.Current.GoToAsync(ShellRoutes.JobOffer + $"?jobOffer={current}&isCreate={false}&category={current.Category}");
         }
 
         #endregion

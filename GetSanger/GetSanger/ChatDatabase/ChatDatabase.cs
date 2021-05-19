@@ -55,7 +55,7 @@ namespace GetSanger.ChatDatabase
                 usersId.Add(i_UserId);
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    IFile current = await openMessagesDB("Users");
+                    IFile current = await openMessagesDB("Activities");
                     string json = JsonSerializer.Serialize(usersId);
                     await current.WriteAllTextAsync(json);
                 });
@@ -70,14 +70,14 @@ namespace GetSanger.ChatDatabase
             usersID.Remove(i_UserID);
             if(usersID.Count == 0)
             {
-                IFile current = await openMessagesDB("Users");
+                IFile current = await openMessagesDB("Activities");
                 await current.DeleteAsync();
                 return;
             }
 
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                IFile current = await openMessagesDB("Users");
+                IFile current = await openMessagesDB("Activities");
                 string json = JsonSerializer.Serialize(usersID);
                 await current.WriteAllTextAsync(json);
             });
@@ -85,7 +85,7 @@ namespace GetSanger.ChatDatabase
 
         public async Task<List<string>> GetUsersIDsInDB()
         {
-            IFile current = await openMessagesDB("Users");
+            IFile current = await openMessagesDB("Activities");
             string json = await current.ReadAllTextAsync();
             return JsonSerializer.Deserialize<List<string>>(json);
         }

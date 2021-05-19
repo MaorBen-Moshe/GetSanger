@@ -12,14 +12,22 @@ namespace GetSanger.ViewModels.chat
     public class ChatListViewModel : BaseViewModel
     {
         #region Fields
+        private bool m_IsRefreshing;
         #endregion
 
         #region Properties
         public ObservableCollection<ChatUser> Users { get; set; }
+
+        public bool IsRefreshing
+        {
+            get => m_IsRefreshing;
+            set => SetStructProperty(ref m_IsRefreshing, value);
+        }
         #endregion
 
         #region Commands
         public ICommand UserSelectedCommand { get; set; }
+        public ICommand RefreshCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -30,21 +38,33 @@ namespace GetSanger.ViewModels.chat
         #endregion
 
         #region Methods
-        public async override void Appearing()
+        public override void Appearing()
         {
-            ChatDatabase.ChatDatabase database = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
-            List<ChatUser> users = await database.GetChatUsers();
-            Users = new ObservableCollection<ChatUser>(users.OrderBy(user => user.LastMessage));
+            setUsers();
         }
 
         private void setCommands()
         {
             UserSelectedCommand = new Command(userSelected);
+            RefreshCommand = new Command(refresh);
+        }
+
+        private void refresh()
+        {
+            setUsers();
+            IsRefreshing = false;
         }
 
         private async void userSelected(object i_Param)
         {
             await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={(i_Param as ChatUser).User}");
+        }
+
+        private async void setUsers()
+        {
+            ChatDatabase.ChatDatabase database = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
+            List<ChatUser> users = await database.GetChatUsers();
+            Users = new ObservableCollection<ChatUser>(users.OrderBy(user => user.LastMessage));
         }
         #endregion
     }

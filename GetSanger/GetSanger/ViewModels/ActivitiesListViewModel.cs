@@ -32,7 +32,6 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
-        public ICommand SearchActivity { get; set; }
         public ICommand ConfirmActivityCommand { get; set; }
         public ICommand RejectActivityCommand { get; set; }
         public ICommand RefreshingCommand { get; set; }
@@ -55,26 +54,10 @@ namespace GetSanger.ViewModels
 
         private void setCommands()
         {
-            SearchActivity = new Command(searchActivity);
             ConfirmActivityCommand = new Command(confirmActivity);
             RejectActivityCommand = new Command(rejectActivity);
             RefreshingCommand = new Command(refreshList);
             SelectedActivityCommand = new Command(selectedActivity);
-        }
-
-        private void searchActivity(object i_Param)
-        {
-            // change the implementation in order to the activity view in the list
-            string text = i_Param as string;
-            if (!string.IsNullOrWhiteSpace(text) && text.Length >= 5)
-            {
-                ActivitiesSource = (ObservableCollection<Activity>)ActivitiesSource.Where(activity =>
-                activity.JobDetails.Description.ToLower().Contains(text) ||
-                activity.Title.ToLower().Contains(text) ||
-                activity.Status.ToString().ToLower().Contains(text) ||
-                activity.JobDetails.Category.ToString().ToLower().Contains(text)
-                );
-            }
         }
 
         private async void confirmActivity(object i_Param)

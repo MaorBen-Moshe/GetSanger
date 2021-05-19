@@ -45,6 +45,9 @@
                           Margin="0"
                           RowHeight="55"
                           ItemsSource="{Binding Users}"
+                          IsPullToRefreshEnabled="True"
+                          IsRefreshing="{Binding IsRefreshing}"
+                          RefreshCommand = "{Binding RefreshCommand}"
                           BackgroundColor="Transparent"
                           HasUnevenRows="True">
             <ListView.Behaviors>
