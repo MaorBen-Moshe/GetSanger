@@ -29,6 +29,67 @@ namespace GetSanger.ChatDatabase
         {
         }
 
+        public async Task<List<ChatUser>> GetChatUsers()
+        {
+            List<string> usersId = await GetUsersIDsInDB();
+            List<Task<ChatUser>> taskUsers = usersId.Select(async userID => new ChatUser
+            {
+                User = await FireStoreHelper.GetUser(userID),
+                LastMessage = (await GetItemsAsync(userID)).FirstOrDefault().TimeSent
+            }).ToList();
+
+            List<ChatUser> users = new List<ChatUser>();
+            foreach(var item in taskUsers)
+            {
+                users.Add(item.Result);
+            }
+
+            return users;
+        }
+
+        public async Task SaveUserAsync(string i_UserId)
+        {
+            List<string> usersId = await GetUsersIDsInDB();
+            if (usersId.Contains(i_UserId) == false)
+            {
+                usersId.Add(i_UserId);
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    IFile current = await openMessagesDB("Users");
+                    string json = JsonSerializer.Serialize(usersId);
+                    await current.WriteAllTextAsync(json);
+                });
+            }
+        }
+
+        public async Task DeleteUserChatAsync(string i_UserID)
+        {
+            IFile deleted = await openMessagesDB(i_UserID);
+            await deleted.DeleteAsync();
+            List<string> usersID = await GetUsersIDsInDB();
+            usersID.Remove(i_UserID);
+            if(usersID.Count == 0)
+            {
+                IFile current = await openMessagesDB("Users");
+                await current.DeleteAsync();
+                return;
+            }
+
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                IFile current = await openMessagesDB("Users");
+                string json = JsonSerializer.Serialize(usersID);
+                await current.WriteAllTextAsync(json);
+            });
+        }
+
+        public async Task<List<string>> GetUsersIDsInDB()
+        {
+            IFile current = await openMessagesDB("Users");
+            string json = await current.ReadAllTextAsync();
+            return JsonSerializer.Deserialize<List<string>>(json);
+        }
+
         public async Task<List<Message>> GetItemsAsync(string i_ToID)
         {
             List<Message> messages = await getDB(i_ToID);
@@ -101,7 +162,6 @@ namespace GetSanger.ChatDatabase
                 string json = JsonSerializer.Serialize(i_Data);
                 await current.WriteAllTextAsync(json);
             });
-
         }
         #endregion
     }

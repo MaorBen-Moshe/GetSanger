@@ -1,9 +1,9 @@
 ﻿using GetSanger.Constants;
-using GetSanger.Models;
-using System;
+using GetSanger.Models.chat;
+using GetSanger.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -15,7 +15,7 @@ namespace GetSanger.ViewModels.chat
         #endregion
 
         #region Properties
-        public ObservableCollection<User> Users { get; set; }
+        public ObservableCollection<ChatUser> Users { get; set; }
         #endregion
 
         #region Commands
@@ -25,20 +25,26 @@ namespace GetSanger.ViewModels.chat
         #region Constructor
         public ChatListViewModel()
         {
-            UserSelectedCommand = new Command(userSelected);
+            setCommands();
         }
         #endregion
 
         #region Methods
-        public override void Appearing()
+        public async override void Appearing()
         {
-            // get all the users the connected has chat with them
-            // also need to implement the order between them
+            ChatDatabase.ChatDatabase database = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
+            List<ChatUser> users = await database.GetChatUsers();
+            Users = new ObservableCollection<ChatUser>(users.OrderBy(user => user.LastMessage));
+        }
+
+        private void setCommands()
+        {
+            UserSelectedCommand = new Command(userSelected);
         }
 
         private async void userSelected(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={i_Param as User}");
+            await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={(i_Param as ChatUser).User}");
         }
         #endregion
     }

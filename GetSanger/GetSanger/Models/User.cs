@@ -1,4 +1,5 @@
-﻿using GetSanger.Services;
+﻿using GetSanger.Models.chat;
+using GetSanger.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -60,6 +61,11 @@ namespace GetSanger.Models
             PersonalDetails = new PersonalDetails();
             IsGenericNotifications = true; // default generic notifications 
             LastUserMode = null;
+        }
+
+        public override string ToString()
+        {
+            return PersonalDetails.NickName;
         }
 
         public override bool Equals(object obj)

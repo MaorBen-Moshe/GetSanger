@@ -15,7 +15,7 @@
     <ContentPage.BindingContext>
         <vm:ChatPageViewModel />
     </ContentPage.BindingContext>
-    
+
     <ContentPage.Content>
         <Grid RowSpacing="0" 
            ColumnSpacing="0">

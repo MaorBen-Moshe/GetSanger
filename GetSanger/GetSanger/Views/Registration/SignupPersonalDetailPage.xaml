@@ -57,7 +57,7 @@
                 </Grid.ColumnDefinitions>
                
                 <Label Text="Birthday" Padding="5" Grid.Column="0" />
-                <DatePicker Format="dd MMM yyyy" Date="{Binding CreatedUser.PersonalDetails.Birthday, Mode=TwoWay}" x:Name="DateEntry"  Grid.Column="1"/>
+                <DatePicker Format="dd/MM/yyyy" Date="{Binding CreatedUser.PersonalDetails.Birthday, Mode=TwoWay}" x:Name="DateEntry"  Grid.Column="1"/>
             </Grid>
 
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">

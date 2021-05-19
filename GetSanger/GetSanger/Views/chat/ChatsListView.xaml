@@ -4,6 +4,7 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels.chat"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converters="clr-namespace:GetSanger.Converters"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.chat.ChatsListView">
 
     <ContentPage.BindingContext>
@@ -15,6 +16,28 @@
             <converters:SelectedItemConverter x:Key="SelectedItemConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+
+    <Shell.SearchHandler>
+        <controls:ChatSearchHandler Placeholder="Search user..."
+                                    ShowsResults="True"
+                                    SearchBoxVisibility="Collapsible"
+                                    Users="{x:Static Users}">
+            <controls:ChatSearchHandler.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10"
+                          ColumnDefinitions="0.15*,0.85*">
+                        <Image Source="{Binding ProfilePictureUri}"
+                               HeightRequest="40"
+                               WidthRequest="40" />
+                        <Label Grid.Column="1"
+                               Text="{Binding PersonalDetails.NickName}"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </controls:ChatSearchHandler.ItemTemplate>
+        </controls:ChatSearchHandler>
+    </Shell.SearchHandler>
 
     <ContentPage.Content>
         <!--need to implement list of contacts -->
@@ -32,9 +55,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                            <Image Source="{Binding ProfilePictureUri}"/>
-                            <Label Text="{Binding PersonalDetails.Name}"/>
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="10">
+                            <Image Source="{Binding User.ProfilePictureUri}" HorizontalOptions="Start"/>
+                            <Label Text="{Binding User.PersonalDetails.NickName}" Padding="10"/>
+                            <Label Text="{Binding LastMessage, StringFormat='{}{0:MM/dd/yyyy'}" HorizontalOptions="EndAndExpand" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
