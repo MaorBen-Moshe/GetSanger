@@ -14,7 +14,7 @@ namespace GetSanger
             InitializeComponent();
 
             // MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
-            MainPage = new AddRatingPage();
+            MainPage = new ProfileViewPage();
         }
 
         protected override void OnStart()
@@ -34,15 +34,15 @@ namespace GetSanger
 
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            ILoadingService service = DependencyService.Get<ILoadingService>();
+            IPopupService service = DependencyService.Get<IPopupService>();
             if (e.NetworkAccess.Equals(NetworkAccess.None))
             {
-                service.InitLoadingPage(new LoadingPage("No Internet"));
-                service.ShowLoadingPage();
+                service.InitPopupgPage(new LoadingPage("No Internet"));
+                service.ShowPopupgPage();
             }
             else
             {
-                service.HideLoadingPage();
+                service.HidePopupPage();
             }
         }
     }

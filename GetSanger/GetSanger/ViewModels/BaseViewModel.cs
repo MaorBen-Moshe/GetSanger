@@ -73,14 +73,14 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                DependencyService.Get<ILoadingService>().InitLoadingPage(i_OptionalLoading);
-                DependencyService.Get<ILoadingService>().ShowLoadingPage();
+                DependencyService.Get<IPopupService>().InitPopupgPage(i_OptionalLoading);
+                DependencyService.Get<IPopupService>().ShowPopupgPage();
                 await i_InnerTask;
-                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                DependencyService.Get<IPopupService>().HidePopupPage();
             }
             catch (Exception ex)
             {
-                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                DependencyService.Get<IPopupService>().HidePopupPage();
                 throw ex;
             }
         }
@@ -89,15 +89,15 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                DependencyService.Get<ILoadingService>().InitLoadingPage(i_OptionalLoading);
-                DependencyService.Get<ILoadingService>().ShowLoadingPage();
+                DependencyService.Get<IPopupService>().InitPopupgPage(i_OptionalLoading);
+                DependencyService.Get<IPopupService>().ShowPopupgPage();
                 T result = await i_InnerTask;
-                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                DependencyService.Get<IPopupService>().HidePopupPage();
                 return result;
             }
             catch (Exception ex)
             {
-                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                DependencyService.Get<IPopupService>().HidePopupPage();
                 throw ex;
             }
         }

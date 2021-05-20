@@ -37,7 +37,7 @@
             <Label Text="{Binding  CurrentUser.PersonalDetails.Gender, Mode=TwoWay}"  
                            Margin="10,0,0,0" />
 
-            <Label Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:MM/dd/yyyy}'}"  
+            <Label Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:dd/MM/yyyy}'}"  
                            Margin="10,0,0,0"/>
             
                      <Label Text="Ratings:" FontSize="Title"/>

@@ -8,6 +8,8 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Net.Mail;
 using System.Collections.ObjectModel;
+using GetSanger.Interfaces;
+using GetSanger.Views;
 
 namespace GetSanger.ViewModels
 {
@@ -16,10 +18,12 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private User m_CurrenUser;
+        private Report m_CurrentReport;
         private int m_AverageRating;
         private ImageSource m_UserImage;
         private string m_Location;
         private bool m_IsListRefreshing;
+        private string m_ReportMessage;
         #endregion
 
         #region Properties
@@ -55,6 +59,12 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsListRefreshing, value);
         }
 
+        public string ReportMessage
+        {
+            get => m_ReportMessage;
+            set => SetClassProperty(ref m_ReportMessage, value);
+        }
+
         #endregion
 
         #region Commands
@@ -67,6 +77,8 @@ namespace GetSanger.ViewModels
         public ICommand AddRatingCommand { get; set; }
 
         public ICommand RefreshingCommand { get; set; }
+
+        public ICommand ReportExtraCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -90,6 +102,7 @@ namespace GetSanger.ViewModels
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
             RefreshingCommand = new Command(refreshList);
+            ReportExtraCommand = new Command(addEditorReport);
         }
 
         private async void setUser()
@@ -146,6 +159,8 @@ namespace GetSanger.ViewModels
         {
             // navigate to app chat
             //await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={CurrentUser}");
+
+            // this code can be in the chat page instead of here
             if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone))
             {
                 r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
@@ -168,20 +183,31 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    Report report = new Report
+                    m_CurrentReport = new Report
                     {
                         ReporterId = AppManager.Instance.ConnectedUser.UserId,
                         ReportedId = CurrentUser.UserId,
                         Reason = option
                     };
-                    await RunTaskWhileLoading(FireStoreHelper.AddReport(report));
-                    await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
+
+                    IPopupService service = DependencyService.Get<IPopupService>();
+                    service.InitPopupgPage(new EditorReportPage(this));
+                    service.ShowPopupgPage();
                 }
                 catch (Exception e)
                 {
                     await r_PageService.DisplayAlert("Oh No", e.Message, "Sorry");
                 }
             }
+        }
+
+        private async void addEditorReport()
+        {
+            IPopupService service = DependencyService.Get<IPopupService>();
+            service.HidePopupPage();
+            m_CurrentReport.ReportMessage = ReportMessage;
+            await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
+            await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
         }
 
         private async void addRating(object i_Param)

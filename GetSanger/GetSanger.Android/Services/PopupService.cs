@@ -3,24 +3,24 @@ using GetSanger.Interfaces;
 using GetSanger.Views;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(LoadingService))]
+[assembly: Dependency(typeof(PopupService))]
 namespace GetSanger.Droid.Services
 {
-    public class LoadingService : DialogService, ILoadingService
+    public class PopupService : DialogService, IPopupService
     {
         bool IsLoading = false;
 
-        public void InitLoadingPage(ContentPage i_LoadingIndicatorPage = null) // param just for ios implementation
+        public void InitPopupgPage(ContentPage i_PopupPage = null) // param just for ios implementation
         {
-            InitDialogPage(i_LoadingIndicatorPage ?? new LoadingPage());
+            InitDialogPage(i_PopupPage ?? new LoadingPage());
             IsLoading = false;
         }
 
-        public void ShowLoadingPage()
+        public void ShowPopupgPage()
         {
             if(!_isInitialized && IsLoading == false)
             {
-                InitLoadingPage(new LoadingPage()); // set the default loading page
+                InitPopupgPage(new LoadingPage()); // set the default loading page
                 _dialog.Show();
                 IsLoading = true;
             }
@@ -32,7 +32,7 @@ namespace GetSanger.Droid.Services
             //else means loading page is already shown and we don't need to do anything
         }
 
-        public void HideLoadingPage()
+        public void HidePopupPage()
         {
             if (_isInitialized && IsLoading == true)
             {

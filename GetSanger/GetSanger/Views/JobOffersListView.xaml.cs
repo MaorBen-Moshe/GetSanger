@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GetSanger.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,13 @@ namespace GetSanger.Views
         public JobOffersListView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as JobOffersViewModel).Appearing();
+            searchHandler.JobOffers = (BindingContext as JobOffersViewModel).JobOffersSource;
+            base.OnAppearing();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Graphics.Drawables;
 using Android.Views;
+using GetSanger.Views;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -40,7 +41,8 @@ namespace GetSanger.Droid.Services
                     Window window = _dialog.Window;
                     window.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
                     window.ClearFlags(WindowManagerFlags.DimBehind);
-                    window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
+                    Android.Graphics.Color color = i_DialogIndicatorPage is LoadingPage ? Android.Graphics.Color.Transparent : Android.Graphics.Color.White;
+                    window.SetBackgroundDrawable(new ColorDrawable(color));
 
                     _isInitialized = true;
                 }

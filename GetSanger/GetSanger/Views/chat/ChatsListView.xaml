@@ -21,7 +21,7 @@
         <controls:ChatSearchHandler Placeholder="Search user..."
                                     ShowsResults="True"
                                     SearchBoxVisibility="Collapsible"
-                                    Users="{x:Static Users}">
+                                    x:Name="searchHandler">
             <controls:ChatSearchHandler.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"

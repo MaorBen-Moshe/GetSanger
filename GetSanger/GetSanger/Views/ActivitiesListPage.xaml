@@ -21,7 +21,7 @@
         <controls:ActivitiesSearchHandler Placeholder="Search activity..."
                                     ShowsResults="True"
                                     SearchBoxVisibility="Collapsible"
-                                    Activities="{x:Static ActivitiesSource}">
+                                    x:Name="searchHandler">
             <controls:ActivitiesSearchHandler.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"
