@@ -52,5 +52,18 @@
 	</array>
   <key>NSPhotoLibraryUsageDescription</key>
   <string>Picture Picker uses photo library</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>https://get-sanger.firebaseapp.com/__/auth/handler</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>https://get-sanger.firebaseapp.com/__/auth/handler</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
 </dict>
 </plist>
