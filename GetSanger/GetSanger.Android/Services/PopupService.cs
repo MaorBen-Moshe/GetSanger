@@ -1,6 +1,7 @@
 ﻿using GetSanger.Droid.Services;
 using GetSanger.Interfaces;
 using GetSanger.Views;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(PopupService))]
@@ -8,36 +9,34 @@ namespace GetSanger.Droid.Services
 {
     public class PopupService : DialogService, IPopupService
     {
-        bool IsLoading = false;
-
         public void InitPopupgPage(ContentPage i_PopupPage = null) // param just for ios implementation
         {
             InitDialogPage(i_PopupPage ?? new LoadingPage());
-            IsLoading = false;
+            _contentPages.Peek().IsLoading = false;
         }
 
         public void ShowPopupgPage()
         {
-            if(!_isInitialized && IsLoading == false)
+            if(_contentPages.Count == 0)
             {
                 InitPopupgPage(new LoadingPage()); // set the default loading page
-                _dialog.Show();
-                IsLoading = true;
+                _contentPages.Peek().CurrentDialog.Show();
+                _contentPages.Peek().IsLoading = true;
             }
-            else if(IsLoading == false)
+            else if(_contentPages.Peek().IsLoading == false)
             {
-                _dialog.Show();
-                IsLoading = true;
+                _contentPages.Peek().CurrentDialog.Show();
+                _contentPages.Peek().IsLoading = true;
             }
             //else means loading page is already shown and we don't need to do anything
         }
 
         public void HidePopupPage()
         {
-            if (_isInitialized && IsLoading == true)
+            var current = _contentPages.Pop();
+            if (current.IsLoading == true)
             {
-                _dialog.Hide();
-                IsLoading = false;
+                current.CurrentDialog.Hide();
             }
         }
     }

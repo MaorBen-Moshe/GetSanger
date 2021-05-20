@@ -99,7 +99,7 @@ namespace GetSanger.Controls
             StarImages = new List<ImageButton>();
             for (int i = 0; i < 5; i++)
             {
-                StarImages.Add(new ImageButton());
+                StarImages.Add(new ImageButton { BackgroundColor = Color.Transparent });
             }
 
             //Create Horizontal Stack containing stars and review count label 

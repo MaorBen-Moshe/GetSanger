@@ -1,6 +1,7 @@
 ﻿using GetSanger.Interfaces;
 using GetSanger.iOS.Services;
 using GetSanger.Views;
+using System.Collections.Generic;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -11,44 +12,41 @@ namespace GetSanger.iOS.Services
     public class PopupService : IPopupService
     {
         private UIView _nativeView;
-
-        private bool _isInitialized;
+        private Stack<NativeViewPage> _contentPages = new Stack<NativeViewPage>();
 
         public void InitPopupgPage(ContentPage popupPage = null)
         {
-            if(popupPage == null)
+            if (popupPage == null)
             {
                 popupPage = new LoadingPage();
             }
 
             // build the loading page with native base
-            popupPage.Parent = Xamarin.Forms.Application.Current.MainPage;
+            Page current = _contentPages.Count == 0 ? Xamarin.Forms.Application.Current.MainPage : _contentPages.Peek().Page;
+            popupPage.Parent = current;
 
-            popupPage.Layout(new Rectangle(0, 0,
-                Xamarin.Forms.Application.Current.MainPage.Width,
-                Xamarin.Forms.Application.Current.MainPage.Height));
+            popupPage.Layout(new Rectangle(0, 0, current.Width, current.Height));
 
             var renderer = popupPage.GetOrCreateRenderer();
 
             _nativeView = renderer.NativeView;
-
-            _isInitialized = true;
+            _contentPages.Push(new NativeViewPage { Page = popupPage, NativeView = _nativeView });
         }
 
         public void ShowPopupgPage()
         {
             // check if the user has set the page or not
-            if (!_isInitialized)
+            if (_contentPages.Count == 0)
                 InitPopupgPage(new LoadingPage()); // set the default page
 
             // showing the native loading page
-            UIApplication.SharedApplication.KeyWindow.AddSubview(_nativeView);
+            UIApplication.SharedApplication.KeyWindow.AddSubview(_contentPages.Peek().NativeView);
         }
 
         public void HidePopupPage()
         {
             // Hide the page
-            _nativeView.RemoveFromSuperview();
+            _contentPages.Pop().NativeView.RemoveFromSuperview();
         }
     }
 
@@ -64,5 +62,12 @@ namespace GetSanger.iOS.Services
             }
             return renderer;
         }
+    }
+
+    public class NativeViewPage
+    {
+        public ContentPage Page { get; set; }
+
+        public UIView NativeView { get; set; }
     }
 }

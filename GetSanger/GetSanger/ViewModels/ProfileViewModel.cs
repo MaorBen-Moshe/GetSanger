@@ -92,7 +92,30 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            setUser();
+            //setUser();
+            AverageRating = 4;
+            CurrentUser = new User
+            {
+                PersonalDetails = new PersonalDetails
+                {
+                    NickName = "Maor",
+                    Birthday = new DateTime(1996, 9, 17),
+                    Gender = GenderType.Other
+                },
+                UserId = "1"
+            };
+
+            UserImage = ImageSource.FromFile("profile.png");
+            AppManager.Instance.ConnectedUser = new User
+            {
+                PersonalDetails = new PersonalDetails
+                {
+                    NickName = "Maor",
+                    Birthday = new DateTime(1996, 9, 17),
+                    Gender = GenderType.Other
+                },
+                UserId = "2"
+            };
         }
 
         private void setCommands()
