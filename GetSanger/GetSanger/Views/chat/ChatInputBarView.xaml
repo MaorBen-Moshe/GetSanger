@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.chat.ChatInputBarView">
   <ContentView.Content>
         <Grid RowSpacing="0" 
@@ -12,7 +13,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Entry x:Name="chatTextInput" 
+            <controls:ExtendedEditorControl x:Name="chatTextInput" 
                  Text="{Binding TextToSend}" 
                  Margin="1"  
                  TextColor="Black" 
@@ -22,6 +23,7 @@
                  Placeholder="Type your message here..."
                  Grid.Row="0" 
                  Grid.Column="0"
+                 IsExpandable="True"
                  Completed="Handle_Completed"/>
             <Label Text="Send"
                Grid.Row="0"

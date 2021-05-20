@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using System.Linq;
 using Xamarin.Essentials;
 using GetSanger.ChatDatabase;
+using GetSanger.Exceptions;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -59,7 +60,7 @@ namespace GetSanger.ViewModels.chat
 
         public int PendingMessageCount { get; set; }
 
-        public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
+        public bool PendingMessageCountVisible { get { return PendingMessageCount > 2; } }
 
         public Queue<Message> DelayedMessages { get; set; }
         #endregion
@@ -126,16 +127,22 @@ namespace GetSanger.ViewModels.chat
                     Text = TextToSend,
                     FromId = AppManager.Instance.ConnectedUser.UserId,
                     ToId = UserToChat.UserId,
-                    TimeSent = DateTime.Now
+                    TimeSent = DateTime.Now,
+                    MessageSent = false
                 };
 
-                // try catch for no internet
-                MessagesSource.Insert(0, msg);
-                await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
-                // adding the message to the local DB
-                msg.MessageSent = true; // removing the '!' in the UI
-                await DB.SaveItemAsync(msg, msg.ToId);
-                TextToSend = string.Empty;
+                try
+                {
+                    MessagesSource.Insert(0, msg);
+                    await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
+                    // adding the message to the local DB
+                    msg.MessageSent = true; // removing the '!' in the UI does not work
+                    await DB.SaveItemAsync(msg, msg.ToId);
+                    TextToSend = string.Empty;
+                }
+                catch
+                {
+                }
             }
         }
 

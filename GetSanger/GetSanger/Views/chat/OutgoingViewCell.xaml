@@ -10,12 +10,18 @@
             HasShadow="false"
             Margin="80,10,10,10">
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
             <Label Text="{Binding Text}"
-                  TextColor="White" 
+                   TextColor="White" 
+                   HorizontalOptions="StartAndExpand"
                    Grid.Column="0"/>
             <Label Text="!"
                    TextColor="Red"
-                   IsVisible="{Binding MessageSent, Converter={StaticResource InverseBoolConverter}, Mode=TwoWay}" />
+                   IsVisible="{Binding MessageSent, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
+                   Grid.Column="1"
+                   HorizontalOptions="EndAndExpand"/>
         </Grid>
     </Frame>
 </ViewCell>
