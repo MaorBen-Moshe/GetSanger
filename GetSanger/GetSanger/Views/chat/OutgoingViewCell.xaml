@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:effects="clr-namespace:GetSanger.Effects"
              x:Class="GetSanger.Views.chat.OutgoingViewCell">
-
     <Frame BackgroundColor="Gray"
             Rotation="180"
             FlowDirection="LeftToRight"
             Padding="10"
             HasShadow="false"
-            Margin="80,10,10,10">
+            Margin="80,10,10,10"
+           effects:LongPressedEffect.Command="{Binding DeleteMessageCommand}"
+           effects:LongPressedEffect.CommandParameter="{Binding .}">
+        
+        <Frame.Effects>
+            <effects:LongPressedEffect />
+        </Frame.Effects>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
