@@ -53,10 +53,10 @@ namespace GetSanger.ViewModels
 
         private async void addRating(object i_Param)
         {
-            NewRating.RatingWriterId = AppManager.Instance.ConnectedUser.UserID;
-            NewRating.RatingOwnerId = RatedUser.UserID;
+            NewRating.RatingWriterId = AppManager.Instance.ConnectedUser.UserId;
+            NewRating.RatingOwnerId = RatedUser.UserId;
 
-            AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.Ratings, new ObservableCollection<Rating>(await FireStoreHelper.AddRating(NewRating)));
+            AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.Ratings, new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating))));
             await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
             await GoBack();
         }

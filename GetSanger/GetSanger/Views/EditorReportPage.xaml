@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GetSanger.Views.EditorReportPage">
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="X" HorizontalOptions="End" VerticalOptions="End" 
+                    Command="{Binding ReportExtraCommand}"
+                    BackgroundColor="Transparent">
+            </Button>
+                <Grid>
+                <Label Text="Write details:"
+                   HorizontalOptions="Center" VerticalOptions="Center" 
+                   FontSize="Title"
+                   Grid.Row="0"/>
+                <Editor Placeholder="text here..."
+                    Text="{Binding ReportMessage}"    
+                    HorizontalOptions="Center" VerticalOptions="Center"
+                    HeightRequest="200"
+                    Grid.Row="1">
+                </Editor>
+            </Grid>
+            <Button Text="Send" HorizontalOptions="Center" VerticalOptions="Center" 
+                    Command="{Binding ReportExtraCommand}"
+                    BackgroundColor="Transparent">
+            </Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

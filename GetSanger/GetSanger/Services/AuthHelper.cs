@@ -7,8 +7,10 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using GetSanger.Exceptions;
 using GetSanger.Interfaces;
 using GetSanger.Models;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace GetSanger.Services
@@ -19,31 +21,38 @@ namespace GetSanger.Services
 
         public static async Task RegisterViaEmail(string i_Email, string i_Password)
         {
-            if (!s_Auth.IsAnonymousUser())
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                s_Auth.SignOut();
+                if (!s_Auth.IsAnonymousUser())
+                {
+                    s_Auth.SignOut();
+                }
+
+                Dictionary<string, string> details = new Dictionary<string, string>()
+                {
+                    ["email"] = i_Email,
+                    ["password"] = i_Password
+                };
+
+                string idToken = await GetIdTokenAsync();
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/RegisterUserWithEmailAndPassword";
+
+                string json = JsonSerializer.Serialize(details);
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                if (!response.IsSuccessStatusCode)
+                {
+                    string responseMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception(responseMessage);
+                }
+
+                await LoginViaEmail(i_Email, i_Password);
+                await SendVerificationEmail();
             }
-
-            Dictionary<string, string> details = new Dictionary<string, string>()
+            else
             {
-                ["email"] = i_Email,
-                ["password"] = i_Password
-            };
-
-            string idToken = await GetIdTokenAsync();
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/RegisterUserWithEmailAndPassword";
-
-            string json = JsonSerializer.Serialize(details);
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            if (!response.IsSuccessStatusCode)
-            {
-                string responseMessage = await response.Content.ReadAsStringAsync();
-                throw new Exception(responseMessage);
+                throw new NoInternetException("No Internet");
             }
-
-            await LoginViaEmail(i_Email, i_Password);
-            await SendVerificationEmail();
         }
 
         public static void SignOut()
@@ -53,52 +62,160 @@ namespace GetSanger.Services
 
         public static async Task SendVerificationEmail()
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendVerificationEmail";
-            string idToken = await GetIdTokenAsync();
-
-            HttpResponseMessage response =
-                await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
-
-            if (!response.IsSuccessStatusCode)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                string responseMessage = await response.Content.ReadAsStringAsync();
-                throw new Exception(responseMessage);
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendVerificationEmail";
+                string idToken = await GetIdTokenAsync();
+
+                HttpResponseMessage response =
+                    await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string responseMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception(responseMessage);
+                }
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
             }
         }
 
         public static async Task LoginViaEmail(string i_Email, string i_Password)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithPassword";
-            Dictionary<string, string> details = new Dictionary<string, string>()
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["Email"] = i_Email,
-                ["Password"] = i_Password
-            };
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithPassword";
+                Dictionary<string, string> details = new Dictionary<string, string>()
+                {
+                    ["Email"] = i_Email,
+                    ["Password"] = i_Password
+                };
 
-            string json = JsonSerializer.Serialize(details);
+                string json = JsonSerializer.Serialize(details);
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                string responseMessage = await response.Content.ReadAsStringAsync();
-                throw new Exception(responseMessage);
+                if (!response.IsSuccessStatusCode)
+                {
+                    string responseMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception(responseMessage);
+                }
+
+                string customToken = await response.Content.ReadAsStringAsync();
+
+                SignOut();
+                await s_Auth.SignInWithCustomToken(customToken);
             }
-
-            string customToken = await response.Content.ReadAsStringAsync();
-
-            SignOut();
-            await s_Auth.SignInWithCustomToken(customToken);
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
         }
 
-        public static Task<Dictionary<string, string>> LoginViaGoogle()
+        public static async Task<Dictionary<string, object>> LoginViaGoogle()
         {
-            throw new NotImplementedException();
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                string googleIdToken = await getSocialAuthIdToken("Google");
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                {
+                    ["postBody"] = $"id_token={googleIdToken}&providerId=google.com"
+                };
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
+                string json = JsonSerializer.Serialize(requestDictionary);
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Dictionary<string, object> responseDictionary =
+                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+                    string customToken = responseDictionary["customToken"] as string;
+
+                    s_Auth.SignOut();
+                    await s_Auth.SignInWithCustomToken(customToken);
+
+                    return responseDictionary;
+                }
+                else
+                {
+                    throw new Exception(responseString);
+                }
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
         }
 
         public static Task<Dictionary<string, string>> LoginViaFacebook()
         {
-            throw new NotImplementedException();
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+        }
+
+        private static async Task<string> getSocialAuthIdToken(string i_Scheme)
+        {
+            try
+            {
+                WebAuthenticatorResult r = null;
+                string idToken = null;
+
+                if (i_Scheme.Equals("Apple")
+                    && DeviceInfo.Platform == DevicePlatform.iOS
+                    && DeviceInfo.Version.Major >= 13)
+                {
+                    // Use Native Apple Sign In API's
+                    var options = new AppleSignInAuthenticator.Options
+                    {
+                        IncludeEmailScope = true,
+                        IncludeFullNameScope = true,
+                    };
+                    r = await AppleSignInAuthenticator.AuthenticateAsync(options);
+                    idToken = r.IdToken;
+                }
+                else
+                {
+                    string uriString = "", callBackUrl = "com.companyname.getsanger://";
+
+                    if (i_Scheme.Equals("Google"))
+                    {
+                        string clientId = s_Auth.GetClientId();
+                        uriString =
+                            $"https://accounts.google.com/o/oauth2/v2/auth?scope=openid profile email&response_type=code&redirect_uri={callBackUrl}&client_id={clientId}";
+                        r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
+
+                        string code = r.Properties["code"];
+                        uriString =
+                            $" https://oauth2.googleapis.com/token?code={code}&client_id={clientId}&redirect_uri={callBackUrl}&grant_type=authorization_code";
+
+                        HttpResponseMessage response = await HttpClientService.SendHttpRequest(uriString, "", HttpMethod.Post);
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        JsonElement responseJsonElement = JsonSerializer.Deserialize<JsonElement>(responseString);
+                        idToken = responseJsonElement.GetProperty("id_token").ToString();
+                    }
+                }
+
+                return idToken;
+            }
+            catch (OperationCanceledException)
+            {
+                throw new Exception("Login canceled.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed: {ex.Message}");
+            }
         }
 
         public static bool IsLoggedIn()
@@ -204,18 +321,25 @@ namespace GetSanger.Services
 
         public static async Task ForgotPassword(string i_Email)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>()
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["email"] = i_Email
-            };
-            string json = JsonSerializer.Serialize(dictionary);
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPasswordResetEmail";
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                Dictionary<string, string> dictionary = new Dictionary<string, string>()
+                {
+                    ["email"] = i_Email
+                };
+                string json = JsonSerializer.Serialize(dictionary);
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPasswordResetEmail";
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
 
-            if (!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    throw new Exception(error);
+                }
+            }
+            else
             {
-                string error = await response.Content.ReadAsStringAsync();
-                throw new Exception(error);
+                throw new NoInternetException("No Internet");
             }
         }
 
@@ -226,50 +350,64 @@ namespace GetSanger.Services
 
         public static async Task<bool> IsUserPassword(string i_Password)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserPassword";
-
-            Dictionary<string, string> details = new Dictionary<string, string>()
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["Password"] = i_Password
-            };
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserPassword";
 
-            string json = JsonSerializer.Serialize(details);
-            string idToken = await GetIdTokenAsync();
+                Dictionary<string, string> details = new Dictionary<string, string>()
+                {
+                    ["Password"] = i_Password
+                };
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            string responseMessage = await response.Content.ReadAsStringAsync();
-            bool result = false;
+                string json = JsonSerializer.Serialize(details);
+                string idToken = await GetIdTokenAsync();
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(responseMessage);
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                string responseMessage = await response.Content.ReadAsStringAsync();
+                bool result = false;
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(responseMessage);
+                }
+                else
+                {
+                    result = JsonSerializer.Deserialize<bool>(responseMessage);
+                }
+
+                return result;
             }
             else
             {
-                result = JsonSerializer.Deserialize<bool>(responseMessage);
+                throw new NoInternetException("No Internet");
             }
-
-            return result;
         }
 
         public static async Task ChangePassword(string i_OldPassword, string i_NewPassword)
         {
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/ChangeUserPassword";
-
-            Dictionary<string, string> details = new Dictionary<string, string>()
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                ["OldPassword"] = i_OldPassword,
-                ["NewPassword"] = i_NewPassword
-            };
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/ChangeUserPassword";
 
-            string json = JsonSerializer.Serialize(details);
-            string idToken = await GetIdTokenAsync();
+                Dictionary<string, string> details = new Dictionary<string, string>()
+                {
+                    ["OldPassword"] = i_OldPassword,
+                    ["NewPassword"] = i_NewPassword
+                };
 
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                string json = JsonSerializer.Serialize(details);
+                string idToken = await GetIdTokenAsync();
 
-            if (!response.IsSuccessStatusCode)
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception(await response.Content.ReadAsStringAsync());
+                }
+            }
+            else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                throw new NoInternetException("No Internet");
             }
         }
     }

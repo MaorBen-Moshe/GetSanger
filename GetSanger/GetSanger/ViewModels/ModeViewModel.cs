@@ -1,5 +1,5 @@
-﻿using GetSanger.AppShell;
-using GetSanger.Services;
+﻿using GetSanger.Services;
+using System;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -35,28 +35,39 @@ namespace GetSanger.ViewModels
 
         private void userCommandHelper()
         {
-            setMode(AppMode.Client, new UserShell());
+            try
+            {
+                r_LoginServices.LoginUser(AppMode.Client);
+            }
+            catch(Exception e)
+            {
+                handleException(e);
+            }
         }
 
         private void sangerCommandHelper()
         {
-            setMode(AppMode.Sanger, new SangerShell());
+            try
+            {
+                r_LoginServices.LoginUser(AppMode.Sanger);
+            }
+            catch(Exception e)
+            {
+                handleException(e);
+            }
         }
 
-        private async void setMode(AppMode i_Mode, Shell i_ChosenShell)
+
+        private async void handleException(Exception e)
         {
-            if(await AuthHelper.IsVerifiedEmail() == false)
+            string message = e.Message;
+            if (e.InnerException != null)
             {
-                await r_PageService.DisplayAlert("Note", "Please verify your email address to continue!", "OK");
-                return;
+                message = string.Format("{0} \n {1}", message, e.InnerException.Message);
             }
 
-            AppManager.Instance.CurrentMode = i_Mode;
-            AppManager.Instance.ConnectedUser.LastUserMode = i_Mode;
-            await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
-            Application.Current.MainPage = i_ChosenShell;
+            await r_PageService.DisplayAlert("Error", message, "OK");
         }
-
         #endregion
     }
 }

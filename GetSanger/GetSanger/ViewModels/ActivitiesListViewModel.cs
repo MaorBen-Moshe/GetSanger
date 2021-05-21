@@ -32,7 +32,6 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
-        public ICommand SearchActivity { get; set; }
         public ICommand ConfirmActivityCommand { get; set; }
         public ICommand RejectActivityCommand { get; set; }
         public ICommand RefreshingCommand { get; set; }
@@ -55,26 +54,10 @@ namespace GetSanger.ViewModels
 
         private void setCommands()
         {
-            SearchActivity = new Command(searchActivity);
             ConfirmActivityCommand = new Command(confirmActivity);
             RejectActivityCommand = new Command(rejectActivity);
             RefreshingCommand = new Command(refreshList);
             SelectedActivityCommand = new Command(selectedActivity);
-        }
-
-        private void searchActivity(object i_Param)
-        {
-            // change the implementation in order to the activity view in the list
-            string text = i_Param as string;
-            if (!string.IsNullOrWhiteSpace(text) && text.Length >= 5)
-            {
-                ActivitiesSource = (ObservableCollection<Activity>)ActivitiesSource.Where(activity =>
-                activity.JobDetails.Description.ToLower().Contains(text) ||
-                activity.Title.ToLower().Contains(text) ||
-                activity.Status.ToString().ToLower().Contains(text) ||
-                activity.JobDetails.Category.ToString().ToLower().Contains(text)
-                );
-            }
         }
 
         private async void confirmActivity(object i_Param)
@@ -88,7 +71,7 @@ namespace GetSanger.ViewModels
                     AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                     activity.Status = ActivityStatus.Active;
                     await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
-                    r_PushService.SendToDevice(activity.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)");
+                    await RunTaskWhileLoading(r_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
                     //  need to check that the list(ActivitiesSource) is updated
                     AppManager.Instance.ConnectedUser.Activities.Add(activity);
                     foreach(Activity current in AppManager.Instance.ConnectedUser.Activities)
@@ -96,7 +79,7 @@ namespace GetSanger.ViewModels
                         if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
                         {
                             current.Status = ActivityStatus.Rejected;
-                            r_PushService.SendToDevice(current.SangerID, activity, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)");
+                            await RunTaskWhileLoading(r_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
                         }
                     }
 
@@ -126,7 +109,7 @@ namespace GetSanger.ViewModels
                 AppManager.Instance.ConnectedUser.Activities.Remove(i_Activity);
                 i_Activity.Status = ActivityStatus.Rejected;
                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(i_Activity));
-                r_PushService.SendToDevice(i_SendToUserId, i_Activity, i_Message);
+                await RunTaskWhileLoading(r_PushService.SendToDevice(i_SendToUserId, i_Activity, i_Activity.GetType(), "Activity Rejected", i_Message));
                 //  need to check that the list(ActivitiesSource) is updated
                 AppManager.Instance.ConnectedUser.Activities.Add(i_Activity);
             }
@@ -145,7 +128,7 @@ namespace GetSanger.ViewModels
 
         private async void setActivities()
         {
-            List<Activity> activities = await FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId());
+            List<Activity> activities = await RunTaskWhileLoading(FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId()));
             if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
             {
                 // client should not see pending activities because it is like job offers

@@ -8,7 +8,9 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
+using Xamarin.Essentials;
 using GetSanger.ChatDatabase;
+using GetSanger.Exceptions;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -75,23 +77,45 @@ namespace GetSanger.ViewModels.chat
             SendMessageCommand = new Command(sendMessage);
             MessageAppearingCommand = new Command(messageAppearing);
             MessageDisappearingCommand = new Command(messageDisappearing);
-            DB = new ChatDatabase.ChatDatabase(); ;
+            DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
+            AppManager.Instance.ConnectedUser = new User
+            {
+                UserId = "Maor",
+                PersonalDetails = new PersonalDetails
+                {
+                    NickName = "Maor"
+                }
+            };
+
+            UserToChat = new User
+            {
+                UserId = "Yossi",
+                PersonalDetails = new PersonalDetails
+                {
+                    NickName = "Yossi"
+                }
+            };
         }
         #endregion
 
         #region Methods
         public async override void Appearing()
         {
-            
-            List<Message> messages = await DB.GetItemsAsync(UserToChat.UserID);
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>((from item in messages
-                                                                orderby item.TimeSent ascending
                                                                 select item).ToList()
                                                                );
+            sendUsentMessages();
             ShowScrollTap = false;
             DelayedMessages = new Queue<Message>();
             PendingMessageCount = 0;
             LastMessageVisible = true;
+        }
+
+        public void Disappearing()
+        {
+            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
         private async void sendMessage(object i_Param)
@@ -101,15 +125,45 @@ namespace GetSanger.ViewModels.chat
                 Message msg = new Message
                 {
                     Text = TextToSend,
-                    FromId = AppManager.Instance.ConnectedUser.UserID,
-                    ToId = UserToChat.UserID,
-                    TimeSent = DateTime.Now
+                    FromId = AppManager.Instance.ConnectedUser.UserId,
+                    ToId = UserToChat.UserId,
+                    TimeSent = DateTime.Now,
+                    MessageSent = false
                 };
 
-                MessagesSource.Insert(0, msg);
-                await DB.SaveItemAsync(msg, msg.ToId);
-                r_PushService.SendToDevice(msg.ToId, msg, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
-                TextToSend = string.Empty;
+                try
+                {
+                    MessagesSource.Insert(0, msg);
+                    await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
+                    // adding the message to the local DB
+                    msg.MessageSent = true; // removing the '!' in the UI does not work
+                    await DB.SaveItemAsync(msg, msg.ToId);
+                    TextToSend = string.Empty;
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            sendUsentMessages();
+        }
+
+        private async void sendUsentMessages()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet) // there is an internet and there are messages not sent
+            {
+                foreach (Message msg in MessagesSource.Reverse())
+                {
+                    if (msg.MessageSent == false)
+                    {
+                        await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
+                        await DB.UpdateSentItemAsync(msg, msg.ToId);
+                        msg.MessageSent = true;
+                    }
+                }
             }
         }
 

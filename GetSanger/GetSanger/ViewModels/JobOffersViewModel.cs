@@ -31,7 +31,6 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
-        public ICommand SearchJobOffer { get; set; }
         public ICommand ConfirmJobOfferCommand { get; set; }
         public ICommand RefreshingCommand { get; set; }
         public ICommand SelectedJobOfferCommand { get; set; }
@@ -54,22 +53,10 @@ namespace GetSanger.ViewModels
 
         private void setCommands()
         {
-            SearchJobOffer = new Command(searchJobOffer);
             ConfirmJobOfferCommand = new Command(confirmJobOffer);
             RefreshingCommand = new Command(refreshList);
             SelectedJobOfferCommand = new Command(selectedJobOffer);
             DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
-        }
-
-        private void searchJobOffer(object i_Param)
-        {
-            // implement it according to the view of a job offer in the list
-            string text = i_Param as string;
-            if (!string.IsNullOrWhiteSpace(text) && text.Length >= 5)
-            {
-                JobOffersSource = (ObservableCollection<JobOffer>)JobOffersSource.Where(
-                    jobOffer => jobOffer.Category.ToString().Contains(text));
-            }
         }
 
         private async void confirmJobOffer(object i_Param)
@@ -104,7 +91,7 @@ namespace GetSanger.ViewModels
 
         private async void selectedJobOffer(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"activity={i_Param as JobOffer}&&isCreate={false}");
+            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"activity={i_Param as JobOffer}&isCreate={false}");
         }
 
         private async void setJobOffers()
@@ -113,11 +100,11 @@ namespace GetSanger.ViewModels
             switch (AppManager.Instance.CurrentMode)
             {
                 case AppMode.Client:
-                    currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId()));
+                    currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId())));
                     break;
                 case AppMode.Sanger:
                     IEnumerable<Category> obsCollection = AppManager.Instance.ConnectedUser.Categories;
-                    currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetAllJobOffers(obsCollection.ToList()));
+                    currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetAllJobOffers(obsCollection.ToList())));
                     break;
             }
 

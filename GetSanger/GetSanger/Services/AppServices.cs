@@ -29,7 +29,6 @@ namespace GetSanger.Services
                 service.SetDependencies();
             }
         }
-
         #endregion
 
     }

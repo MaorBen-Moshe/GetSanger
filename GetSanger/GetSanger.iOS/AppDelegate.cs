@@ -14,6 +14,23 @@ namespace GetSanger.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
+        {
+            if (Xamarin.Essentials.Platform.OpenUrl(app, url, options))
+                return true;
+
+            return base.OpenUrl(app, url, options);
+        }
+
+        public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+        {
+            if (Xamarin.Essentials.Platform.ContinueUserActivity(application, userActivity, completionHandler))
+                return true;
+            return base.ContinueUserActivity(application, userActivity, completionHandler);
+        }
+
+        [System.Runtime.InteropServices.DllImport(ObjCRuntime.Constants.ObjectiveCLibrary, EntryPoint = "objc_msgSend")]
+        internal static extern IntPtr IntPtr_objc_msgSend(IntPtr receiver, IntPtr selector, UISemanticContentAttribute arg1);
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
         // method you should instantiate the window, load the UI into it and then make the window
@@ -27,7 +44,6 @@ namespace GetSanger.iOS
             ImageCircleRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
             Messaging.SharedInstance.ShouldEstablishDirectChannel = true;
-
             LoadApplication(new App());
             Firebase.Core.App.Configure();
             Messaging.SharedInstance.Delegate = this as Firebase.CloudMessaging.IMessagingDelegate;
@@ -36,7 +52,12 @@ namespace GetSanger.iOS
 
             //TEMPORARY
             Messaging.SharedInstance.Subscribe("Topic");
-            return base.FinishedLaunching(app, options);
+
+            // force Right to left flow direction in app
+            ObjCRuntime.Selector selector = new ObjCRuntime.Selector("setSemanticContentAttribute:");
+            IntPtr_objc_msgSend(UIView.Appearance.Handle, selector.Handle, UISemanticContentAttribute.ForceRightToLeft);
+
+            return base.FinishedLaunching(app, options); ;
         }
 
         internal void RegisterForRemoteNotifications()

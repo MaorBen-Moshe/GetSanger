@@ -6,8 +6,9 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System.Net.Mail;
 using System.Collections.ObjectModel;
+using GetSanger.Interfaces;
+using GetSanger.Views;
 
 namespace GetSanger.ViewModels
 {
@@ -16,10 +17,12 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private User m_CurrenUser;
+        private Report m_CurrentReport;
         private int m_AverageRating;
         private ImageSource m_UserImage;
         private string m_Location;
         private bool m_IsListRefreshing;
+        private string m_ReportMessage;
         #endregion
 
         #region Properties
@@ -55,6 +58,12 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsListRefreshing, value);
         }
 
+        public string ReportMessage
+        {
+            get => m_ReportMessage;
+            set => SetClassProperty(ref m_ReportMessage, value);
+        }
+
         #endregion
 
         #region Commands
@@ -67,6 +76,8 @@ namespace GetSanger.ViewModels
         public ICommand AddRatingCommand { get; set; }
 
         public ICommand RefreshingCommand { get; set; }
+
+        public ICommand ReportExtraCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -90,6 +101,7 @@ namespace GetSanger.ViewModels
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
             RefreshingCommand = new Command(refreshList);
+            ReportExtraCommand = new Command(addEditorReport);
         }
 
         private async void setUser()
@@ -101,20 +113,16 @@ namespace GetSanger.ViewModels
 
 
             CurrentUser = await FireStoreHelper.GetUser(UserId);
-            if(CurrentUser == null)
+            if (CurrentUser == null)
             {
                 throw new ArgumentException("User details aren't available.");
             }
 
-            UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
-            if(UserImage == null) // if there isn't profile picture - we set an defalt avatar
-            {
-                UserImage = ImageSource.FromFile("profile.jpg"); // default picture
-            }
-
-            Placemark placemark = await LocationServices.PickedLocation(CurrentUser.UserLocation);
+            UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
+            Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
             UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
             AverageRating = getAverage();
+            AverageRating = 3;
             IsListRefreshing = false;
         }
 
@@ -131,9 +139,9 @@ namespace GetSanger.ViewModels
 
         private async void callUser(object i_Param)
         {
-            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone.PhoneNumber))
+            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone))
             {
-                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone.PhoneNumber;
+                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
                 r_DialService.Call();
                 return;
             }
@@ -145,9 +153,11 @@ namespace GetSanger.ViewModels
         {
             // navigate to app chat
             //await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={CurrentUser}");
-            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone.PhoneNumber))
+
+            // this code can be in the chat page instead of here
+            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone))
             {
-                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone.PhoneNumber;
+                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
                 bool succeeded = await r_DialService.SendWhatsapp();
                 if (!succeeded)
                 {
@@ -167,20 +177,31 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    Report report = new Report
+                    m_CurrentReport = new Report
                     {
-                        ReporterId = AppManager.Instance.ConnectedUser.UserID,
-                        ReportedId = CurrentUser.UserID,
+                        ReporterId = AppManager.Instance.ConnectedUser.UserId,
+                        ReportedId = CurrentUser.UserId,
                         Reason = option
                     };
-                    await FireStoreHelper.AddReport(report);
-                    await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
+
+                    IPopupService service = DependencyService.Get<IPopupService>();
+                    service.InitPopupgPage(new EditorReportPage(this));
+                    service.ShowPopupgPage();
                 }
                 catch (Exception e)
                 {
                     await r_PageService.DisplayAlert("Oh No", e.Message, "Sorry");
                 }
             }
+        }
+
+        private async void addEditorReport()
+        {
+            IPopupService service = DependencyService.Get<IPopupService>();
+            service.HidePopupPage();
+            m_CurrentReport.ReportMessage = ReportMessage;
+            await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
+            await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
         }
 
         private async void addRating(object i_Param)
@@ -192,7 +213,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                CurrentUser.Ratings = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserID));
+                CurrentUser.Ratings = new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.GetRatings(CurrentUser.UserId)));
                 IsListRefreshing = false;
             }
             catch

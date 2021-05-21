@@ -1,5 +1,4 @@
 ﻿using GetSanger.Services;
-using SQLite;
 using System;
 namespace GetSanger.Models.chat
 {
@@ -9,6 +8,7 @@ namespace GetSanger.Models.chat
         private string m_FromId; // who sent the message
         private string m_ToId; // who receive the message
         private DateTime m_TimeSent;
+        private bool m_MessageSent;
 
         public string Text
         {
@@ -32,6 +32,12 @@ namespace GetSanger.Models.chat
         {
             get => m_TimeSent;
             set => SetStructProperty(ref m_TimeSent, value);
+        }
+
+        public bool MessageSent
+        {
+            get => m_MessageSent;
+            set => SetStructProperty(ref m_MessageSent, value);
         }
 
         public override bool Equals(object obj)

@@ -26,6 +26,9 @@ namespace GetSanger.ViewModels
             get => m_ConfirmEmail;
             set => SetClassProperty(ref m_ConfirmEmail, value);
         }
+
+     
+
         #endregion
 
         #region Command
@@ -36,6 +39,7 @@ namespace GetSanger.ViewModels
         private void setCommands()
         {
             SendCommand = new Command(this.SendClicked);
+           
         }
 
         private async void SendClicked()

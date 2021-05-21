@@ -1,4 +1,5 @@
-﻿using GetSanger.Services;
+﻿using GetSanger.Models.chat;
+using GetSanger.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +18,7 @@ namespace GetSanger.Models
         private Location m_UserLocation;
         #endregion
 
-        public string UserID { get; set; }
+        public string UserId { get; set; }
         public string RegistrationToken { get; set; }
         [JsonIgnore]
         public string Email
@@ -62,6 +63,11 @@ namespace GetSanger.Models
             LastUserMode = null;
         }
 
+        public override string ToString()
+        {
+            return PersonalDetails.NickName;
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is User))
@@ -70,7 +76,7 @@ namespace GetSanger.Models
             }
 
             User other = obj as User;
-            return UserID == other.UserID;
+            return UserId == other.UserId;
         }
 
         public override int GetHashCode()

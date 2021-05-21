@@ -3,15 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:Converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.AddRatingPage">
 
     <ContentPage.BindingContext>
         <vm:AddRatingViewModel />
     </ContentPage.BindingContext>
 
+    <ContentPage.Resources>
+        <Converters:EntryMaxLenghtToBoolConverter x:Key="EntryMaxLenghtToBoolConverter"/>
+    </ContentPage.Resources>
+
+
     <ContentPage.Content>
         <StackLayout>
-            <controls:RatingStars Rating="{Binding NewRating.Score}"/> <!--need to implement choosing how many starts to rate-->
+            <controls:RatingStars Rating="{Binding NewRating.Score}" IsImageEnabled="True" Review=""/> <!--need to implement choosing how many starts to rate-->
             <Frame
                        VerticalOptions="FillAndExpand"
                        HasShadow="True">
@@ -19,7 +25,7 @@
                             IsTextPredictionEnabled="True"
                             Placeholder="Job Description"
                             VerticalOptions="FillAndExpand"
-                            Text="{Binding NewRating.Description}">
+                            Text="{Binding NewRating.Description}" x:Name="EditorDescription">
                     <Editor.Keyboard>
                         <Keyboard x:FactoryMethod="Create" >
                             <x:Arguments>
@@ -29,7 +35,19 @@
                     </Editor.Keyboard>
                 </Editor>
             </Frame>
-            <Button Text="Send" Command="{Binding AddRatingCommand}" />
+            <Button Text="Send" Command="{Binding AddRatingCommand}" IsEnabled="{Binding IsEnabledsendBtn}" >
+                <Button.Triggers>
+                    <MultiTrigger TargetType="Button">
+                        <MultiTrigger.Conditions>
+
+                            <BindingCondition Binding="{Binding Source={x:Reference EditorDescription},
+                                Path= Text.Length , Converter={StaticResource EntryMaxLenghtToBoolConverter}}" Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="IsEnabled" Value="True"/>
+                    </MultiTrigger>
+                </Button.Triggers>
+
+            </Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

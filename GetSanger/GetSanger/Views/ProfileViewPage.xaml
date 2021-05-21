@@ -22,7 +22,8 @@
                      <!--User average rating-->
                     <StackLayout HorizontalOptions="Center">
                     <controls:RatingStars Rating="{Binding AverageRating}"
-                                          Review="" />
+                                          Review="" 
+                                          IsImageEnabled="False"/>
                     </StackLayout>
 
             <Label Text="{Binding CurrentUser.PersonalDetails.NickName, Mode=TwoWay}"
@@ -36,7 +37,7 @@
             <Label Text="{Binding  CurrentUser.PersonalDetails.Gender, Mode=TwoWay}"  
                            Margin="10,0,0,0" />
 
-            <Label Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:MM/dd/yyyy}'}"  
+            <Label Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:dd/MM/yyyy}'}"  
                            Margin="10,0,0,0"/>
             
                      <Label Text="Ratings:" FontSize="Title"/>
@@ -62,7 +63,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 
-                <Button Text="Call" Command="{Binding CallCommand}" />
+                <Button Text="Call" Command="{Binding CallCommand}" /> 
                 <Button Text="Send Message" Command="{Binding SendMessageCommand}" />
                 <Button Text="Report" Command="{Binding ReportUserCommand}" />
                 <Button Text="Add Rating" Command="{Binding AddRatingCommand}"/>

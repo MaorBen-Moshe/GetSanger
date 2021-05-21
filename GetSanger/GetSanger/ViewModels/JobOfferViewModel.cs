@@ -137,13 +137,13 @@ namespace GetSanger.ViewModels
         {
             if (IsCreate == false)
             {
-                MyPlaceMark = await LocationServices.PickedLocation(NewJobOffer.Location);
-                JobPlaceMark = await LocationServices.PickedLocation(NewJobOffer.JobLocation);
+                MyPlaceMark = await r_LocationServices.PickedLocation(NewJobOffer.Location);
+                JobPlaceMark = await r_LocationServices.PickedLocation(NewJobOffer.JobLocation);
                 return;
             }
 
-            Location location = await LocationServices.GetCurrentLocation();
-            MyPlaceMark = await LocationServices.PickedLocation(location);
+            Location location = await r_LocationServices.GetCurrentLocation();
+            MyPlaceMark = await r_LocationServices.PickedLocation(location);
         }
 
         public void SetLocation(Placemark i_PlaceMark)
@@ -174,9 +174,9 @@ namespace GetSanger.ViewModels
             NewJobOffer.JobLocation = MyPlaceMark.Location;
             NewJobOffer.Category = JobCategory;
             NewJobOffer.CategoryName = JobCategory.ToString();
-            // create job offer title
+            NewJobOffer.ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone;
             AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
-                new ObservableCollection<JobOffer>(await FireStoreHelper.AddJobOffer(NewJobOffer)));
+                new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer))));
         }
 
         private string placemarkValidation(Placemark i_Placemark)

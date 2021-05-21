@@ -4,6 +4,7 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converters ="clr-namespace:GetSanger.Converters"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.JobOffersListView">
 
     <ContentPage.BindingContext>
@@ -16,6 +17,27 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <Shell.SearchHandler>
+        <controls:JobOffersSearchHandler Placeholder="Search job offer..."
+                                    ShowsResults="True"
+                                    SearchBoxVisibility="Collapsible"
+                                    x:Name="searchHandler">
+            <controls:JobOffersSearchHandler.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10"
+                          ColumnDefinitions="0.15*,0.85*">
+                        <!--<Image Source="{Binding}"
+                               HeightRequest="40"
+                               WidthRequest="40" />-->
+                        <Label Grid.Column="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </controls:JobOffersSearchHandler.ItemTemplate>
+        </controls:JobOffersSearchHandler>
+    </Shell.SearchHandler>
 
     <ContentPage.Content>
         <ScrollView>
@@ -31,14 +53,6 @@
                                                           EventName="ItemSelected"
                                                           Converter="{StaticResource SelectedItemConverter}"/>
                     </ListView.Behaviors>
-                    <ListView.Header>
-                        <SearchBar x:Name="search"
-                               Placeholder="Search..." 
-                               HorizontalOptions="Start"
-                               SearchCommand="{Binding SearchJobOffer}"
-                               SearchCommandParameter="{Binding Source={x:Reference search}, Path=Text}">
-                        </SearchBar>
-                    </ListView.Header>
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

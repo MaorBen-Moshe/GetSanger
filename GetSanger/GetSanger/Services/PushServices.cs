@@ -1,5 +1,7 @@
-﻿using GetSanger.Interfaces;
+﻿using GetSanger.Constants;
+using GetSanger.Interfaces;
 using GetSanger.Models;
+using GetSanger.Models.chat;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,18 +16,30 @@ namespace GetSanger.Services
     {
         private static readonly IPushService sr_Push = DependencyService.Get<IPushService>();
 
-        public async void SendToDevice<T>(string i_UserId, T i_Data, string i_Message = null)
+        public async Task SendToDevice<T>(string i_UserId, T i_Data, Type i_DataType, string i_Title = "", string i_Message = null) where T : class
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
             i_Message = user.IsGenericNotifications ? i_Message : null;
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPushToToken";
 
+            string dataJson = JsonSerializer.Serialize(i_Data);
+            Dictionary<string, string> data = null;
+            if(i_Data != null)
+            {
+                data = new Dictionary<string, string>
+                {
+                    ["Type"] = i_DataType?.ToString(),
+                    ["Json"] = dataJson
+                };
+            }
+
+
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
                 ["UserId"] = i_UserId,
-                ["Data"] = i_Data,
+                ["Data"] = data,
                 ["Body"] = i_Message,
-                ["Title"] = "New notification"
+                ["Title"] = i_Title
             };
 
             string json = JsonSerializer.Serialize(pushData);
@@ -61,7 +75,7 @@ namespace GetSanger.Services
         }
 
         // i_Topics = a representation of the int value of the enum or "Generic" string that represent generic notifications
-        public async void UnsubscribeTopics(string i_UserId, params string[] i_Topics)
+        public async Task UnsubscribeTopics(string i_UserId, params string[] i_Topics)
         {
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UnsubscribeFromTopics";
             Dictionary<string, object> pushData = new Dictionary<string, object>
@@ -104,7 +118,6 @@ namespace GetSanger.Services
             else if (type.Equals(typeof(Models.chat.Message)))
             {
                 handleMessage(i_Message["Json"]);
-                throw new NotImplementedException("In HandeDataReceived");
             }
             else
             {
@@ -143,42 +156,32 @@ namespace GetSanger.Services
         {
             Activity activity = JsonSerializer.Deserialize<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            bool choice = await App.Current.MainPage.DisplayAlert
-                     ("Move to activity?", "Do you wish to navigate to the page?", "Yes", "No");
-            if (choice)
-            {
-                await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
-            }
+            await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
         }
 
         private async static void handleJobOffer(string i_Json)
         {
             JobOffer job = JsonSerializer.Deserialize<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            bool choice = await App.Current.MainPage.DisplayAlert
-                     ("Move to job offer?", "Do you wish to navigate to the page?", "Yes", "No");
-            if (choice)
-            {
-                await navigation.NavigateTo(ShellRoutes.JobOffer + $"?jobOffer={job}&isCreate={false}&category={job.Category}");
-            }
+            await navigation.NavigateTo(ShellRoutes.JobOffer + $"?jobOffer={job}&isCreate={false}&category={job.Category}");
         }
 
         private static Type getTypeOfData(string i_Type)
         {
             Type type = null;
-            if (i_Type.Equals(typeof(JobOffer).Name.ToString()))
+            if (i_Type.Equals(typeof(JobOffer).ToString()))
             {
                 type = typeof(JobOffer);
             }
-            else if(i_Type.Equals(typeof(Activity).Name.ToString()))
+            else if(i_Type.Equals(typeof(Activity).ToString()))
             {
                 type = typeof(Activity);
             }
-            else if(i_Type.Equals(typeof(Rating).Name.ToString()))
+            else if(i_Type.Equals(typeof(Rating).ToString()))
             {
                 type = typeof(Rating);
             }
-            else if (i_Type.Equals(typeof(Message).Name.ToString()))
+            else if (i_Type.Equals(typeof(Message).ToString()))
             {
                 type = typeof(Message);
             }

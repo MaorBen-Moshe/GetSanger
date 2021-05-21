@@ -21,6 +21,7 @@ namespace GetSanger.Views.chat
         protected override void OnAppearing()
         {
             (BindingContext as ChatListViewModel).Appearing();
+            searchHandler.Users = (BindingContext as ChatListViewModel).Users;
             base.OnAppearing();
         }
     }

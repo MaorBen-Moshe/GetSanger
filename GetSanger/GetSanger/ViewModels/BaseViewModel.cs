@@ -12,15 +12,19 @@ namespace GetSanger.ViewModels
         #region Fields
         private bool m_IsLoading;
         private bool m_IsNotLoading;
+        private bool m_IsEnabledSendBtn;
         protected string m_DefaultBackUri = "..";
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
+        protected readonly IPhotoDisplay r_PhotoDisplay;
         protected readonly PushServices r_PushService;
         protected readonly NavigationService r_NavigationService;
+        protected readonly StorageHelper r_StorageHelper;
+        protected readonly LoginServices r_LoginServices;
+        protected readonly LocationService r_LocationServices;
         #endregion
 
         #region Properties
-        protected LocationService LocationServices { get; private set; }
 
         protected bool IsLoading
         {
@@ -37,6 +41,12 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsNotLoading, value);
             get => m_IsNotLoading;
         }
+        public bool IsEnabledsendBtn
+        {
+            get => m_IsEnabledSendBtn;
+            set => SetStructProperty(ref m_IsEnabledSendBtn, value);
+
+        }
         #endregion
 
         #region Constructor
@@ -44,9 +54,14 @@ namespace GetSanger.ViewModels
         {
             r_PageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             r_DialService = AppManager.Instance.Services.GetService(typeof(DialServices)) as DialServices;
-            LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            r_LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             r_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
             r_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            r_StorageHelper = AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
+            r_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
+            r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
+
+            IsEnabledsendBtn = false;
         }
         #endregion
 
@@ -60,14 +75,31 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                DependencyService.Get<ILoadingService>().InitLoadingPage(i_OptionalLoading);
-                DependencyService.Get<ILoadingService>().ShowLoadingPage();
+                DependencyService.Get<IPopupService>().InitPopupgPage(i_OptionalLoading);
+                DependencyService.Get<IPopupService>().ShowPopupgPage();
                 await i_InnerTask;
-                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                DependencyService.Get<IPopupService>().HidePopupPage();
             }
             catch (Exception ex)
             {
-                DependencyService.Get<ILoadingService>().HideLoadingPage();
+                DependencyService.Get<IPopupService>().HidePopupPage();
+                throw ex;
+            }
+        }
+
+        public async Task<T> RunTaskWhileLoading<T>(Task<T> i_InnerTask, ContentPage i_OptionalLoading = null)
+        {
+            try
+            {
+                DependencyService.Get<IPopupService>().InitPopupgPage(i_OptionalLoading);
+                DependencyService.Get<IPopupService>().ShowPopupgPage();
+                T result = await i_InnerTask;
+                DependencyService.Get<IPopupService>().HidePopupPage();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                DependencyService.Get<IPopupService>().HidePopupPage();
                 throw ex;
             }
         }

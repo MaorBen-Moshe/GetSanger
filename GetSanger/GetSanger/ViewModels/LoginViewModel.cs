@@ -86,14 +86,13 @@ namespace GetSanger.ViewModels
             try
             {
                 await RunTaskWhileLoading(AuthHelper.LoginViaEmail(Email, Password));
-                await r_PageService.DisplayAlert("Ok", "Log in successful!", "OK");
+                r_LoginServices.LoginUser();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 await r_PageService.DisplayAlert("Error", e.Message, "OK");
             }
-            // check if login succeeded
         }
 
         protected async void SignUpClicked()
@@ -108,23 +107,28 @@ namespace GetSanger.ViewModels
 
         private async void FaceBookClicked(object obj)
         {
-            Dictionary<string, string> details = await AuthHelper.LoginViaFacebook(); 
+            Dictionary<string, string> details = await AuthHelper.LoginViaFacebook();
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
                 await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
+
+            r_LoginServices.LoginUser();
+            // need to check if it is not the first time
         }
 
         private async void GmailClicked(object obj)
         {
-            Dictionary<string, string> details = await AuthHelper.LoginViaGoogle();
+            Dictionary<string, object> details = await AuthHelper.LoginViaGoogle();
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
-                // go to sign up personal details!
                 await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
             }
+
+            r_LoginServices.LoginUser();
+            // need to check if it is not the first time
         }
 
         #endregion

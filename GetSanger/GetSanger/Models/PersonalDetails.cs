@@ -12,7 +12,7 @@ namespace GetSanger.Models
         #region Fields
         private string m_NickName;
         private GenderType m_Gender;
-        private ContactPhone m_Phone;
+        private string m_Phone;
         private DateTime m_Birthday;
         #endregion
 
@@ -26,7 +26,7 @@ namespace GetSanger.Models
             get => m_Gender;
             set => SetStructProperty(ref m_Gender, value);
         }
-        public ContactPhone Phone
+        public string Phone
         {
             get => m_Phone;
             set => SetClassProperty(ref m_Phone, value);
@@ -46,7 +46,7 @@ namespace GetSanger.Models
 
             PersonalDetails other = obj as PersonalDetails;
             return Birthday.Equals(other.Birthday) &&
-                   Phone.PhoneNumber == other.Phone.PhoneNumber &&
+                   Phone == other.Phone &&
                    Gender.Equals(other.Gender) &&
                    NickName == other.NickName;
         }

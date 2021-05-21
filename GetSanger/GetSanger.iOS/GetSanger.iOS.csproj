@@ -77,9 +77,10 @@
     <Compile Include="Rendrers\CustomEditorRendrer.cs" />
     <Compile Include="Rendrers\ExtendedListViewRenderer.cs" />
     <Compile Include="Services\AuthIOs.cs" />
-    <Compile Include="Services\LoadigService.cs" />
+    <Compile Include="Services\PopupService.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
     <Compile Include="Services\PushService.cs" />
+    <Compile Include="Services\StorageHelper.cs" />
     <None Include="Entitlements.plist" />
     <BundleResource Include="GoogleService-Info.plist" />
     <None Include="Info.plist" />
@@ -87,6 +88,18 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\defaultAvatar.imageset\defaultAvatar.png.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon (1).png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon (2).png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\ratingStarOn.imageset\Contents.json">
@@ -166,9 +179,6 @@
     <PackageReference Include="SkiaSharp.Views.Forms">
       <Version>2.80.2</Version>
     </PackageReference>
-    <PackageReference Include="sqlite-net-pcl">
-      <Version>1.7.335</Version>
-    </PackageReference>
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle">
       <Version>3.0.0.5</Version>
     </PackageReference>
@@ -180,6 +190,9 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Firebase.iOS.CloudMessaging">
       <Version>4.7.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Firebase.iOS.Storage">
+      <Version>3.9.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />

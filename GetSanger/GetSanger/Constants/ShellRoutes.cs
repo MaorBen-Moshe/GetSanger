@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GetSanger.Constants
+﻿namespace GetSanger.Constants
 {
     public static class ShellRoutes
     {
@@ -20,7 +16,7 @@ namespace GetSanger.Constants
 
         public const string Login = "login";
 
-        public const string ForgotPassword = "login/forgotPassword";
+        public const string ForgotPassword = "forgotPassword";
         #endregion
 
         public const string Categories = "categories";
@@ -31,25 +27,25 @@ namespace GetSanger.Constants
 
         public const string Account = "account";
 
-        public const string Settings = "account/settings";
+        public const string Settings = "settings";
 
-        public const string Profile = "activity/profile";
+        public const string Profile = "profile";
 
         public const string Map = "map";
 
-        public const string Activity = "activities/activity";
+        public const string Activity = "activity";
 
-        public const string JobOffer = "jobOffers/jobOffer";
+        public const string JobOffer = "jobOffer";
 
         public const string LoadingPage = "loading";
 
-        public const string EditProfile = "account/editProfile";
+        public const string EditProfile = "editProfile";
 
-        public const string ChangePassword = "account/changePassword";
+        public const string ChangePassword = "changePassword";
 
-        public const string AddRating = "profile/addRating";
+        public const string AddRating = "addRating";
 
-        public const string SangerNotes = "jobOffers/sangerNotes";
+        public const string SangerNotes = "sangerNotes";
 
         public const string ChatsList = "chatsList";
 

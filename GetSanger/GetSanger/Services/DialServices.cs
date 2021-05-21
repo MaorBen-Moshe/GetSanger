@@ -1,4 +1,5 @@
-﻿using GetSanger.Interfaces;
+﻿using GetSanger.Exceptions;
+using GetSanger.Interfaces;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace GetSanger.Services
             }
             set
             {
-                if(!Regex.Match(value, @"^(\+[0-9])$").Success)
+                if(!IsValidPhone(value))
                 {
                     throw new ArgumentException("Phone number should contain only numbers");
                 }
@@ -51,14 +52,27 @@ namespace GetSanger.Services
 
         public async Task<bool> SendWhatsapp()
         {
-            string uri = $"https://wa.me/{"972" + PhoneNumber}?text={Message}";
-            bool canOpen = await Launcher.CanOpenAsync(uri);
-            if (canOpen) 
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                await Launcher.OpenAsync(new Uri(uri)); 
-            }
+                string uri = $"https://wa.me/{"972" + PhoneNumber}?text={Message}";
+                bool canOpen = await Launcher.CanOpenAsync(uri);
+                if (canOpen) 
+                {
+                    await Launcher.OpenAsync(new Uri(uri)); 
+                }
 
-            return canOpen;
+                return canOpen;
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+            
+        }
+
+        public bool IsValidPhone(string i_Phone)
+        {
+            return Regex.Match(i_Phone, @"^(\+[0-9])$").Success;
         }
 
         public override void SetDependencies()
