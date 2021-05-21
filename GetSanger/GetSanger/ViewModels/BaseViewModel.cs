@@ -16,14 +16,15 @@ namespace GetSanger.ViewModels
         protected string m_DefaultBackUri = "..";
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
+        protected readonly IPhotoDisplay r_PhotoDisplay;
         protected readonly PushServices r_PushService;
         protected readonly NavigationService r_NavigationService;
         protected readonly StorageHelper r_StorageHelper;
         protected readonly LoginServices r_LoginServices;
+        protected readonly LocationService r_LocationServices;
         #endregion
 
         #region Properties
-        protected LocationService LocationServices { get; private set; }
 
         protected bool IsLoading
         {
@@ -53,11 +54,12 @@ namespace GetSanger.ViewModels
         {
             r_PageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             r_DialService = AppManager.Instance.Services.GetService(typeof(DialServices)) as DialServices;
-            LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            r_LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             r_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
             r_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             r_StorageHelper = AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
             r_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
+            r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
 
             IsEnabledsendBtn = false;
         }

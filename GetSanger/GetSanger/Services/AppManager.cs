@@ -44,6 +44,7 @@ namespace GetSanger.Services
             Services.Add(typeof(PushServices), new PushServices());
             Services.Add(typeof(ChatDatabase.ChatDatabase), new ChatDatabase.ChatDatabase());
             Services.Add(typeof(StorageHelper), new StorageHelper());
+            Services.Add(typeof(PhotoDisplayService), new PhotoDisplayService());
         }
 
         public void RefreshAppManager()

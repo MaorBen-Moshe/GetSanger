@@ -19,6 +19,7 @@ namespace GetSanger.ViewModels
         private ImageSource m_ProfileImage;
         private IList<GenderType> m_GenderItems;
         private User m_ConnectedUser;
+        private User m_CloneUser;
         #endregion
 
         #region Properties
@@ -74,12 +75,25 @@ namespace GetSanger.ViewModels
         private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
-            ProfileImage = ImageSource.FromUri(ConnectedUser.ProfilePictureUri);
+            m_CloneUser = ConnectedUser.CloneObject() as User; // save the old values of the User
+            ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
         }
 
         private async void backButtonBehavior(object i_Param)
         {
-            await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser));
+            if(string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) || 
+                !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
+                ((DateTime.Now.Year - ConnectedUser.PersonalDetails.Birthday.Year) < 18)
+                )
+            {
+                await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
+                AppManager.Instance.ConnectedUser = m_CloneUser; // delete the new changes
+            }
+            else
+            {
+                await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser));
+            }
+
             await GoBack();
         }
 
@@ -88,6 +102,9 @@ namespace GetSanger.ViewModels
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
             if(stream == null)
             {
+                ProfileImage = r_PhotoDisplay.DisplayPicture();
+                r_StorageHelper.DeleteProfileImage(ConnectedUser.UserId);
+                ConnectedUser.ProfilePictureUri = null;
                 return;
             }
 

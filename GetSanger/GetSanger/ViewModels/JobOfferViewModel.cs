@@ -137,13 +137,13 @@ namespace GetSanger.ViewModels
         {
             if (IsCreate == false)
             {
-                MyPlaceMark = await LocationServices.PickedLocation(NewJobOffer.Location);
-                JobPlaceMark = await LocationServices.PickedLocation(NewJobOffer.JobLocation);
+                MyPlaceMark = await r_LocationServices.PickedLocation(NewJobOffer.Location);
+                JobPlaceMark = await r_LocationServices.PickedLocation(NewJobOffer.JobLocation);
                 return;
             }
 
-            Location location = await LocationServices.GetCurrentLocation();
-            MyPlaceMark = await LocationServices.PickedLocation(location);
+            Location location = await r_LocationServices.GetCurrentLocation();
+            MyPlaceMark = await r_LocationServices.PickedLocation(location);
         }
 
         public void SetLocation(Placemark i_PlaceMark)

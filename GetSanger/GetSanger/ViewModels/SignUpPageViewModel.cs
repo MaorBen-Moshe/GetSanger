@@ -118,7 +118,7 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             CreatedUser = new User();
-            PersonalImage = ImageSource.FromFile("profile.jpg");
+            PersonalImage = r_PhotoDisplay.DisplayPicture();
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
         }
 
@@ -210,7 +210,7 @@ namespace GetSanger.ViewModels
         private async void personalDetailPartClicked()
         {
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-            // need to set the user location
+            CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }

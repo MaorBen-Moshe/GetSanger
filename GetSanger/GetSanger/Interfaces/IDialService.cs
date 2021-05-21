@@ -13,5 +13,7 @@ namespace GetSanger.Interfaces
         void SendDefAppMsg();
 
         void Call();
+
+       bool IsValidPhone(string i_Phone);
     }
 }
