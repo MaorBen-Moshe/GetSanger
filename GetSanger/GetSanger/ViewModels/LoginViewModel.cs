@@ -107,7 +107,7 @@ namespace GetSanger.ViewModels
 
         private async void FaceBookClicked(object obj)
         {
-            Dictionary<string, string> details = await AuthHelper.LoginViaFacebook(); 
+            Dictionary<string, string> details = await AuthHelper.LoginViaFacebook();
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
@@ -120,7 +120,7 @@ namespace GetSanger.ViewModels
 
         private async void GmailClicked(object obj)
         {
-            Dictionary<string, string> details = await AuthHelper.LoginViaGoogle();
+            Dictionary<string, object> details = await AuthHelper.LoginViaGoogle();
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
