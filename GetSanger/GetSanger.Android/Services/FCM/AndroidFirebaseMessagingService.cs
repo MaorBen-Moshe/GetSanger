@@ -24,9 +24,12 @@ namespace GetSanger.Droid.Services.FCM
 
         public override void OnMessageReceived(RemoteMessage message)
         {//Sets how the app handles messages and notifications in foreground (background messages are not passed here)
+
+            handleDataReceived(message);
             base.OnMessageReceived(message);
+
             //SendNotification(message.GetNotification().Body, message.Data);
-            DataManipulationExample(message);
+            //handleNavigation(message, pageToNavigateTo);
         }
 
         public override void OnNewToken(string newToken)
@@ -66,16 +69,18 @@ namespace GetSanger.Droid.Services.FCM
             notificationManager.Notify(MainActivity.NOTIFICATION_ID, notificationBuilder.Build());
         }
 
-        internal async void DataManipulationExample(RemoteMessage remoteMessage)
+        private void handleDataReceived(RemoteMessage i_Message)
         {
-            string pageToNavigate = "";
-            foreach (var key in remoteMessage.Data.Keys)
+            // validation of data first
+            PushServices.HandleDataReceived(i_Message.Data);
+        }
+
+
+        internal async void handleNavigation(RemoteMessage remoteMessage, string i_PageToNavigateTo)
+        {
+            if(i_PageToNavigateTo == null)
             {
-                if (key == "type")
-                {
-                    pageToNavigate = remoteMessage.Data[key];
-                    break;
-                }
+                return;
             }
             NavigationService nservice = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             bool choice = false;
@@ -84,17 +89,17 @@ namespace GetSanger.Droid.Services.FCM
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     choice = await App.Current.MainPage.DisplayAlert
-                     (string.Format("Move to ", pageToNavigate, "?"), "Do you wish to navigate to the page?", "Yes", "No");
+                     (string.Format("Move to ", i_PageToNavigateTo, "?"), "Do you wish to navigate to the page?", "Yes", "No");
                     if (choice)
                     {
-                        if (pageToNavigate == ShellRoutes.JobOffer)
+                        if (i_PageToNavigateTo == ShellRoutes.JobOffer)
                         {
                             // navigate to Mode page, if the user swaps to Sanger mode, then navigate to the JobOffer page
                             await nservice.NavigateTo("mode");
                             // Need more logic
 
                         }
-                        else if (pageToNavigate == "signupEmail")
+                        else if (i_PageToNavigateTo == "signupEmail")
                         {
                             await nservice.NavigateTo(ShellRoutes.SignupEmail);
                         }
@@ -107,7 +112,7 @@ namespace GetSanger.Droid.Services.FCM
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     choice = await App.Current.MainPage.DisplayAlert
-                     (string.Format("Move to ", pageToNavigate, "?"), "Do you wish to navigate to the page?", "Yes", "No");
+                     (string.Format("Move to ", i_PageToNavigateTo, "?"), "Do you wish to navigate to the page?", "Yes", "No");
                     if (choice)
                     {
 
