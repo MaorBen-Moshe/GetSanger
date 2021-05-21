@@ -30,7 +30,6 @@ namespace GetSanger.Droid.Services.FCM
 
             base.OnMessageReceived(message);
             //SendNotification(message.GetNotification().Body, message.Data);
-            DataManipulationExample(message);
         }
 
         public override void OnNewToken(string newToken)
@@ -76,55 +75,5 @@ namespace GetSanger.Droid.Services.FCM
             PushServices.HandleDataReceived(i_Message.Data);
         }
 
-
-        internal async void DataManipulationExample(RemoteMessage remoteMessage)
-        {
-            string pageToNavigate = "";
-            foreach (var key in remoteMessage.Data.Keys)
-            {
-                if (key == "type")
-                {
-                    pageToNavigate = remoteMessage.Data[key];
-                    break;
-                }
-            }
-            NavigationService nservice = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            bool choice = false;
-            if (AppManager.Instance.CurrentMode == AppMode.Client)
-            {
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-                    choice = await App.Current.MainPage.DisplayAlert
-                     (string.Format("Move to ", pageToNavigate, "?"), "Do you wish to navigate to the page?", "Yes", "No");
-                    if (choice)
-                    {
-                        if (pageToNavigate == ShellRoutes.JobOffer)
-                        {
-                            // navigate to Mode page, if the user swaps to Sanger mode, then navigate to the JobOffer page
-                            await nservice.NavigateTo("mode");
-                            // Need more logic
-
-                        }
-                        else if (pageToNavigate == "signupEmail")
-                        {
-                            await nservice.NavigateTo(ShellRoutes.SignupEmail);
-                        }
-
-                    }
-                });
-            }
-            else if (AppManager.Instance.CurrentMode == AppMode.Sanger)
-            {
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-                    choice = await App.Current.MainPage.DisplayAlert
-                     (string.Format("Move to ", pageToNavigate, "?"), "Do you wish to navigate to the page?", "Yes", "No");
-                    if (choice)
-                    {
-
-                    }
-                });
-            }
-        }
     }
 }
