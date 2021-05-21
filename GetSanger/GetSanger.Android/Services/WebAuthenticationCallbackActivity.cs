@@ -15,7 +15,7 @@ namespace GetSanger.Droid.Services
     [Activity(NoHistory = true, LaunchMode = LaunchMode.SingleTop)]
     [IntentFilter(new[] {Android.Content.Intent.ActionView},
         Categories = new[] {Android.Content.Intent.CategoryDefault, Android.Content.Intent.CategoryBrowsable},
-        DataScheme = "https://get-sanger.firebaseapp.com/__/auth/handler")]
+        DataScheme = "com.companyname.getsanger")]
     public class WebAuthenticationCallbackActivity : Xamarin.Essentials.WebAuthenticatorCallbackActivity
     {
     }

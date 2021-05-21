@@ -79,5 +79,10 @@ namespace GetSanger.iOS.Services
 
             return result;
         }
+
+        public string GetClientId()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
