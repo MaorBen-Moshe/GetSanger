@@ -9,7 +9,7 @@ namespace GetSanger.Droid.Services
 {
     public class PopupService : DialogService, IPopupService
     {
-        public Page CurrentShowenPage
+        public Page CurrentShownPage
         {
             get
             {

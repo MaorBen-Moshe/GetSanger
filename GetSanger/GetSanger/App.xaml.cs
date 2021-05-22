@@ -41,7 +41,7 @@ namespace GetSanger
             }
             else // Internet is back
             {
-                if(service.CurrentShowenPage is LoadingPage)
+                if(service.CurrentShownPage is LoadingPage)
                 {
                     service.HidePopupPage();
                 }

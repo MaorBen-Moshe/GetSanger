@@ -14,7 +14,7 @@ namespace GetSanger.iOS.Services
         private UIView _nativeView;
         private Stack<NativeViewPage> _contentPages = new Stack<NativeViewPage>();
 
-        public Page CurrentShowenPage
+        public Page CurrentShownPage
         {
             get
             {
