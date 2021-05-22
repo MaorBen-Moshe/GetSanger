@@ -152,11 +152,38 @@ namespace GetSanger.Services
             }
         }
 
-        public static Task<Dictionary<string, string>> LoginViaFacebook()
+        public static async Task<Dictionary<string, object>> LoginViaFacebook()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new NotImplementedException();
+                string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                {
+                    ["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com"
+                };
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
+                string json = JsonSerializer.Serialize(requestDictionary);
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Dictionary<string, object> responseDictionary =
+                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+                    string customToken = responseDictionary["customToken"] as string;
+
+                    s_Auth.SignOut();
+                    await s_Auth.SignInWithCustomToken(customToken);
+
+                    return responseDictionary;
+                }
+                else
+                {
+                    throw new Exception(responseString);
+                }
             }
             else
             {
@@ -190,7 +217,7 @@ namespace GetSanger.Services
 
                     if (i_Scheme.Equals("Google"))
                     {
-                        string clientId = s_Auth.GetClientId();
+                        string clientId = s_Auth.GetGoogleClientId();
                         uriString =
                             $"https://accounts.google.com/o/oauth2/v2/auth?scope=openid profile email&response_type=code&redirect_uri={callBackUrl}&client_id={clientId}";
                         r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
@@ -203,6 +230,14 @@ namespace GetSanger.Services
                         string responseString = await response.Content.ReadAsStringAsync();
                         JsonElement responseJsonElement = JsonSerializer.Deserialize<JsonElement>(responseString);
                         idToken = responseJsonElement.GetProperty("id_token").ToString();
+                    }
+                    else if (i_Scheme.Equals("Facebook"))
+                    {
+                        string clientId = "328227848585394";
+                        string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithFacebook";
+                        uriString = $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email";
+                        r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
+                        idToken = r.AccessToken;
                     }
                 }
 

@@ -107,7 +107,7 @@ namespace GetSanger.ViewModels
 
         private async void FaceBookClicked(object obj)
         {
-            Dictionary<string, string> details = await AuthHelper.LoginViaFacebook();
+            Dictionary<string, object> details = await AuthHelper.LoginViaFacebook();
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {

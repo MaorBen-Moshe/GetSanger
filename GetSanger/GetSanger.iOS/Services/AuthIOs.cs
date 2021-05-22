@@ -80,7 +80,7 @@ namespace GetSanger.iOS.Services
             return result;
         }
 
-        public string GetClientId()
+        public string GetGoogleClientId()
         {
             throw new NotImplementedException();
         }
