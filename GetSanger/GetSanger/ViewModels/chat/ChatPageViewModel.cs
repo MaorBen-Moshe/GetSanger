@@ -85,9 +85,7 @@ namespace GetSanger.ViewModels.chat
             DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);
-            MessagesSource = new ObservableCollection<Message>((from item in messages
-                                                                select item).ToList()
-                                                               );
+            MessagesSource = new ObservableCollection<Message>((messages.Select(item => { item.DeleteMessageCommand = DeleteMessageCommand; return item; })).ToList());
             sendUsentMessages();
             ShowScrollTap = false;
             DelayedMessages = new Queue<Message>();

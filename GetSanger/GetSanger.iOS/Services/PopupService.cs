@@ -14,6 +14,20 @@ namespace GetSanger.iOS.Services
         private UIView _nativeView;
         private Stack<NativeViewPage> _contentPages = new Stack<NativeViewPage>();
 
+        public Page CurrentShowenPage
+        {
+            get
+            {
+                Page toRet = null;
+                if (_contentPages.TryPeek(out NativeViewPage current))
+                {
+                    toRet = current.Page;
+                }
+
+                return toRet;
+            }
+        }
+
         public void InitPopupgPage(ContentPage popupPage = null)
         {
             if (popupPage == null)

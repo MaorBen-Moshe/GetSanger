@@ -155,7 +155,7 @@ namespace GetSanger.ViewModels
             //await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={CurrentUser}");
 
             // this code can be in the chat page instead of here
-            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone))
+            if (r_DialService.IsValidPhone(CurrentUser.PersonalDetails.Phone))
             {
                 r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
                 bool succeeded = await r_DialService.SendWhatsapp();

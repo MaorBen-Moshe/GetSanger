@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:effects="clr-namespace:GetSanger.Effects"
              x:Class="GetSanger.Views.chat.IncomingViewCell">
-    
+
     <Frame BackgroundColor="LightBlue"
               Rotation="180"
               FlowDirection="LeftToRight"
@@ -12,10 +12,10 @@
               Margin="10,10,80,10"
               effects:LongPressedEffect.Command="{Binding DeleteMessageCommand}"
               effects:LongPressedEffect.CommandParameter="{Binding .}">
+
         <Frame.Effects>
             <effects:LongPressedEffect />
         </Frame.Effects>
-        
         <Label Text="{Binding Text}"/>
     </Frame>
 </ViewCell>

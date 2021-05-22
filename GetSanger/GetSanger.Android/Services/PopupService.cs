@@ -9,6 +9,20 @@ namespace GetSanger.Droid.Services
 {
     public class PopupService : DialogService, IPopupService
     {
+        public Page CurrentShowenPage
+        {
+            get
+            {
+                Page toRet = null;
+                if(_contentPages.TryPeek(out PageDialog current))
+                {
+                    toRet = current.Page;
+                }
+
+                return toRet;
+            }
+        }
+
         public void InitPopupgPage(ContentPage i_PopupPage = null) // param just for ios implementation
         {
             InitDialogPage(i_PopupPage ?? new LoadingPage());
