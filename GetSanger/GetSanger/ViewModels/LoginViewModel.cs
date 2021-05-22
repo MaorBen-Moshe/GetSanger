@@ -1,9 +1,11 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Interfaces;
+using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.Registration;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -124,11 +126,33 @@ namespace GetSanger.ViewModels
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
-                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
+                string user = JsonSerializer.Serialize(getGmailDetails(details));
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + "?userJson=" + user + $"&isFacebookGmail={true}");
+            }
+            else
+            {
+                r_LoginServices.LoginUser();
+                // need to check if it is not the first time
+            }
+        }
+
+        private User getGmailDetails(Dictionary<string, object> i_Details)
+        {
+            User user = new User
+            {
+                PersonalDetails = new PersonalDetails
+                {
+                    NickName = i_Details["displayName"] as string
+                },
+                Email = i_Details["email"] as string,
+            };
+
+            if(i_Details["photoUrl"] != null)
+            {
+                user.ProfilePictureUri = new Uri(i_Details["photoUrl"] as string);
             }
 
-            r_LoginServices.LoginUser();
-            // need to check if it is not the first time
+            return user;
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace GetSanger.Views.Registration
 
         protected override bool OnBackButtonPressed()
         {
-            if ((BindingContext as SignUpPageViewModel).IsFacebookGamil)
+            if ((BindingContext as SignUpPageViewModel).IsFacebookGmail)
             {
                 (BindingContext as SignUpPageViewModel).BackButtonBehaviorCommand.Execute(null);
             }
@@ -31,9 +31,9 @@ namespace GetSanger.Views.Registration
 
         protected override void OnAppearing()
         {
-           // (BindingContext as SignUpPageViewModel).Appearing();
-          //(BindingContext as SignUpPageViewModel).InPersonalPage = true;
-            base.OnAppearing();
+           (BindingContext as SignUpPageViewModel).Appearing();
+           (BindingContext as SignUpPageViewModel).InPersonalPage = true;
+           base.OnAppearing();
         }
 
         protected override void OnDisappearing()
