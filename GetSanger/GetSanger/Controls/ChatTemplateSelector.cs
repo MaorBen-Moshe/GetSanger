@@ -21,10 +21,7 @@ namespace GetSanger.Controls
             var messageVm = item as Message;
             if (messageVm == null)
                 return null;
-
-
             return (messageVm.FromId == AppManager.Instance.ConnectedUser.UserId) ? outgoingDataTemplate : incomingDataTemplate;
         }
-
     }
 }

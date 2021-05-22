@@ -3,6 +3,7 @@ using GetSanger.AppShell;
 using Xamarin.Essentials;
 using GetSanger.Interfaces;
 using GetSanger.Views;
+using GetSanger.Views.chat;
 
 namespace GetSanger
 {
@@ -12,8 +13,7 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            // MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
-            MainPage = new AuthShell();
+            MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
         }
 
         protected override void OnStart()
@@ -39,9 +39,12 @@ namespace GetSanger
                 service.InitPopupgPage(new LoadingPage("No Internet"));
                 service.ShowPopupgPage();
             }
-            else
+            else // Internet is back
             {
-                service.HidePopupPage();
+                if(service.CurrentShowenPage is LoadingPage)
+                {
+                    service.HidePopupPage();
+                }
             }
         }
     }
