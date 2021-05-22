@@ -260,12 +260,12 @@ namespace GetSanger.Services
             string idToken = await GetIdTokenAsync();
 
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+            string responseMessage = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {
-                string responseMessage = await response.Content.ReadAsStringAsync();
                 bool result = JsonSerializer.Deserialize<bool>(responseMessage);
-                return result;
+                return !result;
             }
             else
             {
