@@ -269,7 +269,7 @@ namespace GetSanger.Services
             }
             else
             {
-                throw new Exception("Error");
+                throw new Exception(responseMessage);
             }
         }
 
