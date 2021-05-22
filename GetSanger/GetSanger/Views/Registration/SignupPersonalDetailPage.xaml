@@ -64,7 +64,7 @@
                 <Button Text="Continue" 
                         Padding="5" 
                         HeightRequest="55" 
-                        WidthRequest="90"
+                        WidthRequest="100"
                         Command="{Binding PersonalDetailPartCommand}" 
                         IsEnabled="False">
                     <Button.Triggers>

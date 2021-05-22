@@ -39,7 +39,6 @@
                 <Button.Triggers>
                     <MultiTrigger TargetType="Button">
                         <MultiTrigger.Conditions>
-
                             <BindingCondition Binding="{Binding Source={x:Reference EditorDescription},
                                 Path= Text.Length , Converter={StaticResource EntryMaxLenghtToBoolConverter}}" Value="True"/>
                         </MultiTrigger.Conditions>

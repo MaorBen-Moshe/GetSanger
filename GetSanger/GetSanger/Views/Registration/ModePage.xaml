@@ -9,22 +9,6 @@
         <BackButtonBehavior Command="{Binding BackButtonBehaviorCommand}" />
     </Shell.BackButtonBehavior>
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="button" TargetType="Button">
-                <Setter Property="HeightRequest" Value="50" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="Default" />
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="BackgroundColor" Value="Transparent" />
-                <Setter Property="HorizontalOptions" Value="Center" />
-            </Style>
-            <Style x:Key="label" TargetType="Label">
-                <Setter Property="TextColor" Value="Black"/>
-                
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <vm:ModeViewModel />
@@ -34,7 +18,9 @@
         <StackLayout VerticalOptions="Center">
             <StackLayout HorizontalOptions="Center">
                 <Label Text="Choose your mode" FontSize="Title" Padding="30, 0, 0, 0" 
-                       Style="{StaticResource label}"/>
+                       Style="{StaticResource label}"
+                       FontAttributes="Bold"
+                       TextColor="Black"/>
                 <Label Text="You can always change it in your profile page."/>
                 
             </StackLayout>

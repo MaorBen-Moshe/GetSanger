@@ -14,7 +14,7 @@
 
 
     <ContentPage.Content>
-        <StackLayout Margin="55" Padding="10" HorizontalOptions="Center" VerticalOptions="StartAndExpand" Spacing="50"> 
+        <StackLayout HorizontalOptions="Center" VerticalOptions="StartAndExpand" Spacing="50"> 
             <Label LineHeight="1.3"
                    VerticalTextAlignment="Center"
                    Text="Be The Best Sanger You Can!"

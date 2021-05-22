@@ -32,11 +32,7 @@
                    TextColor="Black"
                    HorizontalOptions="CenterAndExpand" />
 
-            <StackLayout  
-                   Spacing="10" 
-                   Orientation="Vertical" 
-                   VerticalOptions="FillAndExpand" 
-                   HorizontalOptions="FillAndExpand">
+            <StackLayout >
 
                 <ListView SeparatorVisibility="None" 
                           Margin="0"
@@ -54,7 +50,9 @@
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="{Binding ImageUri}"/>
-                                    <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"/>
+                                    <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
+                                           Style="{DynamicResource LabelStyle}"
+                                           FontSize="19"/>
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
