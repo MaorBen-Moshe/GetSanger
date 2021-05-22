@@ -78,7 +78,7 @@ namespace GetSanger.Droid.Services
             return result;
         }
 
-        public string GetClientId()
+        public string GetGoogleClientId()
         {
             return "889764842790-5125j7nj3p06j7ffivd4765ctvht9cnk.apps.googleusercontent.com";
         }
