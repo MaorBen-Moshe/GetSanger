@@ -139,6 +139,12 @@ namespace GetSanger.Services
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
+
                     return responseDictionary;
                 }
                 else
@@ -176,6 +182,12 @@ namespace GetSanger.Services
 
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
+
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
 
                     return responseDictionary;
                 }
@@ -215,6 +227,12 @@ namespace GetSanger.Services
 
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
+
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
 
                     return responseDictionary;
                 }
