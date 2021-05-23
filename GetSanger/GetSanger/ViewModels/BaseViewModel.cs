@@ -1,6 +1,7 @@
 ﻿using GetSanger.Interfaces;
 using GetSanger.Services;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -13,6 +14,7 @@ namespace GetSanger.ViewModels
         private bool m_IsLoading;
         private bool m_IsNotLoading;
         private bool m_IsEnabledSendBtn;
+        private string m_Json;
         protected string m_DefaultBackUri = "..";
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
@@ -41,6 +43,7 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsNotLoading, value);
             get => m_IsNotLoading;
         }
+
         public bool IsEnabledsendBtn
         {
             get => m_IsEnabledSendBtn;
@@ -69,6 +72,11 @@ namespace GetSanger.ViewModels
         protected virtual async Task GoBack()
         {
             await Shell.Current.GoToAsync(m_DefaultBackUri);
+        }
+
+        protected virtual void LoadJson<T>(string i_Json, T i_Data) where T : class
+        {
+            i_Data = JsonSerializer.Deserialize<T>(i_Json);
         }
 
         public async Task RunTaskWhileLoading(Task i_InnerTask, ContentPage i_OptionalLoading = null)

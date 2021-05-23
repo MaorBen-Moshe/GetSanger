@@ -114,6 +114,44 @@ namespace GetSanger.Services
             }
         }
 
+        public static async Task<Dictionary<string, object>> LoginViaApple()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                string appleIdToken = await getSocialAuthIdToken("Apple");
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                {
+                    ["postBody"] = $"id_token={appleIdToken}&providerId=apple.com"
+                };
+
+                string uri = "";
+                string json = JsonSerializer.Serialize(requestDictionary);
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Dictionary<string, object> responseDictionary =
+                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+                    string customToken = responseDictionary["customToken"] as string;
+
+                    s_Auth.SignOut();
+                    await s_Auth.SignInWithCustomToken(customToken);
+
+                    return responseDictionary;
+                }
+                else
+                {
+                    throw new Exception(responseString);
+                }
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+        }
+
         public static async Task<Dictionary<string, object>> LoginViaGoogle()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)

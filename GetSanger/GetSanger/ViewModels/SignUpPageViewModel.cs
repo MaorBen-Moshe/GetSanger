@@ -16,8 +16,8 @@ using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(UserJson), "userJson")]
     [QueryProperty(nameof(IsFacebookGmail), "isFacebookGmail")]
+    [QueryProperty(nameof(UserJson), "userJson")]
     public class SignUpPageViewModel : LoginViewModel
     {
         #region Fields
@@ -100,7 +100,14 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_PickedGender, value);
         }
 
-        public string UserJson { get; set; }
+        public string UserJson 
+        { 
+            set 
+            { 
+                LoadJson(value, CreatedUser); 
+                PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+            }
+        }
 
         #endregion
 
@@ -124,7 +131,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            CreatedUser = UserJson != null ? JsonSerializer.Deserialize<User>(UserJson) : new User();
+            CreatedUser ??= new User();
             PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
         }
