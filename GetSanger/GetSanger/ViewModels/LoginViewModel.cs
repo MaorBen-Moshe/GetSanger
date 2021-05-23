@@ -109,8 +109,8 @@ namespace GetSanger.ViewModels
 
         private async void FaceBookClicked(object obj)
         {
-            Dictionary<string, string> details = await RunTaskWhileLoading(AuthHelper.LoginViaFacebook());
-            bool isFirstLoggedin = await RunTaskWhileLoading(AuthHelper.IsFirstTimeLogIn());
+            Dictionary<string, object> details = await AuthHelper.LoginViaFacebook();
+            bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
                 await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
@@ -122,13 +122,12 @@ namespace GetSanger.ViewModels
 
         private async void GmailClicked(object obj)
         {
-            Dictionary<string, object> details = await RunTaskWhileLoading(AuthHelper.LoginViaGoogle());
-            bool isFirstLoggedin = await RunTaskWhileLoading(AuthHelper.IsFirstTimeLogIn());
+            Dictionary<string, object> details = await AuthHelper.LoginViaGoogle();
+            bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
                 string user = JsonSerializer.Serialize(getGmailDetails(details));
-                string route = string.Format(@"{0}?userJson={1}&isFacebookGmail={2}", ShellRoutes.SignupPersonalDetails, user, true);
-                await r_NavigationService.NavigateTo(route);
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + "?userJson=" + user + $"&isFacebookGmail={true}");
             }
             else
             {
