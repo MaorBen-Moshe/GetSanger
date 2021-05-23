@@ -247,6 +247,23 @@ namespace GetSanger.Services
             }
         }
 
+        public static async Task<Dictionary<string, object>> LinkWithSocialProvider(SocialProvider i_Provider)
+        {
+            switch (i_Provider)
+            {
+                case SocialProvider.Facebook:
+                    break;
+                case SocialProvider.Gmail:
+                    break;
+                case SocialProvider.Apple:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
+            }
+
+            return null;
+        }
+
         private static async Task<string> getSocialAuthIdToken(string i_Scheme)
         {
             try
