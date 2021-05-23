@@ -17,6 +17,11 @@ namespace GetSanger.Services
 
         public async void SocialLogin(SocialProvider i_Provider)
         {
+            if(m_LoginService == null || m_NavigationService == null)
+            {
+                SetDependencies();
+            }
+
             Dictionary<string, object> details = null;
             IPopupService service = DependencyService.Get<IPopupService>();
             service.ShowPopupgPage();
@@ -31,9 +36,9 @@ namespace GetSanger.Services
             service.HidePopupPage();
             if (isFirstLoggedin)
             {
-                setSerializedUser(i_Provider, details);
+                AppManager.Instance.SignUpVM.UserJson = JsonSerializer.Serialize(getDetails(details));
                 string route = $"{ShellRoutes.SignupPersonalDetails}?isFacebookGmail={true}";
-                await ((NavigationService)AppManager.Instance.Services.GetService(typeof(NavigationService))).NavigateTo(route);
+                await m_NavigationService.NavigateTo(route);
             }
             else
             {
@@ -41,20 +46,7 @@ namespace GetSanger.Services
             }
         }
 
-        private void setSerializedUser(SocialProvider i_Provider, Dictionary<string, object> i_Details)
-        {
-            string json = null;
-            switch (i_Provider)
-            {
-                case SocialProvider.Facebook: json = JsonSerializer.Serialize(getFacebookDetails(i_Details)); break;
-                case SocialProvider.Gmail: json = JsonSerializer.Serialize(getGmailDetails(i_Details)); break;
-                case SocialProvider.Apple: json = JsonSerializer.Serialize(getAppleDetails(i_Details)); break;
-            }
-
-            AppManager.Instance.SignUpVM.UserJson = json;
-        }
-
-        private User getGmailDetails(Dictionary<string, object> i_Details)
+        private User getDetails(Dictionary<string, object> i_Details)
         {
             User user = new User
             {
@@ -62,7 +54,7 @@ namespace GetSanger.Services
                 {
                     NickName = i_Details["displayName"] as string
                 },
-                Email = i_Details["email"] as string,
+                Email = i_Details["email"] as string
             };
 
             if (i_Details["photoUrl"] != null)
@@ -73,20 +65,10 @@ namespace GetSanger.Services
             return user;
         }
 
-        private User getFacebookDetails(Dictionary<string, object> i_Details)
-        {
-            throw new NotImplementedException();
-        }
-
-        private User getAppleDetails(Dictionary<string, object> i_Details)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void SetDependencies()
         {
-            m_LoginService = ((LoginServices)AppManager.Instance.Services.GetService(typeof(LoginServices)));
-            m_NavigationService = ((NavigationService)AppManager.Instance.Services.GetService(typeof(NavigationService)));
+            m_LoginService = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
+            m_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
         }
     }
 }

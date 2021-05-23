@@ -74,7 +74,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            isIOSDevice = Device.RuntimePlatform.Equals("iOS");
+            isIOSDevice = Device.RuntimePlatform.Equals(Device.iOS);
             // auto log in if connected
         }
 
