@@ -139,6 +139,12 @@ namespace GetSanger.Services
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
+
                     return responseDictionary;
                 }
                 else
@@ -176,6 +182,12 @@ namespace GetSanger.Services
 
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
+
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
 
                     return responseDictionary;
                 }
@@ -216,6 +228,12 @@ namespace GetSanger.Services
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
+
                     return responseDictionary;
                 }
                 else
@@ -227,6 +245,23 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
+        }
+
+        public static async Task<Dictionary<string, object>> LinkWithSocialProvider(SocialProvider i_Provider)
+        {
+            switch (i_Provider)
+            {
+                case SocialProvider.Facebook:
+                    break;
+                case SocialProvider.Gmail:
+                    break;
+                case SocialProvider.Apple:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
+            }
+
+            return null;
         }
 
         private static async Task<string> getSocialAuthIdToken(string i_Scheme)
