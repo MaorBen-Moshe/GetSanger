@@ -122,7 +122,6 @@ namespace GetSanger.ViewModels
             Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
             UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
             AverageRating = getAverage();
-            AverageRating = 3;
             IsListRefreshing = false;
         }
 
@@ -152,7 +151,8 @@ namespace GetSanger.ViewModels
         private async void sendMessageToUser(object i_Param)
         {
             // navigate to app chat
-            //await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={CurrentUser}");
+            //ShellPassComplexDataService<User>.ComplexObject = CurrentUser;
+            //await r_NavigationService.NavigateTo(ShellRoutes.ChatView);
 
             // this code can be in the chat page instead of here
             if (r_DialService.IsValidPhone(CurrentUser.PersonalDetails.Phone))
@@ -206,7 +206,8 @@ namespace GetSanger.ViewModels
 
         private async void addRating(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.AddRating + $"ratedUser={CurrentUser}");
+            ShellPassComplexDataService<User>.ComplexObject = CurrentUser;
+            await r_NavigationService.NavigateTo(ShellRoutes.AddRating);
         }
 
         private async void refreshList()

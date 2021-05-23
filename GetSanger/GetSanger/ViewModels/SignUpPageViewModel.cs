@@ -12,12 +12,10 @@ using System.Text.Json;
 using System.Web;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
     [QueryProperty(nameof(IsFacebookGmail), "isFacebookGmail")]
-    [QueryProperty(nameof(UserJson), "userJson")]
     public class SignUpPageViewModel : LoginViewModel
     {
         #region Fields
@@ -100,12 +98,14 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_PickedGender, value);
         }
 
-        public string UserJson 
-        { 
-            set 
-            { 
-                LoadJson(value, CreatedUser); 
-                PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+        public string UserJson
+        {
+            set
+            {
+                if(value != null)
+                {
+                    CreatedUser = JsonSerializer.Deserialize<User>(value);
+                }
             }
         }
 

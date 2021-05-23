@@ -9,7 +9,6 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(ConnectedActivity), "activity")]
     public class ActivityViewModel : BaseViewModel
     {
         #region Fields
@@ -89,6 +88,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
+            ConnectedActivity = ShellPassComplexDataService<Activity>.ComplexObject;
             setLocationsLabels();
             IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
@@ -177,7 +177,8 @@ namespace GetSanger.ViewModels
             bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
             if (sangerInUser && activated)
             {
-                await r_NavigationService.NavigateTo(ShellRoutes.Map + $"?connectedpage={this}");
+                ShellPassComplexDataService<BaseViewModel>.ComplexObject = this;
+                await r_NavigationService.NavigateTo(ShellRoutes.Map);
             }
             else
             {

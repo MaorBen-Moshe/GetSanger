@@ -1,10 +1,8 @@
 ﻿using GetSanger.Interfaces;
 using GetSanger.Services;
 using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
@@ -14,7 +12,6 @@ namespace GetSanger.ViewModels
         private bool m_IsLoading;
         private bool m_IsNotLoading;
         private bool m_IsEnabledSendBtn;
-        private string m_Json;
         protected string m_DefaultBackUri = "..";
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
@@ -24,6 +21,7 @@ namespace GetSanger.ViewModels
         protected readonly StorageHelper r_StorageHelper;
         protected readonly LoginServices r_LoginServices;
         protected readonly LocationService r_LocationServices;
+        protected readonly SocialAdapterService r_SocialService;
         #endregion
 
         #region Properties
@@ -63,6 +61,7 @@ namespace GetSanger.ViewModels
             r_StorageHelper = AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
             r_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
+            r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
 
             IsEnabledsendBtn = false;
         }
@@ -72,11 +71,6 @@ namespace GetSanger.ViewModels
         protected virtual async Task GoBack()
         {
             await Shell.Current.GoToAsync(m_DefaultBackUri);
-        }
-
-        protected virtual void LoadJson<T>(string i_Json, T i_Data) where T : class
-        {
-            i_Data = JsonSerializer.Deserialize<T>(i_Json);
         }
 
         public async Task RunTaskWhileLoading(Task i_InnerTask, ContentPage i_OptionalLoading = null)

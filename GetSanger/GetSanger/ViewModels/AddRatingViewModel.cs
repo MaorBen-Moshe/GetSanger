@@ -9,7 +9,6 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(RatedUser), "ratedUser")]
     public class AddRatingViewModel : BaseViewModel
     {
         #region Fields
@@ -40,6 +39,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
+            RatedUser = ShellPassComplexDataService<User>.ComplexObject;
             NewRating = new Rating
             {
                 Score = 1

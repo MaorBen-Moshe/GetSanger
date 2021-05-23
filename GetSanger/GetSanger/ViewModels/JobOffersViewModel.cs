@@ -64,7 +64,8 @@ namespace GetSanger.ViewModels
             JobOffer job = i_Param as JobOffer;
             if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
             {
-                await r_NavigationService.NavigateTo(ShellRoutes.SangerNotes + $"?job={job}");
+                ShellPassComplexDataService<JobOffer>.ComplexObject = job;
+                await r_NavigationService.NavigateTo(ShellRoutes.SangerNotes);
             }
         }
 
@@ -91,7 +92,9 @@ namespace GetSanger.ViewModels
 
         private async void selectedJobOffer(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"activity={i_Param as JobOffer}&isCreate={false}");
+            JobOffer current = i_Param as JobOffer;
+            ShellPassComplexDataService<JobOffer>.ComplexObject = current;
+            await r_NavigationService.NavigateTo(ShellRoutes.JobOffer + $"?isCreate={false}&category={current.Category}");
         }
 
         private async void setJobOffers()

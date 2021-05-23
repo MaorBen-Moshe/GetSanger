@@ -9,7 +9,6 @@ using GetSanger.Constants;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(NewJobOffer), "jobOffer")]
     [QueryProperty(nameof(IsCreate), "isCreate")]
     [QueryProperty(nameof(JobCategory), "category")]
     public class JobOfferViewModel : BaseViewModel
@@ -112,6 +111,7 @@ namespace GetSanger.ViewModels
             }
             else
             {
+                NewJobOffer = ShellPassComplexDataService<JobOffer>.ComplexObject;
                 JobCategory = NewJobOffer.Category;
             }
 
@@ -157,14 +157,16 @@ namespace GetSanger.ViewModels
             bool answer = await r_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
             if (answer)
             {
-                await r_NavigationService.NavigateTo(ShellRoutes.Map + $"?connectedpage={this}");
+                ShellPassComplexDataService<BaseViewModel>.ComplexObject = this;
+                await r_NavigationService.NavigateTo(ShellRoutes.Map);
             }
         }
 
         private async void getJobLocation()
         {
             m_IsMyLocation = false;
-            await r_NavigationService.NavigateTo(ShellRoutes.Map + $"?connectedpage={this}");
+            ShellPassComplexDataService<BaseViewModel>.ComplexObject = this;
+            await r_NavigationService.NavigateTo(ShellRoutes.Map);
         }
 
         private async void sendJob()
