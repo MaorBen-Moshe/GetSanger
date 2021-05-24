@@ -133,7 +133,7 @@ namespace GetSanger.ViewModels
         {
             CreatedUser ??= new User();
             PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
-            CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
+            CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime().AddYears(-18);
         }
 
         private void setCommands()
