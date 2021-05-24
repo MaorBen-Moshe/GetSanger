@@ -4,17 +4,13 @@ using GetSanger.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
 using Xamarin.Essentials;
-using GetSanger.ChatDatabase;
-using GetSanger.Exceptions;
 
 namespace GetSanger.ViewModels.chat
 {
-    [QueryProperty(nameof(UserToChat), "userTo")]
     public class ChatPageViewModel : BaseViewModel
     {
         #region Fields
@@ -82,6 +78,7 @@ namespace GetSanger.ViewModels.chat
         #region Methods
         public async override void Appearing()
         {
+            UserToChat = ShellPassComplexDataService<User>.ComplexObject;
             DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);

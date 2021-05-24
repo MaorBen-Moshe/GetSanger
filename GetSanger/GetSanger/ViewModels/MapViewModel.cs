@@ -11,7 +11,6 @@ using Xamarin.Forms.GoogleMaps;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(ConnecetedPage), "connectedpage")]
     public class MapViewModel : BaseViewModel
     {
         #region Fields
@@ -72,6 +71,7 @@ namespace GetSanger.ViewModels
 
         public override async void Appearing()
         {
+            ConnecetedPage = ShellPassComplexDataService<BaseViewModel>.ComplexObject;
             createMapSpan();
             IsSearch = ConnecetedPage is JobOfferViewModel;
             IsTrip = ConnecetedPage is ActivityViewModel;

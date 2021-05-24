@@ -1,4 +1,5 @@
 ﻿using GetSanger.Constants;
+using GetSanger.Models;
 using GetSanger.Models.chat;
 using GetSanger.Services;
 using System.Collections.Generic;
@@ -57,7 +58,8 @@ namespace GetSanger.ViewModels.chat
 
         private async void userSelected(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={(i_Param as ChatUser).User}");
+            ShellPassComplexDataService<User>.ComplexObject = i_Param as User;
+            await r_NavigationService.NavigateTo(ShellRoutes.ChatView);
         }
 
         private async void setUsers()

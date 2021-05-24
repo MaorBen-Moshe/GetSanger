@@ -1,9 +1,11 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Interfaces;
+using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.Registration;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -17,6 +19,7 @@ namespace GetSanger.ViewModels
 
         private string m_Email;
         private string m_Password;
+        private bool m_IsIOSDevice;
 
         #endregion
 
@@ -43,6 +46,12 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Password, value);
         }
 
+        public bool isIOSDevice
+        {
+            get => m_IsIOSDevice;
+            set => SetStructProperty(ref m_IsIOSDevice, value);
+        }
+
         #endregion
 
         #region Command
@@ -57,12 +66,15 @@ namespace GetSanger.ViewModels
 
         public ICommand GmailLoginCommand { get; set; }
 
+        public ICommand AppleLoginCommand { get; set; }
+
         #endregion
 
         #region methods
 
         public override void Appearing()
         {
+            isIOSDevice = Device.RuntimePlatform.Equals(Device.iOS);
             // auto log in if connected
         }
 
@@ -71,8 +83,9 @@ namespace GetSanger.ViewModels
             this.LoginCommand = new Command(this.LoginClicked);
             this.SignUpCommand = new Command(this.SignUpClicked);
             this.ForgotPasswordCommand = new Command(this.ForgotPasswordClicked);
-            this.FaceBookLoginCommand = new Command(this.FaceBookClicked);
+            this.FaceBookLoginCommand = new Command(this.FacebookClicked);
             this.GmailLoginCommand = new Command(this.GmailClicked);
+            this.AppleLoginCommand = new Command(this.AppleClicked);
         }
 
         private async void LoginClicked(object obj)
@@ -105,30 +118,19 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
         }
 
-        private async void FaceBookClicked(object obj)
+        private void AppleClicked(object obj)
         {
-            Dictionary<string, string> details = await AuthHelper.LoginViaFacebook();
-            bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
-            if (isFirstLoggedin)
-            {
-                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
-            }
-
-            r_LoginServices.LoginUser();
-            // need to check if it is not the first time
+            r_SocialService.SocialLogin(SocialProvider.Apple);
         }
 
-        private async void GmailClicked(object obj)
+        private void FacebookClicked(object obj)
         {
-            Dictionary<string, object> details = await AuthHelper.LoginViaGoogle();
-            bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
-            if (isFirstLoggedin)
-            {
-                await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
-            }
+            r_SocialService.SocialLogin(SocialProvider.Facebook);
+        }
 
-            r_LoginServices.LoginUser();
-            // need to check if it is not the first time
+        private void GmailClicked(object obj)
+        {
+            r_SocialService.SocialLogin(SocialProvider.Google);
         }
 
         #endregion

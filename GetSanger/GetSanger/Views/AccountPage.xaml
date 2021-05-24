@@ -23,7 +23,7 @@
                          VerticalOptions="CenterAndExpand"
                          HorizontalOptions="CenterAndExpand">
                 <Image Source="{Binding UserImage}"/>
-                <Label Text="{Binding CurrentUser.PersonalDetails.Nickname, StringFormat='Hello {0}'}"
+                <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat='Hello {0}'}"
                        FontSize="Title" 
                        FontAttributes="Italic"/>
             </StackLayout>
@@ -44,6 +44,9 @@
                          AbsoluteLayout.LayoutFlags="All">
                 <Button Text="Edit Profile" Command="{Binding EditProfileCommand}"/>
                 <Button Text="Settings" Command="{Binding SettingCommand}"/>
+                <Button Text="Link Account With Google" Command="{Binding LinkGoogleCommand}"/>
+                <Button Text="Link Account With Facebook" Command="{Binding LinkFacebookCommand}"/>
+                <Button Text="Link Account With Apple" Command="{Binding LinkAppleCommand}"/>
             </StackLayout>
             
             <Button Text="Logout" 

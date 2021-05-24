@@ -3,7 +3,6 @@ using GetSanger.Services;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
@@ -22,6 +21,7 @@ namespace GetSanger.ViewModels
         protected readonly StorageHelper r_StorageHelper;
         protected readonly LoginServices r_LoginServices;
         protected readonly LocationService r_LocationServices;
+        protected readonly SocialAdapterService r_SocialService;
         #endregion
 
         #region Properties
@@ -41,6 +41,7 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsNotLoading, value);
             get => m_IsNotLoading;
         }
+
         public bool IsEnabledsendBtn
         {
             get => m_IsEnabledSendBtn;
@@ -60,6 +61,7 @@ namespace GetSanger.ViewModels
             r_StorageHelper = AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
             r_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
+            r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
 
             IsEnabledsendBtn = false;
         }

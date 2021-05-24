@@ -4,7 +4,7 @@ namespace GetSanger.Interfaces
 {
     public interface IPopupService
     {
-        Page CurrentShowenPage { get; }
+        Page CurrentShownPage { get; }
 
         void InitPopupgPage(ContentPage i_PopupPage = null);
 

@@ -14,6 +14,33 @@ namespace GetSanger.Services
         {
         }
 
+        public async void TryAutoLogin()
+        {
+            if (AuthHelper.IsLoggedIn())
+            {
+                string userId = AuthHelper.GetLoggedInUserId();
+                AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
+                AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
+                if(mode == null)
+                {
+                    await new NavigationService().NavigateTo(ShellRoutes.ModePage);
+                }
+                else
+                {
+                    AppManager.Instance.CurrentMode = (AppMode)mode;
+                    switch((AppMode)mode)
+                    {
+                        case AppMode.Client: Application.Current.MainPage = new UserShell(); break;
+                        case AppMode.Sanger: Application.Current.MainPage = new SangerShell(); break;
+                    }
+                }
+            }
+            else // 
+            {
+                Application.Current.MainPage = new AuthShell();
+            }
+        }
+
         public async void LoginUser(AppMode? i_Mode = null)
         {
             try
@@ -22,7 +49,7 @@ namespace GetSanger.Services
                 if(user != null)
                 {
                     AppManager.Instance.ConnectedUser = user;
-                    if (i_Mode != null) // we are here from mode page
+                    if (i_Mode != null) // we are here from mode page or from auto login
                     {
                         chooseModeHelper((AppMode)i_Mode);
                     }
@@ -32,8 +59,10 @@ namespace GetSanger.Services
                         {
                             await new NavigationService().NavigateTo(ShellRoutes.ModePage);
                         }
-
-                        chooseModeHelper((AppMode)user.LastUserMode);
+                        else
+                        {
+                            chooseModeHelper((AppMode)user.LastUserMode);
+                        }
                     }
                 }
             }
