@@ -19,6 +19,7 @@ namespace GetSanger.ViewModels
         private ImageSource m_ProfileImage;
         private IList<GenderType> m_GenderItems;
         private User m_ConnectedUser;
+        private bool m_ValidInput;
         #endregion
 
         #region Properties
@@ -27,6 +28,13 @@ namespace GetSanger.ViewModels
             get => m_ConnectedUser;
             set => SetClassProperty(ref m_ConnectedUser, value);
         }
+
+        public bool ValidInput
+        {
+            get => m_ValidInput;
+            set => SetStructProperty(ref m_ValidInput, value);
+        }
+
 
         public ImageSource ProfileImage
         {
@@ -74,7 +82,7 @@ namespace GetSanger.ViewModels
         private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
-            ProfileImage = ImageSource.FromUri(ConnectedUser.ProfilePictureUri);
+            //ProfileImage = ImageSource.FromUri(ConnectedUser.ProfilePictureUri);
         }
 
         private async void backButtonBehavior(object i_Param)

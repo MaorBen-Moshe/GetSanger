@@ -12,8 +12,8 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            // MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
-            MainPage = new AuthShell();
+            MainPage = new AuthShell(); // need to check first if the user is already connected and what mode the user is in.
+           
         }
 
         protected override void OnStart()
