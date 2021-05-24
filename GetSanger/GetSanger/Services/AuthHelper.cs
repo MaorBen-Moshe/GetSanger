@@ -206,19 +206,49 @@ namespace GetSanger.Services
 
         public static async Task<Dictionary<string, object>> LinkWithSocialProvider(SocialProvider i_Provider)
         {
+            Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+            {
+                ["idToken"] = await GetIdTokenAsync()
+            };
+
             switch (i_Provider)
             {
                 case SocialProvider.Facebook:
+                    string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+                    requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
                     break;
+
                 case SocialProvider.Google:
+                    string googleIdToken = await getSocialAuthIdToken("Google");
+                    requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
                     break;
+
                 case SocialProvider.Apple:
+                    string appleIdToken = await getSocialAuthIdToken("Apple");
+                    requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
             }
 
-            return null;
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/LinkWithCredential";
+            string json = JsonSerializer.Serialize(requestDictionary);
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                Dictionary<string, object> responseDictionary =
+                    JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+
+                return responseDictionary;
+            }
+            else
+            {
+                throw new Exception(responseString);
+            }
         }
 
         private static async Task<string> getSocialAuthIdToken(string i_Scheme)
