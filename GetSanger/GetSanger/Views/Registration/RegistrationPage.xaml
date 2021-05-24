@@ -83,8 +83,7 @@
                         Command="{Binding GmailLoginCommand}"
                         Grid.Row="0" 
                         Grid.Column="1"/>
-            <Button Text="Via Google" 
-                        IsVisible="{Binding isIOSDevice}"
+            <Button Text="Via Apple" 
                         Command="{Binding AppleLoginCommand}"
                         Grid.Row="0" 
                         Grid.Column="2"/>

@@ -19,7 +19,6 @@ namespace GetSanger.ViewModels
 
         private string m_Email;
         private string m_Password;
-        private bool m_IsIOSDevice;
 
         #endregion
 
@@ -46,12 +45,6 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Password, value);
         }
 
-        public bool isIOSDevice
-        {
-            get => m_IsIOSDevice;
-            set => SetStructProperty(ref m_IsIOSDevice, value);
-        }
-
         #endregion
 
         #region Command
@@ -74,8 +67,6 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            isIOSDevice = Device.RuntimePlatform.Equals(Device.iOS);
-            // auto log in if connected
         }
 
         private void setCommands()
