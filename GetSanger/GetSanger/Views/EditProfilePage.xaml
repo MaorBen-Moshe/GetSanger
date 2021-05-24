@@ -14,6 +14,7 @@
 
 
     <ContentPage.Content>
+        
         <TableView Intent="Form" HasUnevenRows="True">
             <TableRoot>
                 <TableSection Title="Change Picture">
@@ -49,7 +50,8 @@
                                     Command="{Binding DeleteAccountCommand}"
                                     VerticalOptions="End"
                                     HorizontalOptions="FillAndExpand"
-                                    Padding="10"/>
+                                    Padding="10"
+                                    FontAttributes="Bold"/>
                     </ViewCell>
                 </TableSection>
             </TableRoot>

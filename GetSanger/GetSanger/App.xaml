@@ -6,6 +6,41 @@
     <Application.Resources>
         <ResourceDictionary>
             <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="BackgroundColor" Value="AliceBlue" />
+                <Setter Property="FontSize" Value="17"/>
+                <Setter Property="Padding" Value="5"/>
+
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="1,1,1,0"/>
+                <Setter Property="CornerRadius" Value="12"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="BorderWidth" Value="1"/>
+
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="1,1,1,0"/>
+            </Style>
+            <Style TargetType="Grid">
+                <Setter Property="VerticalOptions" Value ="Center"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+            <Style TargetType="StackLayout">
+                <Setter Property="Spacing" Value="7"/>
+                <Setter Property="Orientation" Value="Vertical"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

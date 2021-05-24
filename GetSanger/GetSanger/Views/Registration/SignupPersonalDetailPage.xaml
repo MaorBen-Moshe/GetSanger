@@ -56,7 +56,7 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                
-                <Label Text="Birthday" Padding="5" Grid.Column="0" />
+                <Label Text="Birthday" Padding="3" Grid.Column="0" FontSize="15" />
                 <DatePicker Format="dd/MM/yyyy" Date="{Binding CreatedUser.PersonalDetails.Birthday, Mode=TwoWay}" x:Name="DateEntry"  Grid.Column="1"/>
             </Grid>
 
@@ -64,7 +64,7 @@
                 <Button Text="Continue" 
                         Padding="5" 
                         HeightRequest="55" 
-                        WidthRequest="90"
+                        WidthRequest="100"
                         Command="{Binding PersonalDetailPartCommand}" 
                         IsEnabled="False">
                     <Button.Triggers>

@@ -29,6 +29,7 @@ namespace GetSanger.Droid.Services.FCM
             handleDataReceived(message);
 
             base.OnMessageReceived(message);
+
             //SendNotification(message.GetNotification().Body, message.Data);
         }
 

@@ -35,11 +35,11 @@
                     </Editor.Keyboard>
                 </Editor>
             </Frame>
-            <Button Text="Send" Command="{Binding AddRatingCommand}" IsEnabled="{Binding IsEnabledsendBtn}" >
+            <Button Text="Send" Command="{Binding AddRatingCommand}" IsEnabled="{Binding IsEnabledsendBtn}" 
+                    Margin="15">
                 <Button.Triggers>
                     <MultiTrigger TargetType="Button">
                         <MultiTrigger.Conditions>
-
                             <BindingCondition Binding="{Binding Source={x:Reference EditorDescription},
                                 Path= Text.Length , Converter={StaticResource EntryMaxLenghtToBoolConverter}}" Value="True"/>
                         </MultiTrigger.Conditions>
