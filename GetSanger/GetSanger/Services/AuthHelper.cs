@@ -114,6 +114,38 @@ namespace GetSanger.Services
             }
         }
 
+        public static async Task LinkWithEmailAndPassword(string i_Email, string i_Password)
+        {
+            Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+            {
+                ["idToken"] = await GetIdTokenAsync(),
+                ["email"] = i_Email,
+                ["password"] = i_Password
+            };
+
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/LinkWithEmailAndPassword";
+            string json = JsonSerializer.Serialize(requestDictionary);
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                Dictionary<string, object> responseDictionary =
+                    JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+
+                bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                if (!isEmailVerified)
+                {
+                    await SendVerificationEmail();
+                }
+            }
+            else
+            {
+                throw new Exception(responseString);
+            }
+        }
+
         public static async Task<Dictionary<string, object>> LoginViaApple()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
