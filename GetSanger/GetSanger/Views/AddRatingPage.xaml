@@ -35,7 +35,8 @@
                     </Editor.Keyboard>
                 </Editor>
             </Frame>
-            <Button Text="Send" Command="{Binding AddRatingCommand}" IsEnabled="{Binding IsEnabledsendBtn}" >
+            <Button Text="Send" Command="{Binding AddRatingCommand}" IsEnabled="{Binding IsEnabledsendBtn}" 
+                    Margin="15">
                 <Button.Triggers>
                     <MultiTrigger TargetType="Button">
                         <MultiTrigger.Conditions>

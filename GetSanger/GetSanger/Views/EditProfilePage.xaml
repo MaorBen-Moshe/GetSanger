@@ -14,6 +14,7 @@
 
 
     <ContentPage.Content>
+        
         <TableView Intent="Form" HasUnevenRows="True">
             <TableRoot>
                 <TableSection Title="Change Picture">
