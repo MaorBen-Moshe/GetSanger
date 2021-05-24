@@ -34,7 +34,7 @@
             <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}" x:Name="PasswordEntry" />
             <Entry IsPassword="True" Placeholder="Confirm Password" Text="{Binding ConfirmPassword}" x:Name="ConfirmPasswordEntry" />
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">
-                <Button Text="Continue" Padding="5" HeightRequest="55" WidthRequest="90" Command="{Binding EmailPartCommand}" IsEnabled="False">
+                <Button Text="Continue" Padding="5" HeightRequest="55" WidthRequest="100" Command="{Binding EmailPartCommand}" IsEnabled="False">
                     <Button.Triggers>
                         <MultiTrigger TargetType="Button">
                             <MultiTrigger.Conditions>

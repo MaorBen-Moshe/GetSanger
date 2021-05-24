@@ -9,7 +9,6 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(ActivitiesSource), "activities")]
     public class ActivitiesListViewModel : BaseViewModel
     {
         #region Fields
@@ -123,7 +122,8 @@ namespace GetSanger.ViewModels
 
         private async void selectedActivity(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={i_Param as Activity}");
+            ShellPassComplexDataService<Activity>.ComplexObject = i_Param as Activity;
+            await r_NavigationService.NavigateTo(ShellRoutes.Activity);
         }
 
         private async void setActivities()

@@ -6,7 +6,6 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(CurrentJob), "job")]
     public class SangerNotesViewModel : BaseViewModel
     {
         #region Fields
@@ -38,6 +37,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
+            CurrentJob = ShellPassComplexDataService<JobOffer>.ComplexObject;
         }
 
         private void setCommands()

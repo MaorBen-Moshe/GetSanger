@@ -53,7 +53,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-           
         }
 
         public static void SignOut()
@@ -81,7 +80,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-      
         }
 
         public static async Task LoginViaEmail(string i_Email, string i_Password)
@@ -114,14 +112,45 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
-        public static Task<Dictionary<string, string>> LoginViaGoogle()
+        public static async Task<Dictionary<string, object>> LoginViaApple()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new NotImplementedException();
+                string appleIdToken = await getSocialAuthIdToken("Apple");
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                {
+                    ["postBody"] = $"id_token={appleIdToken}&providerId=apple.com"
+                };
+
+                string uri = "";
+                string json = JsonSerializer.Serialize(requestDictionary);
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Dictionary<string, object> responseDictionary =
+                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+                    string customToken = responseDictionary["customToken"] as string;
+
+                    s_Auth.SignOut();
+                    await s_Auth.SignInWithCustomToken(customToken);
+
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
+
+                    return responseDictionary;
+                }
+                else
+                {
+                    throw new Exception(responseString);
+                }
             }
             else
             {
@@ -129,17 +158,172 @@ namespace GetSanger.Services
             }
         }
 
-        public static Task<Dictionary<string, string>> LoginViaFacebook()
+        public static async Task<Dictionary<string, object>> LoginViaGoogle()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                throw new NotImplementedException();
+                string googleIdToken = await getSocialAuthIdToken("Google");
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                {
+                    ["postBody"] = $"id_token={googleIdToken}&providerId=google.com"
+                };
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
+                string json = JsonSerializer.Serialize(requestDictionary);
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Dictionary<string, object> responseDictionary =
+                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+                    string customToken = responseDictionary["customToken"] as string;
+
+                    s_Auth.SignOut();
+                    await s_Auth.SignInWithCustomToken(customToken);
+
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
+
+                    return responseDictionary;
+                }
+                else
+                {
+                    throw new Exception(responseString);
+                }
             }
             else
             {
                 throw new NoInternetException("No Internet");
             }
-           
+        }
+
+        public static async Task<Dictionary<string, object>> LoginViaFacebook()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                {
+                    ["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com"
+                };
+
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
+                string json = JsonSerializer.Serialize(requestDictionary);
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Dictionary<string, object> responseDictionary =
+                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+                    string customToken = responseDictionary["customToken"] as string;
+
+                    s_Auth.SignOut();
+                    await s_Auth.SignInWithCustomToken(customToken);
+
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
+
+                    return responseDictionary;
+                }
+                else
+                {
+                    throw new Exception(responseString);
+                }
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+        }
+
+        public static async Task<Dictionary<string, object>> LinkWithSocialProvider(SocialProvider i_Provider)
+        {
+            switch (i_Provider)
+            {
+                case SocialProvider.Facebook:
+                    break;
+                case SocialProvider.Google:
+                    break;
+                case SocialProvider.Apple:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
+            }
+
+            return null;
+        }
+
+        private static async Task<string> getSocialAuthIdToken(string i_Scheme)
+        {
+            try
+            {
+                WebAuthenticatorResult r = null;
+                string idToken = null;
+
+                if (i_Scheme.Equals("Apple")
+                    && DeviceInfo.Platform == DevicePlatform.iOS
+                    && DeviceInfo.Version.Major >= 13)
+                {
+                    // Use Native Apple Sign In API's
+                    var options = new AppleSignInAuthenticator.Options
+                    {
+                        IncludeEmailScope = true,
+                        IncludeFullNameScope = true,
+                    };
+                    r = await AppleSignInAuthenticator.AuthenticateAsync(options);
+                    idToken = r.IdToken;
+                }
+                else
+                {
+                    string uriString = "", callBackUrl = "com.companyname.getsanger://";
+
+                    if (i_Scheme.Equals("Google"))
+                    {
+                        string clientId = s_Auth.GetGoogleClientId();
+                        uriString =
+                            $"https://accounts.google.com/o/oauth2/v2/auth?scope=openid profile email&response_type=code&redirect_uri={callBackUrl}&client_id={clientId}";
+                        r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
+
+                        string code = r.Properties["code"];
+                        uriString =
+                            $" https://oauth2.googleapis.com/token?code={code}&client_id={clientId}&redirect_uri={callBackUrl}&grant_type=authorization_code";
+
+                        HttpResponseMessage response = await HttpClientService.SendHttpRequest(uriString, "", HttpMethod.Post);
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        JsonElement responseJsonElement = JsonSerializer.Deserialize<JsonElement>(responseString);
+                        idToken = responseJsonElement.GetProperty("id_token").ToString();
+                    }
+                    else if (i_Scheme.Equals("Facebook"))
+                    {
+                        string clientId = "328227848585394";
+                        string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithFacebook";
+                        uriString = $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email";
+                        r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
+                        idToken = r.AccessToken;
+                    }
+                }
+
+                return idToken;
+            }
+            catch (OperationCanceledException)
+            {
+                throw new Exception("Login canceled.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed: {ex.Message}");
+            }
         }
 
         public static bool IsLoggedIn()
@@ -184,16 +368,16 @@ namespace GetSanger.Services
             string idToken = await GetIdTokenAsync();
 
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+            string responseMessage = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {
-                string responseMessage = await response.Content.ReadAsStringAsync();
                 bool result = JsonSerializer.Deserialize<bool>(responseMessage);
-                return result;
+                return !result;
             }
             else
             {
-                throw new Exception("Error");
+                throw new Exception(responseMessage);
             }
         }
 
@@ -265,7 +449,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-            
         }
 
         public static async Task<string> GetIdTokenAsync()
@@ -306,7 +489,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-           
         }
 
         public static async Task ChangePassword(string i_OldPassword, string i_NewPassword)
@@ -335,7 +517,6 @@ namespace GetSanger.Services
             {
                 throw new NoInternetException("No Internet");
             }
-          
         }
     }
 }

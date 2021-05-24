@@ -24,7 +24,7 @@ namespace GetSanger.Services
             }
             set
             {
-                if(!Regex.Match(value, @"^(\+[0-9])$").Success)
+                if(!IsValidPhone(value))
                 {
                     throw new ArgumentException("Phone number should contain only numbers");
                 }
@@ -68,6 +68,11 @@ namespace GetSanger.Services
                 throw new NoInternetException("No Internet");
             }
             
+        }
+
+        public bool IsValidPhone(string i_Phone)
+        {
+            return Regex.Match(i_Phone, @"^(\+[0-9])$").Success;
         }
 
         public override void SetDependencies()

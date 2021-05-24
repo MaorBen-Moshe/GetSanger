@@ -20,6 +20,12 @@ namespace GetSanger.Services
         public async void SetUserProfileImage(User i_User, Stream i_Stream)
         {
             // check if the path is already exist if it does remove it first
+            if(i_User.ProfilePictureUri != null)
+            {
+                DeleteProfileImage(i_User.UserId);
+                i_User.ProfilePictureUri = null;
+            }
+
             Uri imageUri = await r_Storage.UploadAndGetCloudFilePath(i_Stream, "ProfilePictures/" + i_User.UserId + ".jpg");
             i_User.ProfilePictureUri = imageUri;
             await FireStoreHelper.UpdateUser(i_User);

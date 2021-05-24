@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System.Net.Mail;
 using System.Collections.ObjectModel;
 using GetSanger.Interfaces;
 using GetSanger.Views;
@@ -92,30 +91,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            //setUser();
-            AverageRating = 4;
-            CurrentUser = new User
-            {
-                PersonalDetails = new PersonalDetails
-                {
-                    NickName = "Maor",
-                    Birthday = new DateTime(1996, 9, 17),
-                    Gender = GenderType.Other
-                },
-                UserId = "1"
-            };
-
-            UserImage = ImageSource.FromFile("profile.png");
-            AppManager.Instance.ConnectedUser = new User
-            {
-                PersonalDetails = new PersonalDetails
-                {
-                    NickName = "Maor",
-                    Birthday = new DateTime(1996, 9, 17),
-                    Gender = GenderType.Other
-                },
-                UserId = "2"
-            };
+            setUser();
         }
 
         private void setCommands()
@@ -142,16 +118,10 @@ namespace GetSanger.ViewModels
                 throw new ArgumentException("User details aren't available.");
             }
 
-            UserImage = ImageSource.FromUri(CurrentUser.ProfilePictureUri);
-            if (UserImage == null) // if there isn't profile picture - we set an defalt avatar
-            {
-                UserImage = ImageSource.FromFile("profile.jpg"); // default picture
-            }
-
-            Placemark placemark = await LocationServices.PickedLocation(CurrentUser.UserLocation);
+            UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
+            Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
             UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
             AverageRating = getAverage();
-            AverageRating = 3;
             IsListRefreshing = false;
         }
 
@@ -181,10 +151,11 @@ namespace GetSanger.ViewModels
         private async void sendMessageToUser(object i_Param)
         {
             // navigate to app chat
-            //await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"?userTo={CurrentUser}");
+            //ShellPassComplexDataService<User>.ComplexObject = CurrentUser;
+            //await r_NavigationService.NavigateTo(ShellRoutes.ChatView);
 
             // this code can be in the chat page instead of here
-            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone))
+            if (r_DialService.IsValidPhone(CurrentUser.PersonalDetails.Phone))
             {
                 r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
                 bool succeeded = await r_DialService.SendWhatsapp();
@@ -235,7 +206,8 @@ namespace GetSanger.ViewModels
 
         private async void addRating(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.AddRating + $"ratedUser={CurrentUser}");
+            ShellPassComplexDataService<User>.ComplexObject = CurrentUser;
+            await r_NavigationService.NavigateTo(ShellRoutes.AddRating);
         }
 
         private async void refreshList()

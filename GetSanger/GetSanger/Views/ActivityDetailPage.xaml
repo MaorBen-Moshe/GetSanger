@@ -20,22 +20,19 @@
                             VerticalOptions="Start">
                 <Label Text="Current Job"
                        FontSize="50"
-                       AbsoluteLayout.LayoutBounds="0.5, 0.2, 1, 0.75"
+                       AbsoluteLayout.LayoutBounds="0.5, 0.1, 1, 0.75"
                        AbsoluteLayout.LayoutFlags="All"/>
-                <StackLayout AbsoluteLayout.LayoutBounds="0.5, 0.7, 0.75, 0.2"
+                <StackLayout AbsoluteLayout.LayoutBounds="0.5, 0.4, 0.75, 0.2"
                              AbsoluteLayout.LayoutFlags="All">
                     <Label Text="{Binding Path=ConnectedActivity.Status, StringFormat='Status: {0}'}"
                            FontSize="Title"
                            HorizontalOptions="CenterAndExpand"/>
                     <Button Text="User/Sanger Profile"
-                            CornerRadius="20"
-                            Command="{Binding ProfileCommand}"/>
+                            Command="{Binding ProfileCommand}" />
                 </StackLayout>
             </AbsoluteLayout>
 
-            <StackLayout Grid.Row="1" 
-                         VerticalOptions="Center"
-                         HorizontalOptions="FillAndExpand">
+            <StackLayout Grid.Row="1" >
                 <Grid >
                     <Entry Text="Category here" IsEnabled="False" Grid.Column="0"/>
                     <Entry Text="Sub Category here" IsEnabled="False" Grid.Column="1"/>
@@ -45,7 +42,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.6*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Text="End Location:" Grid.Column="0" Padding="10"/>
+                    <Label Text="End Location:" Grid.Column="0"/>
                     <Entry Placeholder="My Location" 
                            Text="{Binding Location, Mode=TwoWay}" 
                            IsEnabled="False" 
@@ -57,7 +54,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.6*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Text="Job Location:" Grid.Column="0" Padding="10"/>
+            <Label Text="Job Location:" Grid.Column="0"/>
                     <Entry Placeholder="Job Location" 
                            Text="{Binding JobLocation, Mode=TwoWay}"
                            IsEnabled="False" 
@@ -90,7 +87,6 @@
                         IsEnabled="{Binding IsActivatedLocationButton}"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="End"
-                        Padding="20, 10"
                         CornerRadius="20"
                         Command="{Binding LocationCommand}"/>
                 

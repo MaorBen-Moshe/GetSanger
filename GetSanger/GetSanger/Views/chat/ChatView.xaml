@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels.chat"
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
              x:Class="GetSanger.Views.chat.ChatView"
+             x:Name="chatView"
              Title="{Binding UserToChat.PersonalDetails.NickName}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -28,7 +29,7 @@
                  ItemTemplate="{StaticResource MessageTemplateSelector}" 
                  ItemsSource="{Binding MessagesSource}" 
                  ItemAppearingCommand="{Binding MessageAppearingCommand}"
-                 ItemDisappearingCommand="{Binding MessageDisappearingCommand}"
+                 ItemDisappearingCommand="{Binding MessageDisappearingCommand}"  
                  ItemTapped="OnListTapped"
                  Margin="0" 
                  Rotation="180" 

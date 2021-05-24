@@ -8,13 +8,14 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Web;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(IsFacebookGamil), "isFacebookGamail")]
+    [QueryProperty(nameof(IsFacebookGmail), "isFacebookGmail")]
     public class SignUpPageViewModel : LoginViewModel
     {
         #region Fields
@@ -55,7 +56,9 @@ namespace GetSanger.ViewModels
 
         public User CreatedUser { get; set; }
 
-        public bool IsFacebookGamil { get; set; }
+        public Dictionary<string, object> FacebookGmailSignDict { get; set; }
+
+        public bool IsFacebookGmail { get; set; }
 
         public bool InPersonalPage { get; set; }
 
@@ -95,6 +98,17 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_PickedGender, value);
         }
 
+        public string UserJson
+        {
+            set
+            {
+                if(value != null)
+                {
+                    CreatedUser = JsonSerializer.Deserialize<User>(value);
+                }
+            }
+        }
+
         #endregion
 
         #region Command
@@ -117,9 +131,9 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            CreatedUser = new User();
-            PersonalImage = ImageSource.FromFile("profile.jpg");
-            CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
+            CreatedUser ??= new User();
+            PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+            CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime().AddYears(-18);
         }
 
         private void setCommands()
@@ -134,7 +148,7 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior(object i_Param) // when move from email page back to registration page
         {
-            if (IsFacebookGamil == false && InPersonalPage == true)
+            if (IsFacebookGmail == false && InPersonalPage == true)
             {
                 await GoBack();
             }
@@ -153,7 +167,7 @@ namespace GetSanger.ViewModels
                         {
                             continue;
                         }
-                        else if (IsFacebookGamil && (property.Name.Equals(nameof(Email)) ||
+                        else if (IsFacebookGmail && (property.Name.Equals(nameof(Email)) ||
                                                      property.Name.Equals(nameof(Password)) ||
                                                      property.Name.Equals(nameof(ConfirmPassword))))
                         {
@@ -210,7 +224,7 @@ namespace GetSanger.ViewModels
         private async void personalDetailPartClicked()
         {
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-            // need to set the user location
+            CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }

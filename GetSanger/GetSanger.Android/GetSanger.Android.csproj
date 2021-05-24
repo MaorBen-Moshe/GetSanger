@@ -147,6 +147,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\AndroidLongPressedEffect.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Rendrers\CustomEditorRendrer.cs" />
     <Compile Include="Services\FCM\AndroidFirebaseMessagingService.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Services\PhotoPickerService.cs" />
     <Compile Include="Services\PushService.cs" />
     <Compile Include="Services\StorageHelper.cs" />
+    <Compile Include="Services\WebAuthenticationCallbackActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\UIFontIcons.ttf" />

@@ -4,17 +4,13 @@ using GetSanger.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
 using Xamarin.Essentials;
-using GetSanger.ChatDatabase;
-using GetSanger.Exceptions;
 
 namespace GetSanger.ViewModels.chat
 {
-    [QueryProperty(nameof(UserToChat), "userTo")]
     public class ChatPageViewModel : BaseViewModel
     {
         #region Fields
@@ -69,43 +65,24 @@ namespace GetSanger.ViewModels.chat
         public ICommand SendMessageCommand { get; set; }
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
+        public ICommand DeleteMessageCommand { get; set; }
         #endregion
 
         #region Constructor
         public ChatPageViewModel()
         {
-            SendMessageCommand = new Command(sendMessage);
-            MessageAppearingCommand = new Command(messageAppearing);
-            MessageDisappearingCommand = new Command(messageDisappearing);
-            DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
-            AppManager.Instance.ConnectedUser = new User
-            {
-                UserId = "Maor",
-                PersonalDetails = new PersonalDetails
-                {
-                    NickName = "Maor"
-                }
-            };
-
-            UserToChat = new User
-            {
-                UserId = "Yossi",
-                PersonalDetails = new PersonalDetails
-                {
-                    NickName = "Yossi"
-                }
-            };
+            setCommands();
         }
         #endregion
 
         #region Methods
         public async override void Appearing()
         {
+            UserToChat = ShellPassComplexDataService<User>.ComplexObject;
+            DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);
-            MessagesSource = new ObservableCollection<Message>((from item in messages
-                                                                select item).ToList()
-                                                               );
+            MessagesSource = new ObservableCollection<Message>((messages.Select(item => { item.DeleteMessageCommand = DeleteMessageCommand; return item; })).ToList());
             sendUsentMessages();
             ShowScrollTap = false;
             DelayedMessages = new Queue<Message>();
@@ -116,6 +93,14 @@ namespace GetSanger.ViewModels.chat
         public void Disappearing()
         {
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+        }
+
+        private void setCommands()
+        {
+            SendMessageCommand = new Command(sendMessage);
+            MessageAppearingCommand = new Command(messageAppearing);
+            MessageDisappearingCommand = new Command(messageDisappearing);
+            DeleteMessageCommand = new Command(deleteMessage);
         }
 
         private async void sendMessage(object i_Param)
@@ -164,6 +149,24 @@ namespace GetSanger.ViewModels.chat
                         msg.MessageSent = true;
                     }
                 }
+            }
+        }
+
+        private async void deleteMessage(object i_Param)
+        {
+            try
+            {
+                bool answer = await r_PageService.DisplayAlert("Note", "Are you sure?\nMessage will be deleted on your device only.", "Yes", "No");
+                if (answer)
+                {
+                    Message message = i_Param as Message;
+                    await DB.DeleteItemAsync(message, UserToChat.UserId);
+                    MessagesSource.Remove(message);
+                }
+            }
+            catch
+            {
+                await r_PageService.DisplayAlert("Error", "Something went wrong!", "OK");
             }
         }
 
