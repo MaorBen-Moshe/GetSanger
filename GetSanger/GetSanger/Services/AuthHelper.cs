@@ -118,39 +118,7 @@ namespace GetSanger.Services
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                string appleIdToken = await getSocialAuthIdToken("Apple");
-                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
-                {
-                    ["postBody"] = $"id_token={appleIdToken}&providerId=apple.com"
-                };
-
-                string uri = "";
-                string json = JsonSerializer.Serialize(requestDictionary);
-
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-                string responseString = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Dictionary<string, object> responseDictionary =
-                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
-                    string customToken = responseDictionary["customToken"] as string;
-
-                    s_Auth.SignOut();
-                    await s_Auth.SignInWithCustomToken(customToken);
-
-                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                    if (!isEmailVerified)
-                    {
-                        await SendVerificationEmail();
-                    }
-
-                    return responseDictionary;
-                }
-                else
-                {
-                    throw new Exception(responseString);
-                }
+                return await SignInWithProvider(SocialProvider.Apple);
             }
             else
             {
@@ -162,39 +130,7 @@ namespace GetSanger.Services
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                string googleIdToken = await getSocialAuthIdToken("Google");
-                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
-                {
-                    ["postBody"] = $"id_token={googleIdToken}&providerId=google.com"
-                };
-
-                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
-                string json = JsonSerializer.Serialize(requestDictionary);
-
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-                string responseString = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Dictionary<string, object> responseDictionary =
-                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
-                    string customToken = responseDictionary["customToken"] as string;
-
-                    s_Auth.SignOut();
-                    await s_Auth.SignInWithCustomToken(customToken);
-
-                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                    if (!isEmailVerified)
-                    {
-                        await SendVerificationEmail();
-                    }
-
-                    return responseDictionary;
-                }
-                else
-                {
-                    throw new Exception(responseString);
-                }
+                return await SignInWithProvider(SocialProvider.Google);
             }
             else
             {
@@ -206,44 +142,65 @@ namespace GetSanger.Services
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                string facebookAccessToken = await getSocialAuthIdToken("Facebook");
-
-                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
-                {
-                    ["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com"
-                };
-
-                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
-                string json = JsonSerializer.Serialize(requestDictionary);
-
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-                string responseString = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Dictionary<string, object> responseDictionary =
-                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
-                    string customToken = responseDictionary["customToken"] as string;
-
-                    s_Auth.SignOut();
-                    await s_Auth.SignInWithCustomToken(customToken);
-
-                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                    if (!isEmailVerified)
-                    {
-                        await SendVerificationEmail();
-                    }
-
-                    return responseDictionary;
-                }
-                else
-                {
-                    throw new Exception(responseString);
-                }
+                return await SignInWithProvider(SocialProvider.Facebook);
             }
             else
             {
                 throw new NoInternetException("No Internet");
+            }
+        }
+
+        public static async Task<Dictionary<string, object>> SignInWithProvider(SocialProvider i_Provider)
+        {
+            Dictionary<string, string> requestDictionary = new Dictionary<string, string>();
+
+            switch (i_Provider)
+            {
+                case SocialProvider.Facebook:
+                    string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+                    requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
+                    break;
+
+                case SocialProvider.Google:
+                    string googleIdToken = await getSocialAuthIdToken("Google");
+                    requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
+                    break;
+
+                case SocialProvider.Apple:
+                    string appleIdToken = await getSocialAuthIdToken("Apple");
+                    requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
+            }
+
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
+            string json = JsonSerializer.Serialize(requestDictionary);
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                Dictionary<string, object> responseDictionary =
+                    JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+                string customToken = responseDictionary["customToken"] as string;
+
+                s_Auth.SignOut();
+                await s_Auth.SignInWithCustomToken(customToken);
+
+                bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                if (!isEmailVerified)
+                {
+                    await SendVerificationEmail();
+                }
+
+                return responseDictionary;
+            }
+            else
+            {
+                throw new Exception(responseString);
             }
         }
 
