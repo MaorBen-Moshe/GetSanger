@@ -19,7 +19,9 @@ namespace GetSanger.ViewModels
         private ImageSource m_ProfileImage;
         private IList<GenderType> m_GenderItems;
         private User m_ConnectedUser;
+        private bool m_ValidInput;
         private User m_CloneUser;
+
         #endregion
 
         #region Properties
@@ -28,6 +30,13 @@ namespace GetSanger.ViewModels
             get => m_ConnectedUser;
             set => SetClassProperty(ref m_ConnectedUser, value);
         }
+
+        public bool ValidInput
+        {
+            get => m_ValidInput;
+            set => SetStructProperty(ref m_ValidInput, value);
+        }
+
 
         public ImageSource ProfileImage
         {

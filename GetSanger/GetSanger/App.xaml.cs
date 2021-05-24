@@ -13,7 +13,6 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
-
             LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             login.TryAutoLogin();
         }

@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:Converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.EditProfilePage">
 
     <ContentPage.BindingContext>
@@ -9,9 +10,17 @@
     </ContentPage.BindingContext>
 
     <Shell.BackButtonBehavior>
-        <BackButtonBehavior Command="{Binding BackButtonCommand}"/>
-    </Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackButtonCommand}" x:Name="BackButtonCommand"/>
 
+    </Shell.BackButtonBehavior>
+    
+    <ContentPage.Resources>
+        <Converters:EntryLengthToBoolConverter x:Key="EntryLengthToBoolConverter"/>
+
+   
+
+
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         
