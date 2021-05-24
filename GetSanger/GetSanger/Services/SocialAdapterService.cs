@@ -3,13 +3,12 @@ using GetSanger.Interfaces;
 using GetSanger.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public enum SocialProvider { Facebook, Gmail, Apple }
+    public enum SocialProvider { Facebook, Google, Apple }
     public class SocialAdapterService : Service
     {
         private LoginServices m_LoginService;
@@ -28,7 +27,7 @@ namespace GetSanger.Services
             switch (i_Provider)
             {
                 case SocialProvider.Facebook: details = await AuthHelper.LoginViaFacebook(); break;
-                case SocialProvider.Gmail: details = await AuthHelper.LoginViaGoogle(); break;
+                case SocialProvider.Google: details = await AuthHelper.LoginViaGoogle(); break;
                 case SocialProvider.Apple: details = await AuthHelper.LoginViaApple(); break;
             }
 

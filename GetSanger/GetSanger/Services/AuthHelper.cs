@@ -253,7 +253,7 @@ namespace GetSanger.Services
             {
                 case SocialProvider.Facebook:
                     break;
-                case SocialProvider.Gmail:
+                case SocialProvider.Google:
                     break;
                 case SocialProvider.Apple:
                     break;

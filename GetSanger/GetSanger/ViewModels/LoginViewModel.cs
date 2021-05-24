@@ -130,7 +130,7 @@ namespace GetSanger.ViewModels
 
         private void GmailClicked(object obj)
         {
-            r_SocialService.SocialLogin(SocialProvider.Gmail);
+            r_SocialService.SocialLogin(SocialProvider.Google);
         }
 
         #endregion
