@@ -8,11 +8,11 @@ namespace GetSanger.Models
 {
     public static class ObjectCloneExstension
     {
-        public static object CloneObject(this object objSource, params object[] objParams)
+        public static object CloneObject(this object objSource)
         {
             //Get the type of source object and create a new instance of that type
             Type typeSource = objSource.GetType();
-            object objTarget = Activator.CreateInstance(typeSource, objParams);
+            object objTarget = Activator.CreateInstance(typeSource);
             //Get all the properties of source object type
             PropertyInfo[] propertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             //Assign all source property to taget object 's properties
@@ -36,13 +36,7 @@ namespace GetSanger.Models
                         }
                         else
                         {
-                            object typeParams = null;
-                            if (objPropertyValue.GetType().Equals(typeof(Uri)))
-                            {
-                                typeParams = (objPropertyValue as Uri).OriginalString;
-                            }
-
-                            property.SetValue(objTarget, objPropertyValue.CloneObject(typeParams), null);
+                            property.SetValue(objTarget, objPropertyValue.CloneObject(), null);
                         }
                     }
                 }
