@@ -15,7 +15,9 @@ namespace GetSanger
             InitializeComponent();
 
             LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
-            login.TryAutoLogin();
+            //login.TryAutoLogin();
+            //MainPage = new AuthShell(); // for testing
+            MainPage = new Views.AccountPage();
         }
 
         protected override void OnStart()

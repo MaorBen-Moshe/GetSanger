@@ -5,71 +5,54 @@
              xmlns:controls ="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.ProfileViewPage"
              Padding="0,20,0,0">
-
     <ContentPage.BindingContext>
         <vm:ProfileViewModel />
     </ContentPage.BindingContext>
-
     <ContentPage.Content>
         <StackLayout>
-            
             <Label Text="Profile"
                    FontSize="Title"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"/>
-
-                     <Image Source="{Binding UserImage}" HeightRequest="64" WidthRequest="64"/>
-                     <!--User average rating-->
-                    <StackLayout HorizontalOptions="Center">
-                    <controls:RatingStars Rating="{Binding AverageRating}"
+            <Image Source="{Binding UserImage}" HeightRequest="64" WidthRequest="64"/>
+            <!--User average rating-->
+            <StackLayout HorizontalOptions="Center">
+                <controls:RatingStars Rating="{Binding AverageRating}"
                                           Review="" 
                                           IsImageEnabled="False"/>
-                    </StackLayout>
-
+            </StackLayout>
             <Label Text="{Binding CurrentUser.PersonalDetails.NickName, Mode=TwoWay}"
                            Margin="10,10,0,0" />
-
-
             <Label Text="{Binding  CurrentUser.PersonalDetails.Phone, Mode=TwoWay}" 
                            Margin="10,0,0,0" />
-
-
             <Label Text="{Binding  CurrentUser.PersonalDetails.Gender, Mode=TwoWay}"  
                            Margin="10,0,0,0" />
-
             <Label Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:dd/MM/yyyy}'}"  
                            Margin="10,0,0,0"/>
-            
-                     <Label Text="Ratings:" FontSize="Title"/>
-
+            <Label Text="Ratings:" FontSize="Title"/>
             <ListView ItemsSource="{Binding  CurrentUser.Ratings}"
                                             HasUnevenRows="True"
                                             RefreshCommand="{Binding RefreshingCommand}"
                                             IsRefreshing="{Binding IsListRefreshing}"
                                             IsPullToRefreshEnabled="True">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                  
-                                <ViewCell>
-                                    <Grid>
-                                  
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+
+                        <ViewCell>
+                            <Grid>
                                 <Label Text="{Binding RatingOwnerId}" Grid.Column="0" Grid.Row="1"/>
-                                             <controls:RatingStars Review="{Binding Description}" 
+                                <controls:RatingStars Review="{Binding Description}" 
                                                           Grid.Column="1" Grid.Row="1"
                                                           Rating="{Binding Score}"/>
-                                    </Grid>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                
-                <Button Text="Call" Command="{Binding CallCommand}" /> 
-                <Button Text="Send Message" Command="{Binding SendMessageCommand}" />
-                <Button Text="Report" Command="{Binding ReportUserCommand}" />
-                <Button Text="Add Rating" Command="{Binding AddRatingCommand}" />
-              
-         </StackLayout>
-       
-
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="Call" Command="{Binding CallCommand}" />
+            <Button Text="Send Message" Command="{Binding SendMessageCommand}" />
+            <Button Text="Report" Command="{Binding ReportUserCommand}" />
+            <Button Text="Add Rating" Command="{Binding AddRatingCommand}" />
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
