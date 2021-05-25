@@ -92,7 +92,7 @@ namespace GetSanger.ViewModels
         {
             if(string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) || 
                 !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
-                ((DateTime.Now.Year - ConnectedUser.PersonalDetails.Birthday.Year) < 18)
+                (DateTime.Now.AddYears(-ConnectedUser.PersonalDetails.Birthday.Year).Year < 18)
                 )
             {
                 await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
