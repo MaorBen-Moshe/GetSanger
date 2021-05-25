@@ -15,7 +15,7 @@
             </Style>
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="Black" />
-                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="BackgroundColor" Value="#91abfa" />
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="1,1,1,0"/>
                 <Setter Property="CornerRadius" Value="12"/>
@@ -26,7 +26,7 @@
             </Style>
             <Style TargetType="Entry">
                 <Setter Property="TextColor" Value="Black" />
-                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="BackgroundColor" Value="#91abfa" />
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="1,1,1,0"/>
             </Style>
@@ -41,6 +41,8 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
 
             </Style>
+            <Color x:Key="ClientThemeColor">#6388f7</Color>
+            <Color x:Key="SangerThemeColor">#A0FFFFFF</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

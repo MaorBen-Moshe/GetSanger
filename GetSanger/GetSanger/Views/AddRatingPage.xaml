@@ -17,23 +17,28 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <controls:RatingStars Rating="{Binding NewRating.Score}" IsImageEnabled="True" Review=""/> <!--need to implement choosing how many starts to rate-->
+            <Label Text="Choose rating:"/>
+            <controls:RatingStars Rating="{Binding NewRating.Score}" IsImageEnabled="True" Review="" 
+                                  Margin="20, 0, 0, 0" Scale="1.8" HorizontalOptions="Center"/> <!--need to implement choosing how many starts to rate-->
             <Frame
                        VerticalOptions="FillAndExpand"
                        HasShadow="True">
-                <Editor IsSpellCheckEnabled="True"
+                <StackLayout>
+                    <Label Text="Describe your experience here:"/>
+                    <Editor IsSpellCheckEnabled="True"
                             IsTextPredictionEnabled="True"
-                            Placeholder="Job Description"
+                            Placeholder="Add description"
                             VerticalOptions="FillAndExpand"
                             Text="{Binding NewRating.Description}" x:Name="EditorDescription">
-                    <Editor.Keyboard>
-                        <Keyboard x:FactoryMethod="Create" >
-                            <x:Arguments>
-                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                            </x:Arguments>
-                        </Keyboard>
-                    </Editor.Keyboard>
-                </Editor>
+                        <Editor.Keyboard>
+                            <Keyboard x:FactoryMethod="Create" >
+                                <x:Arguments>
+                                    <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                                </x:Arguments>
+                            </Keyboard>
+                        </Editor.Keyboard>
+                    </Editor>
+                </StackLayout>
             </Frame>
             <Button Text="Send" Command="{Binding AddRatingCommand}" IsEnabled="{Binding IsEnabledsendBtn}" 
                     Margin="15">

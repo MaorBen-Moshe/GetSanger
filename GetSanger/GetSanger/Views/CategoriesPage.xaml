@@ -4,7 +4,10 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:behaviors ="clr-namespace:GetSanger.Behaviors"
              xmlns:converters="clr-namespace:GetSanger.Converters"
-             x:Class="GetSanger.Views.CategoriesPage">
+             x:Class="GetSanger.Views.CategoriesPage"
+             xmlns:prism="http://prismlibrary.com"
+             >
+    
 
     <ContentPage.BindingContext>
         <vm:CategoriesViewModel />
@@ -20,8 +23,27 @@
 
     <ContentPage.Content>
 
+
         <StackLayout Orientation="Vertical" Spacing="20">
 
+            <CollectionView ItemsSource="{Binding CategoriesItems}"
+                            SelectionMode="Single">
+                <CollectionView.Behaviors>
+                    <behaviors:EventToCommandBehavior Command="{Binding CategorySelectedCommand}"
+                                                      EventName=""/>
+                </CollectionView.Behaviors>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="{Binding ImageUri}"/>
+                            <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
+                                           FontSize="19"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+            <!--
             <Label 
                    Margin="14,17,20,0" 
                    HeightRequest="54"
@@ -58,9 +80,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <StackLayout>
-                </StackLayout>
             </StackLayout>
+            -->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
