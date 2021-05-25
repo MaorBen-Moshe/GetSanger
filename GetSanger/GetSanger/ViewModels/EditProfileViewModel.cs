@@ -19,7 +19,9 @@ namespace GetSanger.ViewModels
         private ImageSource m_ProfileImage;
         private IList<GenderType> m_GenderItems;
         private User m_ConnectedUser;
-        private User m_CloneUser;
+        private bool m_ValidInput;
+        private PersonalDetails m_SavedPersonalDetails;
+
         #endregion
 
         #region Properties
@@ -28,6 +30,13 @@ namespace GetSanger.ViewModels
             get => m_ConnectedUser;
             set => SetClassProperty(ref m_ConnectedUser, value);
         }
+
+        public bool ValidInput
+        {
+            get => m_ValidInput;
+            set => SetStructProperty(ref m_ValidInput, value);
+        }
+
 
         public ImageSource ProfileImage
         {
@@ -75,7 +84,7 @@ namespace GetSanger.ViewModels
         private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
-            m_CloneUser = ConnectedUser.CloneObject() as User; // save the old values of the User
+            m_SavedPersonalDetails = ConnectedUser.PersonalDetails.CloneObject() as PersonalDetails;
             ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
         }
 
@@ -83,11 +92,11 @@ namespace GetSanger.ViewModels
         {
             if(string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) || 
                 !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
-                ((DateTime.Now.Year - ConnectedUser.PersonalDetails.Birthday.Year) < 18)
+                (DateTime.Now.AddYears(-ConnectedUser.PersonalDetails.Birthday.Year).Year >= 0)
                 )
             {
                 await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
-                AppManager.Instance.ConnectedUser = m_CloneUser; // delete the new changes
+                AppManager.Instance.ConnectedUser.PersonalDetails = m_SavedPersonalDetails; // delete the new changes
             }
             else
             {

@@ -177,7 +177,7 @@ namespace GetSanger.ViewModels
             NewJobOffer.Category = JobCategory;
             NewJobOffer.CategoryName = JobCategory.ToString();
             NewJobOffer.ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone;
-            AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
+            User.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
                 new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer))));
         }
 

@@ -48,9 +48,7 @@
                          AbsoluteLayout.LayoutFlags="All">
                 <Button Text="Edit Profile" Command="{Binding EditProfileCommand}"/>
                 <Button Text="Settings" Command="{Binding SettingCommand}"/>
-                <Button Text="Link Account With Google" Command="{Binding LinkGoogleCommand}"/>
-                <Button Text="Link Account With Facebook" Command="{Binding LinkFacebookCommand}"/>
-                <Button Text="Link Account With Apple" Command="{Binding LinkAppleCommand}"/>
+                <Button Text="Link Account with Social Networks" Command="{Binding LinkSocialCommand}" />
             </StackLayout>
             
             <Button Text="Logout" 

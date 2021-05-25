@@ -114,59 +114,64 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task<Dictionary<string, object>> LoginViaApple()
+        public static async Task LinkWithEmailAndPassword(string i_Email, string i_Password)
         {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
             {
-                string appleIdToken = await getSocialAuthIdToken("Apple");
-                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                ["idToken"] = await GetIdTokenAsync(),
+                ["email"] = i_Email,
+                ["password"] = i_Password
+            };
+
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/LinkWithEmailAndPassword";
+            string json = JsonSerializer.Serialize(requestDictionary);
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                Dictionary<string, object> responseDictionary =
+                    JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+
+                bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                if (!isEmailVerified)
                 {
-                    ["postBody"] = $"id_token={appleIdToken}&providerId=apple.com"
-                };
-
-                string uri = "";
-                string json = JsonSerializer.Serialize(requestDictionary);
-
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-                string responseString = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Dictionary<string, object> responseDictionary =
-                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
-                    string customToken = responseDictionary["customToken"] as string;
-
-                    s_Auth.SignOut();
-                    await s_Auth.SignInWithCustomToken(customToken);
-
-                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                    if (!isEmailVerified)
-                    {
-                        await SendVerificationEmail();
-                    }
-
-                    return responseDictionary;
-                }
-                else
-                {
-                    throw new Exception(responseString);
+                    await SendVerificationEmail();
                 }
             }
             else
             {
-                throw new NoInternetException("No Internet");
+                throw new Exception(responseString);
             }
         }
 
-        public static async Task<Dictionary<string, object>> LoginViaGoogle()
+        public static async Task<Dictionary<string, object>> LoginWithProvider(SocialProvider i_Provider)
         {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            if(Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                string googleIdToken = await getSocialAuthIdToken("Google");
-                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>();
+
+                switch (i_Provider)
                 {
-                    ["postBody"] = $"id_token={googleIdToken}&providerId=google.com"
-                };
+                    case SocialProvider.Facebook:
+                        string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+                        requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
+                        break;
+
+                    case SocialProvider.Google:
+                        string googleIdToken = await getSocialAuthIdToken("Google");
+                        requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
+                        break;
+
+                    case SocialProvider.Apple:
+                        string appleIdToken = await getSocialAuthIdToken("Apple");
+                        requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
+                }
 
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
                 string json = JsonSerializer.Serialize(requestDictionary);
@@ -183,52 +188,7 @@ namespace GetSanger.Services
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
-                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                    if (!isEmailVerified)
-                    {
-                        await SendVerificationEmail();
-                    }
-
-                    return responseDictionary;
-                }
-                else
-                {
-                    throw new Exception(responseString);
-                }
-            }
-            else
-            {
-                throw new NoInternetException("No Internet");
-            }
-        }
-
-        public static async Task<Dictionary<string, object>> LoginViaFacebook()
-        {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                string facebookAccessToken = await getSocialAuthIdToken("Facebook");
-
-                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
-                {
-                    ["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com"
-                };
-
-                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
-                string json = JsonSerializer.Serialize(requestDictionary);
-
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-                string responseString = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Dictionary<string, object> responseDictionary =
-                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
-                    string customToken = responseDictionary["customToken"] as string;
-
-                    s_Auth.SignOut();
-                    await s_Auth.SignInWithCustomToken(customToken);
-
-                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
+                    bool isEmailVerified = (bool)responseDictionary["emailVerified"];
                     if (!isEmailVerified)
                     {
                         await SendVerificationEmail();
@@ -249,19 +209,49 @@ namespace GetSanger.Services
 
         public static async Task<Dictionary<string, object>> LinkWithSocialProvider(SocialProvider i_Provider)
         {
+            Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+            {
+                ["idToken"] = await GetIdTokenAsync()
+            };
+
             switch (i_Provider)
             {
                 case SocialProvider.Facebook:
+                    string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+                    requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
                     break;
+
                 case SocialProvider.Google:
+                    string googleIdToken = await getSocialAuthIdToken("Google");
+                    requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
                     break;
+
                 case SocialProvider.Apple:
+                    string appleIdToken = await getSocialAuthIdToken("Apple");
+                    requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
             }
 
-            return null;
+            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/LinkWithCredential";
+            string json = JsonSerializer.Serialize(requestDictionary);
+
+            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                Dictionary<string, object> responseDictionary =
+                    JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+
+                return responseDictionary;
+            }
+            else
+            {
+                throw new Exception(responseString);
+            }
         }
 
         private static async Task<string> getSocialAuthIdToken(string i_Scheme)

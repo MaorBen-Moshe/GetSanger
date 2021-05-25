@@ -8,31 +8,25 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public enum SocialProvider { Facebook, Google, Apple }
+    public enum SocialProvider { Facebook, Google, Apple, Email } // email is for the link only
     public class SocialAdapterService : Service
     {
         private LoginServices m_LoginService;
         private NavigationService m_NavigationService;
+        private PopupService m_PopupService;
 
         public async void SocialLogin(SocialProvider i_Provider)
         {
-            if(m_LoginService == null || m_NavigationService == null)
+            if(m_LoginService == null || m_NavigationService == null || m_PopupService == null)
             {
                 SetDependencies();
             }
 
             Dictionary<string, object> details = null;
-            IPopupService service = DependencyService.Get<IPopupService>();
-            service.ShowPopupgPage();
-            switch (i_Provider)
-            {
-                case SocialProvider.Facebook: details = await AuthHelper.LoginViaFacebook(); break;
-                case SocialProvider.Google: details = await AuthHelper.LoginViaGoogle(); break;
-                case SocialProvider.Apple: details = await AuthHelper.LoginViaApple(); break;
-            }
-
+            m_PopupService.ShowPopup();
+            details = await AuthHelper.LoginWithProvider(i_Provider);
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
-            service.HidePopupPage();
+            m_PopupService.HidePopup();
             if (isFirstLoggedin)
             {
                 AppManager.Instance.SignUpVM.UserJson = JsonSerializer.Serialize(getDetails(details));
@@ -68,6 +62,7 @@ namespace GetSanger.Services
         {
             m_LoginService = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             m_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            m_PopupService = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
         }
     }
 }

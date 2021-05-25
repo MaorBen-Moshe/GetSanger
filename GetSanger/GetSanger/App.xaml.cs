@@ -1,9 +1,7 @@
 using Xamarin.Forms;
-using GetSanger.AppShell;
 using Xamarin.Essentials;
 using GetSanger.Interfaces;
 using GetSanger.Views;
-using GetSanger.Views.chat;
 using GetSanger.Services;
 
 namespace GetSanger
@@ -13,6 +11,8 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
+
+            AuthHelper.SignOut();
 
             LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             //login.TryAutoLogin();
@@ -37,18 +37,14 @@ namespace GetSanger
 
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            IPopupService service = DependencyService.Get<IPopupService>();
+            PopupService service = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
             if (e.NetworkAccess.Equals(NetworkAccess.None))
             {
-                service.InitPopupgPage(new LoadingPage("No Internet"));
-                service.ShowPopupgPage();
+                service.ShowPopup(new LoadingPage("No Internet"));
             }
             else // Internet is back
             {
-                if(service.CurrentShownPage is LoadingPage)
-                {
-                    service.HidePopupPage();
-                }
+                service.HidePopup();
             }
         }
     }

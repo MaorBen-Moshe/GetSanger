@@ -20,7 +20,6 @@ namespace GetSanger.Models
 
         public string UserId { get; set; }
         public string RegistrationToken { get; set; }
-        [JsonIgnore]
         public string Email
         {
             get => m_Email;
@@ -40,9 +39,10 @@ namespace GetSanger.Models
         }
         public Location UserLocation
         {
-            get => m_UserLocation;
-            set => SetClassProperty(ref m_UserLocation, value);
+            get => m_UserLocation; 
+            set => SetClassProperty(ref m_UserLocation, value); 
         }
+        
         [JsonIgnore]
         public ObservableCollection<Activity> Activities { get; set; } // sanger and user activities each mode shows its own activities
         [JsonIgnore]
@@ -61,6 +61,8 @@ namespace GetSanger.Models
             PersonalDetails = new PersonalDetails();
             IsGenericNotifications = true; // default generic notifications 
             LastUserMode = null;
+
+            Ratings.Add(new Rating());
         }
 
         public override string ToString()
@@ -84,9 +86,9 @@ namespace GetSanger.Models
             return base.GetHashCode();
         }
 
-        public void AppendCollections<T>(ObservableCollection<T> i_FirstCollection, ObservableCollection<T> i_SecondCollection)
+        public static void AppendCollections<T>(ObservableCollection<T> i_FirstCollection, ObservableCollection<T> i_SecondCollection)
         {
-            foreach(T item in i_SecondCollection)
+            foreach (T item in i_SecondCollection)
             {
                 i_FirstCollection.Add(item);
             }

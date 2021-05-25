@@ -102,7 +102,7 @@ namespace GetSanger.ViewModels
         {
             set
             {
-                if(value != null)
+                if(string.IsNullOrWhiteSpace(value) == false)
                 {
                     CreatedUser = JsonSerializer.Deserialize<User>(value);
                 }
@@ -133,7 +133,7 @@ namespace GetSanger.ViewModels
         {
             CreatedUser ??= new User();
             PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
-            CreatedUser.PersonalDetails.Birthday = DateTime.Now.Date.ToUniversalTime();
+            CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
         }
 
         private void setCommands()
@@ -224,7 +224,7 @@ namespace GetSanger.ViewModels
         private async void personalDetailPartClicked()
         {
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-            CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
+            CreatedUser.UserLocation = await RunTaskWhileLoading(r_LocationServices.GetCurrentLocation());
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }

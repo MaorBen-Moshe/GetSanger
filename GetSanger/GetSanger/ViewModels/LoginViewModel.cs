@@ -19,7 +19,6 @@ namespace GetSanger.ViewModels
 
         private string m_Email;
         private string m_Password;
-        private bool m_IsIOSDevice;
 
         #endregion
 
@@ -46,12 +45,6 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Password, value);
         }
 
-        public bool isIOSDevice
-        {
-            get => m_IsIOSDevice;
-            set => SetStructProperty(ref m_IsIOSDevice, value);
-        }
-
         #endregion
 
         #region Command
@@ -62,11 +55,7 @@ namespace GetSanger.ViewModels
 
         public ICommand ForgotPasswordCommand { get; set; }
 
-        public ICommand FaceBookLoginCommand { get; set; }
-
-        public ICommand GmailLoginCommand { get; set; }
-
-        public ICommand AppleLoginCommand { get; set; }
+        public ICommand SocialLoginCommand { get; set; }
 
         #endregion
 
@@ -74,8 +63,6 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            isIOSDevice = Device.RuntimePlatform.Equals(Device.iOS);
-            // auto log in if connected
         }
 
         private void setCommands()
@@ -83,9 +70,7 @@ namespace GetSanger.ViewModels
             this.LoginCommand = new Command(this.LoginClicked);
             this.SignUpCommand = new Command(this.SignUpClicked);
             this.ForgotPasswordCommand = new Command(this.ForgotPasswordClicked);
-            this.FaceBookLoginCommand = new Command(this.FacebookClicked);
-            this.GmailLoginCommand = new Command(this.GmailClicked);
-            this.AppleLoginCommand = new Command(this.AppleClicked);
+            this.SocialLoginCommand = new Command(this.socialClicked);
         }
 
         private async void LoginClicked(object obj)
@@ -118,19 +103,18 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
         }
 
-        private void AppleClicked(object obj)
+        private void socialClicked(object i_Param)
         {
-            r_SocialService.SocialLogin(SocialProvider.Apple);
-        }
+            if(i_Param == null || (i_Param is string == false))
+            {
+                return;
+            }
 
-        private void FacebookClicked(object obj)
-        {
-            r_SocialService.SocialLogin(SocialProvider.Facebook);
-        }
-
-        private void GmailClicked(object obj)
-        {
-            r_SocialService.SocialLogin(SocialProvider.Google);
+            bool isProvider = Enum.TryParse(i_Param as string, out SocialProvider provider);
+            if (isProvider)
+            {
+                r_SocialService.SocialLogin(provider);
+            }
         }
 
         #endregion
