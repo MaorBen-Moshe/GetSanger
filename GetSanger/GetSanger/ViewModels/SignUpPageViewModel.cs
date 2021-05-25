@@ -223,7 +223,6 @@ namespace GetSanger.ViewModels
 
         private async void personalDetailPartClicked()
         {
-            User user = ShellPassComplexDataService<User>.ComplexObject;
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
             CreatedUser.UserLocation = await RunTaskWhileLoading(r_LocationServices.GetCurrentLocation());
             // need to check validation of personal details in user
