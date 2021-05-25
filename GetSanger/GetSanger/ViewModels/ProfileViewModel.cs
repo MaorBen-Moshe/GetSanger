@@ -184,9 +184,7 @@ namespace GetSanger.ViewModels
                         Reason = option
                     };
 
-                    IPopupService service = DependencyService.Get<IPopupService>();
-                    service.InitPopupgPage(new EditorReportPage(this));
-                    service.ShowPopupgPage();
+                    r_PopupService.ShowPopup(new EditorReportPage(this));
                 }
                 catch (Exception e)
                 {
@@ -197,8 +195,7 @@ namespace GetSanger.ViewModels
 
         private async void addEditorReport()
         {
-            IPopupService service = DependencyService.Get<IPopupService>();
-            service.HidePopupPage();
+            r_PopupService.HidePopup(typeof(EditorReportPage));
             m_CurrentReport.ReportMessage = ReportMessage;
             await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
             await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");

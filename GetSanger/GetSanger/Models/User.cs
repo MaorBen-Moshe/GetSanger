@@ -20,7 +20,6 @@ namespace GetSanger.Models
 
         public string UserId { get; set; }
         public string RegistrationToken { get; set; }
-        [JsonIgnore]
         public string Email
         {
             get => m_Email;

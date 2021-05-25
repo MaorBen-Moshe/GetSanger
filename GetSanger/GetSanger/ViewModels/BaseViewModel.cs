@@ -22,6 +22,7 @@ namespace GetSanger.ViewModels
         protected readonly LoginServices r_LoginServices;
         protected readonly LocationService r_LocationServices;
         protected readonly SocialAdapterService r_SocialService;
+        protected readonly PopupService r_PopupService;
         #endregion
 
         #region Properties
@@ -62,6 +63,7 @@ namespace GetSanger.ViewModels
             r_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
             r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
+            r_PopupService = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
 
             IsEnabledsendBtn = false;
         }
@@ -77,14 +79,13 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                DependencyService.Get<IPopupService>().InitPopupgPage(i_OptionalLoading);
-                DependencyService.Get<IPopupService>().ShowPopupgPage();
+                r_PopupService.ShowPopup(i_OptionalLoading);
                 await i_InnerTask;
-                DependencyService.Get<IPopupService>().HidePopupPage();
+                r_PopupService.HidePopup(i_OptionalLoading.GetType());
             }
             catch (Exception ex)
             {
-                DependencyService.Get<IPopupService>().HidePopupPage();
+                r_PopupService.HidePopup();
                 throw ex;
             }
         }
@@ -93,15 +94,14 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                DependencyService.Get<IPopupService>().InitPopupgPage(i_OptionalLoading);
-                DependencyService.Get<IPopupService>().ShowPopupgPage();
+                r_PopupService.ShowPopup(i_OptionalLoading);
                 T result = await i_InnerTask;
-                DependencyService.Get<IPopupService>().HidePopupPage();
+                r_PopupService.HidePopup(i_OptionalLoading.GetType());
                 return result;
             }
             catch (Exception ex)
             {
-                DependencyService.Get<IPopupService>().HidePopupPage();
+                r_PopupService.HidePopup();
                 throw ex;
             }
         }

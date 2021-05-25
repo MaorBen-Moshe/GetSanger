@@ -6,6 +6,7 @@ using GetSanger.Services;
 using GetSanger.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -15,7 +16,6 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private User m_CurrentUser;
-
         private ImageSource m_UserImage;
         #endregion
 
@@ -42,11 +42,7 @@ namespace GetSanger.ViewModels
 
         public ICommand LogoutCommand { get; set; }
 
-        public ICommand LinkGoogleCommand { get; set; }
-
-        public ICommand LinkFacebookCommand { get; set; }
-
-        public ICommand LinkAppleCommand { get; set; }
+        public ICommand LinkSocialCommand { get; set; }
 
         #endregion
 
@@ -70,10 +66,7 @@ namespace GetSanger.ViewModels
             SettingCommand = new Command(setting);
             ChangeModeCommand = new Command(changeMode);
             LogoutCommand = new Command(logout);
-            LinkAppleCommand = new Command(linkApple);
-            LinkGoogleCommand = new Command(linkGoogle);
-            LinkFacebookCommand = new Command(linkFacebook);
-
+            LinkSocialCommand = new Command(linkSocial);
         }
 
         private async void initialPage()
@@ -100,7 +93,7 @@ namespace GetSanger.ViewModels
         private void logout(object i_Param)
         {
             // do logout
-
+            AuthHelper.SignOut();
             Application.Current.MainPage = new AuthShell();
         }
 
@@ -128,43 +121,9 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo(ShellRoutes.EditProfile);
         }
 
-        private async void linkGoogle(object i_Param)
+        private void linkSocial(object i_Param)
         {
-            try
-            {
-                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(SocialProvider.Google);
-                await r_PageService.DisplayAlert("Note", "Account has linked!", "OK");
-            }
-            catch (Exception e)
-            {
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
-            }
-        }
-
-        private async void linkFacebook(object i_Param)
-        {
-            try
-            {
-                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(SocialProvider.Facebook);
-                await r_PageService.DisplayAlert("Note", "Account has linked!", "OK");
-            }
-            catch (Exception e)
-            {
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
-            }
-        }
-
-        private async void linkApple(object i_Param)
-        {
-            try
-            {
-                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(SocialProvider.Apple);
-                await r_PageService.DisplayAlert("Note", "Account has linked!", "OK");
-            }
-            catch (Exception e)
-            {
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
-            }
+            r_PopupService.ShowPopup(new LinkProviderPage());
         }
 
         #endregion

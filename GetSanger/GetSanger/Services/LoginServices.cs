@@ -4,35 +4,57 @@ using GetSanger.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using Xamarin.Forms;
+using GetSanger.ViewModels;
 
 namespace GetSanger.Services
 {
     public class LoginServices : Service
     {
+        private NavigationService m_NavigationService;
+
         public LoginServices()
         {
         }
 
         public async void TryAutoLogin()
         {
+            if(m_NavigationService == null)
+            {
+                SetDependencies();
+            }
+
             if (AuthHelper.IsLoggedIn())
             {
                 string userId = AuthHelper.GetLoggedInUserId();
-                AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
-                AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
-                if(mode == null)
+                bool firstTime = await AuthHelper.IsFirstTimeLogIn();
+                if (!firstTime)
                 {
-                    await new NavigationService().NavigateTo(ShellRoutes.ModePage);
+                    AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
+                    AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
+                    if (mode == null)
+                    {
+                        await new NavigationService().NavigateTo(ShellRoutes.ModePage);
+                    }
+                    else
+                    {
+                        AppManager.Instance.CurrentMode = (AppMode)mode;
+                        switch ((AppMode)mode)
+                        {
+                            case AppMode.Client: Application.Current.MainPage = new UserShell(); break;
+                            case AppMode.Sanger: Application.Current.MainPage = new SangerShell(); break;
+                        }
+                    }
+
+                    return;
                 }
                 else
                 {
-                    AppManager.Instance.CurrentMode = (AppMode)mode;
-                    switch((AppMode)mode)
-                    {
-                        case AppMode.Client: Application.Current.MainPage = new UserShell(); break;
-                        case AppMode.Sanger: Application.Current.MainPage = new SangerShell(); break;
-                    }
+                    AppManager.Instance.SignUpVM ??= new SignUpPageViewModel();
+                    AppManager.Instance.SignUpVM.UserJson = JsonSerializer.Serialize(AppManager.Instance.ConnectedUser);
+                    Application.Current.MainPage = new AuthShell();
+                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
                 }
             }
             else // 
@@ -97,7 +119,7 @@ namespace GetSanger.Services
 
         public override void SetDependencies()
         {
-            //
+            m_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
         }
     }
 }

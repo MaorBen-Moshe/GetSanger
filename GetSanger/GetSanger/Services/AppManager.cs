@@ -46,6 +46,7 @@ namespace GetSanger.Services
             Services.Add(typeof(StorageHelper), new StorageHelper());
             Services.Add(typeof(PhotoDisplayService), new PhotoDisplayService());
             Services.Add(typeof(SocialAdapterService), new SocialAdapterService());
+            Services.Add(typeof(PopupService), new PopupService());
         }
 
         public void RefreshAppManager()

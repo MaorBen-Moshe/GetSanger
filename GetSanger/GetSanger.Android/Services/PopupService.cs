@@ -23,6 +23,14 @@ namespace GetSanger.Droid.Services
             }
         }
 
+        public bool IsLoadingPageShowing
+        {
+            get
+            {
+                return CurrentShownPage != null && CurrentShownPage is LoadingPage;
+            }
+        }
+
         public void InitPopupgPage(ContentPage i_PopupPage = null) // param just for ios implementation
         {
             InitDialogPage(i_PopupPage ?? new LoadingPage());

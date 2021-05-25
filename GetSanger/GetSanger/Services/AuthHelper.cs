@@ -146,93 +146,64 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task<Dictionary<string, object>> LoginViaApple()
+        public static async Task<Dictionary<string, object>> LoginWithProvider(SocialProvider i_Provider)
         {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            if(Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                return await SignInWithProvider(SocialProvider.Apple);
-            }
-            else
-            {
-                throw new NoInternetException("No Internet");
-            }
-        }
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>();
 
-        public static async Task<Dictionary<string, object>> LoginViaGoogle()
-        {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                return await SignInWithProvider(SocialProvider.Google);
-            }
-            else
-            {
-                throw new NoInternetException("No Internet");
-            }
-        }
-
-        public static async Task<Dictionary<string, object>> LoginViaFacebook()
-        {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                return await SignInWithProvider(SocialProvider.Facebook);
-            }
-            else
-            {
-                throw new NoInternetException("No Internet");
-            }
-        }
-
-        public static async Task<Dictionary<string, object>> SignInWithProvider(SocialProvider i_Provider)
-        {
-            Dictionary<string, string> requestDictionary = new Dictionary<string, string>();
-
-            switch (i_Provider)
-            {
-                case SocialProvider.Facebook:
-                    string facebookAccessToken = await getSocialAuthIdToken("Facebook");
-                    requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
-                    break;
-
-                case SocialProvider.Google:
-                    string googleIdToken = await getSocialAuthIdToken("Google");
-                    requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
-                    break;
-
-                case SocialProvider.Apple:
-                    string appleIdToken = await getSocialAuthIdToken("Apple");
-                    requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
-            }
-
-            string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
-            string json = JsonSerializer.Serialize(requestDictionary);
-
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-            string responseString = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-                Dictionary<string, object> responseDictionary =
-                    JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
-                string customToken = responseDictionary["customToken"] as string;
-
-                s_Auth.SignOut();
-                await s_Auth.SignInWithCustomToken(customToken);
-
-                bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                if (!isEmailVerified)
+                switch (i_Provider)
                 {
-                    await SendVerificationEmail();
+                    case SocialProvider.Facebook:
+                        string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+                        requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
+                        break;
+
+                    case SocialProvider.Google:
+                        string googleIdToken = await getSocialAuthIdToken("Google");
+                        requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
+                        break;
+
+                    case SocialProvider.Apple:
+                        string appleIdToken = await getSocialAuthIdToken("Apple");
+                        requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(i_Provider), i_Provider, null);
                 }
 
-                return responseDictionary;
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
+                string json = JsonSerializer.Serialize(requestDictionary);
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
+                string responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Dictionary<string, object> responseDictionary =
+                        JsonHelper.Deserialize(responseString) as Dictionary<string, object>;
+                    string customToken = responseDictionary["customToken"] as string;
+
+                    s_Auth.SignOut();
+                    await s_Auth.SignInWithCustomToken(customToken);
+
+                    bool isEmailVerified = (bool)responseDictionary["emailVerified"];
+                    if (!isEmailVerified)
+                    {
+                        await SendVerificationEmail();
+                    }
+
+                    return responseDictionary;
+                }
+                else
+                {
+                    throw new Exception(responseString);
+                }
             }
             else
             {
-                throw new Exception(responseString);
+                throw new NoInternetException("No Internet");
             }
         }
 

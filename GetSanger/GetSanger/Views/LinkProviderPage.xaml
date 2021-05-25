@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             x:Class="GetSanger.Views.LinkProviderPage">
+
+    <ContentPage.BindingContext>
+        <vm:LinkProviderViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+            <Frame CornerRadius="10"
+                   Padding="30"
+                   BorderColor="Black"
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                    <ListView ItemsSource="{Binding Providers}"
+                              SelectedItem="{Binding CurrentProvider}"
+                              IsPullToRefreshEnabled="False">
+                        <ListView.Behaviors>
+                            <behaviors:EventToCommandBehavior Command="{Binding SelectedJobOfferCommand}" 
+                                                          EventName="ItemSelected"/>
+                        </ListView.Behaviors>
+                    </ListView>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

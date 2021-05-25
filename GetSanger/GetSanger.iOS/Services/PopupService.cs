@@ -28,6 +28,14 @@ namespace GetSanger.iOS.Services
             }
         }
 
+        public bool IsLoadingPageShowing
+        {
+            get
+            {
+                return CurrentShownPage != null && CurrentShownPage is LoadingPage;
+            }
+        }
+
         public void InitPopupgPage(ContentPage popupPage = null)
         {
             if (popupPage == null)
