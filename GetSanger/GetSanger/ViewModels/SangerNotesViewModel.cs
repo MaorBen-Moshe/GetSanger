@@ -60,7 +60,7 @@ namespace GetSanger.ViewModels
                     LocationActivatedBySanger = false
                 };
 
-                AppManager.Instance.ConnectedUser.AppendCollections(AppManager.Instance.ConnectedUser.Activities, new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
+                User.AppendCollections(AppManager.Instance.ConnectedUser.Activities, new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
                 await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
                 await GoBack();
             }

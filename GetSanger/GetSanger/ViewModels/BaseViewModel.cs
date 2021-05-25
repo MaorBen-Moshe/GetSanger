@@ -81,7 +81,7 @@ namespace GetSanger.ViewModels
             {
                 r_PopupService.ShowPopup(i_OptionalLoading);
                 await i_InnerTask;
-                r_PopupService.HidePopup(i_OptionalLoading.GetType());
+                r_PopupService.HidePopup(i_OptionalLoading?.GetType());
             }
             catch (Exception ex)
             {
@@ -96,7 +96,7 @@ namespace GetSanger.ViewModels
             {
                 r_PopupService.ShowPopup(i_OptionalLoading);
                 T result = await i_InnerTask;
-                r_PopupService.HidePopup(i_OptionalLoading.GetType());
+                r_PopupService.HidePopup(i_OptionalLoading?.GetType());
                 return result;
             }
             catch (Exception ex)
