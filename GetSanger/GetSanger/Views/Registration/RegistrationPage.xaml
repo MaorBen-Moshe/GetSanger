@@ -76,15 +76,18 @@
         </StackLayout>
         <Grid Grid.Row="2">
             <Button Text="Via Facebook"
-                        Command="{Binding FaceBookLoginCommand}"
+                        Command="{Binding SocialLoginCommand}"
+                        CommandParameter="Facebook"
                         Grid.Row="0" 
                         Grid.Column="0" />
             <Button Text="Via Google" 
-                        Command="{Binding GmailLoginCommand}"
+                        Command="{Binding SocialLoginCommand}"
+                        CommandParameter="Google"
                         Grid.Row="0" 
                         Grid.Column="1"/>
             <Button Text="Via Apple" 
-                        Command="{Binding AppleLoginCommand}"
+                        Command="{Binding SocialLoginCommand}"
+                        CommandParameter="Apple"
                         Grid.Row="0" 
                         Grid.Column="2"/>
         </Grid>

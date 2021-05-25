@@ -5,20 +5,19 @@
              x:Class="GetSanger.Views.Registration.ModePage"
              Shell.NavBarIsVisible="False">
 
-    <Shell.BackButtonBehavior>
-        <BackButtonBehavior Command="{Binding BackButtonBehaviorCommand}" />
-    </Shell.BackButtonBehavior>
-
 
     <ContentPage.BindingContext>
         <vm:ModeViewModel />
     </ContentPage.BindingContext>
-    
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackButtonBehaviorCommand}" />
+    </Shell.BackButtonBehavior>
+
     <ContentPage.Content>
         <StackLayout VerticalOptions="Start">
             <StackLayout HorizontalOptions="Center" Padding="10">
                 <Label Text="Choose your mode" FontSize="Title" Padding="50, 50, 0, 0" 
-                       Style="{StaticResource label}"
                        FontAttributes="Bold"
                        TextColor="Black"/>
                 <Label Text="You can always change it in your profile page." Padding="0,0,0,100"/>
@@ -28,9 +27,9 @@
                          Padding="1">
                 <StackLayout Spacing="0"
                              Padding="1">
-                    <Button Text="User Mode" Margin="10" Style="{StaticResource button}" Command="{Binding UserCommand}"/>
+                    <Button Text="User Mode" Margin="10" Command="{Binding UserCommand}"/>
                     <Label Text="(Offer jobs for others to apply to)" FontSize="10"/>
-                    <Button Text="Sanger Mode" Margin="10" Style="{StaticResource button}" Command="{Binding SangerCommand}"/>
+                    <Button Text="Sanger Mode" Margin="10" Command="{Binding SangerCommand}"/>
                     <Label Text="(Apply to job offers)" FontSize="10"/>
                 </StackLayout>
             </StackLayout>

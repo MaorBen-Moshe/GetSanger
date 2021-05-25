@@ -21,7 +21,7 @@ namespace GetSanger.AppShell
             InitializeComponent();
 
             r_Routes = new Dictionary<string, Type>();
-            AppManager.Instance.SignUpVM = new SignUpPageViewModel();
+            AppManager.Instance.SignUpVM ??= new SignUpPageViewModel();
             registerRoutes();
         }
 
