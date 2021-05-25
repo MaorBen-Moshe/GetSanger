@@ -19,8 +19,9 @@ namespace GetSanger.Services
             if(i_Page != null && !m_PopupService.IsLoadingPageShowing)
             {
                 m_PopupService.InitPopupgPage(i_Page);
+                m_PopupService.ShowPopupgPage();
             }
-            else if (!m_PopupService.IsLoadingPageShowing)
+            else if (!m_PopupService.IsLoadingPageShowing) 
             {
                 m_PopupService.ShowPopupgPage();
             }
