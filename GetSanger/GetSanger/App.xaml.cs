@@ -12,12 +12,8 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            AuthHelper.SignOut();
-
             LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
-            //login.TryAutoLogin();
-            //MainPage = new AuthShell(); // for testing
-            MainPage = new Views.AccountPage();
+            login.TryAutoLogin();
         }
 
         protected override void OnStart()
