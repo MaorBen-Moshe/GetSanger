@@ -51,10 +51,9 @@ namespace GetSanger.Services
                 }
                 else
                 {
-                    AppManager.Instance.SignUpVM ??= new SignUpPageViewModel();
-                    AppManager.Instance.SignUpVM.UserJson = JsonSerializer.Serialize(AppManager.Instance.ConnectedUser);
+                    string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
                     Application.Current.MainPage = new AuthShell();
-                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
+                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}&userJson={json}");
                 }
             }
             else // 

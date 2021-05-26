@@ -1,5 +1,4 @@
 ﻿using GetSanger.ViewModels;
-using System.Threading;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

@@ -82,7 +82,7 @@ namespace GetSanger.Models
         {
             if (!(obj is JobOffer))
             {
-                throw new ArgumentException("Must provide a valid JobDetails object");
+                return false;
             }
 
             JobOffer other = obj as JobOffer;

@@ -9,6 +9,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(ActivityJson), "activity")]
     public class ActivityViewModel : BaseViewModel
     {
         #region Fields
@@ -26,6 +27,14 @@ namespace GetSanger.ViewModels
         {
             get => m_ConnectedActivity;
             set => SetClassProperty(ref m_ConnectedActivity, value);
+        }
+
+        public string ActivityJson
+        {
+            set
+            {
+                ConnectedActivity = ObjectJsonSerializer.DeserializeForPage<Activity>(value);
+            }
         }
 
         public bool IsActivatedEndButton
@@ -88,7 +97,6 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            ConnectedActivity = ShellPassComplexDataService<Activity>.ComplexObject;
             setLocationsLabels();
             IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&

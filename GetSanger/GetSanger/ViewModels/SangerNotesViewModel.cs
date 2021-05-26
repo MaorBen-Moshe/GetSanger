@@ -6,6 +6,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(CurrentJobJson), "job")]
     public class SangerNotesViewModel : BaseViewModel
     {
         #region Fields
@@ -24,6 +25,13 @@ namespace GetSanger.ViewModels
             get => m_JobOffer;
             set => SetClassProperty(ref m_JobOffer, value);
         }
+        public string CurrentJobJson
+        {
+            set
+            {
+                CurrentJob = ObjectJsonSerializer.DeserializeForPage<JobOffer>(value);
+            }
+        }
         #endregion 
         #region Commands
         public ICommand SendNotesCommand { get; set; }
@@ -37,7 +45,6 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            CurrentJob = ShellPassComplexDataService<JobOffer>.ComplexObject;
         }
 
         private void setCommands()

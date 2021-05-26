@@ -11,6 +11,7 @@ using Xamarin.Essentials;
 
 namespace GetSanger.ViewModels.chat
 {
+    [QueryProperty(nameof(UserJson), "user")]
     public class ChatPageViewModel : BaseViewModel
     {
         #region Fields
@@ -32,6 +33,14 @@ namespace GetSanger.ViewModels.chat
         {
             get => m_UserToChat;
             set => SetClassProperty(ref m_UserToChat, value);
+        }
+
+        public string UserJson
+        {
+            set
+            {
+                UserToChat = ObjectJsonSerializer.DeserializeForPage<User>(value);
+            }
         }
 
         public bool ShowScrollTap
@@ -78,7 +87,6 @@ namespace GetSanger.ViewModels.chat
         #region Methods
         public async override void Appearing()
         {
-            UserToChat = ShellPassComplexDataService<User>.ComplexObject;
             DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);

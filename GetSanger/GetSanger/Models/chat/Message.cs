@@ -51,7 +51,7 @@ namespace GetSanger.Models.chat
         {
             if(!(obj is Message))
             {
-                throw new ArgumentException("obj must be of type Message!");
+                return false;
             }
 
             Message other = obj as Message;

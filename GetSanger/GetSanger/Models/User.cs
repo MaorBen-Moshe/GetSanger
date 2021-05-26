@@ -72,9 +72,9 @@ namespace GetSanger.Models
 
         public override bool Equals(object obj)
         {
-            if (!(obj is User))
+            if(!(obj is User))
             {
-                throw new ArgumentException("Must provide a valid User object");
+                return false;
             }
 
             User other = obj as User;

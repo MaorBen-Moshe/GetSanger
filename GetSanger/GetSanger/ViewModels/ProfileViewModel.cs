@@ -203,8 +203,8 @@ namespace GetSanger.ViewModels
 
         private async void addRating(object i_Param)
         {
-            ShellPassComplexDataService<User>.ComplexObject = CurrentUser;
-            await r_NavigationService.NavigateTo(ShellRoutes.AddRating);
+            string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
+            await r_NavigationService.NavigateTo(ShellRoutes.AddRating + $"ratedUser={json}");
         }
 
         private async void refreshList()

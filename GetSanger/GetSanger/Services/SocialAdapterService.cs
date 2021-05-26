@@ -29,8 +29,9 @@ namespace GetSanger.Services
             m_PopupService.HidePopup();
             if (isFirstLoggedin)
             {
-                AppManager.Instance.SignUpVM.UserJson = JsonSerializer.Serialize(getDetails(details));
-                string route = $"{ShellRoutes.SignupPersonalDetails}?isFacebookGmail={true}";
+                string json = ObjectJsonSerializer.SerializeForPage(getDetails(details));
+                //AppManager.Instance.SignUpVM.UserJson = ObjectJsonSerializer.SerializeForServer(getDetails(details));
+                string route = $"{ShellRoutes.SignupPersonalDetails}?isFacebookGmail={true}&userJson={json}";
                 await m_NavigationService.NavigateTo(route);
             }
             else
