@@ -45,7 +45,7 @@ namespace GetSanger.Models
         {
             if (!(obj is Activity))
             {
-                throw new ArgumentException("Must provide a valid Activity object");
+                return false;
             }
 
             Activity other = obj as Activity;

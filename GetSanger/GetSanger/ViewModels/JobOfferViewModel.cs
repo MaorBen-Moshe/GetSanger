@@ -11,6 +11,7 @@ namespace GetSanger.ViewModels
 {
     [QueryProperty(nameof(IsCreate), "isCreate")]
     [QueryProperty(nameof(JobCategory), "category")]
+    [QueryProperty(nameof(JobOfferJson), "job")]
     public class JobOfferViewModel : BaseViewModel
     {
         #region Fields
@@ -40,6 +41,14 @@ namespace GetSanger.ViewModels
             get => m_NewJobOffer;
             set => SetClassProperty(ref m_NewJobOffer, value);
         } 
+
+        public string JobOfferJson
+        {
+            set
+            {
+                NewJobOffer = ObjectJsonSerializer.DeserializeForPage<JobOffer>(value);
+            }
+        }
 
         public Placemark MyPlaceMark
         {
@@ -111,7 +120,6 @@ namespace GetSanger.ViewModels
             }
             else
             {
-                NewJobOffer = ShellPassComplexDataService<JobOffer>.ComplexObject;
                 JobCategory = NewJobOffer.Category;
             }
 

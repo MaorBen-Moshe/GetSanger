@@ -15,6 +15,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(UserJson), "userJson")]
     [QueryProperty(nameof(IsFacebookGmail), "isFacebookGmail")]
     public class SignUpPageViewModel : LoginViewModel
     {
@@ -104,7 +105,7 @@ namespace GetSanger.ViewModels
             {
                 if(string.IsNullOrWhiteSpace(value) == false)
                 {
-                    CreatedUser = JsonSerializer.Deserialize<User>(value);
+                    CreatedUser = ObjectJsonSerializer.DeserializeForPage<User>(value);
                 }
             }
         }

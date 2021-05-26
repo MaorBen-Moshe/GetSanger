@@ -58,8 +58,8 @@ namespace GetSanger.ViewModels.chat
 
         private async void userSelected(object i_Param)
         {
-            ShellPassComplexDataService<User>.ComplexObject = i_Param as User;
-            await r_NavigationService.NavigateTo(ShellRoutes.ChatView);
+            string json = ObjectJsonSerializer.SerializeForPage(i_Param as User);
+            await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"user={json}");
         }
 
         private async void setUsers()

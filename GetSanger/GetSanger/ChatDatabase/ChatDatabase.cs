@@ -56,7 +56,7 @@ namespace GetSanger.ChatDatabase
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     IFile current = await openMessagesDB("Activities");
-                    string json = JsonSerializer.Serialize(usersId);
+                    string json = ObjectJsonSerializer.SerializeForPage(usersId);
                     await current.WriteAllTextAsync(json);
                 });
             }
@@ -78,7 +78,7 @@ namespace GetSanger.ChatDatabase
             MainThread.BeginInvokeOnMainThread(async () =>
             {
                 IFile current = await openMessagesDB("Activities");
-                string json = JsonSerializer.Serialize(usersID);
+                string json = ObjectJsonSerializer.SerializeForPage(usersID);
                 await current.WriteAllTextAsync(json);
             });
         }
@@ -87,7 +87,7 @@ namespace GetSanger.ChatDatabase
         {
             IFile current = await openMessagesDB("Activities");
             string json = await current.ReadAllTextAsync();
-            return JsonSerializer.Deserialize<List<string>>(json);
+            return ObjectJsonSerializer.DeserializeForPage<List<string>>(json);
         }
 
         public async Task<List<Message>> GetItemsAsync(string i_ToID)
@@ -148,7 +148,7 @@ namespace GetSanger.ChatDatabase
             }
             else
             {
-                messages = JsonSerializer.Deserialize<List<Message>>(json);
+                messages = ObjectJsonSerializer.DeserializeForPage<List<Message>>(json);
             }
 
             return messages;
@@ -159,7 +159,7 @@ namespace GetSanger.ChatDatabase
             MainThread.BeginInvokeOnMainThread(async () =>
             {
                 IFile current = await openMessagesDB(i_ToID);
-                string json = JsonSerializer.Serialize(i_Data);
+                string json = ObjectJsonSerializer.SerializeForPage(i_Data);
                 await current.WriteAllTextAsync(json);
             });
         }

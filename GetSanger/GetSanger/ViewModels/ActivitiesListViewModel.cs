@@ -122,8 +122,8 @@ namespace GetSanger.ViewModels
 
         private async void selectedActivity(object i_Param)
         {
-            ShellPassComplexDataService<Activity>.ComplexObject = i_Param as Activity;
-            await r_NavigationService.NavigateTo(ShellRoutes.Activity);
+            string json = ObjectJsonSerializer.SerializeForPage(i_Param as Activity);
+            await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"activity={json}");
         }
 
         private async void setActivities()

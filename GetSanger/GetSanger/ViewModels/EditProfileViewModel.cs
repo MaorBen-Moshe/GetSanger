@@ -19,9 +19,8 @@ namespace GetSanger.ViewModels
         private ImageSource m_ProfileImage;
         private IList<GenderType> m_GenderItems;
         private User m_ConnectedUser;
+        private string m_ClonedUserData;
         private bool m_ValidInput;
-        private PersonalDetails m_SavedPersonalDetails;
-
         #endregion
 
         #region Properties
@@ -84,7 +83,7 @@ namespace GetSanger.ViewModels
         private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
-            m_SavedPersonalDetails = ConnectedUser.PersonalDetails.CloneObject() as PersonalDetails;
+            m_ClonedUserData = ObjectJsonSerializer.SerializeForPage(ConnectedUser);
             ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
         }
 
@@ -96,7 +95,7 @@ namespace GetSanger.ViewModels
                 )
             {
                 await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
-                AppManager.Instance.ConnectedUser.PersonalDetails = m_SavedPersonalDetails; // delete the new changes
+                AppManager.Instance.ConnectedUser = ObjectJsonSerializer.DeserializeForPage<User>(m_ClonedUserData); // delete the new changes
             }
             else
             {
