@@ -16,11 +16,6 @@ namespace GetSanger.ViewModels
     [QueryProperty(nameof(SangerTripId), "sangerId")]
     public class MapViewModel : BaseViewModel
     {
-        #region Events
-        public event Action<bool> LocationPermissionEndsEvent;
-        public event Action<Placemark> SetLocationEvent;
-        #endregion
-
         #region Fields
         private ObservableCollection<Pin> m_Pins;
         private MapSpan m_Span;
@@ -204,7 +199,7 @@ namespace GetSanger.ViewModels
             {
                 await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
                 r_LocationServices.LeaveTripThread(handleTrip);
-                LocationPermissionEndsEvent.Invoke(false);
+                MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
                 await GoBack();
             }
         }
@@ -216,7 +211,7 @@ namespace GetSanger.ViewModels
             bool answer = await r_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
             if (answer)
             {
-                SetLocationEvent?.Invoke(placemark);
+                MessagingCenter.Send(this, Constants.Constants.LocationMessage, placemark);
                 await GoBack();
             }
         }

@@ -124,24 +124,10 @@ namespace GetSanger.ViewModels
             }
 
             IntialCurrentLocation();
-        }
-
-        private void Shell_Navigated(object sender, ShellNavigatedEventArgs e)
-        {
-            bool navigatedToMap = e.Current.Location.OriginalString.Contains(ShellRoutes.Map);
-            if (navigatedToMap)
+            MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage,  (sender, args) =>
             {
-                var currentPage = Application.Current.MainPage;
-                var binding = (currentPage.BindingContext as MapViewModel);
-                binding.SetLocationEvent += setLocation;
-            }
-        }
-
-        private void setCommands()
-        {
-            CurrentLocation = new Command(getCurrentLocation);
-            JobLocation = new Command(getJobLocation);
-            SendJobCommand = new Command(sendJob);
+                setLocation(args);
+            });
         }
 
         public void Disappearing()
@@ -150,6 +136,8 @@ namespace GetSanger.ViewModels
             {
                 Date = DateTime.Now
             };
+
+            MessagingCenter.Unsubscribe<MapViewModel, Placemark>(this, Constants.Constants.LocationMessage);
         }
 
         public async void IntialCurrentLocation()
@@ -163,6 +151,13 @@ namespace GetSanger.ViewModels
 
             Location location = await r_LocationServices.GetCurrentLocation();
             MyPlaceMark = await r_LocationServices.PickedLocation(location);
+        }
+
+        private void setCommands()
+        {
+            CurrentLocation = new Command(getCurrentLocation);
+            JobLocation = new Command(getJobLocation);
+            SendJobCommand = new Command(sendJob);
         }
 
         private void setLocation(Placemark i_PlaceMark)

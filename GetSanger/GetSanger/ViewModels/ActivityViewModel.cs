@@ -90,7 +90,6 @@ namespace GetSanger.ViewModels
         public ActivityViewModel()
         {
             setCommands();
-            Shell.Current.Navigated += Shell_Navigated;
         }
         #endregion
 
@@ -103,22 +102,15 @@ namespace GetSanger.ViewModels
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
                                    AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
                                    ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
-        }
-
-        private void Shell_Navigated(object sender, ShellNavigatedEventArgs e)
-        {
-            bool navigatedToMap = e.Current.Location.OriginalString.Contains(ShellRoutes.Map);
-            if (navigatedToMap)
+            MessagingCenter.Subscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage, (sender, args) =>
             {
-                var currentPage = Application.Current.MainPage;
-                var binding = (currentPage.BindingContext as MapViewModel);
-                binding.LocationPermissionEndsEvent += Binding_LocationPermissionEndsEvent;
-            }
+                IsActivatedLocationButton = args;
+            });
         }
 
-        private void Binding_LocationPermissionEndsEvent(bool obj)
+        public void Disappearing()
         {
-            IsActivatedLocationButton = obj;
+            MessagingCenter.Unsubscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage);
         }
 
         private void setCommands()
