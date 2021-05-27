@@ -126,6 +126,17 @@ namespace GetSanger.ViewModels
             IntialCurrentLocation();
         }
 
+        private void Shell_Navigated(object sender, ShellNavigatedEventArgs e)
+        {
+            bool navigatedToMap = e.Current.Location.OriginalString.Contains(ShellRoutes.Map);
+            if (navigatedToMap)
+            {
+                var currentPage = Application.Current.MainPage;
+                var binding = (currentPage.BindingContext as MapViewModel);
+                binding.SetLocationEvent += setLocation;
+            }
+        }
+
         private void setCommands()
         {
             CurrentLocation = new Command(getCurrentLocation);
@@ -154,7 +165,7 @@ namespace GetSanger.ViewModels
             MyPlaceMark = await r_LocationServices.PickedLocation(location);
         }
 
-        public void SetLocation(Placemark i_PlaceMark)
+        private void setLocation(Placemark i_PlaceMark)
         {
             _ = m_IsMyLocation == true ? MyPlaceMark = i_PlaceMark : JobPlaceMark = i_PlaceMark;
         }
@@ -165,16 +176,14 @@ namespace GetSanger.ViewModels
             bool answer = await r_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
             if (answer)
             {
-                ShellPassComplexDataService<BaseViewModel>.ComplexObject = this;
-                await r_NavigationService.NavigateTo(ShellRoutes.Map);
+                await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
             }
         }
 
         private async void getJobLocation()
         {
             m_IsMyLocation = false;
-            ShellPassComplexDataService<BaseViewModel>.ComplexObject = this;
-            await r_NavigationService.NavigateTo(ShellRoutes.Map);
+            await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
         }
 
         private async void sendJob()

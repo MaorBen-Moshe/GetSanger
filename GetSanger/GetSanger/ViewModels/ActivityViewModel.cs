@@ -90,6 +90,7 @@ namespace GetSanger.ViewModels
         public ActivityViewModel()
         {
             setCommands();
+            Shell.Current.Navigated += Shell_Navigated;
         }
         #endregion
 
@@ -102,6 +103,22 @@ namespace GetSanger.ViewModels
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
                                    AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
                                    ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
+        }
+
+        private void Shell_Navigated(object sender, ShellNavigatedEventArgs e)
+        {
+            bool navigatedToMap = e.Current.Location.OriginalString.Contains(ShellRoutes.Map);
+            if (navigatedToMap)
+            {
+                var currentPage = Application.Current.MainPage;
+                var binding = (currentPage.BindingContext as MapViewModel);
+                binding.LocationPermissionEndsEvent += Binding_LocationPermissionEndsEvent;
+            }
+        }
+
+        private void Binding_LocationPermissionEndsEvent(bool obj)
+        {
+            IsActivatedLocationButton = obj;
         }
 
         private void setCommands()
@@ -185,8 +202,7 @@ namespace GetSanger.ViewModels
             bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
             if (sangerInUser && activated)
             {
-                ShellPassComplexDataService<BaseViewModel>.ComplexObject = this;
-                await r_NavigationService.NavigateTo(ShellRoutes.Map);
+                await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isTrip={true}&isSearch={false}&sangerId={ConnectedActivity.SangerID}");
             }
             else
             {
