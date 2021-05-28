@@ -28,7 +28,6 @@ namespace GetSanger.Services
 
             Uri imageUri = await r_Storage.UploadAndGetCloudFilePath(i_Stream, "ProfilePictures/" + i_User.UserId + ".jpg");
             i_User.ProfilePictureUri = imageUri;
-            await FireStoreHelper.UpdateUser(i_User);
         }
 
         public async void DeleteProfileImage(string i_UserID)

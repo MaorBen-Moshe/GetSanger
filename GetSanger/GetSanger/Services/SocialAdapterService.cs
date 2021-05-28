@@ -22,9 +22,8 @@ namespace GetSanger.Services
                 SetDependencies();
             }
 
-            Dictionary<string, object> details = null;
             m_PopupService.ShowPopup();
-            details = await AuthHelper.LoginWithProvider(i_Provider);
+            Dictionary<string, object> details = await AuthHelper.LoginWithProvider(i_Provider);
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             m_PopupService.HidePopup();
             if (isFirstLoggedin)

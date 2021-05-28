@@ -261,6 +261,7 @@ namespace GetSanger.ViewModels
                 Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
                 if (stream != null)
                 {
+                    CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
                     PersonalImage = ImageSource.FromStream(() => stream);
                     r_StorageHelper.SetUserProfileImage(CreatedUser, stream);
                 }
