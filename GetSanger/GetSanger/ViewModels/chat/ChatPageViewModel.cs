@@ -91,7 +91,7 @@ namespace GetSanger.ViewModels.chat
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>((messages.Select(item => { item.DeleteMessageCommand = DeleteMessageCommand; return item; })).ToList());
-            sendUsentMessages();
+            sendUnsentMessages();
             ShowScrollTap = false;
             DelayedMessages = new Queue<Message>();
             PendingMessageCount = 0;
@@ -141,10 +141,10 @@ namespace GetSanger.ViewModels.chat
 
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            sendUsentMessages();
+            sendUnsentMessages();
         }
 
-        private async void sendUsentMessages()
+        private async void sendUnsentMessages()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet) // there is an internet and there are messages not sent
             {
