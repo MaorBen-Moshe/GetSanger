@@ -225,7 +225,7 @@ namespace GetSanger.ViewModels
         private async void personalDetailPartClicked()
         {
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-            CreatedUser.UserLocation = await RunTaskWhileLoading(r_LocationServices.GetCurrentLocation());
+            CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }
@@ -261,6 +261,7 @@ namespace GetSanger.ViewModels
                 Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
                 if (stream != null)
                 {
+                    CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
                     PersonalImage = ImageSource.FromStream(() => stream);
                     r_StorageHelper.SetUserProfileImage(CreatedUser, stream);
                 }

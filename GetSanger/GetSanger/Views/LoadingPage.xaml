@@ -4,6 +4,7 @@
              x:Class="GetSanger.Views.LoadingPage"
              BackgroundColor="#80000000"
              Title="Loading Screen">
+
     <ContentPage.Content>
         <StackLayout HorizontalOptions="FillAndExpand"
                      VerticalOptions="FillAndExpand">
@@ -16,7 +17,7 @@
                 <StackLayout>
                     <ActivityIndicator IsRunning="True"/>
                     <Label FontAttributes="Bold"
-                           TextColor="AliceBlue"
+                           Text="Loading..."
                            HorizontalOptions="CenterAndExpand"
                            x:Name="loadingText"/>
                 </StackLayout>
