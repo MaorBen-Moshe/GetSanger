@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GetSanger.Models.chat;
-using System.IO;
 using PCLStorage;
-using Xamarin.Forms;
-using System.Text.Json;
 using System.Linq;
 using GetSanger.Services;
 using Xamarin.Essentials;
@@ -32,16 +28,19 @@ namespace GetSanger.ChatDatabase
         public async Task<List<ChatUser>> GetChatUsers()
         {
             List<string> usersId = await GetUsersIDsInDB();
-            List<Task<ChatUser>> taskUsers = usersId.Select(async userID => new ChatUser
+            List<Task<ChatUser>> taskUsers = usersId?.Select(async userID => new ChatUser
             {
                 User = await FireStoreHelper.GetUser(userID),
                 LastMessage = (await GetItemsAsync(userID)).FirstOrDefault().TimeSent
             }).ToList();
 
             List<ChatUser> users = new List<ChatUser>();
-            foreach(var item in taskUsers)
+            if(taskUsers != null)
             {
-                users.Add(item.Result);
+                foreach (var item in taskUsers)
+                {
+                    users.Add(item.Result);
+                }
             }
 
             return users;
@@ -55,7 +54,7 @@ namespace GetSanger.ChatDatabase
                 usersId.Add(i_UserId);
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    IFile current = await openMessagesDB("Activities");
+                    IFile current = await openMessagesDB(Constants.Constants.UsersDB);
                     string json = ObjectJsonSerializer.SerializeForPage(usersId);
                     await current.WriteAllTextAsync(json);
                 });
@@ -70,14 +69,14 @@ namespace GetSanger.ChatDatabase
             usersID.Remove(i_UserID);
             if(usersID.Count == 0)
             {
-                IFile current = await openMessagesDB("Activities");
+                IFile current = await openMessagesDB(Constants.Constants.UsersDB);
                 await current.DeleteAsync();
                 return;
             }
 
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                IFile current = await openMessagesDB("Activities");
+                IFile current = await openMessagesDB(Constants.Constants.UsersDB);
                 string json = ObjectJsonSerializer.SerializeForPage(usersID);
                 await current.WriteAllTextAsync(json);
             });
@@ -85,7 +84,7 @@ namespace GetSanger.ChatDatabase
 
         public async Task<List<string>> GetUsersIDsInDB()
         {
-            IFile current = await openMessagesDB("Activities");
+            IFile current = await openMessagesDB(Constants.Constants.UsersDB);
             string json = await current.ReadAllTextAsync();
             return ObjectJsonSerializer.DeserializeForPage<List<string>>(json);
         }

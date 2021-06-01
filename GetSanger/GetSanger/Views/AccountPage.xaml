@@ -2,19 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
-             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
-             xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.AccountPage">
 
     <ContentPage.BindingContext>
         <vm:AccountViewModel />
     </ContentPage.BindingContext>
-
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converters:SwitchToggledConverter x:Key="SwitchToggledConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <ContentPage.Content>
         <AbsoluteLayout>
@@ -30,18 +22,25 @@
             <Grid AbsoluteLayout.LayoutBounds="0.5,0.25, 0.5, 0.05" 
                   AbsoluteLayout.LayoutFlags="All">
                 <Label Text="Client" Grid.Column="0"
-                       BackgroundColor="#93ff85"
-                       FontAttributes="Bold"/>
-                <Switch IsToggled="False" Grid.Column="1" Scale="1.7">
-                    <Switch.Behaviors>
-                        <behaviors:EventToCommandBehavior Command="{Binding ChangeModeCommand}"
-                                                          EventName="Toggled"
-                                                          Converter="{StaticResource SwitchToggledConverter}"/>
-                    </Switch.Behaviors>
-                </Switch>
-                <Label Text="Sanger" Grid.Column="2"
-                       BackgroundColor="#ffc987"
-                       FontAttributes="Bold"/>
+                       FontAttributes="Bold"
+                       x:Name="ClientLabel">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding ChangeModeCommand}"
+                            CommandParameter="{Binding Source={x:Reference ClientLabel}, Path=Text}">
+                        </TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="Sanger" Grid.Column="1"
+                       FontAttributes="Bold"
+                       x:Name="SangerLabel">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding ChangeModeCommand}"
+                            CommandParameter="{Binding Source={x:Reference SangerLabel}, Path=Text}">
+                        </TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
             </Grid>
 
             <StackLayout AbsoluteLayout.LayoutBounds="0.6, 0.4, 1, 0.1"

@@ -79,7 +79,7 @@ namespace GetSanger.ViewModels
         private async void tryGetPicture(string i_Uri)
         {
             User current = AppManager.Instance.ConnectedUser;
-            if (current.ProfilePictureUri == null && string.IsNullOrWhiteSpace(i_Uri))
+            if (current.ProfilePictureUri == null && !string.IsNullOrWhiteSpace(i_Uri))
             {
                 Uri uri = new Uri(i_Uri);
                 current.ProfilePictureUri = uri;

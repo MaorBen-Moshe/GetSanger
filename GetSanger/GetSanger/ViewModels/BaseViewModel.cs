@@ -23,6 +23,7 @@ namespace GetSanger.ViewModels
         protected readonly LocationService r_LocationServices;
         protected readonly SocialAdapterService r_SocialService;
         protected readonly PopupService r_PopupService;
+        protected readonly RunTasksService r_RunTasks;
         #endregion
 
         #region Properties
@@ -64,6 +65,7 @@ namespace GetSanger.ViewModels
             r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
             r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
             r_PopupService = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
+            r_RunTasks = AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
 
             IsEnabledsendBtn = false;
         }
@@ -75,35 +77,14 @@ namespace GetSanger.ViewModels
             await Shell.Current.GoToAsync(m_DefaultBackUri);
         }
 
-        public async Task RunTaskWhileLoading(Task i_InnerTask, ContentPage i_OptionalLoading = null)
+        public Task RunTaskWhileLoading(Task i_InnerTask, ContentPage i_OptionalLoading = null)
         {
-            try
-            {
-                r_PopupService.ShowPopup(i_OptionalLoading);
-                await i_InnerTask;
-                r_PopupService.HidePopup(i_OptionalLoading?.GetType());
-            }
-            catch (Exception ex)
-            {
-                r_PopupService.HidePopup();
-                throw ex;
-            }
+            return r_RunTasks.RunTaskWhileLoading(i_InnerTask, i_OptionalLoading);
         }
 
-        public async Task<T> RunTaskWhileLoading<T>(Task<T> i_InnerTask, ContentPage i_OptionalLoading = null)
+        public Task<T> RunTaskWhileLoading<T>(Task<T> i_InnerTask, ContentPage i_OptionalLoading = null)
         {
-            try
-            {
-                r_PopupService.ShowPopup(i_OptionalLoading);
-                T result = await i_InnerTask;
-                r_PopupService.HidePopup(i_OptionalLoading?.GetType());
-                return result;
-            }
-            catch (Exception ex)
-            {
-                r_PopupService.HidePopup();
-                throw ex;
-            }
+            return r_RunTasks.RunTaskWhileLoading<T>(i_InnerTask, i_OptionalLoading);
         }
 
         public abstract void Appearing();
