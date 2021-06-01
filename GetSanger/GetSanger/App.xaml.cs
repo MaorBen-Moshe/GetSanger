@@ -13,15 +13,12 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            try
-            {
-                LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
-                login.TryAutoLogin();
-            }
-            catch(Exception e)
-            {
-                // handle unhandled exceptions here
-            }
+            AuthHelper.SignOut();
+
+            LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
+            login.TryAutoLogin();
+            //MainPage = new AuthShell(); // for testing
+            //MainPage = new Views.AccountPage();
         }
 
         protected override void OnStart()
