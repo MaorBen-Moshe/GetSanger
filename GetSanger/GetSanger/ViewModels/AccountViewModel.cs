@@ -5,8 +5,6 @@ using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -99,15 +97,11 @@ namespace GetSanger.ViewModels
 
         private void changeMode(object i_Param)
         {
-            // may be in the shell code;
-            //AppManager.Instance.CurrentMode = AppManager.Instance.CurrentMode.Equals(AppMode.Client) ? AppMode.Sanger : AppMode.Client;
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            string labelText = i_Param as string;
+            bool isValidMode = Enum.TryParse(labelText, out AppMode mode);
+            if (isValidMode)
             {
-                Application.Current.MainPage = new SangerShell();
-            }
-            else
-            {
-                Application.Current.MainPage = new UserShell();
+                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
             }
         }
 

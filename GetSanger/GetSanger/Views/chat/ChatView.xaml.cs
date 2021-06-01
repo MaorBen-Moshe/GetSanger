@@ -18,6 +18,12 @@ namespace GetSanger.Views.chat
             base.OnAppearing();
         }
 
+        protected override void OnDisappearing()
+        {
+            (BindingContext as ChatPageViewModel).Disappearing();
+            base.OnDisappearing();
+        }
+
         public void ScrollTap(object sender, System.EventArgs e)
         {
             lock (new object())

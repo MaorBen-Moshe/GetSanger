@@ -1,4 +1,5 @@
-﻿using GetSanger.ViewModels;
+﻿using GetSanger.Services;
+using GetSanger.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace GetSanger.Views
         protected override void OnAppearing()
         {
             (BindingContext as BaseViewModel).Appearing();
+            Label label = AppManager.Instance.CurrentMode.Equals(AppMode.Client) ? ClientLabel : SangerLabel;
+            label.BackgroundColor = Color.Red;
             base.OnAppearing();
         }
     }

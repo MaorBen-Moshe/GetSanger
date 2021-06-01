@@ -5,7 +5,7 @@
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
              x:Class="GetSanger.AppShell.UserShell">
 
-    <TabBar Shell.NavBarIsVisible="False">
+    <TabBar>
         <Tab Title="Account"
              Route="account">
             <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
