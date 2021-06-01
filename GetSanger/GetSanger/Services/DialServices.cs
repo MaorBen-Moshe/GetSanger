@@ -1,7 +1,6 @@
 ﻿using GetSanger.Exceptions;
 using GetSanger.Interfaces;
 using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -72,7 +71,8 @@ namespace GetSanger.Services
 
         public bool IsValidPhone(string i_Phone)
         {
-            return Regex.Match(i_Phone, @"^(\+[0-9])$").Success;
+            // need to find good validation
+            return true;
         }
 
         public override void SetDependencies()

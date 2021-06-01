@@ -3,7 +3,8 @@ using GetSanger.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GetSanger.ChatDatabase;
+using GetSanger.AppShell;
+using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
@@ -11,13 +12,28 @@ namespace GetSanger.Services
 
     public sealed class AppManager
     {
+        private UserShell m_UserShell;
+        private SangerShell m_SangerShell;
+        private User m_User;
+
         public event Action Refresh_Event;
 
         public static AppManager Instance { get => Singleton<AppManager>.Instance; }
 
         public AppMode CurrentMode { get; set; }
 
-        public User ConnectedUser { get; set; }
+        public User ConnectedUser
+        {
+            get => m_User;
+            set
+            {
+                m_User = value;
+                if(m_User?.LastUserMode != null)
+                {
+                    CurrentMode = (AppMode)m_User.LastUserMode;
+                }
+            }
+        }
 
         public SignUpPageViewModel SignUpVM { get; set; }
 
@@ -31,6 +47,38 @@ namespace GetSanger.Services
         public IList<string> GetListOfEnumNames(Type i_EnumType)
         {
             return (from name in i_EnumType.GetEnumNames() select name).ToList();
+        }
+
+        public void RefreshAppManager()
+        {
+            setAppManager();
+            Services.SetDependencies();
+            Refresh_Event?.Invoke();
+        }
+
+        public Shell GetCurrentShell(AppMode? i_Mode = null)
+        {
+            AppMode mode = i_Mode != null ? (AppMode)i_Mode : CurrentMode;
+            updateMode(i_Mode);
+            Shell toRet = mode switch
+            {
+                AppMode.Client => m_UserShell,
+                AppMode.Sanger => m_SangerShell,
+                _ => null,
+            };
+
+            return toRet;
+        }
+
+        private async void updateMode(AppMode? i_Mode)
+        {
+            if(i_Mode != null)
+            {
+                AppMode mode = (AppMode)i_Mode;
+                CurrentMode = mode;
+                ConnectedUser.LastUserMode = mode;
+                await FireStoreHelper.UpdateUser(ConnectedUser);
+            }
         }
 
         private void setAppManager()
@@ -47,13 +95,10 @@ namespace GetSanger.Services
             Services.Add(typeof(PhotoDisplayService), new PhotoDisplayService());
             Services.Add(typeof(SocialAdapterService), new SocialAdapterService());
             Services.Add(typeof(PopupService), new PopupService());
-        }
+            Services.Add(typeof(RunTasksService), new RunTasksService());
 
-        public void RefreshAppManager()
-        {
-            setAppManager();
-            Services.SetDependencies();
-            Refresh_Event?.Invoke();
+            m_UserShell = new UserShell();
+            m_SangerShell = new SangerShell();
         }
     }
 }

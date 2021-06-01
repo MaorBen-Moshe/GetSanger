@@ -5,7 +5,7 @@
              xmlns:views="clr-namespace:GetSanger.Views"
              x:Class="GetSanger.AppShell.SangerShell">
     
-    <TabBar Shell.NavBarIsVisible="False">
+    <TabBar>
         <Tab Title="Account"
              Route="account">
             <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />

@@ -37,10 +37,9 @@
                 </TableSection>
                 <TableSection Title="Details">
                     <EntryCell Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" Placeholder="Name" />
-                    <EntryCell Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Phone number"/>
+                    <EntryCell Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" Keyboard="Telephone"  Placeholder="Phone number"/>
                     <ViewCell>
-                        <DatePicker Date="{Binding ConnectedUser.PersonalDetails.Birthday, Mode=TwoWay}"
-                                            Format="dd mm yy"/>
+                        <DatePicker Date="{Binding ConnectedUser.PersonalDetails.Birthday, StringFormat='{dd/MM/yyyy}'}"/>
                     </ViewCell>
                     <ViewCell>
                         <Picker ItemsSource="{Binding GenderItems}" 

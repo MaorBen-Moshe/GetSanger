@@ -20,6 +20,8 @@ namespace GetSanger.Constants
 
         public static string ActivatedLocationMessage = "ActivatedLocation";
 
+        public static string UsersDB = "UsersFile";
+
        // public static int MaxDescriptionEditorLength = 100;
     }
 }
