@@ -43,12 +43,12 @@
                 </Label>
             </Grid>
 
-            <StackLayout AbsoluteLayout.LayoutBounds="0.6, 0.4, 1, 0.1"
+            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.4, 1, 0.4"
                          AbsoluteLayout.LayoutFlags="All">
-                <Button Text="Edit Profile" Command="{Binding EditProfileCommand}"/>
-                <Button Text="Settings" Command="{Binding SettingCommand}"/>
-                <Button Text="Link Account with Social Networks" Command="{Binding LinkSocialCommand}" />
-            </StackLayout>
+                <Button Text="Edit Profile" Command="{Binding EditProfileCommand}" Grid.Row="0"/>
+                <Button Text="Settings" Command="{Binding SettingCommand}" Grid.Row="1"/>
+                <Button Text="Link Account with Social Networks" Command="{Binding LinkSocialCommand}" Grid.Row="2"/>
+            </Grid>
             
             <Button Text="Logout" 
                     FontSize="Large"

@@ -30,7 +30,8 @@ namespace GetSanger.Services
         public void HidePopup(Type i_PageType = null)
         {
             i_PageType ??= typeof(LoadingPage);
-            if (m_PopupService.CurrentShownPage.GetType().Equals(i_PageType))
+            Page currentShown = m_PopupService?.CurrentShownPage;
+            if (currentShown != null && currentShown.GetType().Equals(i_PageType))
             {
                 m_PopupService.HidePopupPage();
             }
