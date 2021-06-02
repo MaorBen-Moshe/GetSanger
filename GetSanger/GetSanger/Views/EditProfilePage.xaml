@@ -39,7 +39,10 @@
                 <TableSection Title="Details">
                     <EntryCell Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" Placeholder="Name" />
                     <ViewCell>
-                        <Entry Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" Keyboard="Telephone"  Placeholder="Phone number">
+                        <Entry Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" 
+                               Keyboard="Telephone" 
+                               Placeholder="Phone number"
+                               Margin="20">
                             <Entry.Behaviors>
                                 <behaviors:PhoneNumberMaskBehavior />
                                 <behaviors:PhoneEntryLengthValidator MaxLength="11"/>

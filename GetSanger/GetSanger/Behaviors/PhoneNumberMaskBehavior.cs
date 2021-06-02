@@ -23,14 +23,14 @@ namespace GetSanger.Behaviors
         {
             if (!string.IsNullOrWhiteSpace(args.NewTextValue))
             {
-                // If the new value is longer than the old value, the user is  
                 if (args.OldTextValue != null && args.NewTextValue.Length < args.OldTextValue.Length)
                 {
                     return;
                 }
-                    
-                var value = args.NewTextValue;
-                if (value.Length == 3)
+
+                var newValue = args.NewTextValue;
+                var oldValue = args.OldTextValue;
+                if (newValue.Length == 3 || (oldValue != null && oldValue.Length == 3 && newValue.Length == 4))
                 {
                     ((Entry)sender).Text += "-";
                     return;
