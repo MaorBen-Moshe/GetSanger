@@ -31,9 +31,9 @@
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" />
                     <Button Text="Get Location" Grid.Column="2" Command="{Binding CurrentLocation}"
-                            CornerRadius="20"
                             IsVisible="{Binding IsCreate}"
-                            IsEnabled="{Binding IsCreate}"/>
+                            IsEnabled="{Binding IsCreate}"
+                            FontSize="14"/>
                 </Grid>
 
                 <Grid>
@@ -43,9 +43,9 @@
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" />
                     <Button Text="Get Location" Grid.Column="2" Command="{Binding JobLocation}"
-                            CornerRadius="20"
                             IsVisible="{Binding IsCreate}"
-                            IsEnabled="{Binding IsCreate}"/>
+                            IsEnabled="{Binding IsCreate}"
+                            FontSize="14"/>
                 </Grid>
 
                 <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone" IsEnabled="{Binding IsCreate}"/>
