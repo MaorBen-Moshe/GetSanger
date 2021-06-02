@@ -15,9 +15,9 @@ namespace GetSanger
             AuthHelper.SignOut();
 
             LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
-            //login.TryAutoLogin();
+            login.TryAutoLogin();
             //MainPage = new AuthShell(); // for testing
-            MainPage = new Views.AccountPage();
+            //MainPage = new Views.AccountPage();
         }
 
         protected override void OnStart()
