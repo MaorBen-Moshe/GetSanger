@@ -3,6 +3,7 @@ using Xamarin.Essentials;
 using GetSanger.Interfaces;
 using GetSanger.Views;
 using GetSanger.Services;
+using System;
 
 namespace GetSanger
 {
@@ -16,8 +17,6 @@ namespace GetSanger
 
             LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             login.TryAutoLogin();
-            //MainPage = new AuthShell(); // for testing
-            //MainPage = new Views.AccountPage();
         }
 
         protected override void OnStart()

@@ -54,7 +54,7 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Format="dd MMM yyyy" Date="{Binding NewJobOffer.Date}" Grid.Column="1" IsEnabled="{Binding IsCreate}"/>
+                    <DatePicker Date="{Binding NewJobOffer.Date, StringFormat='{0:dd/MM/yyyy}'}" Grid.Column="1" IsEnabled="{Binding IsCreate}"/>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"

@@ -16,6 +16,12 @@ namespace GetSanger.Constants
 
         public static string FirebaseStorage = "gs://get-sanger.appspot.com";
 
+        public static string LocationMessage = "Location";
+
+        public static string ActivatedLocationMessage = "ActivatedLocation";
+
+        public static string UsersDB = "UsersFile";
+
        // public static int MaxDescriptionEditorLength = 100;
     }
 }

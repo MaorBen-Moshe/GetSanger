@@ -41,7 +41,7 @@ namespace GetSanger.Models
         {
             if (!(obj is PersonalDetails))
             {
-                throw new ArgumentException("Must provide a valid PersonalDetails object");
+                return false;
             }
 
             PersonalDetails other = obj as PersonalDetails;

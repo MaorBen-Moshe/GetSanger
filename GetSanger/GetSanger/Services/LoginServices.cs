@@ -13,6 +13,7 @@ namespace GetSanger.Services
     public class LoginServices : Service
     {
         private NavigationService m_NavigationService;
+        private RunTasksService m_RunTasks;
 
         public LoginServices()
         {
@@ -20,11 +21,7 @@ namespace GetSanger.Services
 
         public async void TryAutoLogin()
         {
-            if(m_NavigationService == null)
-            {
-                SetDependencies();
-            }
-
+            SetDependencies();
             if (AuthHelper.IsLoggedIn())
             {
                 string userId = AuthHelper.GetLoggedInUserId();
@@ -35,29 +32,24 @@ namespace GetSanger.Services
                     AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
                     if (mode == null)
                     {
-                        await new NavigationService().NavigateTo(ShellRoutes.ModePage);
+                        await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
                     }
                     else
                     {
                         AppManager.Instance.CurrentMode = (AppMode)mode;
-                        switch ((AppMode)mode)
-                        {
-                            case AppMode.Client: Application.Current.MainPage = new UserShell(); break;
-                            case AppMode.Sanger: Application.Current.MainPage = new SangerShell(); break;
-                        }
+                        Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
                     }
 
                     return;
                 }
                 else
                 {
-                    AppManager.Instance.SignUpVM ??= new SignUpPageViewModel();
-                    AppManager.Instance.SignUpVM.UserJson = JsonSerializer.Serialize(AppManager.Instance.ConnectedUser);
+                    string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
                     Application.Current.MainPage = new AuthShell();
-                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}");
+                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}&userJson={json}");
                 }
             }
-            else // 
+            else
             {
                 Application.Current.MainPage = new AuthShell();
             }
@@ -65,25 +57,27 @@ namespace GetSanger.Services
 
         public async void LoginUser(AppMode? i_Mode = null)
         {
+            SetDependencies();
+
             try
             {
-                User user = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
+                User user = await m_RunTasks.RunTaskWhileLoading(FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId()));
                 if(user != null)
                 {
                     AppManager.Instance.ConnectedUser = user;
                     if (i_Mode != null) // we are here from mode page or from auto login
                     {
-                        chooseModeHelper((AppMode)i_Mode);
+                        SetMode((AppMode)i_Mode);
                     }
                     else // we are here from login page
                     {
                         if (user.LastUserMode == null)
                         {
-                            await new NavigationService().NavigateTo(ShellRoutes.ModePage);
+                            await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
                         }
                         else
                         {
-                            chooseModeHelper((AppMode)user.LastUserMode);
+                            SetMode();
                         }
                     }
                 }
@@ -94,32 +88,21 @@ namespace GetSanger.Services
             }
         }
 
-        public async void SetMode(AppMode i_Mode, Shell i_ChosenShell)
+        public async void SetMode(AppMode? i_Mode = null)
         {
-            if (await AuthHelper.IsVerifiedEmail() == false)
+            bool verified = await AuthHelper.IsVerifiedEmail();
+            if (verified == false)
             {
                 throw new Exception("Please verify your email address to continue!");
             }
 
-            AppManager.Instance.CurrentMode = i_Mode;
-            AppManager.Instance.ConnectedUser.LastUserMode = i_Mode;
-            await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-            Application.Current.MainPage = i_ChosenShell;
-        }
-
-        private void chooseModeHelper(AppMode i_Mode)
-        {
-            switch (i_Mode)
-            {
-                case AppMode.Client: SetMode(i_Mode, new UserShell()); break;
-                case AppMode.Sanger: SetMode(i_Mode, new SangerShell()); break;
-                default: break;
-            }
+            Application.Current.MainPage = AppManager.Instance.GetCurrentShell(i_Mode);
         }
 
         public override void SetDependencies()
         {
-            m_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            m_RunTasks ??= AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
         }
     }
 }

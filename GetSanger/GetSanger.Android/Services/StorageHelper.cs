@@ -15,17 +15,25 @@ namespace GetSanger.Droid.Services
         {
             StorageReference storageReference = FirebaseStorage.Instance.Reference;
             StorageReference pathReference = storageReference.Child(i_Path);
-            await pathReference.DeleteAsync();
+            await pathReference?.DeleteAsync();
         }
 
         public async Task<Uri> UploadAndGetCloudFilePath(Stream i_ToUpload, string i_PathToUpload)
         {
-            StorageReference storageReference = FirebaseStorage.Instance.Reference;
-            StorageReference pathReference = storageReference.Child(i_PathToUpload);
-            Android.Gms.Tasks.Task task = pathReference.PutStream(i_ToUpload);
-            Android.Net.Uri auri = await pathReference.GetDownloadUrlAsync();
-            Uri uri = new Uri(auri.Path);
-            return uri;
+            try
+            {
+                StorageReference storageReference = FirebaseStorage.Instance.Reference;
+                StorageReference pathReference = storageReference.Child(i_PathToUpload);
+                Android.Gms.Tasks.Task task = pathReference.PutStream(i_ToUpload);
+                while (task.IsComplete != true);
+                Android.Net.Uri auri = await pathReference.GetDownloadUrlAsync();
+                Uri uri = new Uri(auri.Path);
+                return uri;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

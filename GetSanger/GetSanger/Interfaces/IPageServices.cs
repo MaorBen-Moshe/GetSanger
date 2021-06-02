@@ -8,12 +8,8 @@ namespace GetSanger.Interfaces
 {
     public interface IPageService
     {
-        Task PushAsync(Page i_Page);
-
         Task<bool> DisplayAlert(string i_Title, string i_Message, string i_Accept, string i_Cancel = null);
 
         Task<string> DisplayActionSheet(string i_Title, string i_Cancel, string i_Distruction, params string[] i_Buttons);
-
-        Task PopAsync();
     }
 }

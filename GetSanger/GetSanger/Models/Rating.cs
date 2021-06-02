@@ -45,7 +45,7 @@ namespace GetSanger.Models
         {
             if (!(obj is Rating))
             {
-                throw new ArgumentException("Argument is not of type rating");
+                return false;
             }
 
             Rating other = obj as Rating;

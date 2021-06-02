@@ -11,6 +11,9 @@ using Xamarin.Forms.GoogleMaps;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(IsTrip), "isTrip")]
+    [QueryProperty(nameof(IsSearch), "isSearch")]
+    [QueryProperty(nameof(SangerTripId), "sangerId")]
     public class MapViewModel : BaseViewModel
     {
         #region Fields
@@ -18,10 +21,10 @@ namespace GetSanger.ViewModels
         private MapSpan m_Span;
         private bool m_IsSearch;
         private bool m_IsTrip;
+        private string m_SangerTripId;
         #endregion
 
         #region Properties
-        private BaseViewModel ConnecetedPage { get; set; }
 
         public ObservableCollection<Pin> Pins
         {
@@ -45,6 +48,12 @@ namespace GetSanger.ViewModels
         {
             get => m_IsTrip;
             set => SetStructProperty(ref m_IsTrip, value);
+        }
+
+        public string SangerTripId
+        {
+            get => m_SangerTripId;
+            set => SetClassProperty(ref m_SangerTripId, value);
         }
         #endregion
 
@@ -71,10 +80,7 @@ namespace GetSanger.ViewModels
 
         public override async void Appearing()
         {
-            ConnecetedPage = ShellPassComplexDataService<BaseViewModel>.ComplexObject;
             createMapSpan();
-            IsSearch = ConnecetedPage is JobOfferViewModel;
-            IsTrip = ConnecetedPage is ActivityViewModel;
             if (IsSearch)
             {
                 await r_PageService.DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK");
@@ -127,7 +133,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser((ConnecetedPage as ActivityViewModel).ConnectedActivity.SangerID));
+                User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(SangerTripId));
                 r_DialService.PhoneNumber = sanger.PersonalDetails.Phone; // check for null value
                 r_DialService.Call();
             }
@@ -177,8 +183,7 @@ namespace GetSanger.ViewModels
         // handler to handle the client asking for location from sanger
         private async void handleTrip(object sender, System.Timers.ElapsedEventArgs e)
         {
-            var activity = (ConnecetedPage as ActivityViewModel).ConnectedActivity;
-            User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(activity.SangerID));
+            User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(SangerTripId));
             Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
             Span = new MapSpan(position, 0.01, 0.01);
             Pins.Clear();
@@ -186,7 +191,7 @@ namespace GetSanger.ViewModels
             {
                 Type = PinType.Generic,
                 Position = Span.Center,
-                Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpej")
+                Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg")
             });
 
             // when sanger is near to us we want to stop asking for location, 0.3 kilometers
@@ -194,7 +199,7 @@ namespace GetSanger.ViewModels
             {
                 await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
                 r_LocationServices.LeaveTripThread(handleTrip);
-                (ConnecetedPage as ActivityViewModel).IsActivatedLocationButton = false;
+                MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
                 await GoBack();
             }
         }
@@ -206,8 +211,8 @@ namespace GetSanger.ViewModels
             bool answer = await r_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
             if (answer)
             {
-                (ConnecetedPage as JobOfferViewModel).SetLocation(placemark);
-                await r_PageService.PopAsync();
+                MessagingCenter.Send(this, Constants.Constants.LocationMessage, placemark);
+                await GoBack();
             }
         }
 

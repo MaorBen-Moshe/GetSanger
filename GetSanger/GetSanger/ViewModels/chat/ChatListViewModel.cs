@@ -58,15 +58,15 @@ namespace GetSanger.ViewModels.chat
 
         private async void userSelected(object i_Param)
         {
-            ShellPassComplexDataService<User>.ComplexObject = i_Param as User;
-            await r_NavigationService.NavigateTo(ShellRoutes.ChatView);
+            string json = ObjectJsonSerializer.SerializeForPage(i_Param as User);
+            await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"user={json}");
         }
 
         private async void setUsers()
         {
             ChatDatabase.ChatDatabase database = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
             List<ChatUser> users = await database.GetChatUsers();
-            Users = new ObservableCollection<ChatUser>(users.OrderBy(user => user.LastMessage));
+            Users = new ObservableCollection<ChatUser>(users?.OrderBy(user => user.LastMessage));
         }
         #endregion
     }

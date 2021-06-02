@@ -35,6 +35,7 @@ namespace GetSanger.ViewModels
         #region Commands
 
         public ICommand ProviderSelectedCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
 
         #endregion
 
@@ -56,6 +57,16 @@ namespace GetSanger.ViewModels
         private void setCommands()
         {
             ProviderSelectedCommand = new Command(providerSelected);
+            CancelCommand = new Command(cancel);
+        }
+
+        private async void cancel()
+        {
+            bool answer = await r_PageService.DisplayAlert("Note", "Are you sure?", "Yes", "No");
+            if (answer)
+            {
+                r_PopupService.HidePopup(typeof(LinkProviderPage));
+            }
         }
 
         private async void providerSelected(object i_Param)
@@ -79,7 +90,7 @@ namespace GetSanger.ViewModels
         private async void tryGetPicture(string i_Uri)
         {
             User current = AppManager.Instance.ConnectedUser;
-            if (current.ProfilePictureUri == null && string.IsNullOrWhiteSpace(i_Uri))
+            if (current.ProfilePictureUri == null && !string.IsNullOrWhiteSpace(i_Uri))
             {
                 Uri uri = new Uri(i_Uri);
                 current.ProfilePictureUri = uri;

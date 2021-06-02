@@ -72,7 +72,10 @@ namespace GetSanger.Services
 
         public bool IsValidPhone(string i_Phone)
         {
-            return Regex.Match(i_Phone, @"^(\+[0-9])$").Success;
+            string validateString = i_Phone.Replace("-", "");
+            Regex pattern = new Regex(@"(?<!\d)\d{10}(?!\d)");
+            bool match = pattern.IsMatch(validateString) && validateString.Length == 10;
+            return match;
         }
 
         public override void SetDependencies()

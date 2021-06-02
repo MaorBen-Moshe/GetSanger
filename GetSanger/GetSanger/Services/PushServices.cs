@@ -22,7 +22,7 @@ namespace GetSanger.Services
             i_Message = user.IsGenericNotifications ? i_Message : null;
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPushToToken";
 
-            string dataJson = JsonSerializer.Serialize(i_Data);
+            string dataJson = ObjectJsonSerializer.SerializeForServer(i_Data);
             Dictionary<string, string> data = null;
             if(i_Data != null)
             {
@@ -42,7 +42,7 @@ namespace GetSanger.Services
                 ["Title"] = i_Title
             };
 
-            string json = JsonSerializer.Serialize(pushData);
+            string json = ObjectJsonSerializer.SerializeForServer(pushData);
             string idToken = await AuthHelper.GetIdTokenAsync();
 
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
@@ -63,7 +63,7 @@ namespace GetSanger.Services
                 ["Topics"] = i_Topics
             };
 
-            string json = JsonSerializer.Serialize(pushData);
+            string json = ObjectJsonSerializer.SerializeForServer(pushData);
             string idToken = await AuthHelper.GetIdTokenAsync();
 
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
@@ -84,7 +84,7 @@ namespace GetSanger.Services
                 ["Topics"] = i_Topics
             };
 
-            string json = JsonSerializer.Serialize(pushData);
+            string json = ObjectJsonSerializer.SerializeForServer(pushData);
             string idToken = await AuthHelper.GetIdTokenAsync();
 
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
@@ -127,7 +127,7 @@ namespace GetSanger.Services
 
         private async static void handleMessage(string i_Json)
         {
-            Message message = JsonSerializer.Deserialize<Message>(i_Json);
+            Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             ChatDatabase.ChatDatabase db = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
             checkIfFirstMessageReceived(message, db);
             await db.SaveItemAsync(message, message.FromId);
@@ -154,14 +154,14 @@ namespace GetSanger.Services
 
         private async static void handleActivity(string i_Json)
         {
-            Activity activity = JsonSerializer.Deserialize<Activity>(i_Json);
+            Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
         }
 
         private async static void handleJobOffer(string i_Json)
         {
-            JobOffer job = JsonSerializer.Deserialize<JobOffer>(i_Json);
+            JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             await navigation.NavigateTo(ShellRoutes.JobOffer + $"?jobOffer={job}&isCreate={false}&category={job.Category}");
         }

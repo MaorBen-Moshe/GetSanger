@@ -15,6 +15,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
+    [QueryProperty(nameof(UserJson), "userJson")]
     [QueryProperty(nameof(IsFacebookGmail), "isFacebookGmail")]
     public class SignUpPageViewModel : LoginViewModel
     {
@@ -104,7 +105,7 @@ namespace GetSanger.ViewModels
             {
                 if(string.IsNullOrWhiteSpace(value) == false)
                 {
-                    CreatedUser = JsonSerializer.Deserialize<User>(value);
+                    CreatedUser = ObjectJsonSerializer.DeserializeForPage<User>(value);
                 }
             }
         }
@@ -154,44 +155,39 @@ namespace GetSanger.ViewModels
             }
             else
             {
-                bool answer =
-              await r_PageService.DisplayAlert("Warning", "Are you sure?\n any detail will be lost.", "Yes", "No");
-                if (answer)
+                CreatedUser = new User();
+                PropertyInfo[] properties = GetType()
+                    .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+                foreach (var property in properties)
                 {
-                    CreatedUser = new User();
-                    PropertyInfo[] properties = GetType()
-                        .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-                    foreach (var property in properties)
+                    if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(GenderItems)))
                     {
-                        if (property.PropertyType.Equals(typeof(ICommand)) || property.Name.Equals(nameof(GenderItems)))
+                        continue;
+                    }
+                    else if (IsFacebookGmail && (property.Name.Equals(nameof(Email)) ||
+                                                 property.Name.Equals(nameof(Password)) ||
+                                                 property.Name.Equals(nameof(ConfirmPassword))))
+                    {
+                        continue;
+                    }
+                    else if (property.Name.Equals(nameof(CategoriesItems)))
+                    {
+                        foreach (var cell in CategoriesItems)
                         {
-                            continue;
-                        }
-                        else if (IsFacebookGmail && (property.Name.Equals(nameof(Email)) ||
-                                                     property.Name.Equals(nameof(Password)) ||
-                                                     property.Name.Equals(nameof(ConfirmPassword))))
-                        {
-                            continue;
-                        }
-                        else if (property.Name.Equals(nameof(CategoriesItems)))
-                        {
-                            foreach (var cell in CategoriesItems)
-                            {
-                                cell.Checked = false;
-                            }
-
-                            continue;
-                        }
-                        else if (CreatedUser?.ProfilePictureUri != null)
-                        {
-                            r_StorageHelper.DeleteProfileImage(CreatedUser.UserId);
+                            cell.Checked = false;
                         }
 
-                        property.SetValue(this, null);
+                        continue;
+                    }
+                    else if (CreatedUser?.ProfilePictureUri != null)
+                    {
+                        r_StorageHelper.DeleteProfileImage(CreatedUser.UserId);
                     }
 
-                    await GoBack();
+                    property.SetValue(this, null);
                 }
+
+                await GoBack();
             }
         }
 
@@ -224,7 +220,7 @@ namespace GetSanger.ViewModels
         private async void personalDetailPartClicked()
         {
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-            CreatedUser.UserLocation = await RunTaskWhileLoading(r_LocationServices.GetCurrentLocation());
+            CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }
@@ -260,6 +256,7 @@ namespace GetSanger.ViewModels
                 Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
                 if (stream != null)
                 {
+                    CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
                     PersonalImage = ImageSource.FromStream(() => stream);
                     r_StorageHelper.SetUserProfileImage(CreatedUser, stream);
                 }

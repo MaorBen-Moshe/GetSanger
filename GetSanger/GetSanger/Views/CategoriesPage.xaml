@@ -28,10 +28,12 @@
 
             <CollectionView ItemsSource="{Binding CategoriesItems}"
                             SelectionMode="Single">
-                <CollectionView.Behaviors>
-                    <behaviors:EventToCommandBehavior Command="{Binding CategorySelectedCommand}"
-                                                      EventName=""/>
-                </CollectionView.Behaviors>
+                <CollectionView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CategorySelectedCommand}"
+                                          CommandParameter="{Binding .}">
+                    </TapGestureRecognizer>
+                </CollectionView.GestureRecognizers>
+               
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal">

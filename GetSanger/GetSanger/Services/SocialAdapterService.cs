@@ -22,15 +22,15 @@ namespace GetSanger.Services
                 SetDependencies();
             }
 
-            Dictionary<string, object> details = null;
             m_PopupService.ShowPopup();
-            details = await AuthHelper.LoginWithProvider(i_Provider);
+            Dictionary<string, object> details = await AuthHelper.LoginWithProvider(i_Provider);
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             m_PopupService.HidePopup();
             if (isFirstLoggedin)
             {
-                AppManager.Instance.SignUpVM.UserJson = JsonSerializer.Serialize(getDetails(details));
-                string route = $"{ShellRoutes.SignupPersonalDetails}?isFacebookGmail={true}";
+                string json = ObjectJsonSerializer.SerializeForPage(getDetails(details));
+                //AppManager.Instance.SignUpVM.UserJson = ObjectJsonSerializer.SerializeForServer(getDetails(details));
+                string route = $"{ShellRoutes.SignupPersonalDetails}?isFacebookGmail={true}&userJson={json}";
                 await m_NavigationService.NavigateTo(route);
             }
             else

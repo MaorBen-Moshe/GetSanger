@@ -11,6 +11,7 @@ using Xamarin.Essentials;
 
 namespace GetSanger.ViewModels.chat
 {
+    [QueryProperty(nameof(UserJson), "user")]
     public class ChatPageViewModel : BaseViewModel
     {
         #region Fields
@@ -32,6 +33,14 @@ namespace GetSanger.ViewModels.chat
         {
             get => m_UserToChat;
             set => SetClassProperty(ref m_UserToChat, value);
+        }
+
+        public string UserJson
+        {
+            set
+            {
+                UserToChat = ObjectJsonSerializer.DeserializeForPage<User>(value);
+            }
         }
 
         public bool ShowScrollTap
@@ -78,12 +87,11 @@ namespace GetSanger.ViewModels.chat
         #region Methods
         public async override void Appearing()
         {
-            UserToChat = ShellPassComplexDataService<User>.ComplexObject;
             DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>((messages.Select(item => { item.DeleteMessageCommand = DeleteMessageCommand; return item; })).ToList());
-            sendUsentMessages();
+            sendUnsentMessages();
             ShowScrollTap = false;
             DelayedMessages = new Queue<Message>();
             PendingMessageCount = 0;
@@ -133,10 +141,10 @@ namespace GetSanger.ViewModels.chat
 
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            sendUsentMessages();
+            sendUnsentMessages();
         }
 
-        private async void sendUsentMessages()
+        private async void sendUnsentMessages()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet) // there is an internet and there are messages not sent
             {
