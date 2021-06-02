@@ -148,7 +148,7 @@ namespace GetSanger.Services
 
         public static async Task<Dictionary<string, object>> LoginWithProvider(SocialProvider i_Provider)
         {
-            if(Connectivity.NetworkAccess == NetworkAccess.Internet)
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 Dictionary<string, string> requestDictionary = new Dictionary<string, string>();
 
@@ -185,10 +185,21 @@ namespace GetSanger.Services
                         ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
                     string customToken = responseDictionary["customToken"] as string;
 
+                    if (responseDictionary.ContainsKey("needConfirmation"))
+                    {
+                        bool needConfirmation = (bool) responseDictionary["needConfirmation"];
+
+                        if (needConfirmation)
+                        {
+                            throw new Exception(
+                                "Another account with the same email already exists. You need to sign in to the original account and then link the current credential to it.");
+                        }
+                    }
+
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
-                    bool isEmailVerified = (bool)responseDictionary["emailVerified"];
+                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
                     if (!isEmailVerified)
                     {
                         await SendVerificationEmail();
@@ -292,8 +303,9 @@ namespace GetSanger.Services
 
                         HttpResponseMessage response = await HttpClientService.SendHttpRequest(uriString, "", HttpMethod.Post);
                         string responseString = await response.Content.ReadAsStringAsync();
-                        JsonElement responseJsonElement = ObjectJsonSerializer.DeserializeForServer<JsonElement>(responseString);
-                        idToken = responseJsonElement.GetProperty("id_token").ToString();
+                        Dictionary<string, object> responseDictionary =
+                            ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
+                        idToken = responseDictionary["id_token"] as string;
                     }
                     else if (i_Scheme.Equals("Facebook"))
                     {
