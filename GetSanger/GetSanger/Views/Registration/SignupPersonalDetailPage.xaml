@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GetSanger.Views.Registration.SignupPersonalDetailPage"
              xmlns:triggers="clr-namespace:GetSanger.Styles.Triggers"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:Converters="clr-namespace:GetSanger.Converters"
              x:Name="PersonalDetails">
             
@@ -44,7 +45,12 @@
                     CommandParameter="{x:Reference UploadButton}"/>
             <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName, Mode=TwoWay}" x:Name="NameEntry"/>
 
-            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone, Mode=TwoWay}" x:Name="PhoneEntry"/>
+            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone, Mode=TwoWay}" x:Name="PhoneEntry">
+                <Entry.Behaviors>
+                    <behaviors:PhoneNumberMaskBehavior />
+                    <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
+                </Entry.Behaviors>
+            </Entry>
             <Picker SelectedIndex="1" 
                     Title="Gender"
                     ItemsSource="{Binding GenderItems}"

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:Converters="clr-namespace:GetSanger.Converters"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.EditProfilePage">
 
     <ContentPage.BindingContext>
@@ -37,7 +38,14 @@
                 </TableSection>
                 <TableSection Title="Details">
                     <EntryCell Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" Placeholder="Name" />
-                    <EntryCell Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" Keyboard="Telephone"  Placeholder="Phone number"/>
+                    <ViewCell>
+                        <Entry Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" Keyboard="Telephone"  Placeholder="Phone number">
+                            <Entry.Behaviors>
+                                <behaviors:PhoneNumberMaskBehavior />
+                                <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                    </ViewCell>
                     <ViewCell>
                         <DatePicker Date="{Binding ConnectedUser.PersonalDetails.Birthday, StringFormat='{dd/MM/yyyy}'}"/>
                     </ViewCell>

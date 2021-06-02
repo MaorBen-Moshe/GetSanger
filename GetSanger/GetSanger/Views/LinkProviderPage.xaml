@@ -18,15 +18,44 @@
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
-                <StackLayout>
+                <StackLayout HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             BackgroundColor="AliceBlue">
                     <ListView ItemsSource="{Binding Providers}"
                               SelectedItem="{Binding CurrentProvider}"
-                              IsPullToRefreshEnabled="False">
+                              IsPullToRefreshEnabled="False"
+                              VerticalOptions="Center"
+                              HorizontalOptions="Center"
+                              VerticalScrollBarVisibility="Never"
+                              HorizontalScrollBarVisibility="Never"
+                              HeightRequest="170">
                         <ListView.Behaviors>
-                            <behaviors:EventToCommandBehavior Command="{Binding SelectedJobOfferCommand}" 
+                            <behaviors:EventToCommandBehavior Command="{Binding ProviderSelectedCommand}" 
                                                           EventName="ItemSelected"/>
+                            <behaviors:EventToCommandBehavior Command="{Binding ProviderSelectedCommand}"
+                                                              EventName="ItemTapped"/>
                         </ListView.Behaviors>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid>
+                                        <Label Text="{Binding .}" 
+                                               Grid.Column="0" 
+                                               Padding="10" HorizontalTextAlignment="Center" 
+                                               HorizontalOptions="Center"
+                                               TextColor="HotPink"></Label>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
+                    <Button Text="Cancel" 
+                            HorizontalOptions="Center" 
+                            VerticalOptions="Center" 
+                            BackgroundColor="Transparent" 
+                            BorderColor="Transparent"
+                            TextColor="HotPink"
+                            Command="{Binding CancelCommand}"/>
                 </StackLayout>
             </Frame>
         </StackLayout>

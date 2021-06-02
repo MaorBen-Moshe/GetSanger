@@ -209,9 +209,10 @@ namespace GetSanger.Services
 
         public static async Task<Dictionary<string, object>> LinkWithSocialProvider(SocialProvider i_Provider)
         {
+            string id = await GetIdTokenAsync();
             Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
             {
-                ["idToken"] = await GetIdTokenAsync()
+                ["idToken"] = id
             };
 
             switch (i_Provider)
