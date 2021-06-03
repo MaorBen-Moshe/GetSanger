@@ -12,6 +12,12 @@
 
     <ContentPage.Resources>
         <Converters:EntryLengthToBoolConverter x:Key="EntryLengthToBoolConverter"/>
+        <ResourceDictionary>
+            <Style TargetType="Button" x:Key="SocialButton">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Margin" Value="4" />
+            </Style>
+        </ResourceDictionary>
     </ContentPage.Resources>
 
     <StackLayout>
@@ -45,9 +51,9 @@
             </Frame>
             <Label Text="Forgot password?" 
                     BackgroundColor="Transparent" 
-                    Margin="0,0,0,0"
+                    Margin="0,0,20,0"
                     VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
+                    HorizontalOptions="EndAndExpand"
                    FontSize="14">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"
@@ -82,25 +88,23 @@
         </StackLayout>
         <Grid Grid.Row="3">
             <Button Text="Via Facebook"
-                        Command="{Binding SocialLoginCommand}"
-                        CommandParameter="Facebook"
-                        Grid.Row="0" 
-                        Grid.Column="0" 
-                        FontSize="12"
-                        Margin="4"/>
+                    Command="{Binding SocialLoginCommand}"
+                    CommandParameter="Facebook"
+                    Grid.Row="0" 
+                    Grid.Column="0" 
+                    Style="{StaticResource Key=SocialButton}"/>
             <Button Text="Via Google" 
-                        Command="{Binding SocialLoginCommand}"
-                        CommandParameter="Google"
-                        Grid.Row="0" 
-                        Grid.Column="1"
-                        FontSize="12"/>
+                    Command="{Binding SocialLoginCommand}"
+                    CommandParameter="Google"
+                    Grid.Row="0" 
+                    Grid.Column="1"
+                    Style="{StaticResource Key=SocialButton}"/>
             <Button Text="Via Apple" 
-                        Command="{Binding SocialLoginCommand}"
-                        CommandParameter="Apple"
-                        Grid.Row="0" 
-                        Grid.Column="2"
-                        FontSize="14"
-                        Margin="4"/>
+                    Command="{Binding SocialLoginCommand}"
+                    CommandParameter="Apple"
+                    Grid.Row="0" 
+                    Grid.Column="2"
+                    Style="{StaticResource Key=SocialButton}"/>
         </Grid>
 
 
