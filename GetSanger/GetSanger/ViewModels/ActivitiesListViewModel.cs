@@ -94,9 +94,15 @@ namespace GetSanger.ViewModels
             {
                 switch (AppManager.Instance.CurrentMode)
                 {
-                    case AppMode.Client: doReject(activity, activity.SangerID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :("); break;
-                    case AppMode.Sanger: doReject(activity, activity.ClientID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} decided to cancel the job offer he already accepted. for more information please contact him :("); break;
+                    case AppMode.Client: 
+                        doReject(activity, activity.SangerID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :(");
+                        break;
+                    case AppMode.Sanger: 
+                        doReject(activity, activity.ClientID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} decided to cancel the job offer he already accepted. for more information please contact him :(");
+                        break;
                 }
+
+                IsVisibleEmptyLabel = ActivitiesSource.Count > 0;
             }
         }
 
@@ -136,6 +142,7 @@ namespace GetSanger.ViewModels
             }
 
             ActivitiesSource = new ObservableCollection<Activity>(activities);
+            IsVisibleEmptyLabel = ActivitiesSource.Count > 0;
         }
         #endregion
     }

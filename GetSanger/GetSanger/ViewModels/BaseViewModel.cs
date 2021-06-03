@@ -12,6 +12,7 @@ namespace GetSanger.ViewModels
         private bool m_IsLoading;
         private bool m_IsNotLoading;
         private bool m_IsEnabledSendBtn;
+        private bool m_IsVisibleEmptyListLabel;
         protected string m_DefaultBackUri = "..";
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
@@ -49,6 +50,12 @@ namespace GetSanger.ViewModels
             get => m_IsEnabledSendBtn;
             set => SetStructProperty(ref m_IsEnabledSendBtn, value);
 
+        }
+
+        public bool IsVisibleEmptyLabel
+        {
+            get => m_IsVisibleEmptyListLabel;
+            set => SetStructProperty(ref m_IsVisibleEmptyListLabel, value);
         }
         #endregion
 

@@ -79,6 +79,7 @@ namespace GetSanger.ViewModels
                     JobOffer job = i_Param as JobOffer;
                     AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
                     JobOffersSource.Remove(job);
+                    IsVisibleEmptyLabel = JobOffersSource.Count > 0;
                     await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId)); 
                 }
             }
@@ -112,6 +113,7 @@ namespace GetSanger.ViewModels
             }
 
             JobOffersSource = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
+            IsVisibleEmptyLabel = JobOffersSource.Count > 0;
         }
         #endregion
     }

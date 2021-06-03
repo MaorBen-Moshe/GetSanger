@@ -14,6 +14,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:SelectedItemConverter x:Key="SelectedItemConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -40,32 +41,39 @@
     </Shell.SearchHandler>
 
     <ContentPage.Content>
-        <!--need to implement list of contacts -->
-        <ListView SeparatorVisibility="None" 
+        <ScrollView>
+            <StackLayout>
+                <!--need to implement list of contacts -->
+                <ListView SeparatorVisibility="None" 
                           Margin="0"
                           RowHeight="55"
+                          IsVisible="{Binding IsVisibleEmptyLabel}"
                           ItemsSource="{Binding Users}"
                           IsPullToRefreshEnabled="True"
                           IsRefreshing="{Binding IsRefreshing}"
                           RefreshCommand = "{Binding RefreshCommand}"
                           BackgroundColor="Transparent"
                           HasUnevenRows="True">
-            <ListView.Behaviors>
-                <behaviors:EventToCommandBehavior Command="{Binding UserSelectedCommand}" 
+                    <ListView.Behaviors>
+                        <behaviors:EventToCommandBehavior Command="{Binding UserSelectedCommand}" 
                                                           EventName="ItemSelected"
                                                           Converter="{StaticResource SelectedItemConverter}"/>
-            </ListView.Behaviors>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="10">
-                            <Image Source="{Binding User.ProfilePictureUri}" HorizontalOptions="Start"/>
-                            <Label Text="{Binding User.PersonalDetails.NickName}" Padding="10"/>
-                            <Label Text="{Binding LastMessage, StringFormat='{}{0:MM/dd/yyyy'}" HorizontalOptions="EndAndExpand" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    </ListView.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Spacing="0" Padding="10">
+                                    <Image Source="{Binding User.ProfilePictureUri}" HorizontalOptions="Start"/>
+                                    <Label Text="{Binding User.PersonalDetails.NickName}" Padding="10"/>
+                                    <Label Text="{Binding LastMessage, StringFormat='{}{0:MM/dd/yyyy'}" HorizontalOptions="EndAndExpand" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <controls:NoItemsListLabel Text="No Messages" IsVisible="{Binding IsVisibleEmptyLabel, Converter={StaticResource InverseBoolConverter}}"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -14,6 +14,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:SelectedItemConverter x:Key="SelectedItemConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -42,10 +43,12 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
+                
                 <ListView x:Name="m_ListView" 
                       ItemsSource="{Binding ActivitiesSource}"
                       IsRefreshing="{Binding IsListRefreshing}"
                       IsPullToRefreshEnabled="True" 
+                      IsVisible="{Binding IsVisibleEmptyLabel}"
                       RefreshCommand="{Binding RefreshingCommand}"
                       HasUnevenRows="true">
                     <ListView.Behaviors>
@@ -69,6 +72,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+
+                <controls:NoItemsListLabel Text="No Activities" IsVisible="{Binding IsVisibleEmptyLabel, Converter={StaticResource InverseBoolConverter}}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
