@@ -102,7 +102,7 @@ namespace GetSanger.ViewModels
                         break;
                 }
 
-                IsVisibleEmptyLabel = ActivitiesSource.Count > 0;
+                IsVisibleViewList = ActivitiesSource.Count > 0;
             }
         }
 
@@ -142,7 +142,7 @@ namespace GetSanger.ViewModels
             }
 
             ActivitiesSource = new ObservableCollection<Activity>(activities);
-            IsVisibleEmptyLabel = ActivitiesSource.Count > 0;
+            IsVisibleViewList = ActivitiesSource.Count > 0;
         }
         #endregion
     }

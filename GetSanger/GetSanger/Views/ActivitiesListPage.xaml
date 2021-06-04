@@ -48,7 +48,7 @@
                       ItemsSource="{Binding ActivitiesSource}"
                       IsRefreshing="{Binding IsListRefreshing}"
                       IsPullToRefreshEnabled="True" 
-                      IsVisible="{Binding IsVisibleEmptyLabel}"
+                      IsVisible="{Binding IsVisibleViewList}"
                       RefreshCommand="{Binding RefreshingCommand}"
                       HasUnevenRows="true">
                     <ListView.Behaviors>
@@ -73,7 +73,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsListLabel Text="No Activities" IsVisible="{Binding IsVisibleEmptyLabel, Converter={StaticResource InverseBoolConverter}}" />
+                <controls:NoItemsInListTemplate Text="No Activities" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

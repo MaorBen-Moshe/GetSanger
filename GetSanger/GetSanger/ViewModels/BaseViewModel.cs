@@ -52,7 +52,7 @@ namespace GetSanger.ViewModels
 
         }
 
-        public bool IsVisibleEmptyLabel
+        public bool IsVisibleViewList
         {
             get => m_IsVisibleEmptyListLabel;
             set => SetStructProperty(ref m_IsVisibleEmptyListLabel, value);

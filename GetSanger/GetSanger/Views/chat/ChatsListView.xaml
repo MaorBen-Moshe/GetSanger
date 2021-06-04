@@ -47,7 +47,7 @@
                 <ListView SeparatorVisibility="None" 
                           Margin="0"
                           RowHeight="55"
-                          IsVisible="{Binding IsVisibleEmptyLabel}"
+                          IsVisible="{Binding IsVisibleViewList}"
                           ItemsSource="{Binding Users}"
                           IsPullToRefreshEnabled="True"
                           IsRefreshing="{Binding IsRefreshing}"
@@ -72,7 +72,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsListLabel Text="No Messages" IsVisible="{Binding IsVisibleEmptyLabel, Converter={StaticResource InverseBoolConverter}}"/>
+                <controls:NoItemsInListTemplate Text="No Messages" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

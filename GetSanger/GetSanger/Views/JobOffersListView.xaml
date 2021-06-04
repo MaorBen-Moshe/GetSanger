@@ -47,7 +47,7 @@
                       ItemsSource="{Binding JobOffersSource}"
                       IsRefreshing="{Binding IsListRefreshing}"
                       IsPullToRefreshEnabled="True" 
-                      IsVisible="{Binding IsVisibleEmptyLabel}"
+                      IsVisible="{Binding IsVisibleViewList}"
                       RefreshCommand="{Binding RefreshingCommand}"
                       HasUnevenRows="true">
                     <ListView.Behaviors>
@@ -72,7 +72,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsListLabel Text="No Job Offers" IsVisible="{Binding IsVisibleEmptyLabel, Converter={StaticResource InverseBoolConverter}}"/>
+                <controls:NoItemsInListTemplate Text="No Job Offers" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
