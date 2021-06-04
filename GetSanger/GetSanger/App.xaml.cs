@@ -37,13 +37,9 @@ namespace GetSanger
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             PopupService service = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
-            if (e.NetworkAccess.Equals(NetworkAccess.None))
+            if (e.NetworkAccess.Equals(NetworkAccess.Internet) == false)
             {
-                service.ShowPopup(new LoadingPage("No Internet"));
-            }
-            else // Internet is back
-            {
-                service.HidePopup();
+                service.ShowPopup(new LoadingPage(internetChecking:true));
             }
         }
     }

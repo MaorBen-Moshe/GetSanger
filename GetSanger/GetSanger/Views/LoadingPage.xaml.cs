@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using GetSanger.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views
@@ -6,11 +7,23 @@ namespace GetSanger.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoadingPage : ContentPage
     {
-        public LoadingPage(string text = null)
+        public LoadingPage(string text = "Loading...", bool internetChecking = false)
         {
             InitializeComponent();
 
-            loadingText.Text = text ?? "Loading...";
+            BindingContext = new LoadingPageViewModel(text, internetChecking);
+        }
+
+        protected override void OnAppearing()
+        {
+            (BindingContext as BaseViewModel).Appearing();
+            base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as LoadingPageViewModel).Disappearing();
+            base.OnDisappearing();
         }
     }
 }
