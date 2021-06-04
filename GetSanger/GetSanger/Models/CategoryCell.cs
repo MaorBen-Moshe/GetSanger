@@ -1,8 +1,4 @@
 ﻿using GetSanger.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace GetSanger.Models
 {
@@ -27,7 +23,7 @@ namespace GetSanger.Models
             set => SetStructProperty(ref m_Checked, value);
         }
 
-        //for categories main page (embedded image not uri)
+        //for categories main page (embedded image not Uri)
         public string ImageUri { get; set; }
 
         public CategoryCell()
@@ -37,7 +33,23 @@ namespace GetSanger.Models
 
         private void setCategoriesImage()
         {
-            // set by category the image
+            ImageUri = Category switch
+            {
+                Category.Arrangement => "",
+                Category.Beauty => "",
+                Category.Cleaning => "",
+                Category.Computers_And_Smartphones => "",
+                Category.Delivery => "",
+                Category.Electrician => "",
+                Category.Gardening => "",
+                Category.Handiman => "",
+                Category.House_Devices => "",
+                Category.Pets => "",
+                Category.Studies => "",
+                Category.Vehicle => "",
+                Category.All => "",
+                _ => "",
+            };
         }
     }
 }

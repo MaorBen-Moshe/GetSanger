@@ -103,6 +103,10 @@ namespace GetSanger.ViewModels
         public JobOfferViewModel()
         {
             setCommands();
+            NewJobOffer = new JobOffer
+            {
+                Date = DateTime.Now
+            };
         }
 
         #endregion
@@ -113,10 +117,12 @@ namespace GetSanger.ViewModels
         {
             if (IsCreate == true)
             {
-                NewJobOffer = new JobOffer
+                NewJobOffer ??= new JobOffer
                 {
                     Date = DateTime.Now
                 };
+
+                NewJobOffer.Category = JobCategory;
             }
             else
             {

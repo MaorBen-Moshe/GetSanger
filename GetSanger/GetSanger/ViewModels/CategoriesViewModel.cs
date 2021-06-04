@@ -13,6 +13,7 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private IList<CategoryCell> m_CategoriesItems;
+        private CategoryCell m_SelectedItem;
         #endregion
 
         #region Properties
@@ -22,6 +23,13 @@ namespace GetSanger.ViewModels
             get => m_CategoriesItems;
             set => SetClassProperty(ref m_CategoriesItems, value);
         }
+
+        public CategoryCell SelectedItem
+        {
+            get => m_SelectedItem;
+            set { SetClassProperty(ref m_SelectedItem, value); categorySelected(); }
+        }
+
         #endregion
 
         #region Commands
@@ -34,6 +42,7 @@ namespace GetSanger.ViewModels
         {
             setCommands();
             CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
+            CategoriesItems = CategoriesItems.Where(categoryCell => categoryCell.Category.Equals(Category.All) == false).ToList();
         }
         #endregion
 
@@ -47,10 +56,14 @@ namespace GetSanger.ViewModels
             CategorySelectedCommand = new Command(categorySelected);
         }
 
-        private async void categorySelected(object i_Param)
+        private async void categorySelected()
         {
-            CategoryCell current = i_Param as CategoryCell;
-            await r_NavigationService.NavigateTo(ShellRoutes.JobOffer + $"?category={current.Category}&isCreate={true}");
+            if(SelectedItem != null)
+            {
+                await r_NavigationService.NavigateTo($"{ShellRoutes.JobOffer }?category={SelectedItem.Category}&isCreate={true}");
+                SelectedItem = null;
+            }
+            
         }
         #endregion
     }

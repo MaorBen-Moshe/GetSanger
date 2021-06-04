@@ -17,7 +17,14 @@ namespace GetSanger.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            object toRet = null;
+            if (value is string category)
+            {
+                bool succeed = Enum.TryParse(category, out Category parsed);
+                toRet = succeed ? parsed : toRet;
+            }
+
+            return toRet;
         }
     }
 }

@@ -29,10 +29,26 @@ namespace GetSanger.Behaviors
                 }
 
                 var newValue = args.NewTextValue;
-                var oldValue = args.OldTextValue;
-                if (newValue.Length == 3 || (oldValue != null && oldValue.Length == 3 && newValue.Length == 4))
+                if (newValue.Length == 3)
+                { 
+                    ((Entry)sender).Text = newValue.Insert(3, "-");
+                    return;
+                }
+
+                if(newValue.Length == 4)
                 {
-                    ((Entry)sender).Text += "-";
+                    if(newValue.IndexOf("-") != 3)
+                    {
+                        ((Entry)sender).Text = newValue.Insert(3, "-");
+                        return;
+                    }
+                }
+
+                string newWithoutChar = newValue.Replace("-", "");
+                if((newValue.Length - newWithoutChar.Length) > 1)
+                {
+                    newValue = newValue.Replace("-", "");
+                    ((Entry)sender).Text = newValue.Insert(3, "-");
                     return;
                 }
 

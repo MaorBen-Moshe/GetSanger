@@ -11,8 +11,6 @@ namespace GetSanger.Views
         public JobOfferPage()
         {
             InitializeComponent();
-
-            BindingContext = new JobOfferViewModel();
         }
 
         protected override void OnAppearing()
