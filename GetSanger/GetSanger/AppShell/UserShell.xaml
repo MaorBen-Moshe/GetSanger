@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:GetSanger.Views"
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
-             x:Class="GetSanger.AppShell.UserShell">
+             x:Class="GetSanger.AppShell.UserShell"
+             FlowDirection="LeftToRight">
 
     <TabBar>
         <Tab Title="Account"

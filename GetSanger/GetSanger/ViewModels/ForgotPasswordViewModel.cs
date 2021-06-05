@@ -51,6 +51,8 @@ namespace GetSanger.ViewModels
             }
 
             await RunTaskWhileLoading(AuthHelper.ForgotPassword(Email));
+            await r_PageService.DisplayAlert("Note", "Email has been sent!", "Thanks");
+            await GoBack();
         }
 
         #endregion

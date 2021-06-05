@@ -61,9 +61,9 @@ namespace GetSanger.Controls
             m_LogoImage = new Image
             {
                 BackgroundColor = Color.Transparent,
-                Source = ImageSource.FromFile("getSangerIcon.png"),
-                HeightRequest = 100,
-                WidthRequest = 100
+                Source = ImageSource.FromFile("getSangerIconHD.png"),
+                HeightRequest = 96,
+                WidthRequest = 96
             };
         }
     }

@@ -28,9 +28,6 @@ namespace GetSanger.iOS
                 return true;
             return base.ContinueUserActivity(application, userActivity, completionHandler);
         }
-
-        [System.Runtime.InteropServices.DllImport(ObjCRuntime.Constants.ObjectiveCLibrary, EntryPoint = "objc_msgSend")]
-        internal static extern IntPtr IntPtr_objc_msgSend(IntPtr receiver, IntPtr selector, UISemanticContentAttribute arg1);
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
         // method you should instantiate the window, load the UI into it and then make the window
@@ -55,7 +52,6 @@ namespace GetSanger.iOS
 
             // force Right to left flow direction in app
             ObjCRuntime.Selector selector = new ObjCRuntime.Selector("setSemanticContentAttribute:");
-            IntPtr_objc_msgSend(UIView.Appearance.Handle, selector.Handle, UISemanticContentAttribute.ForceRightToLeft);
 
             return base.FinishedLaunching(app, options); ;
         }

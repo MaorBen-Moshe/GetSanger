@@ -31,8 +31,6 @@ namespace GetSanger.Droid
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-            // to force right to left flow directions --> collection view does not follow this so we should implement flow direction for each item
-            Window.DecorView.LayoutDirection = LayoutDirection.Rtl;
             base.OnCreate(savedInstanceState);
             Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);

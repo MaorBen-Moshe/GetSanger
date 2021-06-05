@@ -14,7 +14,7 @@
                      VerticalOptions="FillAndExpand">
             <Frame CornerRadius="10"
                    Padding="30"
-                   BorderColor="Black"
+                   BorderColor="Transparent"
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">

@@ -25,10 +25,10 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Providers, value);
         }
 
-        public SocialProvider CurrentProvider
+        public SocialProvider? CurrentProvider
         {
             get => m_CurrentProvider;
-            set => SetStructProperty(ref m_CurrentProvider, value);
+            set => SetStructProperty(ref m_CurrentProvider, (SocialProvider)value);
         }
         #endregion
 
@@ -73,9 +73,12 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(CurrentProvider);
-                tryGetPicture(details["photoUrl"] as string);
-                await r_PageService.DisplayAlert("Note", $"Your account linked with: {CurrentProvider}", "Thanks");
+                if(CurrentProvider != null)
+                {
+                    Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider((SocialProvider)CurrentProvider);
+                    tryGetPicture(details["photoUrl"] as string);
+                    await r_PageService.DisplayAlert("Note", $"Your account linked with: {CurrentProvider}", "Thanks");
+                }
             }
             catch(Exception e)
             {
@@ -84,6 +87,7 @@ namespace GetSanger.ViewModels
             finally
             {
                 r_PopupService.HidePopup(typeof(LinkProviderPage));
+                CurrentProvider = null;
             }
         }
 
