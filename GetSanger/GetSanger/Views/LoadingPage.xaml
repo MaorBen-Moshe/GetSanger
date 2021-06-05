@@ -15,7 +15,8 @@
 
     <ContentPage.Content>
         <StackLayout HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand">
+                     VerticalOptions="FillAndExpand"
+                     IsVisible="{Binding IsVisible}">
             <Frame CornerRadius="10"
                    Padding="30"
                    BorderColor="Black"

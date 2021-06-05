@@ -23,5 +23,17 @@ namespace GetSanger.Views
             (BindingContext as BaseViewModel).Appearing();
             base.OnAppearing();
         }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as SettingViewModel).Disappearing();
+            base.OnDisappearing();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            (BindingContext as SettingViewModel).BackButtonCommand.Execute(null);
+            return true;
+        }
     }
 }

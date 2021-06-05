@@ -13,6 +13,7 @@ namespace GetSanger.ViewModels
         #region Fields
         private string m_Text;
         private Color m_TextColor;
+        private bool m_IsVisible;
         private bool m_NoInternetPage;
         #endregion
 
@@ -27,6 +28,12 @@ namespace GetSanger.ViewModels
         {
             get => m_TextColor;
             set => SetStructProperty(ref m_TextColor, value);
+        }
+
+        public bool IsVisible
+        {
+            get => m_IsVisible;
+            set => SetStructProperty(ref m_IsVisible, value);
         }
         #endregion
 
@@ -50,6 +57,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
+            IsVisible = true;
             if (m_NoInternetPage)
             {
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
@@ -75,10 +83,16 @@ namespace GetSanger.ViewModels
 
         private void tapped(object i_Param)
         {
+            IsVisible = false;
+            System.Threading.Thread.Sleep(3000);
             if (Connectivity.NetworkAccess.Equals(NetworkAccess.Internet))
             {
                 r_PopupService.HidePopup(typeof(LoadingPage));
                 Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+            }
+            else
+            {
+                IsVisible = true;
             }
         }
         #endregion

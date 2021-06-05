@@ -24,28 +24,6 @@
 
 
         <StackLayout Orientation="Vertical" Spacing="20">
-
-            <CollectionView ItemsSource="{Binding CategoriesItems}"
-                            SelectedItem="{Binding SelectedItem}"
-                            SelectionMode="Single">
-                <CollectionView.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding CategorySelectedCommand}"
-                                          CommandParameter="{Binding .}">
-                    </TapGestureRecognizer>
-                </CollectionView.GestureRecognizers>
-               
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Orientation="Horizontal">
-                            <Image Source="{Binding ImageUri}"/>
-                            <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
-                                           FontSize="19"/>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            
-            <!--
             <Label 
                    Margin="14,17,20,0" 
                    HeightRequest="54"
@@ -55,35 +33,19 @@
                    FontSize="21"
                    TextColor="Black"
                    HorizontalOptions="CenterAndExpand" />
-
-            <StackLayout >
-
-                <ListView SeparatorVisibility="None" 
-                          Margin="0"
-                          RowHeight="55"
-                          ItemsSource="{Binding CategoriesItems}"
-                          BackgroundColor="Transparent"
-                          HasUnevenRows="True">
-                    <ListView.Behaviors>
-                        <behaviors:EventToCommandBehavior Command="{Binding CategorySelectedCommand}" 
-                                                          EventName="ItemSelected"
-                                                          Converter="{StaticResource SelectedItemConverter}"/>
-                    </ListView.Behaviors>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal">
-                                    <Image Source="{Binding ImageUri}"/>
-                                    <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
-                                           Style="{DynamicResource LabelStyle}"
-                                           FontSize="19"/>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
-            -->
+            <CollectionView ItemsSource="{Binding CategoriesItems}"
+                            SelectedItem="{Binding SelectedItem}"
+                            SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="{Binding ImageUri}"/>
+                            <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
+                                   FontSize="19"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
