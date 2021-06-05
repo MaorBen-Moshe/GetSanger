@@ -13,13 +13,14 @@
             <StackLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 0.35"
                          AbsoluteLayout.LayoutFlags="All"
                          VerticalOptions="CenterAndExpand"
-                         HorizontalOptions="CenterAndExpand">
-                <Image Source="{Binding UserImage}"/>
-                <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat='Hello {0}'}"
+                         HorizontalOptions="CenterAndExpand"
+                         Spacing="20">
+                <Image Source="{Binding UserImage}" WidthRequest="64" HeightRequest="64"/>
+                <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat='Hello, {0}'}"
                        FontSize="Title" 
                        FontAttributes="Italic"/>
             </StackLayout>
-            <Grid AbsoluteLayout.LayoutBounds="0.5,0.25, 0.5, 0.05" 
+            <Grid AbsoluteLayout.LayoutBounds="0.5,0.3, 0.5, 0.05" 
                   AbsoluteLayout.LayoutFlags="All">
                 <Label Text="Client" Grid.Column="0"
                        FontAttributes="Bold"
@@ -43,7 +44,7 @@
                 </Label>
             </Grid>
 
-            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.4, 1, 0.4"
+            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.5, 1, 0.4"
                          AbsoluteLayout.LayoutFlags="All">
                 <Button Text="Edit Profile" Command="{Binding EditProfileCommand}" Grid.Row="0"/>
                 <Button Text="Settings" Command="{Binding SettingCommand}" Grid.Row="1"/>

@@ -84,7 +84,6 @@ namespace GetSanger.ViewModels
         private void tapped(object i_Param)
         {
             IsVisible = false;
-            System.Threading.Thread.Sleep(3000);
             if (Connectivity.NetworkAccess.Equals(NetworkAccess.Internet))
             {
                 r_PopupService.HidePopup(typeof(LoadingPage));
@@ -92,6 +91,7 @@ namespace GetSanger.ViewModels
             }
             else
             {
+                System.Threading.Thread.Sleep(3000);
                 IsVisible = true;
             }
         }

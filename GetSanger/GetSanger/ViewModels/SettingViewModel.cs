@@ -80,21 +80,34 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior()
         {
+            bool isChanged = false;
             if(m_NewCategoriesSubscribed.Count > 0)
             {
+                isChanged = true;
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray()));
             }
             if(m_NewCategoriesUnsubscribed.Count > 0)
             {
+                isChanged = true;
                 await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray()));
             }
+            if(IsGenericNotificatons != AppManager.Instance.ConnectedUser.IsGenericNotifications)
+            {
+                isChanged = true;
+                AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
+                genericUpdateHelper();
+            }
 
-            await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser));
+            if (isChanged)
+            {
+                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            }
+
             m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;
             await GoBack();
         }
 
-        private async void toggled(object i_Param)
+        private void toggled(object i_Param)
         {
             m_NewCategoriesSubscribed ??= new List<string>();
             m_NewCategoriesUnsubscribed ??= new List<string>();
@@ -122,22 +135,17 @@ namespace GetSanger.ViewModels
                     }
                 }
             }
-            else // generic notifications
-            {
-                if (AppManager.Instance.ConnectedUser.IsGenericNotifications.Equals(IsGenericNotificatons))
-                {
-                    return;
-                }
+        }
 
-                AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
-                if (IsGenericNotificatons)
-                {
-                    await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic));
-                }
-                else
-                {
-                    await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic));
-                }
+        private async void genericUpdateHelper()
+        {
+            if (IsGenericNotificatons)
+            {
+                await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic));
+            }
+            else
+            {
+                await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic));
             }
         }
 
