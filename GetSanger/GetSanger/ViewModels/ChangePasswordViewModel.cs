@@ -66,18 +66,22 @@ namespace GetSanger.ViewModels
                         await RunTaskWhileLoading(AuthHelper.ChangePassword(OldPassword, NewPassword));
                         await r_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
                         await GoBack();
+                        return;
                     }
                     catch
                     {
                         await r_PageService.DisplayAlert("Note", "Please check if you wrote the write confirm password", "OK");
                     }
                 }
-
-                await r_PageService.DisplayAlert("Note", "Please check if you wrote the write confirm password", "OK");
-                return;
+                else
+                {
+                    await r_PageService.DisplayAlert("Note", "Please check if you wrote the write confirm password", "OK");
+                }
             }
-
-            await r_PageService.DisplayAlert("Error", "You insert wrong current Password. \n Please try again.", "OK");
+            else
+            {
+                await r_PageService.DisplayAlert("Error", "You insert wrong current Password. \n Please try again.", "OK");
+            }
         }
         #endregion
     }

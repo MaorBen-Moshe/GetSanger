@@ -170,6 +170,10 @@ namespace GetSanger.ViewModels.chat
                     Message message = i_Param as Message;
                     await DB.DeleteItemAsync(message, UserToChat.UserId);
                     MessagesSource.Remove(message);
+                    if(MessagesSource.Count == 0)
+                    {
+                        await DB.DeleteUserChatAsync(UserToChat.UserId);
+                    }
                 }
             }
             catch
