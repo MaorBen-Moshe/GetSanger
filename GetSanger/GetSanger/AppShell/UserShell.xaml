@@ -8,23 +8,28 @@
 
     <TabBar>
         <Tab Title="Account"
-             Route="account">
+             Route="account"
+             Icon="accountIcon.png">
             <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
         </Tab>
         <Tab Title="Chat"
-             Route="chatList">
+             Route="chatList"
+             Icon="chatIcon.png">
             <ShellContent ContentTemplate="{DataTemplate chat:ChatsListView}" />
         </Tab>
         <Tab Title="job Offers"
-             Route="jobOffers">
+             Route="jobOffers"
+             Icon="jobOfferIcon.png">
             <ShellContent ContentTemplate="{DataTemplate views:JobOffersListView}" />
         </Tab>
         <Tab Title="Activities"
-             Route="activities">
+             Route="activities"
+             Icon="activityIcon.png">
             <ShellContent ContentTemplate="{DataTemplate views:ActivitiesListPage}" />
         </Tab>
         <Tab Title="Categories"
              Route="categories"
+             Icon="categoryIcon.png"
              x:Name="CategoriesPage">
             <ShellContent ContentTemplate="{DataTemplate views:CategoriesPage}" />
         </Tab>

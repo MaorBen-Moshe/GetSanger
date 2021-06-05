@@ -39,10 +39,15 @@
                             <DataTemplate>
                                 <ViewCell>
                                     <Grid>
-                                        <Label Text="{Binding .}" 
-                                               Grid.Column="0" 
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.3*"/>
+                                            <ColumnDefinition Width="0.7*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{Binding ImageText}" Grid.Column="0" Margin="0, 10, 0, 10"/>
+                                        <Label Text="{Binding SocialProvider}" 
+                                               Grid.Column="1" 
                                                Padding="10" HorizontalTextAlignment="Center" 
-                                               HorizontalOptions="Center"
+                                               HorizontalOptions="StartAndExpand"
                                                TextColor="HotPink"></Label>
                                     </Grid>
                                 </ViewCell>

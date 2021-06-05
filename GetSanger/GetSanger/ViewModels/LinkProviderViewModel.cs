@@ -14,21 +14,21 @@ namespace GetSanger.ViewModels
     public class LinkProviderViewModel : BaseViewModel
     {
         #region Fields
-        private List<SocialProvider> m_Providers;
-        private SocialProvider m_CurrentProvider;
+        private List<ProviderCell> m_Providers;
+        private ProviderCell m_CurrentProvider;
         #endregion
 
         #region Properties
-        public List<SocialProvider> Providers
+        public List<ProviderCell> Providers
         {
             get => m_Providers;
             set => SetClassProperty(ref m_Providers, value);
         }
 
-        public SocialProvider? CurrentProvider
+        public ProviderCell CurrentProvider
         {
             get => m_CurrentProvider;
-            set => SetStructProperty(ref m_CurrentProvider, (SocialProvider)value);
+            set => SetClassProperty(ref m_CurrentProvider, value);
         }
         #endregion
 
@@ -51,13 +51,26 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            Providers = AppManager.Instance.GetListOfEnumNames(typeof(SocialProvider)).Select(item => (SocialProvider)Enum.Parse(typeof(SocialProvider), item)).ToList();
+            List<SocialProvider> providers = AppManager.Instance.GetListOfEnumNames(typeof(SocialProvider)).Select(item => (SocialProvider)Enum.Parse(typeof(SocialProvider), item)).ToList();
+            Providers = providers.Select(current => new ProviderCell { SocialProvider = current, ImageText = setImage(current) }).ToList();
         }
 
         private void setCommands()
         {
             ProviderSelectedCommand = new Command(providerSelected);
             CancelCommand = new Command(cancel);
+        }
+
+        private string setImage(SocialProvider i_Provider)
+        {
+            return i_Provider switch
+            {
+                SocialProvider.Facebook => "facebookIcon.png",
+                SocialProvider.Google => "googleIcon.png",
+                SocialProvider.Apple => "appleIcon.png",
+                SocialProvider.Email => "emailIcon.png",
+                _ => "",
+            };
         }
 
         private async void cancel()
@@ -75,9 +88,9 @@ namespace GetSanger.ViewModels
             {
                 if(CurrentProvider != null)
                 {
-                    Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider((SocialProvider)CurrentProvider);
+                    Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider((CurrentProvider as ProviderCell).SocialProvider);
                     tryGetPicture(details["photoUrl"] as string);
-                    await r_PageService.DisplayAlert("Note", $"Your account linked with: {CurrentProvider}", "Thanks");
+                    await r_PageService.DisplayAlert("Note", $"Your account linked with: {CurrentProvider.SocialProvider}", "Thanks");
                 }
             }
             catch(Exception e)

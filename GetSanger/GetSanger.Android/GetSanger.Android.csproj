@@ -230,25 +230,31 @@
     <AndroidResource Include="Resources\Drawable\getSangerIconHD.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\categoryIcon.jpeg" />
+    <AndroidResource Include="Resources\Drawable\facebookIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\activityIcon.jpeg" />
+    <AndroidResource Include="Resources\Drawable\categoryIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\appleIcon.jpeg" />
+    <AndroidResource Include="Resources\Drawable\activityIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\chatIcon.jpeg" />
+    <AndroidResource Include="Resources\Drawable\jobOfferIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\googleIcon.jpeg" />
+    <AndroidResource Include="Resources\Drawable\chatIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\jobOfferIcon.jpeg" />
+    <AndroidResource Include="Resources\Drawable\accountIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\accountIcon.jpeg" />
+    <AndroidResource Include="Resources\Drawable\appleIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\googleIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\emailIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

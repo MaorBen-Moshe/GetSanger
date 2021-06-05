@@ -8,19 +8,23 @@
     
     <TabBar>
         <Tab Title="Account"
-             Route="account">
+             Route="account"
+             Icon="accountIcon.png">
             <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
         </Tab>
         <Tab Title="Chat"
-             Route="chatList">
+             Route="chatList"
+             Icon="chatIcon.png">
             <ShellContent ContentTemplate="{DataTemplate chat:ChatsListView}" />
         </Tab>
         <Tab Title="Activities"
-             Route="activities">
+             Route="activities"
+             Icon="activityIcon.png">
             <ShellContent ContentTemplate="{DataTemplate views:ActivitiesListPage}" />
         </Tab>
         <Tab Title="Pending Jobs"
              Route="jobOffers"
+             Icon="jobOfferIcon.png"
              x:Name="Pending">
             <ShellContent ContentTemplate="{DataTemplate views:JobOffersListView}" />
         </Tab>

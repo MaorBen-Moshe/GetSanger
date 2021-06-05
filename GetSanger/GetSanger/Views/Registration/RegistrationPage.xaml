@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              x:Class="GetSanger.Views.Registration.RegistrationPage"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:Converters="clr-namespace:GetSanger.Converters"
              NavigationPage.HasNavigationBar="False">
 
@@ -86,25 +87,31 @@
                      IsVisible="true" />
 
         </StackLayout>
-        <Grid Grid.Row="3">
-            <Button Text="Via Facebook"
+        <Grid Grid.Row="3"
+              Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.45*"/>
+                <ColumnDefinition Width="0.3*"/>
+            </Grid.ColumnDefinitions>
+            <controls:SocialButton Text="Facebook"
+                    Image="facebookIcon.png"
                     Command="{Binding SocialLoginCommand}"
                     CommandParameter="Facebook"
                     Grid.Row="0" 
-                    Grid.Column="0" 
-                    Style="{StaticResource Key=SocialButton}"/>
-            <Button Text="Via Google" 
+                    Grid.Column="0" />
+            <controls:SocialButton Text="Google" 
+                    Image= "googleIcon.png"
                     Command="{Binding SocialLoginCommand}"
                     CommandParameter="Google"
                     Grid.Row="0" 
-                    Grid.Column="1"
-                    Style="{StaticResource Key=SocialButton}"/>
-            <Button Text="Via Apple" 
+                    Grid.Column="1"/>
+            <controls:SocialButton Text="Apple" 
+                    Image= "appleIcon.png"
                     Command="{Binding SocialLoginCommand}"
                     CommandParameter="Apple"
                     Grid.Row="0" 
-                    Grid.Column="2"
-                    Style="{StaticResource Key=SocialButton}"/>
+                    Grid.Column="2"/>
         </Grid>
 
 
