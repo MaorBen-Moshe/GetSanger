@@ -33,7 +33,9 @@
 
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center">
-            <Image Source="{Binding PersonalImage}"   >
+            <Image Source="{Binding PersonalImage}" 
+                   HeightRequest="64"
+                   WidthRequest="64">
             </Image>
             <Button Text="Upload Photo" 
                     CornerRadius="20" 
