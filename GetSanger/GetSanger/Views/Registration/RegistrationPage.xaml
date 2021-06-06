@@ -87,32 +87,22 @@
                      IsVisible="true" />
 
         </StackLayout>
-        <Grid Grid.Row="3"
-              Margin="8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"/>
-                <ColumnDefinition Width="0.45*"/>
-                <ColumnDefinition Width="0.3*"/>
-            </Grid.ColumnDefinitions>
+        <StackLayout Grid.Row="3" Orientation="Horizontal"
+              Margin="50, 8, 8, 8">
+            
             <controls:SocialButton Text="Facebook"
                     Image="facebookIcon.png"
                     Command="{Binding SocialLoginCommand}"
-                    CommandParameter="Facebook"
-                    Grid.Row="0" 
-                    Grid.Column="0" />
+                    CommandParameter="Facebook" />
             <controls:SocialButton Text="Google" 
                     Image= "googleIcon.png"
                     Command="{Binding SocialLoginCommand}"
-                    CommandParameter="Google"
-                    Grid.Row="0" 
-                    Grid.Column="1"/>
+                    CommandParameter="Google"/>
             <controls:SocialButton Text="Apple" 
                     Image= "appleIcon.png"
                     Command="{Binding SocialLoginCommand}"
-                    CommandParameter="Apple"
-                    Grid.Row="0" 
-                    Grid.Column="2"/>
-        </Grid>
+                    CommandParameter="Apple"/>
+        </StackLayout>
 
 
         <StackLayout VerticalOptions="EndAndExpand" 
