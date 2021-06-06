@@ -22,7 +22,6 @@
 
     <ContentPage.Content>
 
-
         <StackLayout Orientation="Vertical" Spacing="20">
             <Label 
                    Margin="14,17,20,0" 
@@ -39,7 +38,8 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal">
-                            <Image Source="{Binding ImageUri}"/>
+                            <Image Source="{Binding ImageUri}"
+                                   WidthRequest="32"/>
                             <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
                                    FontSize="19"/>
                         </StackLayout>

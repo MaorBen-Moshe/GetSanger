@@ -13,7 +13,7 @@ namespace GetSanger.Models
         public Category Category
         {
             get => m_category;
-            set => SetStructProperty(ref m_category, value);
+            set  { SetStructProperty(ref m_category, value); setCategoriesImage(); }
         }
 
         // for sign up categories page
@@ -28,25 +28,25 @@ namespace GetSanger.Models
 
         public CategoryCell()
         {
-            setCategoriesImage();
+            
         }
 
         private void setCategoriesImage()
         {
             ImageUri = Category switch
             {
-                Category.Arrangement => "",
-                Category.Beauty => "",
-                Category.Cleaning => "",
-                Category.Computers_And_Smartphones => "",
-                Category.Delivery => "",
-                Category.Electrician => "",
-                Category.Gardening => "",
-                Category.Handiman => "",
-                Category.House_Devices => "",
-                Category.Pets => "",
-                Category.Studies => "",
-                Category.Vehicle => "",
+                Category.Arrangement => "IconArrangement.png",
+                Category.Beauty => "IconBeauty.png",
+                Category.Cleaning => "IconCleaning.png",
+                Category.Computers_And_Smartphones => "IconComputersAndSmartphones.png",
+                Category.Delivery => "IconDelivery.png",
+                Category.Electrician => "IconElectrician.png",
+                Category.Gardening => "IconGardening.png",
+                Category.Handiman => "IconHandiman.png",
+                Category.House_Devices => "IconHouseDevices.png",
+                Category.Pets => "IconPets.png",
+                Category.Studies => "IconStudies.png",
+                Category.Vehicle => "IconVehicles.png",
                 Category.All => "",
                 _ => "",
             };
