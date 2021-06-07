@@ -60,19 +60,10 @@ namespace GetSanger.ViewModels
         {
             if (SelectedItem != null)
             {
-                try
-                {
-                    var category = SelectedItem.Category;
-                    await r_NavigationService.NavigateTo($"{ShellRoutes.JobOffer }?category={category}&isCreate={true}");
-                    SelectedItem = null;
-                }
-                catch (Exception ex)
-                {
-                    ex.ToString();
-                }
-            
+                var category = SelectedItem.Category;
+                await r_NavigationService.NavigateTo($"{ShellRoutes.JobOffer }?category={category}&isCreate={true}");
+                SelectedItem = null;
             }
-            
         }
         #endregion
     }

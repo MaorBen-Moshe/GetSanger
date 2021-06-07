@@ -11,9 +11,8 @@ namespace GetSanger.Converters
     {
         public static eCategory FromString(string i_Value)
         {
-            eCategory toRet = eCategory.All;
             string fixedStr = i_Value.Replace(" ", "_");
-            Enum.TryParse(fixedStr, out toRet);
+            Enum.TryParse(fixedStr, out eCategory toRet);
             return toRet;
         }
 
@@ -29,7 +28,7 @@ namespace GetSanger.Converters
             eCategory toRet = eCategory.All;
             if (value is string categoryString)
             {
-                toRet = CategoryToStringConverter.FromString(categoryString);
+                toRet = FromString(categoryString);
             }
 
             return toRet;
