@@ -107,7 +107,7 @@ namespace GetSanger.ViewModels
                     currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId())));
                     break;
                 case AppMode.Sanger:
-                    IEnumerable<Category> obsCollection = AppManager.Instance.ConnectedUser.Categories;
+                    IEnumerable<eCategory> obsCollection = AppManager.Instance.ConnectedUser.Categories;
                     string currentId = AppManager.Instance.ConnectedUser.UserId;
                     List<JobOffer> temp = await RunTaskWhileLoading(FireStoreHelper.GetAllJobOffers(obsCollection.ToList()));
                     temp = temp.Where(current => current.ClientID != currentId).ToList();

@@ -41,8 +41,8 @@ namespace GetSanger.ViewModels
         public CategoriesViewModel()
         {
             setCommands();
-            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell { Category = (Category)Enum.Parse(typeof(Category), name) }).ToList();
-            CategoriesItems = CategoriesItems.Where(categoryCell => categoryCell.Category.Equals(Category.All) == false).ToList();
+            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(eCategory)).Select(name => new CategoryCell { Category = (eCategory)Enum.Parse(typeof(eCategory), name) }).ToList();
+            CategoriesItems = CategoriesItems.Where(categoryCell => categoryCell.Category.Equals(eCategory.All) == false).ToList();
         }
         #endregion
 
@@ -58,10 +58,19 @@ namespace GetSanger.ViewModels
 
         private async void categorySelected()
         {
-            if(SelectedItem != null)
+            if (SelectedItem != null)
             {
-                await r_NavigationService.NavigateTo($"{ShellRoutes.JobOffer }?category={SelectedItem.Category}&isCreate={true}");
-                SelectedItem = null;
+                try
+                {
+                    var category = SelectedItem.Category;
+                    await r_NavigationService.NavigateTo($"{ShellRoutes.JobOffer }?category={category}&isCreate={true}");
+                    SelectedItem = null;
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                }
+            
             }
             
         }

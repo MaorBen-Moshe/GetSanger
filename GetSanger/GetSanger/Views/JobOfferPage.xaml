@@ -32,7 +32,7 @@
 
             <StackLayout Grid.Row="1" >
                 <Grid>
-                    <Entry Text="{Binding JobCategory, Converter={StaticResource CategoryToStringConverter}, Mode=OneTime}" IsReadOnly="True" Grid.Column="0"/>
+                    <Entry Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" IsReadOnly="True" Grid.Column="0"/>
                     <Entry Text="{Binding NewJobOffer.Title}" Placeholder="Job Title" IsVisible="{Binding IsCreate}" Grid.Column="1" />
                 </Grid>
 

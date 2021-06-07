@@ -236,13 +236,13 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task<List<JobOffer>> GetAllJobOffers(List<Category> i_Categories = null)
+        public static async Task<List<JobOffer>> GetAllJobOffers(List<eCategory> i_Categories = null)
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 // if i_Categories == null than get all job offers in data base else filter by the categories
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/GetAllJobOffers";
-                Dictionary<string, List<Category>> categoriesDictionary = new Dictionary<string, List<Category>>
+                Dictionary<string, List<eCategory>> categoriesDictionary = new Dictionary<string, List<eCategory>>
                 {
                     ["Categories"] = i_Categories
                 };

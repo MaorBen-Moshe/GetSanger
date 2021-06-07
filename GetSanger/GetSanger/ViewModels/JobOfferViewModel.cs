@@ -6,11 +6,12 @@ using System;
 using GetSanger.Models;
 using System.Collections.ObjectModel;
 using GetSanger.Constants;
+using GetSanger.Converters;
 
 namespace GetSanger.ViewModels
 {
     [QueryProperty(nameof(IsCreate), "isCreate")]
-    [QueryProperty(nameof(JobCategory), "category")]
+    [QueryProperty(nameof(JobCategoryString), "category")]
     [QueryProperty(nameof(JobOfferJson), "job")]
     public class JobOfferViewModel : BaseViewModel
     {
@@ -84,10 +85,13 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_JobLocation, value); 
         }
 
-        public Category JobCategory
+        public string JobCategoryString
         {
-            get => NewJobOffer.Category;
-            set => NewJobOffer.Category = value;
+            set
+            {
+                eCategory category = CategoryToStringConverter.FromString(value);
+                NewJobOffer.Category = category;
+            }
         }
 
         public bool IsCreate // create job offer or view exist job offer
@@ -115,20 +119,6 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            if (IsCreate == true)
-            {
-                NewJobOffer ??= new JobOffer
-                {
-                    Date = DateTime.Now
-                };
-
-                NewJobOffer.Category = JobCategory;
-            }
-            else
-            {
-                JobCategory = NewJobOffer.Category;
-            }
-
             IntialCurrentLocation();
             MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage,  (sender, args) =>
             {
@@ -138,11 +128,6 @@ namespace GetSanger.ViewModels
 
         public void Disappearing()
         {
-            NewJobOffer = new JobOffer
-            {
-                Date = DateTime.Now
-            };
-
             MessagingCenter.Unsubscribe<MapViewModel, Placemark>(this, Constants.Constants.LocationMessage);
         }
 
@@ -192,8 +177,7 @@ namespace GetSanger.ViewModels
             // check validation of fields!
             NewJobOffer.Location = MyPlaceMark.Location;
             NewJobOffer.JobLocation = MyPlaceMark.Location;
-            NewJobOffer.Category = JobCategory;
-            NewJobOffer.CategoryName = JobCategory.ToString();
+            NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
             NewJobOffer.ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone;
             User.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
                 new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer))));

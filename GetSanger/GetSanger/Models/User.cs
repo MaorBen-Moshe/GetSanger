@@ -31,7 +31,7 @@ namespace GetSanger.Models
             set => SetClassProperty(ref m_ProfilePictureUre, value);
         }
         public AppMode? LastUserMode { get; set; } // if null open mode page else open client/sanger shell
-        public ObservableCollection<Category> Categories { get; set; }
+        public ObservableCollection<eCategory> Categories { get; set; }
         public bool IsGenericNotifications
         {
             get => m_IsGenericNotifications;

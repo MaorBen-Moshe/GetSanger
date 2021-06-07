@@ -9,19 +9,27 @@ namespace GetSanger.Converters
 {
     public class CategoryToStringConverter : IValueConverter
     {
+        public static eCategory FromString(string i_Value)
+        {
+            eCategory toRet = eCategory.All;
+            string fixedStr = i_Value.Replace(" ", "_");
+            Enum.TryParse(fixedStr, out toRet);
+            return toRet;
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string originString = ((Category)value).ToString();
-            return originString.Replace("_", " ");
+            string originString = ((eCategory)value).ToString();
+            string retVal = originString.Replace("_", " ");
+            return retVal;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            object toRet = null;
-            if (value is string category)
+            eCategory toRet = eCategory.All;
+            if (value is string categoryString)
             {
-                bool succeed = Enum.TryParse(category, out Category parsed);
-                toRet = succeed ? parsed : toRet;
+                toRet = CategoryToStringConverter.FromString(categoryString);
             }
 
             return toRet;

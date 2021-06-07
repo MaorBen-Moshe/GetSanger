@@ -2,15 +2,15 @@
 
 namespace GetSanger.Models
 {
-    public enum Category { All, Delivery, Arrangement, House_Devices, Studies, Computers_And_Smartphones, Cleaning, Handiman, Electrician, Gardening, Pets, Vehicle, Beauty }; // all categories are here
+    public enum eCategory { All, Delivery, Arrangement, House_Devices, Studies, Computers_And_Smartphones, Cleaning, Handiman, Electrician, Gardening, Pets, Vehicle, Beauty }; // all categories are here
 
     public class CategoryCell : PropertySetter
     {
         #region Fields
-        private Category m_category;
+        private eCategory m_category;
         private bool m_Checked;
         #endregion
-        public Category Category
+        public eCategory Category
         {
             get => m_category;
             set  { SetStructProperty(ref m_category, value); setCategoriesImage(); }
@@ -35,19 +35,19 @@ namespace GetSanger.Models
         {
             ImageUri = Category switch
             {
-                Category.Arrangement => "IconArrangement.png",
-                Category.Beauty => "IconBeauty.png",
-                Category.Cleaning => "IconCleaning.png",
-                Category.Computers_And_Smartphones => "IconComputersAndSmartphones.png",
-                Category.Delivery => "IconDelivery.png",
-                Category.Electrician => "IconElectrician.png",
-                Category.Gardening => "IconGardening.png",
-                Category.Handiman => "IconHandiman.png",
-                Category.House_Devices => "IconHouseDevices.png",
-                Category.Pets => "IconPets.png",
-                Category.Studies => "IconStudies.png",
-                Category.Vehicle => "IconVehicles.png",
-                Category.All => "",
+                eCategory.Arrangement => "IconArrangement.png",
+                eCategory.Beauty => "IconBeauty.png",
+                eCategory.Cleaning => "IconCleaning.png",
+                eCategory.Computers_And_Smartphones => "IconComputersAndSmartphones.png",
+                eCategory.Delivery => "IconDelivery.png",
+                eCategory.Electrician => "IconElectrician.png",
+                eCategory.Gardening => "IconGardening.png",
+                eCategory.Handiman => "IconHandiman.png",
+                eCategory.House_Devices => "IconHouseDevices.png",
+                eCategory.Pets => "IconPets.png",
+                eCategory.Studies => "IconStudies.png",
+                eCategory.Vehicle => "IconVehicles.png",
+                eCategory.All => "",
                 _ => "",
             };
         }

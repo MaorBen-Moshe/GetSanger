@@ -89,6 +89,7 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior(object i_Param)
         {
+            // if data has not changed do not call update user
             if(string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) || 
                 !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
                 (DateTime.Now.AddYears(-ConnectedUser.PersonalDetails.Birthday.Year).Year < 18)

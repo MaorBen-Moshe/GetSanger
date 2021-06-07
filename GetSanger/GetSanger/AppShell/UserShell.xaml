@@ -17,7 +17,7 @@
              Icon="chatIcon.png">
             <ShellContent ContentTemplate="{DataTemplate chat:ChatsListView}" />
         </Tab>
-        <Tab Title="job Offers"
+        <Tab Title="Job Offers"
              Route="jobOffers"
              Icon="jobOfferIcon.png">
             <ShellContent ContentTemplate="{DataTemplate views:JobOffersListView}" />

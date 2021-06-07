@@ -51,14 +51,14 @@ namespace GetSanger.ViewModels
         {
             CategoriesItems = new ObservableCollection<CategoryCell>(
             (from
-                category in AppManager.Instance.GetListOfEnumNames(typeof(Category))
+                category in AppManager.Instance.GetListOfEnumNames(typeof(eCategory))
              where
-                !category.Equals(Category.All.ToString())
+                !category.Equals(eCategory.All.ToString())
              select
                 new CategoryCell
                 {
-                    Category = (Category)Enum.Parse(typeof(Category), category),
-                    Checked = AppManager.Instance.ConnectedUser.Categories.Contains((Category)Enum.Parse(typeof(Category), category))
+                    Category = (eCategory)Enum.Parse(typeof(eCategory), category),
+                    Checked = AppManager.Instance.ConnectedUser.Categories.Contains((eCategory)Enum.Parse(typeof(eCategory), category))
                 }
             ).ToList());
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;

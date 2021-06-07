@@ -33,7 +33,7 @@ namespace GetSanger.ViewModels
 
         private IList<CategoryCell> m_TempCategories;
 
-        private IList<Category> m_CheckedItems;
+        private IList<eCategory> m_CheckedItems;
 
         private string m_PickedGender;
 
@@ -46,8 +46,8 @@ namespace GetSanger.ViewModels
             setCommands();
             GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
             CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance
-                .GetListOfEnumNames(typeof(Category)).Select(name => new CategoryCell
-                    {Category = (Category) Enum.Parse(typeof(Category), name)}).ToList());
+                .GetListOfEnumNames(typeof(eCategory)).Select(name => new CategoryCell
+                    {Category = (eCategory) Enum.Parse(typeof(eCategory), name)}).ToList());
             m_TempCategories = CategoriesItems;
         }
 
@@ -227,10 +227,10 @@ namespace GetSanger.ViewModels
         private async void categoriesPartClicked()
         {
             m_CheckedItems = (from category in CategoriesItems
-                where category.Checked == true && category.Category.Equals(Category.All) == false
+                where category.Checked == true && category.Category.Equals(eCategory.All) == false
                 select category.Category).ToList();
 
-            CreatedUser.Categories = new ObservableCollection<Category>(m_CheckedItems);
+            CreatedUser.Categories = new ObservableCollection<eCategory>(m_CheckedItems);
             CreatedUser.RegistrationToken = await r_PushService.GetRegistrationToken();
 
             try
@@ -272,7 +272,7 @@ namespace GetSanger.ViewModels
         private void allCategoriesChecked(object i_Param)
         {
             var category = i_Param as CategoryCell;
-            if (category != null && category.Category.Equals(Category.All))
+            if (category != null && category.Category.Equals(eCategory.All))
             {
                 foreach (var elem in m_TempCategories)
                 {

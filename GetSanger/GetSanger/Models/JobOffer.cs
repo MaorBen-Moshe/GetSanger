@@ -12,7 +12,7 @@ namespace GetSanger.Models
         private string m_Title;
         private Location m_Location;
         private Location m_JobLocation;
-        private Category m_Category;
+        private eCategory m_Category;
         private string m_Phone;
         private DateTime m_Date;
         private string m_Description;
@@ -46,7 +46,7 @@ namespace GetSanger.Models
             set => SetClassProperty(ref m_JobLocation, value);
         }
 
-        public Category Category
+        public eCategory Category
         {
             get => m_Category;
             set => SetStructProperty(ref m_Category, value);
