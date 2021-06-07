@@ -110,7 +110,6 @@ namespace GetSanger.ViewModels
 
         public void Disappearing()
         {
-            MessagingCenter.Unsubscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage);
         }
 
         private void setCommands()

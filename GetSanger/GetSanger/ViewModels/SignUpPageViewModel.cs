@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading;
 using System.Web;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -37,6 +38,8 @@ namespace GetSanger.ViewModels
 
         private string m_PickedGender;
 
+        private User m_CreatedUser;
+
         #endregion
 
         #region Constructor
@@ -55,7 +58,11 @@ namespace GetSanger.ViewModels
 
         #region Property
 
-        public User CreatedUser { get; set; }
+        public User CreatedUser
+        {
+            get => m_CreatedUser;
+            set => SetClassProperty(ref m_CreatedUser, value);
+        }
 
         public Dictionary<string, object> FacebookGmailSignDict { get; set; }
 
@@ -178,10 +185,10 @@ namespace GetSanger.ViewModels
 
                         continue;
                     }
-                    else if (CreatedUser?.ProfilePictureUri != null)
-                    {
-                        r_StorageHelper.DeleteProfileImage(CreatedUser.UserId);
-                    }
+                    //else if (CreatedUser?.ProfilePictureUri != null)
+                    //{
+                    //    r_StorageHelper.DeleteProfileImage(CreatedUser.UserId);
+                    //}
 
                     property.SetValue(this, null);
                 }
@@ -219,7 +226,7 @@ namespace GetSanger.ViewModels
         private async void personalDetailPartClicked()
         {
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-            CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
+            Device.BeginInvokeOnMainThread(async () => CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation());
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }

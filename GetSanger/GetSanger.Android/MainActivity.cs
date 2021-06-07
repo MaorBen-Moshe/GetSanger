@@ -12,6 +12,7 @@ using Android.Content;
 using Firebase.Messaging;
 using Plugin.CurrentActivity;
 using Android.Views;
+using GetSanger.Services;
 
 namespace GetSanger.Droid
 {

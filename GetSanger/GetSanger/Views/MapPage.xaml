@@ -17,25 +17,26 @@
         <vm:MapViewModel />
     </ContentPage.BindingContext>
 
-    <Grid>
-        <controls:BindableMap x:Name="CurrentMap"
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand">
+            <controls:BindableMap x:Name="CurrentMap"
                               MapType="Street" 
                               IsShowingUser="True"
                               HasZoomEnabled="True"
                               BackgroundColor="Transparent"
-                              PinsSource="{Binding Pins, Mode=TwoWay}"
-                              MapSpan="{Binding Span, Mode=TwoWay}">
-            <controls:BindableMap.Behaviors>
-                <behaviors:EventToCommandBehavior Command="{Binding MapClicked}"
+                              PinsSource="{Binding Pins}"
+                              MapSpan="{Binding Span}">
+                <controls:BindableMap.Behaviors>
+                    <behaviors:EventToCommandBehavior Command="{Binding MapClicked}"
                                                   EventName="MapClicked"
                                                   Converter="{StaticResource MapClickedConverter}"/>
-                <behaviors:EventToCommandBehavior Command="{Binding PinClicked}"
+                    <behaviors:EventToCommandBehavior Command="{Binding PinClicked}"
                                                   EventName="PinClicked"
                                                   Converter="{StaticResource PinClickedConverter}"/>
-            </controls:BindableMap.Behaviors>
-        </controls:BindableMap>
+                </controls:BindableMap.Behaviors>
+            </controls:BindableMap>
 
-        <Frame BackgroundColor="Transparent"
+            <Frame BackgroundColor="Transparent"
                BorderColor="Gray"
                HeightRequest="20"
                WidthRequest="300"
@@ -44,16 +45,16 @@
                Margin="0, 20, 0, 0"
                IsVisible="{Binding IsSearch}"
                IsEnabled="{Binding IsSearch}">
-            <SearchBar x:Name="AddressSearchBar" 
+                <SearchBar x:Name="AddressSearchBar" 
                    Placeholder="כתובת"
                    IsVisible="{Binding IsSearch}"
                    IsEnabled="{Binding IsSearch}"
                    SearchCommand="{Binding SearchCommand}"
                    SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
-        </Frame>
+            </Frame>
 
 
-        <Button Text="Call" 
+            <Button Text="Call" 
                     BackgroundColor="White"
                     IsVisible="{Binding IsTrip}"
                     VerticalOptions="End"
@@ -61,5 +62,6 @@
                     CornerRadius="20"
                     Padding="0, 0, 0, 20"
                     Command="{Binding CallTripCommand}"/>
-    </Grid>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

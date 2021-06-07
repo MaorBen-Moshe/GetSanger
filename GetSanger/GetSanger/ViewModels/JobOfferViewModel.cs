@@ -109,7 +109,8 @@ namespace GetSanger.ViewModels
             setCommands();
             NewJobOffer = new JobOffer
             {
-                Date = DateTime.Now
+                Date = DateTime.Now,
+                Title = "New Job Offer"
             };
         }
 
@@ -128,7 +129,6 @@ namespace GetSanger.ViewModels
 
         public void Disappearing()
         {
-            MessagingCenter.Unsubscribe<MapViewModel, Placemark>(this, Constants.Constants.LocationMessage);
         }
 
         public async void IntialCurrentLocation()
@@ -141,7 +141,7 @@ namespace GetSanger.ViewModels
             }
 
             Location location = await r_LocationServices.GetCurrentLocation();
-            MyPlaceMark = await r_LocationServices.PickedLocation(location);
+            MyPlaceMark ??= await r_LocationServices.PickedLocation(location);
         }
 
         private void setCommands()

@@ -44,9 +44,9 @@
                     x:Name="UploadButton"
                     Command="{Binding ImagePickerCommand}"
                     CommandParameter="{x:Reference UploadButton}"/>
-            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName, Mode=TwoWay}" x:Name="NameEntry"/>
+            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName}" x:Name="NameEntry"/>
 
-            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone, Mode=TwoWay}" x:Name="PhoneEntry">
+            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone}" x:Name="PhoneEntry">
                 <Entry.Behaviors>
                     <behaviors:PhoneNumberMaskBehavior />
                     <behaviors:PhoneEntryLengthValidator MaxLength="11"/>

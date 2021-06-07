@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:GetSanger.Converters"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.JobOfferPage"
              Title="{Binding NewJobOffer.Title}">
 
@@ -60,7 +61,12 @@
                             FontSize="14"/>
                 </Grid>
 
-                <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone" IsEnabled="{Binding IsCreate}"/>
+                <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone" IsEnabled="{Binding IsCreate}">
+                    <Entry.Behaviors>
+                        <behaviors:PhoneNumberMaskBehavior />
+                        <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
+                    </Entry.Behaviors>
+                </Entry>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
