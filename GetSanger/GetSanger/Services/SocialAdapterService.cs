@@ -4,6 +4,7 @@ using GetSanger.Models;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace GetSanger.Services
@@ -13,19 +14,17 @@ namespace GetSanger.Services
     {
         private LoginServices m_LoginService;
         private NavigationService m_NavigationService;
-        private PopupService m_PopupService;
 
-        public async void SocialLogin(SocialProvider i_Provider)
+        public async Task<bool> SocialLogin(SocialProvider i_Provider)
         {
-            if(m_LoginService == null || m_NavigationService == null || m_PopupService == null)
+            if(m_LoginService == null || m_NavigationService == null)
             {
                 SetDependencies();
             }
 
-            m_PopupService.ShowPopup();
+            bool succeeded = true;
             Dictionary<string, object> details = await AuthHelper.LoginWithProvider(i_Provider);
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
-            m_PopupService.HidePopup();
             if (isFirstLoggedin)
             {
                 string json = ObjectJsonSerializer.SerializeForPage(getDetails(details));
@@ -35,8 +34,10 @@ namespace GetSanger.Services
             }
             else
             {
-                m_LoginService.LoginUser();
+                succeeded = await m_LoginService.LoginUser(socialLogin:true);
             }
+
+            return succeeded;
         }
 
         private User getDetails(Dictionary<string, object> i_Details)
@@ -62,7 +63,6 @@ namespace GetSanger.Services
         {
             m_LoginService = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             m_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            m_PopupService = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
         }
     }
 }

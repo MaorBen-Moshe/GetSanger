@@ -1,4 +1,5 @@
 ﻿using GetSanger.Constants;
+using GetSanger.Exceptions;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
@@ -84,11 +85,14 @@ namespace GetSanger.ViewModels
             try
             {
                 await RunTaskWhileLoading(AuthHelper.LoginViaEmail(Email, Password));
-                r_LoginServices.LoginUser();
+                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser());
+                if (!verified)
+                {
+                    await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 await r_PageService.DisplayAlert("Error", e.Message, "OK");
             }
         }
@@ -103,7 +107,7 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
         }
 
-        private void socialClicked(object i_Param)
+        private async void socialClicked(object i_Param)
         {
             if(i_Param == null || (i_Param is string == false))
             {
@@ -113,7 +117,18 @@ namespace GetSanger.ViewModels
             bool isProvider = Enum.TryParse(i_Param as string, out SocialProvider provider);
             if (isProvider)
             {
-                r_SocialService.SocialLogin(provider);
+                try
+                {
+                    bool verified = await RunTaskWhileLoading(r_SocialService.SocialLogin(provider));
+                    if (!verified)
+                    {
+                        await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                    }
+                }
+                catch(Exception e)
+                {
+                    await r_PageService.DisplayAlert("Error", e.Message, "OK");
+                }
             }
         }
 

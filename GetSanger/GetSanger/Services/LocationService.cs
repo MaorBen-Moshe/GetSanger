@@ -17,14 +17,14 @@ namespace GetSanger.Services
 
         public CancellationTokenSource Cts { get; private set; }
 
-        public async Task<Location> GetCurrentLocation()
+        public Task<Location> GetCurrentLocation()
         {
-            Location location = await Geolocation.GetLastKnownLocationAsync();
+            Task<Location> location = Geolocation.GetLastKnownLocationAsync();
             if (location == null)
             {
                 GeolocationRequest geoReq = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(30));
                 Cts = new CancellationTokenSource();
-                location = await Geolocation.GetLocationAsync(geoReq, Cts.Token);
+                location = Geolocation.GetLocationAsync(geoReq, Cts.Token);
             }
 
             return location;

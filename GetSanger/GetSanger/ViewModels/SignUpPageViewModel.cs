@@ -155,7 +155,6 @@ namespace GetSanger.ViewModels
             }
             else
             {
-                CreatedUser = new User();
                 PropertyInfo[] properties = GetType()
                     .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
                 foreach (var property in properties)

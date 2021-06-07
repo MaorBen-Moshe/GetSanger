@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GetSanger.Views.Registration.SignupPersonalDetailPage"
-             xmlns:triggers="clr-namespace:GetSanger.Styles.Triggers"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:Converters="clr-namespace:GetSanger.Converters"
              x:Name="PersonalDetails">

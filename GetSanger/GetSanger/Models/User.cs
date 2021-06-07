@@ -39,8 +39,8 @@ namespace GetSanger.Models
         }
         public Location UserLocation
         {
-            get => m_UserLocation; 
-            set => SetClassProperty(ref m_UserLocation, value); 
+            get => m_UserLocation;
+            set => SetClassProperty(ref m_UserLocation, value);
         }
         
         [JsonIgnore]

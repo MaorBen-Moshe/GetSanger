@@ -33,11 +33,15 @@ namespace GetSanger.ViewModels
             SangerCommand = new Command(sangerCommandHelper);
         }
 
-        private void userCommandHelper()
+        private async void userCommandHelper()
         {
             try
             {
-                r_LoginServices.LoginUser(AppMode.Client);
+                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser(AppMode.Client));
+                if (!verified)
+                {
+                    await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                }
             }
             catch(Exception e)
             {
@@ -45,11 +49,15 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private void sangerCommandHelper()
+        private async void sangerCommandHelper()
         {
             try
             {
-                r_LoginServices.LoginUser(AppMode.Sanger);
+                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser(AppMode.Sanger));
+                if (!verified)
+                {
+                    await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                }
             }
             catch(Exception e)
             {

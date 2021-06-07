@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.Json;
 using Xamarin.Forms;
 using GetSanger.ViewModels;
+using GetSanger.Exceptions;
+using System.Threading.Tasks;
 
 namespace GetSanger.Services
 {
@@ -55,32 +57,45 @@ namespace GetSanger.Services
             }
         }
 
-        public async void LoginUser(AppMode? i_Mode = null)
+        public async Task<bool> LoginUser(AppMode? i_Mode = null, bool socialLogin = false)
         {
             SetDependencies();
 
             try
             {
-                User user = await m_RunTasks.RunTaskWhileLoading(FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId()));
-                if(user != null)
+                bool firstTime = await AuthHelper.IsFirstTimeLogIn();
+                bool verified = false;
+                if(firstTime == false)
                 {
+                    User user = await m_RunTasks.RunTaskWhileLoading(FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId()));
+                    verified = await AuthHelper.IsVerifiedEmail();
                     AppManager.Instance.ConnectedUser = user;
-                    if (i_Mode != null) // we are here from mode page or from auto login
+                    if (verified)
                     {
-                        SetMode((AppMode)i_Mode);
-                    }
-                    else // we are here from login page
-                    {
-                        if (user.LastUserMode == null)
+                        if (i_Mode != null) // we are here from mode page or from auto login
                         {
-                            await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
+                            SetMode((AppMode)i_Mode);
                         }
-                        else
+                        else // we are here from login page
                         {
-                            SetMode();
+                            if (user.LastUserMode == null)
+                            {
+                                await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
+                            }
+                            else
+                            {
+                                SetMode();
+                            }
                         }
                     }
                 }
+                else
+                {
+                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={socialLogin}");
+                    return true;
+                }
+
+                return verified;
             }
             catch(Exception e)
             {
@@ -88,14 +103,8 @@ namespace GetSanger.Services
             }
         }
 
-        public async void SetMode(AppMode? i_Mode = null)
+        public void SetMode(AppMode? i_Mode = null)
         {
-            bool verified = await AuthHelper.IsVerifiedEmail();
-            if (verified == false)
-            {
-                throw new Exception("Please verify your email address to continue!");
-            }
-
             Application.Current.MainPage = AppManager.Instance.GetCurrentShell(i_Mode);
         }
 
