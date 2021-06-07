@@ -12,6 +12,7 @@ namespace GetSanger.Converters
         {
             DateTime date = (DateTime)value;
             return ((DateTime.Now.Year - date.Year) >= 18);
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
