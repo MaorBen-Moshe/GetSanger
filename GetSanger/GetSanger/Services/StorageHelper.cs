@@ -19,6 +19,7 @@ namespace GetSanger.Services
 
         public async void SetUserProfileImage(User i_User, Stream i_Stream)
         {
+            
             if(i_User.UserId == null)
             {
                 throw new ArgumentNullException("User must have an ID");
