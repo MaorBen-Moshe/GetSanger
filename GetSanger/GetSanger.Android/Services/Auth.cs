@@ -31,8 +31,9 @@ namespace GetSanger.Droid.Services
                 user = getUser();
             }
 
-            await user.GetIdToken(true);
-            return user.Zzh();
+            Android.Gms.Tasks.Task getIdTokenTask = user.GetIdToken(true);
+            string idToken = (string) await getIdTokenTask;
+            return idToken;
         }
 
         public string GetUserId()
