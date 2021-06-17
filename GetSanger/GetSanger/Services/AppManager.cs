@@ -15,6 +15,7 @@ namespace GetSanger.Services
         private UserShell m_UserShell;
         private SangerShell m_SangerShell;
         private User m_User;
+        private object m_UserLock = new object();
 
         public event Action Refresh_Event;
 
@@ -24,13 +25,22 @@ namespace GetSanger.Services
 
         public User ConnectedUser
         {
-            get => m_User;
+            get
+            {
+                lock (m_UserLock)
+                {
+                    return m_User;
+                }
+            }
             set
             {
-                m_User = value;
-                if(m_User?.LastUserMode != null)
+                lock (m_UserLock)
                 {
-                    CurrentMode = (AppMode)m_User.LastUserMode;
+                    m_User = value;
+                    if (m_User?.LastUserMode != null)
+                    {
+                        CurrentMode = (AppMode)m_User.LastUserMode;
+                    }
                 }
             }
         }

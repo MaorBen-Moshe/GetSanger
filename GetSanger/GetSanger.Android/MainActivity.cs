@@ -90,7 +90,6 @@ namespace GetSanger.Droid
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
-
         }
     }
 }

@@ -2,6 +2,7 @@
 using Android.Graphics.Drawables;
 using Android.Views;
 using GetSanger.Views;
+using Java.IO;
 using Plugin.CurrentActivity;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -55,7 +56,8 @@ namespace GetSanger.Droid.Services
             var renderer = Platform.GetRenderer(bindable);
             if (renderer == null)
             {
-                renderer = Platform.CreateRenderer(bindable);
+                renderer = Platform.CreateRendererWithContext(bindable, Android.App.Application.Context);
+                //renderer = Platform.CreateRenderer(bindable);
                 Platform.SetRenderer(bindable, renderer);
             }
             return renderer;

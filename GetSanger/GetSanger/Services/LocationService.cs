@@ -19,13 +19,11 @@ namespace GetSanger.Services
 
         public Task<Location> GetCurrentLocation()
         {
-            Task<Location> location = Geolocation.GetLastKnownLocationAsync();
-            if (location == null)
-            {
-                GeolocationRequest geoReq = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(30));
-                Cts = new CancellationTokenSource();
-                location = Geolocation.GetLocationAsync(geoReq, Cts.Token);
-            }
+            //Task<Location> location = Geolocation.GetLastKnownLocationAsync();
+            Task<Location> location;
+            GeolocationRequest geoReq = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+            Cts = new CancellationTokenSource();
+            location = Geolocation.GetLocationAsync(geoReq, Cts.Token);
 
             return location;
         }

@@ -16,6 +16,10 @@ namespace GetSanger.Services
                 if (i_Uri != null)
                 {
                     image = ImageSource.FromUri(i_Uri);
+                    if(image == null)
+                    {
+                        image = ImageSource.FromFile("profile.png");
+                    }
                 }
                 else
                 {
