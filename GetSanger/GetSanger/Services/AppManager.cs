@@ -104,7 +104,7 @@ namespace GetSanger.Services
             Services.Add(typeof(StorageHelper), new StorageHelper());
             Services.Add(typeof(PhotoDisplayService), new PhotoDisplayService());
             Services.Add(typeof(SocialAdapterService), new SocialAdapterService());
-            Services.Add(typeof(PopupService), new PopupService());
+            Services.Add(typeof(LoadingService), new LoadingService());
             Services.Add(typeof(RunTasksService), new RunTasksService());
 
             m_UserShell = new UserShell();

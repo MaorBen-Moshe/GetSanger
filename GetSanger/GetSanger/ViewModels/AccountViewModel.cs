@@ -1,10 +1,10 @@
 ﻿using GetSanger.AppShell;
 using GetSanger.Constants;
-using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
-using GetSanger.Views;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -115,9 +115,42 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo(ShellRoutes.EditProfile);
         }
 
-        private void linkSocial(object i_Param)
+        private async void linkSocial(object i_Param)
         {
-            r_PopupService.ShowPopup(new LinkProviderPage());
+            //r_PopupService.ShowPopup(new LinkProviderPage());
+            List<eSocialProvider> providers = AppManager.Instance.GetListOfEnumNames(typeof(eSocialProvider)).Select(item => (eSocialProvider)Enum.Parse(typeof(eSocialProvider), item)).ToList();
+            string[] buttons = providers.Select(item => item.ToString()).ToArray();
+            string choice = await r_PageService.DisplayActionSheet("Choose Provider", "Cancel", null, buttons);
+            if(choice.Equals("Cancel") == false)
+            {
+                eSocialProvider parsedProvider = (eSocialProvider)Enum.Parse(typeof(eSocialProvider), choice);
+                providerSelected(parsedProvider);
+            }
+        }
+
+        private async void providerSelected(eSocialProvider i_CurrentProvider)
+        {
+            try
+            {
+                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
+                tryGetPicture(details["photoUrl"] as string);
+                await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
+            }
+            catch (Exception e)
+            {
+                await r_PageService.DisplayAlert("Error", e.Message, "OK");
+            }
+        }
+
+        private async void tryGetPicture(string i_Uri)
+        {
+            User current = AppManager.Instance.ConnectedUser;
+            if (current.ProfilePictureUri == null && !string.IsNullOrWhiteSpace(i_Uri))
+            {
+                Uri uri = new Uri(i_Uri);
+                current.ProfilePictureUri = uri;
+                await RunTaskWhileLoading(FireStoreHelper.UpdateUser(current));
+            }
         }
 
         #endregion

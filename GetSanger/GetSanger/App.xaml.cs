@@ -37,7 +37,7 @@ namespace GetSanger
 
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            PopupService service = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
+            LoadingService service = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
             if (e.NetworkAccess.Equals(NetworkAccess.Internet) == false)
             {
                 service.ShowPopup(new LoadingPage(internetChecking:true));

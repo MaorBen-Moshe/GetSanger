@@ -182,10 +182,6 @@ namespace GetSanger.ViewModels
 
                         continue;
                     }
-                    //else if (CreatedUser?.ProfilePictureUri != null)
-                    //{
-                    //    r_StorageHelper.DeleteProfileImage(CreatedUser.UserId);
-                    //}
 
                     property.SetValue(this, null);
                 }

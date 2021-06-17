@@ -156,10 +156,9 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DialogService.cs" />
-    <Compile Include="Services\PopupService.cs" />
+    <Compile Include="Services\LoadingService.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
     <Compile Include="Services\PushService.cs" />
-    <Compile Include="Services\StorageHelper.cs" />
     <Compile Include="Services\WebAuthenticationCallbackActivity.cs" />
   </ItemGroup>
   <ItemGroup>

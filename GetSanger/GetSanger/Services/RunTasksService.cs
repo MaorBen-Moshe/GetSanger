@@ -6,7 +6,7 @@ namespace GetSanger.Services
 {
     public class RunTasksService : Service
     {
-        private PopupService m_PopupService;
+        private LoadingService m_PopupService;
 
         public async Task RunTaskWhileLoading(Task i_InnerTask, ContentPage i_OptionalLoading = null)
         {
@@ -19,7 +19,7 @@ namespace GetSanger.Services
             {
                 m_PopupService.ShowPopup(i_OptionalLoading);
                 await i_InnerTask;
-                m_PopupService.HidePopup(i_OptionalLoading?.GetType());
+                m_PopupService.HidePopup();
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@ namespace GetSanger.Services
             {
                 m_PopupService.ShowPopup(i_OptionalLoading);
                 T result = await i_InnerTask;
-                m_PopupService.HidePopup(i_OptionalLoading?.GetType());
+                m_PopupService.HidePopup();
                 return result;
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace GetSanger.Services
         }
         public override void SetDependencies()
         {
-            m_PopupService = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
+            m_PopupService = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
         }
     }
 }

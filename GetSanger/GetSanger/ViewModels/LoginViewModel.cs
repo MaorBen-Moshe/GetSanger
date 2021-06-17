@@ -113,7 +113,7 @@ namespace GetSanger.ViewModels
                 return;
             }
 
-            bool isProvider = Enum.TryParse(i_Param as string, out SocialProvider provider);
+            bool isProvider = Enum.TryParse(i_Param as string, out eSocialProvider provider);
             if (isProvider)
             {
                 try

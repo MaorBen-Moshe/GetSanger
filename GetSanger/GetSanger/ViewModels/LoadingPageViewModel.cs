@@ -76,7 +76,7 @@ namespace GetSanger.ViewModels
         {
             if (e.NetworkAccess.Equals(NetworkAccess.Internet))
             {
-                r_PopupService.HidePopup(typeof(LoadingPage));
+                r_PopupService.HidePopup();
                 Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
             }
         }
@@ -86,7 +86,7 @@ namespace GetSanger.ViewModels
             IsVisible = false;
             if (Connectivity.NetworkAccess.Equals(NetworkAccess.Internet))
             {
-                r_PopupService.HidePopup(typeof(LoadingPage));
+                r_PopupService.HidePopup();
                 Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
             }
             else

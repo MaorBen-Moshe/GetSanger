@@ -144,7 +144,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task<Dictionary<string, object>> LoginWithProvider(SocialProvider i_Provider)
+        public static async Task<Dictionary<string, object>> LoginWithProvider(eSocialProvider i_Provider)
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -152,17 +152,17 @@ namespace GetSanger.Services
 
                 switch (i_Provider)
                 {
-                    case SocialProvider.Facebook:
+                    case eSocialProvider.Facebook:
                         string facebookAccessToken = await getSocialAuthIdToken("Facebook");
                         requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
                         break;
 
-                    case SocialProvider.Google:
+                    case eSocialProvider.Google:
                         string googleIdToken = await getSocialAuthIdToken("Google");
                         requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
                         break;
 
-                    case SocialProvider.Apple:
+                    case eSocialProvider.Apple:
                         string appleIdToken = await getSocialAuthIdToken("Apple");
                         requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
                         break;
@@ -216,7 +216,7 @@ namespace GetSanger.Services
             }
         }
 
-        public static async Task<Dictionary<string, object>> LinkWithSocialProvider(SocialProvider i_Provider)
+        public static async Task<Dictionary<string, object>> LinkWithSocialProvider(eSocialProvider i_Provider)
         {
             string id = await GetIdTokenAsync();
             Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
@@ -226,17 +226,17 @@ namespace GetSanger.Services
 
             switch (i_Provider)
             {
-                case SocialProvider.Facebook:
+                case eSocialProvider.Facebook:
                     string facebookAccessToken = await getSocialAuthIdToken("Facebook");
                     requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
                     break;
 
-                case SocialProvider.Google:
+                case eSocialProvider.Google:
                     string googleIdToken = await getSocialAuthIdToken("Google");
                     requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
                     break;
 
-                case SocialProvider.Apple:
+                case eSocialProvider.Apple:
                     string appleIdToken = await getSocialAuthIdToken("Apple");
                     requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
                     break;
