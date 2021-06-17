@@ -8,9 +8,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.Json;
-using System.Threading;
-using System.Web;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -226,7 +223,6 @@ namespace GetSanger.ViewModels
         private async void personalDetailPartClicked()
         {
             CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-            Device.BeginInvokeOnMainThread(async () => CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation());
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }
@@ -243,6 +239,7 @@ namespace GetSanger.ViewModels
             try
             {
                 CreatedUser.UserId = AuthHelper.GetLoggedInUserId();
+                CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserId,
                     (m_CheckedItems.Select(category => ((int)category).ToString())).ToArray()));
@@ -269,7 +266,7 @@ namespace GetSanger.ViewModels
 
                 (i_Param as Button).IsEnabled = true;
             }
-            catch(Exception e)
+            catch
             {
                 await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "Ok");
                 (i_Param as Button).IsEnabled = true;
