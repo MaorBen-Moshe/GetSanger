@@ -20,10 +20,11 @@ namespace GetSanger.Droid.Services
                 await FirebaseAuth.Instance.SignInAnonymouslyAsync();
                 user = getUser();
             }
-            
-           // Android.Gms.Tasks.Task getIdTokenTask = user.GetIdToken(true);
-            string idToken = user.Zze();
-            return idToken;
+
+            Android.Gms.Tasks.Task getIdTokenTask = user.GetIdToken(true);
+            await getIdTokenTask;
+
+            return user.Zze();
         }
 
         public string GetUserId()

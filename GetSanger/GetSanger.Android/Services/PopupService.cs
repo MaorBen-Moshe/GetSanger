@@ -1,7 +1,6 @@
 ﻿using GetSanger.Droid.Services;
 using GetSanger.Interfaces;
 using GetSanger.Views;
-using System.Collections.Generic;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(PopupService))]
