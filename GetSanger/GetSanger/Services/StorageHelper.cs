@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using Newtonsoft.Json;
 using Object = Google.Apis.Storage.v1.Data.Object;
 
 namespace GetSanger.Services
@@ -11,7 +12,7 @@ namespace GetSanger.Services
     public class StorageHelper : Service
     {
         private readonly StorageClient r_StorageClient;
-        private readonly string r_BucketName = "gs://get-sanger.appspot.com";
+        private readonly string r_BucketName = "get-sanger.appspot.com";
 
         public StorageHelper()
         {
@@ -40,20 +41,31 @@ namespace GetSanger.Services
                 i_User.ProfilePictureUri = null;
             }
 
-            Uri imageUri = await UploadFile(i_Stream, $"ProfilePictures/{i_User.UserId}.png");
+            //MemoryStream memoryStream = new MemoryStream();
+            Uri imageUri = await UploadFile(i_Stream, $"ProfilePictures/{i_User.UserId}.jpg");
             i_User.ProfilePictureUri = imageUri;
         }
 
         public async Task<Uri> UploadFile(Stream stream, string objectPath)
         {
-            Object uploadedObject =
-                await r_StorageClient.UploadObjectAsync(r_BucketName, objectPath, "image/png", stream);
-            return new Uri(uploadedObject.MediaLink);
+            try
+            {
+                Object uploadedObject =
+                    await r_StorageClient.UploadObjectAsync(r_BucketName, objectPath, null, stream);
+                var uploadedObjectMediaLink = uploadedObject.MediaLink;
+                return new Uri(uploadedObjectMediaLink);
+            }
+            catch (Exception e)
+            {
+                string message = e.Message;
+                Console.WriteLine(message);
+                throw e;
+            }
         }
 
         public async void DeleteProfileImage(string i_UserID)
         {
-            await DeleteFile($"ProfilePictures/{i_UserID}.png");
+            await DeleteFile($"ProfilePictures/{i_UserID}.jpg");
         }
 
         public async Task DeleteFile(string objectPath)
