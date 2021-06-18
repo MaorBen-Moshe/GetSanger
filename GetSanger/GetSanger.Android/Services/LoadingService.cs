@@ -25,6 +25,12 @@ namespace GetSanger.Droid.Services
                 _dialog.Show();
                 _isLoading = true;
             }
+            else if(_isLoading == false)
+            {
+                InitLoadingPage();
+                _dialog.Show();
+                _isLoading = true;
+            }
         }
 
         public void HideLoadingPage()

@@ -234,7 +234,7 @@ namespace GetSanger.ViewModels
 
             try
             {
-                CreatedUser.UserId = AuthHelper.GetLoggedInUserId();
+                CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
                 CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserId,

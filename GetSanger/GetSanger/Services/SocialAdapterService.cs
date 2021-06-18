@@ -46,7 +46,8 @@ namespace GetSanger.Services
                 {
                     NickName = i_Details["displayName"] as string
                 },
-                Email = i_Details["email"] as string
+                Email = i_Details["email"] as string,
+                UserId = AuthHelper.GetLoggedInUserId()
             };
 
             if (i_Details["photoUrl"] != null)
