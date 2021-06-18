@@ -1,26 +1,20 @@
-﻿using GetSanger.Interfaces;
-using GetSanger.Models;
+﻿using GetSanger.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
-using Xamarin.Forms;
 using Object = Google.Apis.Storage.v1.Data.Object;
 
 namespace GetSanger.Services
 {
     public class StorageHelper : Service
     {
-        private readonly IStorage r_Storage;
         private readonly StorageClient r_StorageClient;
         private readonly string r_BucketName = "gs://get-sanger.appspot.com";
 
         public StorageHelper()
         {
-            //r_Storage = DependencyService.Get<IStorage>();
             try
             {
                 r_StorageClient = StorageClient.Create(GoogleCredential.FromJson(

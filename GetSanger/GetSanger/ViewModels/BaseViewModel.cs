@@ -2,6 +2,7 @@
 using GetSanger.Services;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
@@ -23,7 +24,7 @@ namespace GetSanger.ViewModels
         protected readonly LoginServices r_LoginServices;
         protected readonly LocationService r_LocationServices;
         protected readonly SocialAdapterService r_SocialService;
-        protected readonly PopupService r_PopupService;
+        protected readonly LoadingService r_PopupService;
         protected readonly RunTasksService r_RunTasks;
         #endregion
 
@@ -71,7 +72,7 @@ namespace GetSanger.ViewModels
             r_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
             r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
-            r_PopupService = AppManager.Instance.Services.GetService(typeof(PopupService)) as PopupService;
+            r_PopupService = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
             r_RunTasks = AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
 
             IsEnabledsendBtn = false;

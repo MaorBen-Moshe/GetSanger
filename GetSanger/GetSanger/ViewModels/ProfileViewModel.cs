@@ -195,7 +195,7 @@ namespace GetSanger.ViewModels
 
         private async void addEditorReport()
         {
-            r_PopupService.HidePopup(typeof(EditorReportPage));
+            r_PopupService.HidePopup();
             m_CurrentReport.ReportMessage = ReportMessage;
             await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
             await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");

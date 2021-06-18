@@ -182,10 +182,6 @@ namespace GetSanger.ViewModels
 
                         continue;
                     }
-                    //else if (CreatedUser?.ProfilePictureUri != null)
-                    //{
-                    //    r_StorageHelper.DeleteProfileImage(CreatedUser.UserId);
-                    //}
 
                     property.SetValue(this, null);
                 }
@@ -238,7 +234,7 @@ namespace GetSanger.ViewModels
 
             try
             {
-                CreatedUser.UserId = AuthHelper.GetLoggedInUserId();
+                CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
                 CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserId,
@@ -276,14 +272,17 @@ namespace GetSanger.ViewModels
         private void allCategoriesChecked(object i_Param)
         {
             var category = i_Param as CategoryCell;
-            if (category != null && category.Category.Equals(eCategory.All))
+            if(category != null)
             {
-                foreach (var elem in m_TempCategories)
+                if (category.Category.Equals(eCategory.All))
                 {
-                    elem.Checked = category.Checked;
-                }
+                    foreach (var elem in m_TempCategories)
+                    {
+                        elem.Checked = category.Checked;
+                    }
 
-                CategoriesItems = new ObservableCollection<CategoryCell>(m_TempCategories);
+                    CategoriesItems = new ObservableCollection<CategoryCell>(m_TempCategories);
+                }
             }
         }
 

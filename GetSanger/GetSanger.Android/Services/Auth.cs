@@ -1,14 +1,4 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GetSanger.Interfaces;
+﻿using GetSanger.Interfaces;
 using System.Threading.Tasks;
 using Android.Gms.Extensions;
 using Firebase.Auth;
@@ -33,7 +23,7 @@ namespace GetSanger.Droid.Services
 
             Android.Gms.Tasks.Task getIdTokenTask = user.GetIdToken(true);
             await getIdTokenTask;
-            string idToken = (string) getIdTokenTask.Result;
+
             return user.Zze();
         }
 
