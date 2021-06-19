@@ -107,7 +107,7 @@ namespace GetSanger.ViewModels
         {
             set
             {
-                if(string.IsNullOrWhiteSpace(value) == false)
+                if (string.IsNullOrWhiteSpace(value) == false)
                 {
                     CreatedUser = ObjectJsonSerializer.DeserializeForPage<User>(value);
                 }
@@ -218,7 +218,7 @@ namespace GetSanger.ViewModels
 
         private async void personalDetailPartClicked()
         {
-            CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
+            CreatedUser.PersonalDetails.Gender = (GenderType) Enum.Parse(typeof(GenderType), PickedGender);
             // need to check validation of personal details in user
             await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
         }
@@ -238,7 +238,7 @@ namespace GetSanger.ViewModels
                 CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserId,
-                    (m_CheckedItems.Select(category => ((int)category).ToString())).ToArray()));
+                    (m_CheckedItems.Select(category => ((int) category).ToString())).ToArray()));
                 await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
             }
             catch (Exception e)
@@ -256,8 +256,12 @@ namespace GetSanger.ViewModels
                 if (stream != null)
                 {
                     CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
+                    MemoryStream memoryStream = new MemoryStream();
+                    await stream.CopyToAsync(memoryStream);
+                    stream.Position = 0;
                     PersonalImage = ImageSource.FromStream(() => stream);
-                    r_StorageHelper.SetUserProfileImage(CreatedUser, stream);
+
+                    r_StorageHelper.SetUserProfileImage(CreatedUser, memoryStream);
                 }
 
                 (i_Param as Button).IsEnabled = true;
@@ -272,7 +276,7 @@ namespace GetSanger.ViewModels
         private void allCategoriesChecked(object i_Param)
         {
             var category = i_Param as CategoryCell;
-            if(category != null)
+            if (category != null)
             {
                 if (category.Category.Equals(eCategory.All))
                 {
