@@ -16,14 +16,17 @@ namespace GetSanger.ViewModels
     public class EditProfileViewModel : BaseViewModel
     {
         #region Fields
+
         private ImageSource m_ProfileImage;
         private IList<GenderType> m_GenderItems;
         private User m_ConnectedUser;
         private string m_ClonedUserData;
         private bool m_ValidInput;
+
         #endregion
 
         #region Properties
+
         public User ConnectedUser
         {
             get => m_ConnectedUser;
@@ -48,28 +51,34 @@ namespace GetSanger.ViewModels
             get => m_GenderItems;
             set => SetClassProperty(ref m_GenderItems, value);
         }
+
         #endregion
 
         #region Commands
+
         public ICommand ImageChosenCommand { get; set; }
         public ICommand BackButtonCommand { get; set; }
         public ICommand ChangePasswordCommand { get; set; }
         public ICommand DeleteAccountCommand { get; set; }
+
         #endregion
 
         #region Constructor
+
         public EditProfileViewModel()
         {
             setCommands();
-            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType)).Select(name => (GenderType)Enum.Parse(typeof(GenderType), name)).ToList());
+            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType))
+                .Select(name => (GenderType) Enum.Parse(typeof(GenderType), name)).ToList());
         }
 
         #endregion
 
         #region Methods
+
         public override void Appearing()
         {
-           initialData();
+            initialData();
         }
 
         private void setCommands()
@@ -90,10 +99,10 @@ namespace GetSanger.ViewModels
         private async void backButtonBehavior(object i_Param)
         {
             // if data has not changed do not call update user
-            if(string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) || 
+            if (string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) ||
                 !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
                 (DateTime.Now.AddYears(-ConnectedUser.PersonalDetails.Birthday.Year).Year < 18)
-                )
+            )
             {
                 await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
                 AppManager.Instance.ConnectedUser = ObjectJsonSerializer.DeserializeForPage<User>(m_ClonedUserData); // delete the new changes
@@ -109,7 +118,7 @@ namespace GetSanger.ViewModels
         private async void imageChanged(object i_Param)
         {
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
-            if(stream == null)
+            if (stream == null)
             {
                 ProfileImage = r_PhotoDisplay.DisplayPicture();
                 r_StorageHelper.DeleteProfileImage(ConnectedUser.UserId);
@@ -117,8 +126,12 @@ namespace GetSanger.ViewModels
                 return;
             }
 
+            MemoryStream memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            stream.Position = 0;
             ProfileImage = ImageSource.FromStream(() => stream);
-            r_StorageHelper.SetUserProfileImage(ConnectedUser, stream);
+
+            r_StorageHelper.SetUserProfileImage(ConnectedUser, memoryStream);
         }
 
         private async void changePassword(object i_Param)
@@ -137,6 +150,7 @@ namespace GetSanger.ViewModels
                 Application.Current.MainPage = new AuthShell();
             }
         }
+
         #endregion
     }
 }
