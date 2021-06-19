@@ -261,7 +261,7 @@ namespace GetSanger.ViewModels
                     stream.Position = 0;
                     PersonalImage = ImageSource.FromStream(() => stream);
 
-                    r_StorageHelper.SetUserProfileImage(CreatedUser, memoryStream);
+                    await r_StorageHelper.SetUserProfileImage(CreatedUser, memoryStream);
                 }
 
                 (i_Param as Button).IsEnabled = true;

@@ -29,18 +29,11 @@ namespace GetSanger.Services
             }
         }
 
-        public async void SetUserProfileImage(User i_User, Stream i_Stream)
+        public async Task SetUserProfileImage(User i_User, Stream i_Stream)
         {
             if (i_User.UserId == null)
             {
                 throw new ArgumentNullException("User must have an ID");
-            }
-
-            // check if the path is already exist if it does remove it first
-            if (i_User.ProfilePictureUri != null)
-            {
-                DeleteProfileImage(i_User.UserId);
-                i_User.ProfilePictureUri = null;
             }
 
             Uri imageUri = await UploadFile(i_Stream, $"ProfilePictures/{i_User.UserId}.png");
@@ -64,14 +57,21 @@ namespace GetSanger.Services
             return uri;
         }
 
-        public async void DeleteProfileImage(string i_UserID)
+        public async Task DeleteProfileImage(string i_UserID)
         {
             await DeleteFile($"ProfilePictures/{i_UserID}.png");
         }
 
         public async Task DeleteFile(string objectPath)
         {
-            await r_StorageClient.DeleteObjectAsync(r_BucketName, objectPath);
+            try
+            {
+                await r_StorageClient.DeleteObjectAsync(r_BucketName, objectPath);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
         public override void SetDependencies()
