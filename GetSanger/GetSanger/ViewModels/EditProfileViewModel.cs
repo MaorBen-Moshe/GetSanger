@@ -121,7 +121,7 @@ namespace GetSanger.ViewModels
             if (stream == null)
             {
                 ProfileImage = r_PhotoDisplay.DisplayPicture();
-                r_StorageHelper.DeleteProfileImage(ConnectedUser.UserId);
+                await r_StorageHelper.DeleteProfileImage(ConnectedUser.UserId);
                 ConnectedUser.ProfilePictureUri = null;
                 return;
             }
@@ -131,7 +131,7 @@ namespace GetSanger.ViewModels
             stream.Position = 0;
             ProfileImage = ImageSource.FromStream(() => stream);
 
-            r_StorageHelper.SetUserProfileImage(ConnectedUser, memoryStream);
+            await r_StorageHelper.SetUserProfileImage(ConnectedUser, memoryStream);
         }
 
         private async void changePassword(object i_Param)

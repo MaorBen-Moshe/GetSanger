@@ -10,7 +10,13 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public enum eSocialProvider { Facebook, Google, Apple, Email } // email is for the link only
+    public enum eSocialProvider
+    {
+        Facebook,
+        Google,
+        Apple,
+        Email
+    } // email is for the link only
 
     public class SocialAdapterService : Service
     {
@@ -32,7 +38,7 @@ namespace GetSanger.Services
             }
             else
             {
-                succeeded = await m_LoginService.LoginUser(socialLogin:true);
+                succeeded = await m_LoginService.LoginUser(socialLogin: true);
             }
 
             return succeeded;
@@ -57,7 +63,7 @@ namespace GetSanger.Services
                 using var stream = new MemoryStream(content);
                 var destStream = new MemoryStream();
                 await stream.CopyToAsync(destStream);
-                m_StorageHelper.SetUserProfileImage(user, destStream);
+                await m_StorageHelper.SetUserProfileImage(user, destStream);
             }
 
             return user;
