@@ -26,7 +26,7 @@ namespace GetSanger.Services
             bool isFirstLoggedin = await AuthHelper.IsFirstTimeLogIn();
             if (isFirstLoggedin)
             {
-                string json = ObjectJsonSerializer.SerializeForPage(getDetails(details));
+                string json = ObjectJsonSerializer.SerializeForPage(await getDetails(details));
                 string route = $"{ShellRoutes.SignupPersonalDetails}?isFacebookGmail={true}&userJson={json}";
                 await m_NavigationService.NavigateTo(route);
             }
@@ -38,7 +38,7 @@ namespace GetSanger.Services
             return succeeded;
         }
 
-        private User getDetails(Dictionary<string, object> i_Details)
+        private async Task<User> getDetails(Dictionary<string, object> i_Details)
         {
             User user = new User
             {
@@ -52,15 +52,12 @@ namespace GetSanger.Services
 
             if (i_Details["photoUrl"] != null)
             {
-                using(var client = new WebClient())
-                {
-                    var content = client.DownloadData(i_Details["photoUrl"] as string);
-                    using(var stream = new MemoryStream(content))
-                    {
-                        m_StorageHelper.SetUserProfileImage(user, stream);
-                    }
-                }
-                
+                using var client = new WebClient();
+                var content = client.DownloadData(i_Details["photoUrl"] as string);
+                using var stream = new MemoryStream(content);
+                var destStream = new MemoryStream();
+                await stream.CopyToAsync(destStream);
+                m_StorageHelper.SetUserProfileImage(user, destStream);
             }
 
             return user;

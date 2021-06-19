@@ -42,7 +42,7 @@ namespace GetSanger.Services
             }
 
             //MemoryStream memoryStream = new MemoryStream();
-            Uri imageUri = await UploadFile(i_Stream, $"ProfilePictures/{i_User.UserId}.jpg");
+            Uri imageUri = await UploadFile(i_Stream, $"ProfilePictures/{i_User.UserId}.png");
             i_User.ProfilePictureUri = imageUri;
         }
 
