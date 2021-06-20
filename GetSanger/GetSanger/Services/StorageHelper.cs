@@ -36,6 +36,12 @@ namespace GetSanger.Services
                 throw new ArgumentNullException("User must have an ID");
             }
 
+            if(i_User.ProfilePictureUri != null)
+            {
+                await DeleteProfileImage(i_User.UserId);
+                i_User.ProfilePictureUri = null;
+            }
+
             await UploadFile(i_Stream, $"ProfilePictures/{i_User.UserId}.png");
             i_User.ProfilePictureUri = new Uri($"https://europe-west3-get-sanger.cloudfunctions.net/GetUserProfilePicture?UserId={i_User.UserId}");
         }

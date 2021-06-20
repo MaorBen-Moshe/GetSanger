@@ -15,8 +15,7 @@
 
     <ContentPage.Content>
         <StackLayout HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand"
-                     IsVisible="{Binding IsVisible}">
+                     VerticalOptions="FillAndExpand">
             <Frame CornerRadius="10"
                    Padding="30"
                    BorderColor="Black"
@@ -27,13 +26,10 @@
                     <ActivityIndicator IsRunning="True"/>
                     <Label
                            HorizontalTextAlignment="Center"
-                           TextColor="{Binding TextColor}"
+                           TextColor="WhiteSmoke"
                            Style="{StaticResource Key=TransparentLabel}"
-                           Text="{Binding Text}"
-                           HorizontalOptions="CenterAndExpand">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NoInternetTapCommand}"/>
-                        </Label.GestureRecognizers>
+                           HorizontalOptions="CenterAndExpand"
+                           x:Name="label">
                     </Label>
                 </StackLayout>
             </Frame>

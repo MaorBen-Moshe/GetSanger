@@ -7,12 +7,12 @@ using Xamarin.Forms;
 namespace GetSanger.Droid.Services
 {
     public class LoadingService : DialogService, ILoadingService
-    { 
+    {
         private bool _isLoading = false;
 
         bool ILoadingService.IsLoading => _isLoading;
 
-        public void InitLoadingPage(ContentPage i_Page = null) // param just for ios implementation
+        public void InitLoadingPage(ContentPage i_Page = null)
         {
             InitDialogPage(i_Page ?? new LoadingPage());
             _isLoading = false;
@@ -25,11 +25,14 @@ namespace GetSanger.Droid.Services
                 _dialog.Show();
                 _isLoading = true;
             }
-            else if(_isLoading == false)
+            else if (_isLoading == false)
             {
-                InitLoadingPage();
-                _dialog.Show();
-                _isLoading = true;
+                initAndShow();
+            }
+            else
+            {
+                _dialog.Dismiss();
+                initAndShow();
             }
         }
 
@@ -37,9 +40,16 @@ namespace GetSanger.Droid.Services
         {
             if (_isInitialized && _isLoading == true)
             {
-                _dialog.Hide();
+                _dialog.Dismiss();
                 _isLoading = false;
             }
+        }
+
+        private void initAndShow()
+        {
+            InitLoadingPage();
+            _dialog.Show();
+            _isLoading = true;
         }
     }
 }

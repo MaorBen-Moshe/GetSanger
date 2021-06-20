@@ -133,15 +133,22 @@ namespace GetSanger.ViewModels
 
         public async void IntialCurrentLocation()
         {
-            if (IsCreate == false)
+            try
             {
-                MyPlaceMark = await r_LocationServices.PickedLocation(NewJobOffer.Location);
-                JobPlaceMark = await r_LocationServices.PickedLocation(NewJobOffer.JobLocation);
-                return;
-            }
+                if (IsCreate == false)
+                {
+                    MyPlaceMark = await r_LocationServices.PickedLocation(NewJobOffer.Location);
+                    JobPlaceMark = await r_LocationServices.PickedLocation(NewJobOffer.JobLocation);
+                    return;
+                }
 
-            Location location = await r_LocationServices.GetCurrentLocation();
-            MyPlaceMark ??= await r_LocationServices.PickedLocation(location);
+                Location location = await r_LocationServices.GetCurrentLocation();
+                MyPlaceMark ??= await r_LocationServices.PickedLocation(location);
+            }
+            catch (PermissionException)
+            {
+                await r_PageService.DisplayAlert("Error", "Please allow location!", "OK");
+            }
         }
 
         private void setCommands()
