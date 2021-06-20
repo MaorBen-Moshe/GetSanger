@@ -33,6 +33,8 @@
                                      Command="{Binding ImageChosenCommand}"
                                      HeightRequest="96"
                                      WidthRequest="96"
+                                     BorderColor="Transparent"
+                                     BackgroundColor="Transparent"
                                      HorizontalOptions="Center"/>
                     </ViewCell>
                 </TableSection>

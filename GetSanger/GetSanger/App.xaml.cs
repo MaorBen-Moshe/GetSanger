@@ -1,14 +1,13 @@
 using Xamarin.Forms;
 using Xamarin.Essentials;
-using GetSanger.Interfaces;
-using GetSanger.Views;
 using GetSanger.Services;
-using System;
 
 namespace GetSanger
 {
     public partial class App : Application
     {
+        private bool m_hasInternet;
+
         public App()
         {
             InitializeComponent();
@@ -35,12 +34,12 @@ namespace GetSanger
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
         }
 
-        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            LoadingService service = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
-            if (e.NetworkAccess.Equals(NetworkAccess.Internet) == false)
+            m_hasInternet = e.NetworkAccess.Equals(NetworkAccess.Internet);
+            while (m_hasInternet == false)
             {
-                service.ShowPopup(new LoadingPage(internetChecking:true));
+                await Current.MainPage.DisplayAlert("ERROR", "No Connection.", "Try again");
             }
         }
     }

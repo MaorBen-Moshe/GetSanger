@@ -10,27 +10,17 @@ using GetSanger.Exceptions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Threading;
+using Xamarin.Essentials;
 
 namespace GetSanger.Services
 {
     public class LoginServices : Service
     {
         private NavigationService m_NavigationService;
-        private LocationService m_LocationService;
         private RunTasksService m_RunTasks;
-
-        private ICommand LocationPicked { get; set; }
 
         public LoginServices()
         {
-            LocationPicked = new Command(async () => {
-                User user = AppManager.Instance.ConnectedUser;
-                if (user != null)
-                {
-                    user.UserLocation = await m_LocationService.GetCurrentLocation();
-                    await FireStoreHelper.UpdateUser(user);
-                }
-            });
         }
 
         public async void TryAutoLogin()
@@ -44,7 +34,6 @@ namespace GetSanger.Services
                 {
                     AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
                     AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
-                    LocationPicked.Execute(null);
                     if (mode == null)
                     {
                         await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
@@ -85,7 +74,6 @@ namespace GetSanger.Services
                     AppManager.Instance.ConnectedUser = user;
                     if (verified)
                     {
-                        LocationPicked.Execute(null);
                         if (i_Mode != null) // we are here from mode page or from auto login
                         {
                             SetMode((AppMode)i_Mode);
@@ -126,7 +114,6 @@ namespace GetSanger.Services
         {
             m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             m_RunTasks ??= AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
-            m_LocationService ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
         }
     }
 }
