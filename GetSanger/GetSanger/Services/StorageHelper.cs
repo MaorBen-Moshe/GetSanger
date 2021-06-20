@@ -36,8 +36,8 @@ namespace GetSanger.Services
                 throw new ArgumentNullException("User must have an ID");
             }
 
-            Uri imageUri = await UploadFile(i_Stream, $"ProfilePictures/{i_User.UserId}.png");
-            i_User.ProfilePictureUri = imageUri;
+            await UploadFile(i_Stream, $"ProfilePictures/{i_User.UserId}.png");
+            i_User.ProfilePictureUri = new Uri($"https://europe-west3-get-sanger.cloudfunctions.net/GetUserProfilePicture?UserId={i_User.UserId}");
         }
 
         public async Task<Uri> UploadFile(Stream stream, string objectPath)
