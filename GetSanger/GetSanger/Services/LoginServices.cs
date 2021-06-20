@@ -40,7 +40,7 @@ namespace GetSanger.Services
                     }
                     else
                     {
-                        AppManager.Instance.CurrentMode = (AppMode)mode;
+                        AppManager.Instance.CurrentMode = (AppMode) mode;
                         Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
                     }
 
@@ -48,9 +48,19 @@ namespace GetSanger.Services
                 }
                 else
                 {
-                    string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
-                    Application.Current.MainPage = new AuthShell();
-                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={true}&userJson={json}");
+                    try
+                    {
+                        AppManager.Instance.ConnectedUser = new User {UserId = userId};
+                        //string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
+                        string json = null;
+                        Application.Current.MainPage = new AuthShell();
+                        await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}&userJson={json}");
+                    }
+                    catch (Exception e)
+                    {
+                        string message = e.Message;
+                        Console.WriteLine(message);
+                    }
                 }
             }
             else
@@ -67,7 +77,7 @@ namespace GetSanger.Services
             {
                 bool firstTime = await AuthHelper.IsFirstTimeLogIn();
                 bool verified = false;
-                if(firstTime == false)
+                if (firstTime == false)
                 {
                     User user = await m_RunTasks.RunTaskWhileLoading(FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId()));
                     verified = await AuthHelper.IsVerifiedEmail();
@@ -76,7 +86,7 @@ namespace GetSanger.Services
                     {
                         if (i_Mode != null) // we are here from mode page or from auto login
                         {
-                            SetMode((AppMode)i_Mode);
+                            SetMode((AppMode) i_Mode);
                         }
                         else // we are here from login page
                         {
@@ -99,7 +109,7 @@ namespace GetSanger.Services
 
                 return verified;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception("User is not available", e);
             }
