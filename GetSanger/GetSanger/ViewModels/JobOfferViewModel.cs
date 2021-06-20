@@ -182,6 +182,7 @@ namespace GetSanger.ViewModels
         private async void sendJob()
         {
             // check validation of fields!
+            NewJobOffer.ClientID ??= AppManager.Instance.ConnectedUser.UserId;
             NewJobOffer.Location = MyPlaceMark.Location;
             NewJobOffer.JobLocation = MyPlaceMark.Location;
             NewJobOffer.CategoryName = NewJobOffer.Category.ToString();

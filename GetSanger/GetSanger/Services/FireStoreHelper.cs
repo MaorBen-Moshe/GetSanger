@@ -219,12 +219,13 @@ namespace GetSanger.Services
                 string idToken = await AuthHelper.GetIdTokenAsync();
 
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                string responseMessage = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception(await response.Content.ReadAsStringAsync());
+                    throw new Exception(responseMessage);
                 }
 
-                List<JobOffer> jobOffers = ObjectJsonSerializer.DeserializeForServer<List<JobOffer>>(await response.Content.ReadAsStringAsync());
+                List<JobOffer> jobOffers = ObjectJsonSerializer.DeserializeForServer<List<JobOffer>>(responseMessage);
                 convertDateTimeToLocalTime(jobOffers);
 
                 return jobOffers;
