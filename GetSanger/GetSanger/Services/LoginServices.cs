@@ -23,7 +23,7 @@ namespace GetSanger.Services
         {
         }
 
-        public async void TryAutoLogin()
+        public async Task TryAutoLogin()
         {
             SetDependencies();
             if (AuthHelper.IsLoggedIn())

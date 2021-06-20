@@ -1,6 +1,6 @@
 using Xamarin.Forms;
 using Xamarin.Essentials;
-using GetSanger.Services;
+using GetSanger.Views;
 
 namespace GetSanger
 {
@@ -12,10 +12,7 @@ namespace GetSanger
         {
             InitializeComponent();
 
-            AuthHelper.SignOut();
-
-            LoginServices login = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
-            login.TryAutoLogin();
+            MainPage = new SplashPage();
         }
 
         protected override void OnStart()
