@@ -53,6 +53,7 @@ namespace GetSanger.Services
                         AppManager.Instance.ConnectedUser = new User {UserId = userId};
                         //string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
                         string json = null;
+                        await Task.Delay(1500);
                         Application.Current.MainPage = new AuthShell();
                         await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}&userJson={json}");
                     }
@@ -65,6 +66,7 @@ namespace GetSanger.Services
             }
             else
             {
+                await Task.Delay(1500);
                 Application.Current.MainPage = new AuthShell();
             }
         }
