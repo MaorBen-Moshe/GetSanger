@@ -61,6 +61,7 @@ namespace GetSanger.Models
             PersonalDetails = new PersonalDetails();
             IsGenericNotifications = true; // default generic notifications 
             LastUserMode = null;
+            Categories = new ObservableCollection<eCategory>();
 
             Ratings.Add(new Rating());
         }

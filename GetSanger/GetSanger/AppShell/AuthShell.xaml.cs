@@ -35,9 +35,9 @@ namespace GetSanger.AppShell
             r_Routes.Add(ShellRoutes.ForgotPassword, typeof(ForgotPasswordPage));
             r_Routes.Add(ShellRoutes.LoadingPage, typeof(LoadingPage));
 
-            foreach(var route in r_Routes)
+            foreach (var route in r_Routes)
             {
-                Routing.RegisterRoute(route.Key, route.Value); 
+                Routing.RegisterRoute(route.Key, route.Value);
             }
         }
     }
