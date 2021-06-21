@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using System;
 using GetSanger.Models;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using GetSanger.Constants;
 using GetSanger.Converters;
 
@@ -12,7 +13,7 @@ namespace GetSanger.ViewModels
 {
     [QueryProperty(nameof(IsCreate), "isCreate")]
     [QueryProperty(nameof(JobCategoryString), "category")]
-    [QueryProperty(nameof(JobOfferJson), "job")]
+    [QueryProperty(nameof(JobOfferJson), "jobOffer")]
     public class JobOfferViewModel : BaseViewModel
     {
         #region Fields
@@ -128,9 +129,9 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public async override void Appearing()
+        public override async void Appearing()
         {
-            IntialCurrentLocation();
+            await InitialCurrentLocation();
             MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage,  (sender, args) =>
             {
                 setLocation(args);
@@ -147,7 +148,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        public async void IntialCurrentLocation()
+        public async Task InitialCurrentLocation()
         {
             try
             {
