@@ -22,7 +22,7 @@ namespace GetSanger.ViewModels
         private User m_ConnectedUser;
         private string m_ClonedUserData;
         private bool m_ValidInput;
-
+        private bool m_ImageChanged;
         #endregion
 
         #region Properties
@@ -94,6 +94,7 @@ namespace GetSanger.ViewModels
             ConnectedUser = AppManager.Instance.ConnectedUser;
             m_ClonedUserData = ObjectJsonSerializer.SerializeForPage(ConnectedUser);
             ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
+            m_ImageChanged = false;
         }
 
         private async void backButtonBehavior(object i_Param)
@@ -111,7 +112,7 @@ namespace GetSanger.ViewModels
             else
             {
                 // if the data has changed we update in the server, else we do nothing
-                if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false)
+                if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false || m_ImageChanged)
                 {
                     await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser), "Saving...");
                 }
@@ -135,6 +136,7 @@ namespace GetSanger.ViewModels
             ProfileImage = ImageSource.FromStream(() => stream);
 
             await r_StorageHelper.SetUserProfileImage(ConnectedUser, memoryStream);
+            m_ImageChanged = true;
         }
 
         private async void changePassword(object i_Param)

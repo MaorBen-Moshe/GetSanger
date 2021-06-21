@@ -10,6 +10,8 @@ namespace GetSanger.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SplashPage : ContentPage
     {
+        private bool m_ConnectivtyChanged = false;
+
         public SplashPage()
         {
             InitializeComponent();
@@ -24,6 +26,10 @@ namespace GetSanger.Views
                 if(Connectivity.NetworkAccess.Equals(NetworkAccess.None) == false)
                 {
                     await login();
+                }
+                else
+                {
+                    await DisplayAlert("ERROR", "No Connection.", "Try again");
                 }
             }
             catch(Exception e)
@@ -40,8 +46,9 @@ namespace GetSanger.Views
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            if(e.NetworkAccess.Equals(NetworkAccess.None) == false)
+            if(m_ConnectivtyChanged == false && e.NetworkAccess.Equals(NetworkAccess.Internet) == true)
             {
+                m_ConnectivtyChanged = true;
                 await login();
             }
         }

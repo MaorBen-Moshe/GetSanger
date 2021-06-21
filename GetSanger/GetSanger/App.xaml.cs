@@ -18,16 +18,19 @@ namespace GetSanger
         protected override void OnStart()
         {
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            base.OnStart();
         }
 
         protected override void OnSleep()
         {
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+            base.OnSleep();
         }
 
         protected override void OnResume()
         {
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            base.OnResume();
         }
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
