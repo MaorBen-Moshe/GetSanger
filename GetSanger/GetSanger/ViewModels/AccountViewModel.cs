@@ -117,7 +117,6 @@ namespace GetSanger.ViewModels
 
         private async void linkSocial(object i_Param)
         {
-            //r_PopupService.ShowPopup(new LinkProviderPage());
             List<eSocialProvider> providers = AppManager.Instance.GetListOfEnumNames(typeof(eSocialProvider)).Select(item => (eSocialProvider)Enum.Parse(typeof(eSocialProvider), item)).ToList();
             string[] buttons = providers.Select(item => item.ToString()).ToArray();
             string choice = await r_PageService.DisplayActionSheet("Choose Provider", "Cancel", null, buttons);

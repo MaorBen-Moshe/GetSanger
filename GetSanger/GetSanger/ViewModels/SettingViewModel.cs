@@ -82,16 +82,15 @@ namespace GetSanger.ViewModels
         private async void backButtonBehavior()
         {
             bool isChanged = false;
-            var loading = new LoadingPage("Saving...");
             if(m_NewCategoriesSubscribed?.Count > 0)
             {
                 isChanged = true;
-                await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray()), loading);
+                await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray()), "Saving...");
             }
             if(m_NewCategoriesUnsubscribed?.Count > 0)
             {
                 isChanged = true;
-                await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray()), loading);
+                await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray()), "Saving...");
             }
             if(IsGenericNotificatons != AppManager.Instance.ConnectedUser.IsGenericNotifications)
             {
@@ -102,7 +101,7 @@ namespace GetSanger.ViewModels
 
             if (isChanged)
             {
-                await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser), loading);
+                await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser), "Saving...");
             }
 
             m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;

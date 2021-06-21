@@ -11,5 +11,7 @@ namespace GetSanger.Interfaces
         Task<bool> DisplayAlert(string i_Title, string i_Message, string i_Accept, string i_Cancel = null);
 
         Task<string> DisplayActionSheet(string i_Title, string i_Cancel, string i_Distruction, params string[] i_Buttons);
+
+        public Task<string> DisplayPrompt(string i_Title, string i_Message, string i_PlaceHolder);
     }
 }

@@ -113,7 +113,7 @@ namespace GetSanger.ViewModels
                 // if the data has changed we update in the server, else we do nothing
                 if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false)
                 {
-                    await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser));
+                    await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser), "Saving...");
                 }
             }
 

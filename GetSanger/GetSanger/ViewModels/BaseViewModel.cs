@@ -1,5 +1,6 @@
 ﻿using GetSanger.Interfaces;
 using GetSanger.Services;
+using GetSanger.Views;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -24,7 +25,6 @@ namespace GetSanger.ViewModels
         protected readonly LoginServices r_LoginServices;
         protected readonly LocationService r_LocationServices;
         protected readonly SocialAdapterService r_SocialService;
-        protected readonly LoadingService r_PopupService;
         protected readonly RunTasksService r_RunTasks;
         #endregion
 
@@ -72,7 +72,6 @@ namespace GetSanger.ViewModels
             r_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
             r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
-            r_PopupService = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
             r_RunTasks = AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
 
             IsEnabledsendBtn = false;
@@ -85,14 +84,16 @@ namespace GetSanger.ViewModels
             await Shell.Current.GoToAsync(m_DefaultBackUri);
         }
 
-        public Task RunTaskWhileLoading(Task i_InnerTask, ContentPage i_OptionalLoading = null)
+        public Task RunTaskWhileLoading(Task i_InnerTask, string i_OptionalLoadingText = "Loading...")
         {
-            return r_RunTasks.RunTaskWhileLoading(i_InnerTask, i_OptionalLoading);
+            var loading = new LoadingPage(i_OptionalLoadingText);
+            return r_RunTasks.RunTaskWhileLoading(i_InnerTask, loading);
         }
 
-        public Task<T> RunTaskWhileLoading<T>(Task<T> i_InnerTask, ContentPage i_OptionalLoading = null)
+        public Task<T> RunTaskWhileLoading<T>(Task<T> i_InnerTask, string i_OptionalLoadingText = "Loading...")
         {
-            return r_RunTasks.RunTaskWhileLoading<T>(i_InnerTask, i_OptionalLoading);
+            var loading = new LoadingPage(i_OptionalLoadingText);
+            return r_RunTasks.RunTaskWhileLoading<T>(i_InnerTask, loading);
         }
 
         public abstract void Appearing();

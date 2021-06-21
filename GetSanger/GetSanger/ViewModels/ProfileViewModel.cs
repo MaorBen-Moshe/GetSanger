@@ -22,7 +22,6 @@ namespace GetSanger.ViewModels
         private ImageSource m_UserImage;
         private string m_Location;
         private bool m_IsListRefreshing;
-        private string m_ReportMessage;
         #endregion
 
         #region Properties
@@ -58,12 +57,6 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsListRefreshing, value);
         }
 
-        public string ReportMessage
-        {
-            get => m_ReportMessage;
-            set => SetClassProperty(ref m_ReportMessage, value);
-        }
-
         #endregion
 
         #region Commands
@@ -77,7 +70,6 @@ namespace GetSanger.ViewModels
 
         public ICommand RefreshingCommand { get; set; }
 
-        public ICommand ReportExtraCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -101,7 +93,6 @@ namespace GetSanger.ViewModels
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
             RefreshingCommand = new Command(refreshList);
-            ReportExtraCommand = new Command(addEditorReport);
         }
 
         private async void setUser()
@@ -184,21 +175,19 @@ namespace GetSanger.ViewModels
                         Reason = option
                     };
 
-                    r_PopupService.ShowPopup(new EditorReportPage(this));
+                    string answer = await r_PageService.DisplayPrompt("Write your details:", "please add info to contact with you", "text here..."); 
+                    if(answer != null)
+                    {
+                        m_CurrentReport.ReportMessage = answer;
+                        await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
+                        await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
+                    }
                 }
                 catch (Exception e)
                 {
                     await r_PageService.DisplayAlert("Oh No", e.Message, "Sorry");
                 }
             }
-        }
-
-        private async void addEditorReport()
-        {
-            r_PopupService.HidePopup();
-            m_CurrentReport.ReportMessage = ReportMessage;
-            await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
-            await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
         }
 
         private async void addRating(object i_Param)
