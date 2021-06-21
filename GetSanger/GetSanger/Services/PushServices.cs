@@ -168,19 +168,19 @@ namespace GetSanger.Services
         private static Type getTypeOfData(string i_Type)
         {
             Type type = null;
-            if (i_Type.Equals(typeof(JobOffer).ToString()))
+            if (i_Type.Equals(typeof(JobOffer).Name.ToString()))
             {
                 type = typeof(JobOffer);
             }
-            else if(i_Type.Equals(typeof(Activity).ToString()))
+            else if(i_Type.Equals(typeof(Activity).Name.ToString()))
             {
                 type = typeof(Activity);
             }
-            else if(i_Type.Equals(typeof(Rating).ToString()))
+            else if(i_Type.Equals(typeof(Rating).Name.ToString()))
             {
                 type = typeof(Rating);
             }
-            else if (i_Type.Equals(typeof(Message).ToString()))
+            else if (i_Type.Equals(typeof(Message).Name.ToString()))
             {
                 type = typeof(Message);
             }
