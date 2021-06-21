@@ -83,12 +83,12 @@ namespace GetSanger.ViewModels
         {
             bool isChanged = false;
             var loading = new LoadingPage("Saving...");
-            if(m_NewCategoriesSubscribed.Count > 0)
+            if(m_NewCategoriesSubscribed?.Count > 0)
             {
                 isChanged = true;
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray()), loading);
             }
-            if(m_NewCategoriesUnsubscribed.Count > 0)
+            if(m_NewCategoriesUnsubscribed?.Count > 0)
             {
                 isChanged = true;
                 await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray()), loading);

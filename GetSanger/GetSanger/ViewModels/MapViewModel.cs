@@ -223,14 +223,15 @@ namespace GetSanger.ViewModels
                 Location location = await r_LocationServices.GetCurrentLocation();
                 Position position = new Position(location.Latitude, location.Longitude);
                 Span = new MapSpan(position, 0.01, 0.01);
-                Pins ??= new ObservableCollection<Pin>();
-                Pins.Clear();
-                Pins.Add(new Pin
+                Pins = new ObservableCollection<Pin>
                 {
-                    Type = PinType.Generic,
-                    Position = Span.Center,
-                    Label = "My Location",
-                });
+                    new Pin
+                    {
+                        Type = PinType.Generic,
+                        Position = Span.Center,
+                        Label = "My Location",
+                    }
+                };
             }
             catch (PermissionException)
             {

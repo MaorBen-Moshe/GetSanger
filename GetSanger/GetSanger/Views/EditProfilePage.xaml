@@ -52,7 +52,7 @@
                         </Entry>
                     </ViewCell>
                     <ViewCell>
-                        <DatePicker Date="{Binding ConnectedUser.PersonalDetails.Birthday, StringFormat='{dd/MM/yyyy}'}"/>
+                        <DatePicker Format="dd/MM/yyyy" Date="{Binding ConnectedUser.PersonalDetails.Birthday}"/>
                     </ViewCell>
                     <ViewCell>
                         <Picker ItemsSource="{Binding GenderItems}" 
