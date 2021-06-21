@@ -23,7 +23,7 @@ namespace GetSanger.Services
 
             string dataJson = ObjectJsonSerializer.SerializeForServer(i_Data);
             Dictionary<string, string> data = null;
-            if(i_Data != null)
+            if (i_Data != null)
             {
                 data = new Dictionary<string, string>
                 {
@@ -136,7 +136,7 @@ namespace GetSanger.Services
         {
             bool found = false;
             List<string> usersInDB = await i_DB.GetUsersIDsInDB();
-            foreach(var chatUserID in usersInDB)
+            foreach (var chatUserID in usersInDB)
             {
                 if (chatUserID.Equals(i_Message.FromId))
                 {
@@ -155,14 +155,16 @@ namespace GetSanger.Services
         {
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
+            await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
         }
 
         private async static void handleJobOffer(string i_Json)
         {
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            await navigation.NavigateTo(ShellRoutes.JobOffer + $"?jobOffer={job}&isCreate={false}&category={job.Category}");
+            string jobJson = ObjectJsonSerializer.SerializeForPage(job);
+            await navigation.NavigateTo(ShellRoutes.JobOffer +
+                                        $"?jobOffer={jobJson}&isCreate={false}&category={job.Category.ToString()}");
         }
 
         private static Type getTypeOfData(string i_Type)
@@ -172,11 +174,11 @@ namespace GetSanger.Services
             {
                 type = typeof(JobOffer);
             }
-            else if(i_Type.Equals(typeof(Activity).Name.ToString()))
+            else if (i_Type.Equals(typeof(Activity).Name.ToString()))
             {
                 type = typeof(Activity);
             }
-            else if(i_Type.Equals(typeof(Rating).Name.ToString()))
+            else if (i_Type.Equals(typeof(Rating).Name.ToString()))
             {
                 type = typeof(Rating);
             }
@@ -184,7 +186,7 @@ namespace GetSanger.Services
             {
                 type = typeof(Message);
             }
-            else 
+            else
             {
                 throw new ArgumentException("Type of object received is not allowed");
             }
