@@ -46,9 +46,9 @@ namespace GetSanger.Models
 
             PersonalDetails other = obj as PersonalDetails;
             return Birthday.Equals(other.Birthday) &&
-                   Phone == other.Phone &&
+                   Phone.Equals(other.Phone) &&
                    Gender.Equals(other.Gender) &&
-                   NickName == other.NickName;
+                   NickName.Equals(other.NickName);
         }
 
         public override int GetHashCode()

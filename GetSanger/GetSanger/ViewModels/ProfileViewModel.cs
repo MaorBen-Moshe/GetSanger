@@ -106,7 +106,7 @@ namespace GetSanger.ViewModels
 
         private async void setUser()
         {
-            if (String.IsNullOrEmpty(UserId))
+            if (string.IsNullOrEmpty(UserId))
             {
                 throw new ArgumentException("User details aren't available.");
             }

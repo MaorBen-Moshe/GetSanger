@@ -24,6 +24,7 @@ namespace GetSanger.ViewModels
         private string m_JobLocation;
         private bool m_IsMyLocation = true;
         private bool m_IsCreate;
+        private string m_ProfileText;
         #endregion
 
         #region Commands
@@ -31,6 +32,7 @@ namespace GetSanger.ViewModels
         public ICommand CurrentLocation { get; private set; }
         public ICommand JobLocation { get; private set; }
         public ICommand SendJobCommand { get; private set; }
+        public ICommand ProfileCommand { get; private set; }
 
         #endregion
 
@@ -100,6 +102,14 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsCreate, value);
         }
 
+        public string ProfileText
+        {
+            get => m_ProfileText;
+            set => SetClassProperty(ref m_ProfileText, value);
+        }
+
+        private User m_ConnectedUser { get; set; }
+
         #endregion
 
         #region Constructor
@@ -118,13 +128,19 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public override void Appearing()
+        public async override void Appearing()
         {
             IntialCurrentLocation();
             MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage,  (sender, args) =>
             {
                 setLocation(args);
             });
+
+            if (!IsCreate)
+            {
+                m_ConnectedUser = await FireStoreHelper.GetUser(NewJobOffer.ClientID);
+                ProfileText = string.Format(@"{0}'s profile", m_ConnectedUser.PersonalDetails.NickName);
+            }
         }
 
         public void Disappearing()
@@ -156,11 +172,24 @@ namespace GetSanger.ViewModels
             CurrentLocation = new Command(getCurrentLocation);
             JobLocation = new Command(getJobLocation);
             SendJobCommand = new Command(sendJob);
+            ProfileCommand = new Command(moveProfile);
         }
 
         private void setLocation(Placemark i_PlaceMark)
         {
             _ = m_IsMyLocation == true ? MyPlaceMark = i_PlaceMark : JobPlaceMark = i_PlaceMark;
+        }
+
+        private async void moveProfile(object i_Param)
+        {
+            if(m_ConnectedUser != null)
+            {
+                await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={m_ConnectedUser.UserId}");
+            }
+            else
+            {
+                await r_PageService.DisplayAlert("Error", "User is not available. please contact us!", "THANKS");
+            }
         }
 
         private async void getCurrentLocation()

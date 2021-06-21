@@ -15,6 +15,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -30,6 +31,14 @@
                    HorizontalOptions="CenterAndExpand"
                    Padding="50"
                    Grid.Row="0"/>
+            <Label Text="{Binding ProfileText}"
+                   IsVisible="{Binding IsCreate, Converter={StaticResource InverseBoolConverter}}"
+                   IsEnabled="{Binding IsCreate, Converter={StaticResource InverseBoolConverter}}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ProfileCommand}">
+                    </TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
 
             <StackLayout Grid.Row="1" >
                 <Grid>
@@ -72,7 +81,7 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Date="{Binding NewJobOffer.Date, StringFormat='{0:dd/MM/yyyy}'}" Grid.Column="1" IsEnabled="{Binding IsCreate}"/>
+                    <DatePicker Format="dd/MM/yyyy" Date="{Binding NewJobOffer.Date}" Grid.Column="1" IsEnabled="{Binding IsCreate}"/>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"

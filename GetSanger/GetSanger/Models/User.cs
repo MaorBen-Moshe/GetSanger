@@ -62,8 +62,6 @@ namespace GetSanger.Models
             IsGenericNotifications = true; // default generic notifications 
             LastUserMode = null;
             Categories = new ObservableCollection<eCategory>();
-
-            Ratings.Add(new Rating());
         }
 
         public override string ToString()

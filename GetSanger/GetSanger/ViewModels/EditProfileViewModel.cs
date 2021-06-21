@@ -98,6 +98,7 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior(object i_Param)
         {
+            User oldUser = ObjectJsonSerializer.DeserializeForPage<User>(m_ClonedUserData);
             // if data has not changed do not call update user
             if (string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) ||
                 !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
@@ -105,11 +106,15 @@ namespace GetSanger.ViewModels
             )
             {
                 await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
-                AppManager.Instance.ConnectedUser = ObjectJsonSerializer.DeserializeForPage<User>(m_ClonedUserData); // delete the new changes
+                AppManager.Instance.ConnectedUser = oldUser; // delete the new changes
             }
             else
             {
-                await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser));
+                // if the data has changed we update in the server, else we do nothing
+                if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false)
+                {
+                    await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser));
+                }
             }
 
             await GoBack();
@@ -120,9 +125,7 @@ namespace GetSanger.ViewModels
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
             if (stream == null)
             {
-                ProfileImage = r_PhotoDisplay.DisplayPicture();
-                await r_StorageHelper.DeleteProfileImage(ConnectedUser.UserId);
-                ConnectedUser.ProfilePictureUri = null;
+                ProfileImage = r_PhotoDisplay.DisplayPicture(m_ConnectedUser.ProfilePictureUri);
                 return;
             }
 

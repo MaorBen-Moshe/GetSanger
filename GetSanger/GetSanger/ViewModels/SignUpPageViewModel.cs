@@ -258,12 +258,10 @@ namespace GetSanger.ViewModels
                     CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
                     MemoryStream memoryStream = new MemoryStream();
                     await stream.CopyToAsync(memoryStream);
-                    stream.Position = 0;
-                    PersonalImage = ImageSource.FromStream(() => stream);
-
                     await r_StorageHelper.SetUserProfileImage(CreatedUser, memoryStream);
                 }
-
+                
+                PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
                 (i_Param as Button).IsEnabled = true;
             }
             catch
