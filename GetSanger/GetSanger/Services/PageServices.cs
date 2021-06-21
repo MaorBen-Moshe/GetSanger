@@ -6,9 +6,20 @@ namespace GetSanger.Services
 {
     class PageServices : Service, IPageService
     {
-        public Task<bool> DisplayAlert(string i_Title, string i_Message, string i_Accept, string i_Cancel = null)
-        { 
-            return Application.Current.MainPage.DisplayAlert(i_Title, i_Message, i_Accept, i_Cancel);
+        public async Task<bool> DisplayAlert(string i_Title, string i_Message, string i_Accept, string i_Cancel = null)
+        {
+            bool retVal;
+            if(i_Cancel == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(i_Title, i_Message, i_Accept);
+                retVal = true;
+            }
+            else
+            {
+                retVal = await Application.Current.MainPage.DisplayAlert(i_Title, i_Message, i_Accept, i_Cancel);
+            }
+
+            return retVal;
         }
 
         public override void SetDependencies()
