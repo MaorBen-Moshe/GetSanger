@@ -25,7 +25,6 @@ namespace GetSanger.ViewModels
         private string m_MyLocation;
         private string m_JobLocation;
         private bool m_IsMyLocation = true;
-        private bool m_IsCreate;
         #endregion
 
         #region Commands
@@ -171,8 +170,9 @@ namespace GetSanger.ViewModels
         {
             // check validation of fields!
             NewJobOffer.ClientID ??= AppManager.Instance.ConnectedUser.UserId;
-            NewJobOffer.Location = MyPlaceMark.Location;
-            NewJobOffer.JobLocation = JobPlaceMark.Location;
+            NewJobOffer.ClientName ??= AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
+            NewJobOffer.Location = MyPlaceMark?.Location;
+            NewJobOffer.JobLocation = JobPlaceMark?.Location;
             NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
             //NewJobOffer.ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone;
             List<JobOffer> job = await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer));

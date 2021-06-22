@@ -9,6 +9,7 @@ namespace GetSanger.Models
         #region Fields
 
         private string m_ClientId;
+        private string m_ClientName;
         private string m_Title;
         private Location m_Location;
         private Location m_JobLocation;
@@ -32,6 +33,12 @@ namespace GetSanger.Models
         {
             get => m_ClientId;
             set => SetClassProperty(ref m_ClientId, value);
+        }
+
+        public string ClientName
+        {
+            get => m_ClientName;
+            set => SetClassProperty(ref m_ClientName, value);
         }
 
         public Location Location

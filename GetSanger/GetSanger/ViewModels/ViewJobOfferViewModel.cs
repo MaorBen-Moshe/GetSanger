@@ -18,6 +18,7 @@ namespace GetSanger.ViewModels
         private string m_ProfileText;
         private string m_MyLocation;
         private string m_JobLocation;
+        private bool m_IsMyJobOffer;
         #endregion
 
         #region Properties
@@ -36,6 +37,12 @@ namespace GetSanger.ViewModels
                     Job = ObjectJsonSerializer.DeserializeForPage<JobOffer>(value);
                 }
             }
+        }
+
+        public bool IsMyjobOffer
+        {
+            get => m_IsMyJobOffer;
+            set => SetStructProperty(ref m_IsMyJobOffer, value);
         }
 
         public string ProfileText
@@ -88,12 +95,12 @@ namespace GetSanger.ViewModels
         {
             var popup = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
             popup.ShowPopup();
-            User user = await FireStoreHelper.GetUser(Job.ClientID);
-            ProfileText ??= string.Format(@"{0}'s profile", user.PersonalDetails.NickName);
+            ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
             Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
             Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
             MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
             WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
+            IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
             popup.HidePopup();
         }
 
