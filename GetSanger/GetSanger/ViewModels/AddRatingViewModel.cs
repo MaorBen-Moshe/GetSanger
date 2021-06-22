@@ -62,6 +62,7 @@ namespace GetSanger.ViewModels
         private async void addRating(object i_Param)
         {
             NewRating.RatingWriterId = AppManager.Instance.ConnectedUser.UserId;
+            NewRating.RatingWriterName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
             NewRating.RatingOwnerId = RatedUser.UserId;
 
             User.AppendCollections(AppManager.Instance.ConnectedUser.Ratings, new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating))));

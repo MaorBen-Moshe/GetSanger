@@ -40,7 +40,7 @@
 
                         <ViewCell>
                             <Grid>
-                                <Label Text="{Binding RatingOwnerId}" Grid.Column="0" Grid.Row="1"/>
+                                <Label Text="{Binding RatingWriterName}" Grid.Column="0" Grid.Row="1"/>
                                 <controls:RatingStars Review="{Binding Description}" 
                                                           Grid.Column="1" Grid.Row="1"
                                                           Rating="{Binding Score}"/>

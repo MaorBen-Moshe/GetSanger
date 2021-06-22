@@ -12,6 +12,7 @@ namespace GetSanger.Models
         private string m_RatingOwnerId;
         private string m_RatingWriterId;
         private string m_Description;
+        private string m_RatingWriterName;
         #endregion
 
         public string RatingId { get; set; }
@@ -27,6 +28,12 @@ namespace GetSanger.Models
         {
             get => m_RatingOwnerId;
             set => SetClassProperty(ref m_RatingOwnerId, value);
+        }
+
+        public string RatingWriterName
+        {
+            get => m_RatingWriterName;
+            set => SetClassProperty(ref m_RatingWriterName, value);
         }
 
         public string RatingWriterId

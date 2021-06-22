@@ -89,11 +89,11 @@ namespace GetSanger.ViewModels
             var popup = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
             popup.ShowPopup();
             User user = await FireStoreHelper.GetUser(Job.ClientID);
-            ProfileText = string.Format(@"{0}'s profile", user.PersonalDetails.NickName);
+            ProfileText ??= string.Format(@"{0}'s profile", user.PersonalDetails.NickName);
             Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
             Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
-            MyLocation = string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
-            WorkLocation = string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
+            MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
+            WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
             popup.HidePopup();
         }
 

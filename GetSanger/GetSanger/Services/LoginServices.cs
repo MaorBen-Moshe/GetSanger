@@ -18,6 +18,7 @@ namespace GetSanger.Services
     {
         private NavigationService m_NavigationService;
         private RunTasksService m_RunTasks;
+        private LocationService m_Location;
 
         public LoginServices()
         {
@@ -33,6 +34,8 @@ namespace GetSanger.Services
                 if (!firstTime)
                 {
                     AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
+                    AppManager.Instance.ConnectedUser.UserLocation ??= await m_Location.GetCurrentLocation();
+                    await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                     AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
                     if (mode == null)
                     {
@@ -84,6 +87,8 @@ namespace GetSanger.Services
                     User user = await m_RunTasks.RunTaskWhileLoading(FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId()));
                     verified = await AuthHelper.IsVerifiedEmail();
                     AppManager.Instance.ConnectedUser = user;
+                    AppManager.Instance.ConnectedUser.UserLocation ??= await m_Location.GetCurrentLocation();
+                    await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                     if (verified)
                     {
                         if (i_Mode != null) // we are here from mode page or from auto login
@@ -126,6 +131,7 @@ namespace GetSanger.Services
         {
             m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             m_RunTasks ??= AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
+            m_Location ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
         }
     }
 }

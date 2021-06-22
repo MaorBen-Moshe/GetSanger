@@ -32,8 +32,13 @@ namespace GetSanger.Services
 
         public async Task<Placemark> PickedLocation(Location i_Location)
         {
-            IEnumerable<Placemark> placemarks = await Geocoding.GetPlacemarksAsync(i_Location);
-            Placemark placemark = placemarks.FirstOrDefault();
+            Placemark placemark = null;
+            if(i_Location != null)
+            {
+                IEnumerable<Placemark> placemarks = await Geocoding.GetPlacemarksAsync(i_Location);
+                placemark = placemarks?.FirstOrDefault();
+            }
+           
             return placemark;
         }
 

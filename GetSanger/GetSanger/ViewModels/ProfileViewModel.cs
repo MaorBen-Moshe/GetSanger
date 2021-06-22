@@ -97,6 +97,8 @@ namespace GetSanger.ViewModels
 
         private async void setUser()
         {
+            var popup = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
+            popup.ShowPopup();
             if (string.IsNullOrEmpty(UserId))
             {
                 throw new ArgumentException("User details aren't available.");
@@ -114,6 +116,7 @@ namespace GetSanger.ViewModels
             UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
             AverageRating = getAverage();
             IsListRefreshing = false;
+            popup.HidePopup();
         }
 
         private int getAverage()
@@ -124,7 +127,12 @@ namespace GetSanger.ViewModels
                 avg += rating.Score;
             }
 
-            return avg / CurrentUser.Ratings.Count;
+            if(CurrentUser.Ratings.Count > 0)
+            {
+                avg /= CurrentUser.Ratings.Count;
+            }
+            
+            return (avg > 0) ? avg : 1;
         }
 
         private async void callUser(object i_Param)
@@ -193,7 +201,7 @@ namespace GetSanger.ViewModels
         private async void addRating(object i_Param)
         {
             string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
-            await r_NavigationService.NavigateTo(ShellRoutes.AddRating + $"ratedUser={json}");
+            await r_NavigationService.NavigateTo($"{ShellRoutes.AddRating}?ratedUser={json}");
         }
 
         private async void refreshList()

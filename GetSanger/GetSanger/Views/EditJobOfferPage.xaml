@@ -58,7 +58,10 @@
                             FontSize="14"/>
                 </Grid>
 
-                <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone">
+                <Entry  Text="{Binding NewJobOffer.ClientPhoneNumber, Mode=TwoWay}"
+                        Placeholder="Phone number" 
+                        Keyboard="Telephone" 
+                        x:Name="Phone">
                     <Entry.Behaviors>
                         <behaviors:PhoneNumberMaskBehavior />
                         <behaviors:PhoneEntryLengthValidator MaxLength="11"/>

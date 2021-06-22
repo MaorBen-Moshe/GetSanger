@@ -118,6 +118,10 @@ namespace GetSanger.Services
             {
                 handleMessage(i_Message["Json"]);
             }
+            else if (type.Equals(typeof(Models.Rating)))
+            {
+                handleMessage(i_Message["Json"]);
+            }
             else
             {
                 throw new ArgumentException("Type of object received is not allowed");
