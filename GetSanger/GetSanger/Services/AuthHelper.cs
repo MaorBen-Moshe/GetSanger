@@ -155,16 +155,19 @@ namespace GetSanger.Services
                     case eSocialProvider.Facebook:
                         string facebookAccessToken = await getSocialAuthIdToken("Facebook");
                         requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
+                        requestDictionary["ProviderId"] = "facebook.com";
                         break;
 
                     case eSocialProvider.Google:
                         string googleIdToken = await getSocialAuthIdToken("Google");
                         requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
+                        requestDictionary["ProviderId"] = "google.com";
                         break;
 
                     case eSocialProvider.Apple:
                         string appleIdToken = await getSocialAuthIdToken("Apple");
                         requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
+                        requestDictionary["ProviderId"] = "apple.com";
                         break;
 
                     default:
