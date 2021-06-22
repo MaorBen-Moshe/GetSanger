@@ -64,7 +64,7 @@
                 </Grid.ColumnDefinitions>
                
                 <Label Text="Birthday" Padding="3" Grid.Column="0" FontSize="15" />
-                <DatePicker Format="dd/MM/yyyy" Date="{Binding CreatedUser.PersonalDetails.Birthday}" x:Name="DateEntry"  Grid.Column="1"/>
+                <DatePicker Format="dd/MM/yyyy" MaximumDate="{Binding MaxDatePicker}" Date="{Binding CreatedUser.PersonalDetails.Birthday}" x:Name="DateEntry"  Grid.Column="1"/>
             </Grid>
 
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">

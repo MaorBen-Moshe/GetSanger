@@ -37,6 +37,8 @@ namespace GetSanger.ViewModels
 
         private User m_CreatedUser;
 
+        private DateTime m_MaxDatePicker;
+
         #endregion
 
         #region Constructor
@@ -59,6 +61,12 @@ namespace GetSanger.ViewModels
         {
             get => m_CreatedUser;
             set => SetClassProperty(ref m_CreatedUser, value);
+        }
+
+        public DateTime MaxDatePicker
+        {
+            get => m_MaxDatePicker;
+            set => SetStructProperty(ref m_MaxDatePicker, value); 
         }
 
         public Dictionary<string, object> FacebookGmailSignDict { get; set; }
@@ -139,6 +147,7 @@ namespace GetSanger.ViewModels
             CreatedUser ??= new User();
             PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
+            MaxDatePicker = CreatedUser.PersonalDetails.Birthday;
         }
 
         private void setCommands()
