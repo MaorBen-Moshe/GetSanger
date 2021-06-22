@@ -155,16 +155,19 @@ namespace GetSanger.Services
                     case eSocialProvider.Facebook:
                         string facebookAccessToken = await getSocialAuthIdToken("Facebook");
                         requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
+                        requestDictionary["ProviderId"] = "facebook.com";
                         break;
 
                     case eSocialProvider.Google:
                         string googleIdToken = await getSocialAuthIdToken("Google");
                         requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
+                        requestDictionary["ProviderId"] = "google.com";
                         break;
 
                     case eSocialProvider.Apple:
                         string appleIdToken = await getSocialAuthIdToken("Apple");
                         requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
+                        requestDictionary["ProviderId"] = "apple.com";
                         break;
 
                     default:
@@ -183,22 +186,10 @@ namespace GetSanger.Services
                         ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
                     string customToken = responseDictionary["customToken"] as string;
 
-                    if (responseDictionary.ContainsKey("needConfirmation"))
-                    {
-                        bool needConfirmation = (bool) responseDictionary["needConfirmation"];
-
-                        if (needConfirmation)
-                        {
-                            throw new Exception(
-                                "Another account with the same email already exists. You need to sign in to the original account and then link the current credential to it.");
-                        }
-                    }
-
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
-                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                    if (!isEmailVerified)
+                    if (!await IsVerifiedEmail())
                     {
                         await SendVerificationEmail();
                     }
