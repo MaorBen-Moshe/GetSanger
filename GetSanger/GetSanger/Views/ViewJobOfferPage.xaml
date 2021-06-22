@@ -15,6 +15,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -24,8 +25,10 @@
                    FontSize="Title"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"
-                   Padding="50"></Label>
-            <Label Text="{Binding ProfileText}">
+                   Padding="50"/>
+            <Label Text="{Binding ProfileText}"
+                   IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
+                   IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ProfileCommand}">
                     </TapGestureRecognizer>
