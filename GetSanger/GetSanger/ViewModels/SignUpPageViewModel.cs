@@ -51,6 +51,7 @@ namespace GetSanger.ViewModels
                 .GetListOfEnumNames(typeof(eCategory)).Select(name => new CategoryCell
                     {Category = (eCategory) Enum.Parse(typeof(eCategory), name)}).ToList());
             m_TempCategories = CategoriesItems;
+            MaxDatePicker = DateTime.Now.AddYears(-18);
         }
 
         #endregion
@@ -147,7 +148,6 @@ namespace GetSanger.ViewModels
             CreatedUser ??= new User();
             PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
-            MaxDatePicker = CreatedUser.PersonalDetails.Birthday;
         }
 
         private void setCommands()

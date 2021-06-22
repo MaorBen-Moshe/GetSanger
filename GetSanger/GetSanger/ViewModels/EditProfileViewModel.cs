@@ -23,6 +23,7 @@ namespace GetSanger.ViewModels
         private string m_ClonedUserData;
         private bool m_ValidInput;
         private bool m_ImageChanged;
+        private DateTime m_MaxDate;
         #endregion
 
         #region Properties
@@ -50,6 +51,12 @@ namespace GetSanger.ViewModels
         {
             get => m_GenderItems;
             set => SetClassProperty(ref m_GenderItems, value);
+        }
+
+        public DateTime MaxDate
+        {
+            get => m_MaxDate;
+            set => SetStructProperty(ref m_MaxDate, value);
         }
 
         #endregion
@@ -95,6 +102,7 @@ namespace GetSanger.ViewModels
             m_ClonedUserData = ObjectJsonSerializer.SerializeForPage(ConnectedUser);
             ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
             m_ImageChanged = false;
+            MaxDate = DateTime.Now.AddYears(-18);
         }
 
         private async void backButtonBehavior(object i_Param)
