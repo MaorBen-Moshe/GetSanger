@@ -4,6 +4,7 @@ using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -83,7 +84,13 @@ namespace GetSanger.ViewModels
             }
 
             CurrentUser = AppManager.Instance.ConnectedUser;
-            UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
+
+            byte[] imageData = null;
+
+            using (var wc = new System.Net.WebClient())
+                imageData = wc.DownloadData(CurrentUser.ProfilePictureUri);
+
+            UserImage = ImageSource.FromStream(() => new MemoryStream(imageData));
         }
 
         
