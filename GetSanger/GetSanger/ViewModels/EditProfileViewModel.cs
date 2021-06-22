@@ -24,6 +24,7 @@ namespace GetSanger.ViewModels
         private bool m_ValidInput;
         private bool m_ImageChanged;
         private DateTime m_MaxDate;
+
         #endregion
 
         #region Properties
@@ -101,7 +102,14 @@ namespace GetSanger.ViewModels
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
             m_ClonedUserData = ObjectJsonSerializer.SerializeForPage(ConnectedUser);
-            ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
+
+            byte[] imageData = null;
+
+            using (var wc = new System.Net.WebClient())
+                imageData = wc.DownloadData(ConnectedUser.ProfilePictureUri);
+
+            ProfileImage = ImageSource.FromStream(() => new MemoryStream(imageData));
+
             m_ImageChanged = false;
             MaxDate = DateTime.Now.AddYears(-18);
         }
@@ -145,6 +153,13 @@ namespace GetSanger.ViewModels
             ProfileImage = ImageSource.FromStream(() => stream);
 
             await r_StorageHelper.SetUserProfileImage(ConnectedUser, memoryStream);
+
+            byte[] imageData = null;
+
+            using (var wc = new System.Net.WebClient())
+                imageData = wc.DownloadData(ConnectedUser.ProfilePictureUri);
+
+            ProfileImage = ImageSource.FromStream(() => new MemoryStream(imageData));
             m_ImageChanged = true;
         }
 
