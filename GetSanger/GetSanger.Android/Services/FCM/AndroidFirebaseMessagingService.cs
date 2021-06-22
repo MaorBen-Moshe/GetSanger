@@ -73,7 +73,11 @@ namespace GetSanger.Droid.Services.FCM
         private void handleDataReceived(RemoteMessage i_Message)
         {
             // validation of data first
-            PushServices.HandleDataReceived(i_Message.Data);
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                PushServices.HandleDataReceived(i_Message.Data);
+            });
+            
         }
 
     }

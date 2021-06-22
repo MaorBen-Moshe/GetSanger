@@ -49,10 +49,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button Text="Add Rating" Command="{Binding AddRatingCommand}" />
             <Button Text="Call" Command="{Binding CallCommand}" />
             <Button Text="Send Message" Command="{Binding SendMessageCommand}" />
             <Button Text="Report" Command="{Binding ReportUserCommand}" />
-            <Button Text="Add Rating" Command="{Binding AddRatingCommand}" />
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

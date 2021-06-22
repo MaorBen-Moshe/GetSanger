@@ -104,27 +104,30 @@ namespace GetSanger.Services
         }
 
         public static void HandleDataReceived(IDictionary<string, string> i_Message)
-        {
-            Type type = getTypeOfData(i_Message["Type"]);
-            if (type.Equals(typeof(JobOffer)))
+        {  
+            if (i_Message != null)
             {
-                handleJobOffer(i_Message["Json"]);
-            }
-            else if (type.Equals(typeof(Models.Activity)))
-            {
-                handleActivity(i_Message["Json"]);
-            }
-            else if (type.Equals(typeof(Models.chat.Message)))
-            {
-                handleMessage(i_Message["Json"]);
-            }
-            else if (type.Equals(typeof(Models.Rating)))
-            {
-                handleMessage(i_Message["Json"]);
-            }
-            else
-            {
-                throw new ArgumentException("Type of object received is not allowed");
+                Type type = getTypeOfData(i_Message["Type"]);
+                if (type.Equals(typeof(JobOffer)))
+                {
+                    handleJobOffer(i_Message["Json"]);
+                }
+                else if (type.Equals(typeof(Models.Activity)))
+                {
+                    handleActivity(i_Message["Json"]);
+                }
+                else if (type.Equals(typeof(Models.chat.Message)))
+                {
+                    handleMessage(i_Message["Json"]);
+                }
+                else if (type.Equals(typeof(Models.Rating)))
+                {
+                    handleMessage(i_Message["Json"]);
+                }
+                else
+                {
+                    throw new ArgumentException("Type of object received is not allowed");
+                }
             }
         }
 
@@ -164,11 +167,17 @@ namespace GetSanger.Services
 
         private async static void handleJobOffer(string i_Json)
         {
+            string title = "New job available!";
+            string message = "Do you want to navigate the the job offer page?";
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             string jobJson = ObjectJsonSerializer.SerializeForPage(job);
-            await navigation.NavigateTo(ShellRoutes.ViewJobOffer +
-                                        $"?jobOffer={jobJson}");
+            bool choice = await Application.Current.MainPage.DisplayAlert(title, message, "Yes", "No");
+            if (choice == true)
+            {
+                await navigation.NavigateTo(ShellRoutes.ViewJobOffer +
+                                            $"?jobOffer={jobJson}");
+            }
         }
 
         private static Type getTypeOfData(string i_Type)
