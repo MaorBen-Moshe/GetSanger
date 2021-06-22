@@ -186,22 +186,10 @@ namespace GetSanger.Services
                         ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
                     string customToken = responseDictionary["customToken"] as string;
 
-                    if (responseDictionary.ContainsKey("needConfirmation"))
-                    {
-                        bool needConfirmation = (bool) responseDictionary["needConfirmation"];
-
-                        if (needConfirmation)
-                        {
-                            throw new Exception(
-                                "Another account with the same email already exists. You need to sign in to the original account and then link the current credential to it.");
-                        }
-                    }
-
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
-                    bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                    if (!isEmailVerified)
+                    if (!await IsVerifiedEmail())
                     {
                         await SendVerificationEmail();
                     }
