@@ -77,6 +77,7 @@ namespace GetSanger.ViewModels
             setCommands();
             GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType))
                 .Select(name => (GenderType) Enum.Parse(typeof(GenderType), name)).ToList());
+            MaxDate = DateTime.Now.AddYears(-18);
         }
 
         #endregion
