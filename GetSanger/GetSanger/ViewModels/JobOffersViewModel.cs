@@ -95,7 +95,7 @@ namespace GetSanger.ViewModels
         {
             JobOffer current = i_Param as JobOffer;
             string json = ObjectJsonSerializer.SerializeForPage(current);
-            await r_NavigationService.NavigateTo(ShellRoutes.JobOffer + $"?isCreate={false}&category={current.Category}&job={json}");
+            await r_NavigationService.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={json}");
         }
 
         private async void setJobOffers()

@@ -4,11 +4,11 @@
              xmlns:converters="clr-namespace:GetSanger.Converters"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
-             x:Class="GetSanger.Views.JobOfferPage"
+             x:Class="GetSanger.Views.EditJobOfferPage"
              Title="{Binding NewJobOffer.Title}">
 
     <ContentPage.BindingContext>
-        <vm:JobOfferViewModel />
+        <vm:EditJobOfferViewModel />
     </ContentPage.BindingContext>
     
     
@@ -31,19 +31,11 @@
                    HorizontalOptions="CenterAndExpand"
                    Padding="50"
                    Grid.Row="0"/>
-            <Label Text="{Binding ProfileText}"
-                   IsVisible="{Binding IsCreate, Converter={StaticResource InverseBoolConverter}}"
-                   IsEnabled="{Binding IsCreate, Converter={StaticResource InverseBoolConverter}}">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ProfileCommand}">
-                    </TapGestureRecognizer>
-                </Label.GestureRecognizers>
-            </Label>
 
             <StackLayout Grid.Row="1" >
                 <Grid>
                     <Entry Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" IsReadOnly="True" Grid.Column="0"/>
-                    <Entry Text="{Binding NewJobOffer.Title}" Placeholder="Job Title" IsVisible="{Binding IsCreate}" Grid.Column="1" />
+                    <Entry Text="{Binding NewJobOffer.Title}" Placeholder="Job Title" Grid.Column="1" />
                 </Grid>
 
                 <Grid>
@@ -53,8 +45,6 @@
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" />
                     <Button Text="Get Location" Grid.Column="2" Command="{Binding CurrentLocation}"
-                            IsVisible="{Binding IsCreate}"
-                            IsEnabled="{Binding IsCreate}"
                             FontSize="14"/>
                 </Grid>
 
@@ -65,12 +55,10 @@
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" />
                     <Button Text="Get Location" Grid.Column="2" Command="{Binding JobLocation}"
-                            IsVisible="{Binding IsCreate}"
-                            IsEnabled="{Binding IsCreate}"
                             FontSize="14"/>
                 </Grid>
 
-                <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone" IsEnabled="{Binding IsCreate}">
+                <Entry Placeholder="Phone number" Keyboard="Telephone" x:Name="Phone">
                     <Entry.Behaviors>
                         <behaviors:PhoneNumberMaskBehavior />
                         <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
@@ -81,7 +69,7 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Format="dd/MM/yyyy" Date="{Binding NewJobOffer.Date}" Grid.Column="1" IsEnabled="{Binding IsCreate}"/>
+                    <DatePicker Format="dd/MM/yyyy" Date="{Binding NewJobOffer.Date}" Grid.Column="1"/>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"
@@ -90,8 +78,7 @@
                             IsTextPredictionEnabled="True"
                             Placeholder="Job Description"
                             VerticalOptions="FillAndExpand"
-                            Text="{Binding NewJobOffer.Description}"
-                            IsEnabled="{Binding IsCreate}">
+                            Text="{Binding NewJobOffer.Description}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >
                                 <x:Arguments>
@@ -106,9 +93,7 @@
                     VerticalOptions="End"
                     CornerRadius="20"
                     Margin="5"
-                    Command="{Binding SendJobCommand}"
-                    IsVisible="{Binding IsCreate}"
-                    IsEnabled="{Binding IsCreate}"/>
+                    Command="{Binding SendJobCommand}"/>
             </StackLayout>
 
         </Grid>

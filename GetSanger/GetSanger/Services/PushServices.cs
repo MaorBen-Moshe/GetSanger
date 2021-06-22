@@ -163,8 +163,8 @@ namespace GetSanger.Services
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             string jobJson = ObjectJsonSerializer.SerializeForPage(job);
-            await navigation.NavigateTo(ShellRoutes.JobOffer +
-                                        $"?jobOffer={jobJson}&isCreate={false}&category={job.Category.ToString()}");
+            await navigation.NavigateTo(ShellRoutes.ViewJobOffer +
+                                        $"?jobOffer={jobJson}");
         }
 
         private static Type getTypeOfData(string i_Type)

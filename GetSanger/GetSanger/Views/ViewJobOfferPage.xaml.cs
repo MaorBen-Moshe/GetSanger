@@ -1,14 +1,13 @@
-﻿using System;
+﻿using GetSanger.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using GetSanger.ViewModels;
 
 namespace GetSanger.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class JobOfferPage : ContentPage
+    public partial class ViewJobOfferPage : ContentPage
     {
-        public JobOfferPage()
+        public ViewJobOfferPage()
         {
             InitializeComponent();
         }
@@ -21,7 +20,7 @@ namespace GetSanger.Views
 
         protected override void OnDisappearing()
         {
-            (BindingContext as JobOfferViewModel).Disappearing();
+            (BindingContext as ViewJobOfferViewModel).Disappearing();
             base.OnDisappearing();
         }
     }

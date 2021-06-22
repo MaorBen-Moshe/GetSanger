@@ -35,7 +35,9 @@
 
         public const string Activity = "activity";
 
-        public const string JobOffer = "jobOffer";
+        public const string EditJobOffer = "editJobOffer";
+
+        public const string ViewJobOffer = "viewJoboffer";
 
         public const string LoadingPage = "loading";
 

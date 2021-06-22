@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:GetSanger.Converters"
+             xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             x:Class="GetSanger.Views.ViewJobOfferPage"             
+             Title="{Binding Job.Title}">
+
+    <ContentPage.BindingContext>
+        <vm:ViewJobOfferViewModel />
+    </ContentPage.BindingContext>
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding Job.Title}"
+                   FontSize="Title"
+                   VerticalOptions="StartAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   Padding="50"></Label>
+            <Label Text="{Binding ProfileText}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ProfileCommand}">
+                    </TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+            <Entry Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" IsReadOnly="True" />
+            <Entry Placeholder="My Location" 
+                           Text="{Binding MyLocation}" 
+                           IsReadOnly="True" />
+            <Entry Placeholder="Job Location" 
+                           Text="{Binding WorkLocation}"
+                           IsReadOnly="True" />
+            <Entry Placeholder="Phone number" 
+                   Text="{Binding Job.ClientPhoneNumber}"
+                   Keyboard="Telephone" 
+                   x:Name="Phone" 
+                   IsReadOnly="True">
+                <Entry.Behaviors>
+                    <behaviors:PhoneNumberMaskBehavior />
+                    <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
+                </Entry.Behaviors>
+            </Entry>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Text="Job date:" Padding="10" Grid.Column="0"/>
+                <DatePicker Format="dd/MM/yyyy" Date="{Binding Job.Date}" Grid.Column="1" IsEnabled="False"/>
+            </Grid>
+
+            <Frame
+                   VerticalOptions="FillAndExpand"
+                   HasShadow="True">
+                <Editor IsSpellCheckEnabled="True"
+                            IsTextPredictionEnabled="True"
+                            Placeholder="Job Description"
+                            VerticalOptions="FillAndExpand"
+                            Text="{Binding Job.Description}"
+                            IsEnabled="False">
+                </Editor>
+            </Frame>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

@@ -41,7 +41,7 @@ namespace GetSanger.Controls
             ShellNavigationState state = (App.Current.MainPage as Shell).CurrentState;
             // The following route works because route names are unique in this application.
             JobOffer current = (JobOffer)item;
-            await Shell.Current.GoToAsync(ShellRoutes.JobOffer + $"?jobOffer={current}&isCreate={false}&category={current.Category}");
+            await Shell.Current.GoToAsync(ShellRoutes.ViewJobOffer + $"?jobOffer={current}");
         }
 
         #endregion

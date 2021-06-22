@@ -29,7 +29,8 @@ namespace GetSanger.AppShell
             r_Routes.Add(ShellRoutes.Profile, typeof(ProfileViewPage));
             r_Routes.Add(ShellRoutes.Map, typeof(MapPage));
             r_Routes.Add(ShellRoutes.Activity, typeof(ActivityDetailPage));
-            r_Routes.Add(ShellRoutes.JobOffer, typeof(JobOfferPage));
+            r_Routes.Add(ShellRoutes.EditJobOffer, typeof(EditJobOfferPage));
+            r_Routes.Add(ShellRoutes.ViewJobOffer, typeof(ViewJobOfferPage));
             r_Routes.Add(ShellRoutes.EditProfile, typeof(EditProfilePage));
             r_Routes.Add(ShellRoutes.LoadingPage, typeof(LoadingPage));
             r_Routes.Add(ShellRoutes.ChangePassword, typeof(ChangePasswordPage));
