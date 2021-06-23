@@ -281,26 +281,19 @@ namespace GetSanger.Services
 
                     if (i_Scheme.Equals("Google"))
                     {
-                        string clientId = s_Auth.GetGoogleClientId();
+                        string clientId = "889764842790-4sni1ulkm38maitr4h1ibqamchcv8qkl.apps.googleusercontent.com";
+                        string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithGoogle";
                         uriString =
-                            $"https://accounts.google.com/o/oauth2/v2/auth?scope=openid profile email&response_type=code&redirect_uri={callBackUrl}&client_id={clientId}";
+                            $"https://accounts.google.com/o/oauth2/v2/auth?scope=openid profile email&response_type=code&redirect_uri={url}&client_id={clientId}&prompt=select_account";
                         r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
 
-                        string code = r.Properties["code"];
-                        uriString =
-                            $" https://oauth2.googleapis.com/token?code={code}&client_id={clientId}&redirect_uri={callBackUrl}&grant_type=authorization_code";
-
-                        HttpResponseMessage response = await HttpClientService.SendHttpRequest(uriString, "", HttpMethod.Post);
-                        string responseString = await response.Content.ReadAsStringAsync();
-                        Dictionary<string, object> responseDictionary =
-                            ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
-                        idToken = responseDictionary["id_token"] as string;
+                        idToken = r.IdToken;
                     }
                     else if (i_Scheme.Equals("Facebook"))
                     {
                         string clientId = "328227848585394";
                         string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithFacebook";
-                        uriString = $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email";
+                        uriString = $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email&auth_type=rerequest,reauthenticate";
                         r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
                         idToken = r.AccessToken;
                     }
@@ -308,7 +301,8 @@ namespace GetSanger.Services
                     {
                         string clientId = "com.signin.getsanger";
                         string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithApple";
-                        uriString = $"https://appleid.apple.com/auth/authorize?client_id={clientId}&redirect_uri={url}&response_type=code id_token&scope=name email&response_mode=form_post";
+                        uriString =
+                            $"https://appleid.apple.com/auth/authorize?client_id={clientId}&redirect_uri={url}&response_type=code id_token&scope=name email&response_mode=form_post";
                         r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
                         idToken = r.IdToken;
                     }
