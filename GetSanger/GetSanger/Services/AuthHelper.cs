@@ -304,6 +304,14 @@ namespace GetSanger.Services
                         r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
                         idToken = r.AccessToken;
                     }
+                    else if (i_Scheme.Equals("Apple"))
+                    {
+                        string clientId = "com.signin.getsanger";
+                        string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithApple";
+                        uriString = $"https://appleid.apple.com/auth/authorize?client_id={clientId}&redirect_uri={url}&response_type=code id_token&scope=name email&response_mode=form_post";
+                        r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
+                        idToken = r.IdToken;
+                    }
                 }
 
                 return idToken;
