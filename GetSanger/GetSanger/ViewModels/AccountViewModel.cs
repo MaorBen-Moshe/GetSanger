@@ -134,7 +134,9 @@ namespace GetSanger.ViewModels
             {
                 r_LoadingService.ShowPopup();
                 Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
-                await r_PhotoDisplay.TryGetPictureFromUri(details["photoUrl"] as string, AppManager.Instance.ConnectedUser);
+                string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
+
+                await r_PhotoDisplay.TryGetPictureFromUri(photoUrl, AppManager.Instance.ConnectedUser);
                 await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
             }
             catch (Exception e)

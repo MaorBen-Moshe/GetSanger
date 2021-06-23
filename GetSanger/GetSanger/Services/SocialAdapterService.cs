@@ -47,19 +47,23 @@ namespace GetSanger.Services
 
         private async Task<User> getDetails(Dictionary<string, object> i_Details)
         {
+            string displayName = i_Details.ContainsKey("displayName") ? i_Details["displayName"] as string : null;
+
             User user = new User
             {
                 PersonalDetails = new PersonalDetails
                 {
-                    NickName = i_Details["displayName"] as string
+                    NickName = displayName
                 },
                 Email = i_Details["email"] as string,
                 UserId = AuthHelper.GetLoggedInUserId()
             };
 
-            if (i_Details["photoUrl"] != null)
+            string photoUrl = i_Details.ContainsKey("photoUrl") ? i_Details["photoUrl"] as string : null;
+
+            if (photoUrl != null)
             {
-                await m_PhotoHelper.TryGetPictureFromUri(i_Details["photoUrl"] as string, user);
+                await m_PhotoHelper.TryGetPictureFromUri(photoUrl, user);
             }
 
             return user;
