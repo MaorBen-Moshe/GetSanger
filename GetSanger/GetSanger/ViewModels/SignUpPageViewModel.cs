@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -143,10 +144,10 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public async override void Appearing()
+        public override void Appearing()
         {
             CreatedUser ??= new User();
-            PersonalImage = await r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+            PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
         }
 
@@ -262,13 +263,13 @@ namespace GetSanger.ViewModels
             try
             {
                 CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
-                await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(CreatedUser));
-                PersonalImage = await r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+                await RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(CreatedUser));
+                PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
                 (i_Param as Button).IsEnabled = true;
             }
             catch
             {
-                await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "Ok");
+                await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "OK");
                 (i_Param as Button).IsEnabled = true;
             }
         }

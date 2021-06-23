@@ -7,7 +7,7 @@ namespace GetSanger.Interfaces
 {
     public interface IPhotoDisplay
     {
-        Task<ImageSource> DisplayPicture(Uri i_Uri = null);
+        ImageSource DisplayPicture(Uri i_Uri = null);
 
         Task TryGetPictureFromUri(string i_Uri, User i_User);
 

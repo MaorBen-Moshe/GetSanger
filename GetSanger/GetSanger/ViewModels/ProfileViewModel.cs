@@ -114,14 +114,14 @@ namespace GetSanger.ViewModels
                         throw new ArgumentException("User details aren't available.");
                     }
 
-                    UserImage = await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri));
+                    UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
                     Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
                     UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
                     AverageRating = getAverage();
                     IsListRefreshing = false;
                 });
 
-                await r_RunTasks.RunTaskWhileLoading(task);
+                await RunTaskWhileLoading(task);
             }
             catch(Exception e)
             {

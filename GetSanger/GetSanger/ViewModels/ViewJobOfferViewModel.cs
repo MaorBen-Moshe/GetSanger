@@ -104,7 +104,7 @@ namespace GetSanger.ViewModels
                 IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
             });
 
-            await r_RunTasks.RunTaskWhileLoading(task);
+            await RunTaskWhileLoading(task);
         }
 
         private async void moveProfile(object i_Param)

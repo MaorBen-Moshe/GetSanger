@@ -12,44 +12,36 @@ namespace GetSanger.Services
     {
         private StorageHelper m_StorageHelper;
 
-        public Task<ImageSource> DisplayPicture(Uri i_Uri = null)
+        public ImageSource DisplayPicture(Uri i_Uri = null)
         {
             SetDependencies();
-            var task = new Task<ImageSource>(() =>
+            try
             {
-                try
+                ImageSource image;
+                if (i_Uri != null)
                 {
-                    ImageSource image;
-                    if (i_Uri != null)
+                    image = new UriImageSource
                     {
-                        byte[] imageData = null;
+                        Uri = i_Uri,
+                        CachingEnabled = false
+                    };
 
-                        using (var wc = new System.Net.WebClient())
-                        {
-                            imageData = wc.DownloadData(i_Uri);
-                        }
-
-                        image = ImageSource.FromStream(() => new MemoryStream(imageData));
-                        if (image == null)
-                        {
-                            image = ImageSource.FromFile("profile.png");
-                        }
-                    }
-                    else
+                    if (image == null)
                     {
                         image = ImageSource.FromFile("profile.png");
                     }
-
-                    return image;
                 }
-                catch
+                else
                 {
-                    return ImageSource.FromFile("profile.png"); ;
+                    image = ImageSource.FromFile("profile.png");
                 }
-            });
 
-
-            return task;
+                return image;
+            }
+            catch
+            {
+                return ImageSource.FromFile("profile.png"); ;
+            }
         }
 
         public async Task TryGetPictureFromUri(string i_Uri, User i_User)

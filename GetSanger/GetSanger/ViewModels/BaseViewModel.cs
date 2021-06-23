@@ -15,7 +15,8 @@ namespace GetSanger.ViewModels
         private bool m_IsNotLoading;
         private bool m_IsEnabledSendBtn;
         private bool m_IsVisibleEmptyListLabel;
-        protected string m_DefaultBackUri = "..";
+        private string m_DefaultBackUri = "..";
+        private readonly RunTasksService r_RunTasks;
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
         protected readonly IPhotoDisplay r_PhotoDisplay;
@@ -25,7 +26,6 @@ namespace GetSanger.ViewModels
         protected readonly LoginServices r_LoginServices;
         protected readonly LocationService r_LocationServices;
         protected readonly SocialAdapterService r_SocialService;
-        protected readonly RunTasksService r_RunTasks;
         #endregion
 
         #region Properties

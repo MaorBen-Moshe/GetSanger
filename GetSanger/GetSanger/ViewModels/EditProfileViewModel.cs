@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -97,11 +98,11 @@ namespace GetSanger.ViewModels
             DeleteAccountCommand = new Command(deleteAccount);
         }
 
-        private async void initialData()
+        private void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
             m_ClonedUserData = ObjectJsonSerializer.SerializeForPage(ConnectedUser);
-            ProfileImage = await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri));
+            ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
             MaxDate = DateTime.Now.AddYears(-18);
         }
 
@@ -131,8 +132,8 @@ namespace GetSanger.ViewModels
 
         private async void imageChanged(object i_Param)
         {
-            await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser));
-            ProfileImage = await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri));
+            await RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser), "Saving...");
+            ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
         }
 
         private async void changePassword(object i_Param)

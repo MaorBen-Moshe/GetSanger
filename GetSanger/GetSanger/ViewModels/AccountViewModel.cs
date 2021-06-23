@@ -85,11 +85,10 @@ namespace GetSanger.ViewModels
             }
 
             CurrentUser = AppManager.Instance.ConnectedUser;
-            UserImage = await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri));
+            UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
         }
 
         
-
         private void logout(object i_Param)
         {
             // do logout
@@ -140,7 +139,7 @@ namespace GetSanger.ViewModels
                     await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
                 });
 
-                await r_RunTasks.RunTaskWhileLoading(task);
+                await RunTaskWhileLoading(task);
             }
             catch (Exception e)
             {
