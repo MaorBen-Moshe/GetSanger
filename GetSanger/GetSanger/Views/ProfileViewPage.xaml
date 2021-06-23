@@ -10,7 +10,7 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Profile"
+            <Label Text="{Binding CurrentUser.PersonalDetails.NickName, Mode=TwoWay}"
                    FontSize="Title"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"/>
@@ -21,14 +21,23 @@
                                           Review="" 
                                           IsImageEnabled="False"/>
             </StackLayout>
-            <Label Text="{Binding CurrentUser.PersonalDetails.NickName, Mode=TwoWay}"
-                           Margin="10,10,0,0" />
-            <Label Text="{Binding  CurrentUser.PersonalDetails.Phone, Mode=TwoWay}" 
+            <Grid RowSpacing="0" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding  CurrentUser.PersonalDetails.Phone, Mode=TwoWay}" 
                            Margin="10,0,0,0" />
-            <Label Text="{Binding  CurrentUser.PersonalDetails.Gender, Mode=TwoWay}"  
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding  CurrentUser.PersonalDetails.Gender, Mode=TwoWay}"  
                            Margin="10,0,0,0" />
-            <Label Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:dd/MM/yyyy}'}"  
+                <Label Grid.Row="1" Grid.Column="0" Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:dd/MM/yyyy}'}"  
                            Margin="10,0,0,0"/>
+            </Grid>
             <Label Text="Ratings:" FontSize="Title"/>
             <ListView ItemsSource="{Binding  CurrentUser.Ratings}"
                                             HasUnevenRows="True"
@@ -49,10 +58,22 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Text="Add Rating" Command="{Binding AddRatingCommand}" />
-            <Button Text="Call" Command="{Binding CallCommand}" />
-            <Button Text="Send Message" Command="{Binding SendMessageCommand}" />
-            <Button Text="Report" Command="{Binding ReportUserCommand}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" Text="Add Rating" Command="{Binding AddRatingCommand}" HorizontalOptions="CenterAndExpand"/>
+                <Button Grid.Row="0" Grid.Column="1" Text="Call" Command="{Binding CallCommand}" HorizontalOptions="CenterAndExpand"/>
+                <Button Grid.Row="1" Grid.Column="0" Text="Send Message" Command="{Binding SendMessageCommand}" HorizontalOptions="CenterAndExpand"/>
+                <Button Grid.Row="1" Grid.Column="1" Text="Report" Command="{Binding ReportUserCommand}" HorizontalOptions="CenterAndExpand"/>
+            </Grid>
+            
             
         </StackLayout>
     </ContentPage.Content>

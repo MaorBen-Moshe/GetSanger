@@ -26,7 +26,7 @@ namespace GetSanger.Droid.Services.FCM
 
         public override void OnMessageReceived(RemoteMessage message)
         {//Sets how the app handles messages and notifications in foreground (background messages are not passed here)
-            handleDataReceived(message);
+            handleMessageReceived(message);
 
             base.OnMessageReceived(message);
 
@@ -70,12 +70,12 @@ namespace GetSanger.Droid.Services.FCM
             notificationManager.Notify(MainActivity.NOTIFICATION_ID, notificationBuilder.Build());
         }
 
-        private void handleDataReceived(RemoteMessage i_Message)
+        private void handleMessageReceived(RemoteMessage i_Message)
         {
             // validation of data first
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                PushServices.HandleDataReceived(i_Message.Data);
+                PushServices.handleMessageReceived(i_Message.GetNotification().Title, i_Message.GetNotification().Body, i_Message.Data);
             });
             
         }

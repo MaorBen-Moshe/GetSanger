@@ -62,11 +62,25 @@
                                     <MenuItem Text="Confirm" Command="{Binding ConfirmJobOfferCommand}" CommandParameter="{Binding .}" />
                                     <MenuItem Text="Delete" Command="{Binding DeleteMyJobOfferCommand}" CommandParameter="{Binding .}" IsDestructive="True"/>
                                 </ViewCell.ContextActions>
-                                <StackLayout>
-                                    <Image />
-                                    <Label Text="{Binding Title}"/>
-                                    <Label Text="{Binding Description}" />
-                                </StackLayout>
+                                <Frame BorderColor="Black" BackgroundColor="AliceBlue">
+                                    <StackLayout>
+                                        <!--
+                                        <Label BackgroundColor="Transparent">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0}&#x0a; {1}">
+                                                    
+                                                    <Binding Path="Title"  />
+                                                    <Binding Path="Description" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        -->
+                                        
+                                        <Label Text="{Binding Title}" FontAttributes="Bold" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"/>
+                                        <Label Text="{Binding Description}" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"/>
+                                        
+                                    </StackLayout>
+                                </Frame>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
