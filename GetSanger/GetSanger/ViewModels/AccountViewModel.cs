@@ -132,18 +132,18 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                var task = new Task(async () => 
-                {
-                    Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
-                    await r_PhotoDisplay.TryGetPictureFromUri(details["photoUrl"] as string, AppManager.Instance.ConnectedUser);
-                    await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
-                });
-
-                await RunTaskWhileLoading(task);
+                r_LoadingService.ShowPopup();
+                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
+                await r_PhotoDisplay.TryGetPictureFromUri(details["photoUrl"] as string, AppManager.Instance.ConnectedUser);
+                await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
             }
             catch (Exception e)
             {
                 await r_PageService.DisplayAlert("Error", e.Message, "OK");
+            }
+            finally
+            {
+                r_LoadingService.HidePopup();
             }
         }
 

@@ -26,6 +26,7 @@ namespace GetSanger.ViewModels
         protected readonly LoginServices r_LoginServices;
         protected readonly LocationService r_LocationServices;
         protected readonly SocialAdapterService r_SocialService;
+        protected readonly LoadingService r_LoadingService;
         #endregion
 
         #region Properties
@@ -73,6 +74,7 @@ namespace GetSanger.ViewModels
             r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
             r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
             r_RunTasks = AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
+            r_LoadingService = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
 
             IsEnabledsendBtn = false;
         }

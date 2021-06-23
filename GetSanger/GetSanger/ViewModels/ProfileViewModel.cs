@@ -100,32 +100,32 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                var task = new Task(async () =>
+                r_LoadingService.ShowPopup();
+                if (string.IsNullOrEmpty(UserId))
                 {
-                    if (string.IsNullOrEmpty(UserId))
-                    {
-                        throw new ArgumentException("User details aren't available.");
-                    }
+                    throw new ArgumentException("User details aren't available.");
+                }
 
 
-                    CurrentUser = await FireStoreHelper.GetUser(UserId);
-                    if (CurrentUser == null)
-                    {
-                        throw new ArgumentException("User details aren't available.");
-                    }
+                CurrentUser = await FireStoreHelper.GetUser(UserId);
+                if (CurrentUser == null)
+                {
+                    throw new ArgumentException("User details aren't available.");
+                }
 
-                    UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
-                    Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
-                    UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
-                    AverageRating = getAverage();
-                    IsListRefreshing = false;
-                });
-
-                await RunTaskWhileLoading(task);
+                UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
+                Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
+                UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
+                AverageRating = getAverage();
+                IsListRefreshing = false;
             }
             catch(Exception e)
             {
                 await r_PageService.DisplayAlert("Error", e.Message, "OK");
+            }
+            finally
+            {
+                r_LoadingService.HidePopup();
             }
         }
 

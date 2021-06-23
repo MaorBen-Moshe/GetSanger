@@ -94,17 +94,14 @@ namespace GetSanger.ViewModels
 
         private async void initData()
         {
-            var task = new Task(async () => 
-            {
-                ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
-                Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
-                Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
-                MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
-                WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
-                IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
-            });
-
-            await RunTaskWhileLoading(task);
+            r_LoadingService.ShowPopup();
+            ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
+            Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
+            Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
+            MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
+            WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
+            IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
+            r_LoadingService.HidePopup();
         }
 
         private async void moveProfile(object i_Param)
