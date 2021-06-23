@@ -17,10 +17,6 @@
     
     <ContentPage.Resources>
         <Converters:EntryLengthToBoolConverter x:Key="EntryLengthToBoolConverter"/>
-
-   
-
-
     </ContentPage.Resources>
 
     <ContentPage.Content>
@@ -52,11 +48,11 @@
                         </Entry>
                     </ViewCell>
                     <ViewCell>
-                        <DatePicker Format="dd/MM/yyyy" Date="{Binding ConnectedUser.PersonalDetails.Birthday}"/>
+                        <DatePicker Format="dd/MM/yyyy" MaximumDate="{Binding MaxDate}" Date="{Binding ConnectedUser.PersonalDetails.Birthday}"/>
                     </ViewCell>
                     <ViewCell>
                         <Picker ItemsSource="{Binding GenderItems}" 
-                                        SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
+                                SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
                     </ViewCell>
                 </TableSection>
                 <TableSection Title="Change Password">

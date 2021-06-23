@@ -4,6 +4,7 @@ using GetSanger.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -93,15 +94,14 @@ namespace GetSanger.ViewModels
 
         private async void initData()
         {
-            var popup = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
-            popup.ShowPopup();
+            r_LoadingService.ShowPopup();
             ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
             Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
             Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
             MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
             WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
             IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
-            popup.HidePopup();
+            r_LoadingService.HidePopup();
         }
 
         private async void moveProfile(object i_Param)

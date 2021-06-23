@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -22,7 +23,8 @@ namespace GetSanger.ViewModels
         private User m_ConnectedUser;
         private string m_ClonedUserData;
         private bool m_ValidInput;
-        private bool m_ImageChanged;
+        private DateTime m_MaxDate;
+
         #endregion
 
         #region Properties
@@ -52,6 +54,12 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_GenderItems, value);
         }
 
+        public DateTime MaxDate
+        {
+            get => m_MaxDate;
+            set => SetStructProperty(ref m_MaxDate, value);
+        }
+
         #endregion
 
         #region Commands
@@ -70,6 +78,7 @@ namespace GetSanger.ViewModels
             setCommands();
             GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType))
                 .Select(name => (GenderType) Enum.Parse(typeof(GenderType), name)).ToList());
+            MaxDate = DateTime.Now.AddYears(-18);
         }
 
         #endregion
@@ -94,7 +103,7 @@ namespace GetSanger.ViewModels
             ConnectedUser = AppManager.Instance.ConnectedUser;
             m_ClonedUserData = ObjectJsonSerializer.SerializeForPage(ConnectedUser);
             ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
-            m_ImageChanged = false;
+            MaxDate = DateTime.Now.AddYears(-18);
         }
 
         private async void backButtonBehavior(object i_Param)
@@ -112,7 +121,7 @@ namespace GetSanger.ViewModels
             else
             {
                 // if the data has changed we update in the server, else we do nothing
-                if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false || m_ImageChanged)
+                if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false)
                 {
                     await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser), "Saving...");
                 }
@@ -123,20 +132,8 @@ namespace GetSanger.ViewModels
 
         private async void imageChanged(object i_Param)
         {
-            Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
-            if (stream == null)
-            {
-                ProfileImage = r_PhotoDisplay.DisplayPicture(m_ConnectedUser.ProfilePictureUri);
-                return;
-            }
-
-            MemoryStream memoryStream = new MemoryStream();
-            await stream.CopyToAsync(memoryStream);
-            stream.Position = 0;
-            ProfileImage = ImageSource.FromStream(() => stream);
-
-            await r_StorageHelper.SetUserProfileImage(ConnectedUser, memoryStream);
-            m_ImageChanged = true;
+            await RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser), "Saving...");
+            ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
         }
 
         private async void changePassword(object i_Param)

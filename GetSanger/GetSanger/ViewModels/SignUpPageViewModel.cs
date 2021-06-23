@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -51,6 +52,7 @@ namespace GetSanger.ViewModels
                 .GetListOfEnumNames(typeof(eCategory)).Select(name => new CategoryCell
                     {Category = (eCategory) Enum.Parse(typeof(eCategory), name)}).ToList());
             m_TempCategories = CategoriesItems;
+            MaxDatePicker = DateTime.Now.AddYears(-18);
         }
 
         #endregion
@@ -147,7 +149,6 @@ namespace GetSanger.ViewModels
             CreatedUser ??= new User();
             PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
-            MaxDatePicker = CreatedUser.PersonalDetails.Birthday;
         }
 
         private void setCommands()
@@ -261,21 +262,14 @@ namespace GetSanger.ViewModels
             (i_Param as Button).IsEnabled = false;
             try
             {
-                Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
-                if (stream != null)
-                {
-                    CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
-                    MemoryStream memoryStream = new MemoryStream();
-                    await stream.CopyToAsync(memoryStream);
-                    await r_StorageHelper.SetUserProfileImage(CreatedUser, memoryStream);
-                }
-                
+                CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
+                await RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(CreatedUser));
                 PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
                 (i_Param as Button).IsEnabled = true;
             }
             catch
             {
-                await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "Ok");
+                await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "OK");
                 (i_Param as Button).IsEnabled = true;
             }
         }

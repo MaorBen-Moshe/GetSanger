@@ -4,7 +4,9 @@ using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -87,7 +89,6 @@ namespace GetSanger.ViewModels
         }
 
         
-
         private void logout(object i_Param)
         {
             // do logout
@@ -131,24 +132,20 @@ namespace GetSanger.ViewModels
         {
             try
             {
+                r_LoadingService.ShowPopup();
                 Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
-                tryGetPicture(details["photoUrl"] as string);
+                string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
+
+                await r_PhotoDisplay.TryGetPictureFromUri(photoUrl, AppManager.Instance.ConnectedUser);
                 await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
             }
             catch (Exception e)
             {
                 await r_PageService.DisplayAlert("Error", e.Message, "OK");
             }
-        }
-
-        private async void tryGetPicture(string i_Uri)
-        {
-            User current = AppManager.Instance.ConnectedUser;
-            if (current.ProfilePictureUri == null && !string.IsNullOrWhiteSpace(i_Uri))
+            finally
             {
-                Uri uri = new Uri(i_Uri);
-                current.ProfilePictureUri = uri;
-                await RunTaskWhileLoading(FireStoreHelper.UpdateUser(current));
+                r_LoadingService.HidePopup();
             }
         }
 

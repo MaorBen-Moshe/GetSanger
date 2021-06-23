@@ -174,14 +174,13 @@ namespace GetSanger.ViewModels
             NewJobOffer.Location = MyPlaceMark?.Location;
             NewJobOffer.JobLocation = JobPlaceMark?.Location;
             NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
-            //NewJobOffer.ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone;
             List<JobOffer> job = await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer));
             User.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
             new ObservableCollection<JobOffer>(job));
             await r_PageService.DisplayAlert("Success", "Job sent!", "Thanks");
             string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
             await GoBack();
-            await r_RunTasks.RunTaskWhileLoading(r_NavigationService.NavigateTo($"////{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
+            await RunTaskWhileLoading(r_NavigationService.NavigateTo($"////{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
         }
 
         private string placemarkValidation(Placemark i_Placemark)
