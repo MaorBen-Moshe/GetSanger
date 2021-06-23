@@ -23,6 +23,7 @@ namespace GetSanger.Services
         private LoginServices m_LoginService;
         private NavigationService m_NavigationService;
         private StorageHelper m_StorageHelper;
+        private IPhotoDisplay m_PhotoHelper;
 
         public async Task<bool> SocialLogin(eSocialProvider i_Provider)
         {
@@ -58,12 +59,7 @@ namespace GetSanger.Services
 
             if (i_Details["photoUrl"] != null)
             {
-                using var client = new WebClient();
-                var content = client.DownloadData(i_Details["photoUrl"] as string);
-                using var stream = new MemoryStream(content);
-                var destStream = new MemoryStream();
-                await stream.CopyToAsync(destStream);
-                await m_StorageHelper.SetUserProfileImage(user, destStream);
+                await m_PhotoHelper.TryGetPictureFromUri(i_Details["photoUrl"] as string, user);
             }
 
             return user;
@@ -74,6 +70,7 @@ namespace GetSanger.Services
             m_LoginService ??= AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             m_StorageHelper ??= AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
+            m_PhotoHelper ??= AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
         }
     }
 }

@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using GetSanger.Interfaces;
 using GetSanger.Views;
+using System.Threading.Tasks;
 
 namespace GetSanger.ViewModels
 {
@@ -97,26 +98,35 @@ namespace GetSanger.ViewModels
 
         private async void setUser()
         {
-            var popup = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
-            popup.ShowPopup();
-            if (string.IsNullOrEmpty(UserId))
+            try
             {
-                throw new ArgumentException("User details aren't available.");
+                var task = new Task(async () =>
+                {
+                    if (string.IsNullOrEmpty(UserId))
+                    {
+                        throw new ArgumentException("User details aren't available.");
+                    }
+
+
+                    CurrentUser = await FireStoreHelper.GetUser(UserId);
+                    if (CurrentUser == null)
+                    {
+                        throw new ArgumentException("User details aren't available.");
+                    }
+
+                    UserImage = await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri));
+                    Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
+                    UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
+                    AverageRating = getAverage();
+                    IsListRefreshing = false;
+                });
+
+                await r_RunTasks.RunTaskWhileLoading(task);
             }
-
-
-            CurrentUser = await FireStoreHelper.GetUser(UserId);
-            if (CurrentUser == null)
+            catch(Exception e)
             {
-                throw new ArgumentException("User details aren't available.");
+                await r_PageService.DisplayAlert("Error", e.Message, "OK");
             }
-
-            UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
-            Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
-            UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
-            AverageRating = getAverage();
-            IsListRefreshing = false;
-            popup.HidePopup();
         }
 
         private int getAverage()

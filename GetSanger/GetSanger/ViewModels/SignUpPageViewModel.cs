@@ -143,10 +143,10 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public override void Appearing()
+        public async override void Appearing()
         {
             CreatedUser ??= new User();
-            PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+            PersonalImage = await r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
         }
 
@@ -261,16 +261,9 @@ namespace GetSanger.ViewModels
             (i_Param as Button).IsEnabled = false;
             try
             {
-                Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
-                if (stream != null)
-                {
-                    CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
-                    MemoryStream memoryStream = new MemoryStream();
-                    await stream.CopyToAsync(memoryStream);
-                    await r_StorageHelper.SetUserProfileImage(CreatedUser, memoryStream);
-                }
-                
-                PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+                CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
+                await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(CreatedUser));
+                PersonalImage = await r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
                 (i_Param as Button).IsEnabled = true;
             }
             catch

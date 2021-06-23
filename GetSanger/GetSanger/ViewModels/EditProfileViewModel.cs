@@ -22,7 +22,6 @@ namespace GetSanger.ViewModels
         private User m_ConnectedUser;
         private string m_ClonedUserData;
         private bool m_ValidInput;
-        private bool m_ImageChanged;
         private DateTime m_MaxDate;
 
         #endregion
@@ -98,19 +97,11 @@ namespace GetSanger.ViewModels
             DeleteAccountCommand = new Command(deleteAccount);
         }
 
-        private void initialData()
+        private async void initialData()
         {
             ConnectedUser = AppManager.Instance.ConnectedUser;
             m_ClonedUserData = ObjectJsonSerializer.SerializeForPage(ConnectedUser);
-
-            byte[] imageData = null;
-
-            using (var wc = new System.Net.WebClient())
-                imageData = wc.DownloadData(ConnectedUser.ProfilePictureUri);
-
-            ProfileImage = ImageSource.FromStream(() => new MemoryStream(imageData));
-
-            m_ImageChanged = false;
+            ProfileImage = await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri));
             MaxDate = DateTime.Now.AddYears(-18);
         }
 
@@ -129,7 +120,7 @@ namespace GetSanger.ViewModels
             else
             {
                 // if the data has changed we update in the server, else we do nothing
-                if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false || m_ImageChanged)
+                if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false)
                 {
                     await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser), "Saving...");
                 }
@@ -140,27 +131,8 @@ namespace GetSanger.ViewModels
 
         private async void imageChanged(object i_Param)
         {
-            Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
-            if (stream == null)
-            {
-                ProfileImage = r_PhotoDisplay.DisplayPicture(m_ConnectedUser.ProfilePictureUri);
-                return;
-            }
-
-            MemoryStream memoryStream = new MemoryStream();
-            await stream.CopyToAsync(memoryStream);
-            stream.Position = 0;
-            ProfileImage = ImageSource.FromStream(() => stream);
-
-            await r_StorageHelper.SetUserProfileImage(ConnectedUser, memoryStream);
-
-            byte[] imageData = null;
-
-            using (var wc = new System.Net.WebClient())
-                imageData = wc.DownloadData(ConnectedUser.ProfilePictureUri);
-
-            ProfileImage = ImageSource.FromStream(() => new MemoryStream(imageData));
-            m_ImageChanged = true;
+            await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser));
+            ProfileImage = await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri));
         }
 
         private async void changePassword(object i_Param)

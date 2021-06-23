@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -84,13 +85,7 @@ namespace GetSanger.ViewModels
             }
 
             CurrentUser = AppManager.Instance.ConnectedUser;
-
-            byte[] imageData = null;
-
-            using (var wc = new System.Net.WebClient())
-                imageData = wc.DownloadData(CurrentUser.ProfilePictureUri);
-
-            UserImage = ImageSource.FromStream(() => new MemoryStream(imageData));
+            UserImage = await r_RunTasks.RunTaskWhileLoading(r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri));
         }
 
         
@@ -138,24 +133,18 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
-                tryGetPicture(details["photoUrl"] as string);
-                await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
+                var task = new Task(async () => 
+                {
+                    Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
+                    await r_PhotoDisplay.TryGetPictureFromUri(details["photoUrl"] as string, AppManager.Instance.ConnectedUser);
+                    await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
+                });
+
+                await r_RunTasks.RunTaskWhileLoading(task);
             }
             catch (Exception e)
             {
                 await r_PageService.DisplayAlert("Error", e.Message, "OK");
-            }
-        }
-
-        private async void tryGetPicture(string i_Uri)
-        {
-            User current = AppManager.Instance.ConnectedUser;
-            if (current.ProfilePictureUri == null && !string.IsNullOrWhiteSpace(i_Uri))
-            {
-                Uri uri = new Uri(i_Uri);
-                current.ProfilePictureUri = uri;
-                await RunTaskWhileLoading(FireStoreHelper.UpdateUser(current));
             }
         }
 
