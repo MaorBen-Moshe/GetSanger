@@ -8,7 +8,7 @@
             <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="Black" />
-                <Setter Property="BackgroundColor" Value="AliceBlue" />
+                <Setter Property="BackgroundColor" Value="White" />
                 <Setter Property="FontSize" Value="17"/>
                 <Setter Property="Padding" Value="5"/>
 
@@ -39,8 +39,8 @@
                 <Setter Property="Orientation" Value="Vertical"/>
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-
             </Style>
+
             <Color x:Key="ClientThemeColor">#6388f7</Color>
             <Color x:Key="SangerThemeColor">#A0FFFFFF</Color>
         </ResourceDictionary>

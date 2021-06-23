@@ -103,26 +103,26 @@ namespace GetSanger.Services
             return await sr_Push.GetRegistrationToken();
         }
 
-        public static void HandleDataReceived(IDictionary<string, string> i_Message)
+        public static void handleMessageReceived(string i_Title, string i_Body ,IDictionary<string, string> i_Message)
         {  
             if (i_Message != null)
             {
                 Type type = getTypeOfData(i_Message["Type"]);
                 if (type.Equals(typeof(JobOffer)))
                 {
-                    handleJobOffer(i_Message["Json"]);
+                    handleJobOffer(i_Title, i_Body, i_Message["Json"]);
                 }
                 else if (type.Equals(typeof(Models.Activity)))
                 {
-                    handleActivity(i_Message["Json"]);
+                    handleActivity(i_Title, i_Body, i_Message["Json"]);
                 }
                 else if (type.Equals(typeof(Models.chat.Message)))
                 {
-                    handleMessage(i_Message["Json"]);
+                    handleMessage(i_Title, i_Body, i_Message["Json"]);
                 }
                 else if (type.Equals(typeof(Models.Rating)))
                 {
-                    handleMessage(i_Message["Json"]);
+                    handleRating(i_Title, i_Body, i_Message["Json"]);
                 }
                 else
                 {
@@ -131,12 +131,33 @@ namespace GetSanger.Services
             }
         }
 
-        private async static void handleMessage(string i_Json)
+        private async static void handleRating(string i_Title, string i_Body, string i_Json)
         {
+            string message = i_Body + "\nGo to profile page to view your ratings?";
+            //Rating rating = ObjectJsonSerializer.DeserializeForServer<Rating>(i_Json);
+            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+           // string ratingJson = ObjectJsonSerializer.SerializeForPage(rating);
+            bool choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+            if (choice == true)
+            {
+                await navigation.NavigateTo(ShellRoutes.Profile + $"?userid={AppManager.Instance.ConnectedUser.UserId}");
+            }
+        }
+
+        private async static void handleMessage(string i_Title, string i_Body, string i_Json)
+        {
+            string txt = i_Body + "\nMove to chat page?";
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             ChatDatabase.ChatDatabase db = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
             checkIfFirstMessageReceived(message, db);
             await db.SaveItemAsync(message, message.FromId);
+
+            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            bool choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
+            if (choice == true)
+            {
+                await navigation.NavigateTo(ShellRoutes.ChatView + $"?user={message.FromId}");
+            }
         }
 
         private async static void checkIfFirstMessageReceived(Message i_Message, ChatDatabase.ChatDatabase i_DB)
@@ -158,21 +179,20 @@ namespace GetSanger.Services
             }
         }
 
-        private async static void handleActivity(string i_Json)
+        private async static void handleActivity(string i_Title, string i_Body, string i_Json)
         {
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
         }
 
-        private async static void handleJobOffer(string i_Json)
+        private async static void handleJobOffer(string i_Title, string i_Body, string i_Json)
         {
-            string title = "New job available!";
-            string message = "Do you want to navigate the the job offer page?";
+            string message = i_Body + "\nDo you want to navigate the the job offer page?";
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             string jobJson = ObjectJsonSerializer.SerializeForPage(job);
-            bool choice = await Application.Current.MainPage.DisplayAlert(title, message, "Yes", "No");
+            bool choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             if (choice == true)
             {
                 await navigation.NavigateTo(ShellRoutes.ViewJobOffer +
