@@ -591,6 +591,8 @@ namespace GetSanger.Services
                 string idToken = await AuthHelper.GetIdTokenAsync();
 
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                AuthHelper.SignOut();
+                
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
