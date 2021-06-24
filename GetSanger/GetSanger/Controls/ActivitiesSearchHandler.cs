@@ -1,5 +1,6 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Models;
+using GetSanger.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,7 +45,8 @@ namespace GetSanger.Controls
 
             ShellNavigationState state = (App.Current.MainPage as Shell).CurrentState;
             // The following route works because route names are unique in this application.
-            await Shell.Current.GoToAsync(ShellRoutes.Activity + $"?activity={(Activity)item}");
+            string json = ObjectJsonSerializer.SerializeForPage((Activity)item);
+            await Shell.Current.GoToAsync(ShellRoutes.Activity + $"?activity={json}");
         }
 
         #endregion

@@ -44,7 +44,7 @@
         <ScrollView>
             <StackLayout>
                 <ListView x:Name="m_ListView" 
-                      ItemsSource="{Binding JobOffersSource}"
+                      ItemsSource="{Binding Collection}"
                       IsRefreshing="{Binding IsListRefreshing}"
                       IsPullToRefreshEnabled="True" 
                       IsVisible="{Binding IsVisibleViewList}"
@@ -63,7 +63,7 @@
                                     <MenuItem Text="Delete" Command="{Binding DeleteMyJobOfferCommand}" CommandParameter="{Binding .}" IsDestructive="True"/>
                                 </ViewCell.ContextActions>
                                 <Frame BorderColor="Black" BackgroundColor="AliceBlue">
-                                    <StackLayout>
+                                    <StackLayout Orientation="Horizontal">
                                         <!--
                                         <Label BackgroundColor="Transparent">
                                             <Label.Text>

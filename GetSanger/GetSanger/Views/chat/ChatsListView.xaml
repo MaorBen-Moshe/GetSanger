@@ -48,10 +48,10 @@
                           Margin="0"
                           RowHeight="55"
                           IsVisible="{Binding IsVisibleViewList}"
-                          ItemsSource="{Binding Users}"
+                          ItemsSource="{Binding Collection}"
                           IsPullToRefreshEnabled="True"
-                          IsRefreshing="{Binding IsRefreshing}"
-                          RefreshCommand = "{Binding RefreshCommand}"
+                          IsRefreshing="{Binding IsListRefreshing}"
+                          RefreshCommand = "{Binding RefreshingCommand}"
                           BackgroundColor="Transparent"
                           HasUnevenRows="True">
                     <ListView.Behaviors>

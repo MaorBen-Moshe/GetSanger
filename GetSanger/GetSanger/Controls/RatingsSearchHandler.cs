@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using GetSanger.Services;
 
 namespace GetSanger.Controls
 {
-    public class JobOffersSearchHandler : SearchHandler
+    public class RatingsSearchHandler : SearchHandler
     {
         #region Properties
-        public IList<JobOffer> JobOffers { get; set; }
+        public IList<Rating> Ratings { get; set; }
         #endregion
 
         #region Methods
@@ -26,9 +25,11 @@ namespace GetSanger.Controls
             }
             else
             {
-                ItemsSource = JobOffers
-                    .Where(job => job.Title.ToLower().Contains(newValue.ToLower()) || job.CategoryName.ToLower().Contains(newValue.ToLower()))
-                    .ToList();
+                ItemsSource = Ratings
+                    .Where(rating =>
+                    rating.RatingWriterName.ToLower().Contains(newValue) ||
+                    rating.Description.ToLower().Contains(newValue)
+                    ).ToList();
             }
         }
 
@@ -41,8 +42,7 @@ namespace GetSanger.Controls
 
             ShellNavigationState state = (App.Current.MainPage as Shell).CurrentState;
             // The following route works because route names are unique in this application.
-            string json = ObjectJsonSerializer.SerializeForPage((JobOffer)item);
-            await Shell.Current.GoToAsync(ShellRoutes.ViewJobOffer + $"?jobOffer={json}");
+            await Shell.Current.GoToAsync($"{ShellRoutes.Profile}?userid={(item as Rating).RatingWriterId}");
         }
 
         #endregion

@@ -11,18 +11,24 @@ using Xamarin.Forms.Xaml;
 namespace GetSanger.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class JobOffersListView : ContentPage
+    public partial class MyRatingsPage : ContentPage
     {
-        public JobOffersListView()
+        public MyRatingsPage()
         {
             InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
-            (BindingContext as JobOffersViewModel).Appearing();
-            searchHandler.JobOffers = (BindingContext as JobOffersViewModel).Collection;
+            (BindingContext as MyRatingsViewModel).Appearing();
+            searchHandler.Ratings = (BindingContext as MyRatingsViewModel).Collection;
             base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as MyRatingsViewModel).Disappearing();
+            base.OnDisappearing();
         }
     }
 }

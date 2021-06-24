@@ -13,6 +13,7 @@ namespace GetSanger.Models
         private string m_RatingWriterId;
         private string m_Description;
         private string m_RatingWriterName;
+        private DateTime m_TimeAdded;
         #endregion
 
         public string RatingId { get; set; }
@@ -46,6 +47,12 @@ namespace GetSanger.Models
         {
             get => m_Description;
             set => SetClassProperty(ref m_Description, value);
+        }
+
+        public DateTime TimeAdded
+        {
+            get => m_TimeAdded;
+            set => SetStructProperty(ref m_TimeAdded, value);
         }
 
         public override bool Equals(object obj)

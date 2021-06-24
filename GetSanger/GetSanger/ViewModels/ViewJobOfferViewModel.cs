@@ -15,14 +15,17 @@ namespace GetSanger.ViewModels
     public class ViewJobOfferViewModel : BaseViewModel
     {
         #region Fields
+
         private JobOffer m_JobOffer;
         private string m_ProfileText;
         private string m_MyLocation;
         private string m_JobLocation;
         private bool m_IsMyJobOffer;
+
         #endregion
 
         #region Properties
+
         public JobOffer Job
         {
             get => m_JobOffer;
@@ -33,7 +36,7 @@ namespace GetSanger.ViewModels
         {
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     Job = ObjectJsonSerializer.DeserializeForPage<JobOffer>(value);
                 }
@@ -63,17 +66,22 @@ namespace GetSanger.ViewModels
             get => m_JobLocation;
             set => SetClassProperty(ref m_JobLocation, value);
         }
+
         #endregion
 
         #region Commands
+
         public ICommand ProfileCommand { get; private set; }
+
         #endregion
 
         #region Constructor
+
         public ViewJobOfferViewModel()
         {
             setCommands();
         }
+
         #endregion
 
         #region Methods
@@ -96,10 +104,19 @@ namespace GetSanger.ViewModels
         {
             r_LoadingService.ShowPopup();
             ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
-            Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
-            Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
-            MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
-            WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
+
+            if (Job.Location != null)
+            {
+                Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
+                MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
+            }
+
+            if (Job.JobLocation != null)
+            {
+                Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
+                WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
+            }
+
             IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
             r_LoadingService.HidePopup();
         }

@@ -9,31 +9,17 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public class ActivitiesListViewModel : BaseViewModel
+    public class ActivitiesListViewModel : ListBaseViewModel<Activity>
     {
         #region Fields
-        private ObservableCollection<Activity> m_ActivitiesSource;
-        private bool m_IsListRefreshing;
         #endregion
 
         #region Properties
-        public ObservableCollection<Activity> ActivitiesSource
-        {
-            get => m_ActivitiesSource;
-            set => SetClassProperty(ref m_ActivitiesSource, value);
-        }
-
-        public bool IsListRefreshing
-        {
-            get => m_IsListRefreshing;
-            set => SetStructProperty(ref m_IsListRefreshing, value);
-        }
         #endregion
 
         #region Commands
         public ICommand ConfirmActivityCommand { get; set; }
         public ICommand RejectActivityCommand { get; set; }
-        public ICommand RefreshingCommand { get; set; }
         public ICommand SelectedActivityCommand { get; set; }
         #endregion
 
@@ -55,7 +41,6 @@ namespace GetSanger.ViewModels
         {
             ConfirmActivityCommand = new Command(confirmActivity);
             RejectActivityCommand = new Command(rejectActivity);
-            RefreshingCommand = new Command(refreshList);
             SelectedActivityCommand = new Command(selectedActivity);
         }
 
@@ -102,7 +87,7 @@ namespace GetSanger.ViewModels
                         break;
                 }
 
-                IsVisibleViewList = ActivitiesSource.Count > 0;
+                IsVisibleViewList = Collection.Count > 0;
             }
         }
 
@@ -120,7 +105,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private void refreshList()
+        protected override void refreshList()
         {
             setActivities();
             IsListRefreshing = false;
@@ -141,8 +126,8 @@ namespace GetSanger.ViewModels
                 activities = activities.Where(activity => activity.Status.Equals(ActivityStatus.Pending) == false).ToList();
             }
 
-            ActivitiesSource = new ObservableCollection<Activity>(activities);
-            IsVisibleViewList = ActivitiesSource.Count > 0;
+            Collection = new ObservableCollection<Activity>(activities);
+            IsVisibleViewList = Collection.Count > 0;
         }
         #endregion
     }

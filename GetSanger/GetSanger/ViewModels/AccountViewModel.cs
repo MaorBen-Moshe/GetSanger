@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -44,6 +43,8 @@ namespace GetSanger.ViewModels
 
         public ICommand LinkSocialCommand { get; set; }
 
+        public ICommand MyRatingsCommand { get; set; }
+
         #endregion
 
         #region Constructor
@@ -67,6 +68,7 @@ namespace GetSanger.ViewModels
             ChangeModeCommand = new Command(changeMode);
             LogoutCommand = new Command(logout);
             LinkSocialCommand = new Command(linkSocial);
+            MyRatingsCommand = new Command(myRatings);
         }
 
         private async void initialPage()
@@ -128,11 +130,22 @@ namespace GetSanger.ViewModels
             }
         }
 
+        private async void myRatings(object i_Param)
+        {
+            await r_NavigationService.NavigateTo(ShellRoutes.MyRatings);
+        }
+
         private async void providerSelected(eSocialProvider i_CurrentProvider)
         {
             try
             {
                 r_LoadingService.ShowPopup();
+                if (i_CurrentProvider.Equals(eSocialProvider.Email))
+                {
+                    await r_NavigationService.NavigateTo(ShellRoutes.LinkEmail);
+                    return;
+                }
+
                 Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
                 string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
 
