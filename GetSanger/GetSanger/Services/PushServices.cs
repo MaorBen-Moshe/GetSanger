@@ -107,37 +107,46 @@ namespace GetSanger.Services
         {  
             if (i_Message != null)
             {
-                Type type = getTypeOfData(i_Message["Type"]);
-                if (type.Equals(typeof(JobOffer)))
+                if (i_Message.ContainsKey("Type"))
                 {
-                    handleJobOffer(i_Title, i_Body, i_Message["Json"]);
-                }
-                else if (type.Equals(typeof(Models.Activity)))
-                {
-                    handleActivity(i_Title, i_Body, i_Message["Json"]);
-                }
-                else if (type.Equals(typeof(Models.chat.Message)))
-                {
-                    handleMessage(i_Title, i_Body, i_Message["Json"]);
-                }
-                else if (type.Equals(typeof(Models.Rating)))
-                {
-                    handleRating(i_Title, i_Body, i_Message["Json"]);
-                }
-                else
-                {
-                    throw new ArgumentException("Type of object received is not allowed");
+
+                    Type type = getTypeOfData(i_Message["Type"]);
+                    if (type.Equals(typeof(JobOffer)))
+                    {
+                        handleJobOffer(i_Title, i_Body, i_Message["Json"]);
+                    }
+                    else if (type.Equals(typeof(Models.Activity)))
+                    {
+                        handleActivity(i_Title, i_Body, i_Message["Json"]);
+                    }
+                    else if (type.Equals(typeof(Models.chat.Message)))
+                    {
+                        handleMessage(i_Title, i_Body, i_Message["Json"]);
+                    }
+                    else if (type.Equals(typeof(Models.Rating)))
+                    {
+                        handleRating(i_Title, i_Body, i_Message["Json"]);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Type of object received is not allowed");
+                    }
+                    
                 }
             }
         }
 
         private async static void handleRating(string i_Title, string i_Body, string i_Json)
         {
+            bool choice = true;
             string message = i_Body + "\nGo to profile page to view your ratings?";
             //Rating rating = ObjectJsonSerializer.DeserializeForServer<Rating>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-           // string ratingJson = ObjectJsonSerializer.SerializeForPage(rating);
-            bool choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+            // string ratingJson = ObjectJsonSerializer.SerializeForPage(rating);
+            if (i_Title != null)
+            {
+                choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+            }
             if (choice == true)
             {
                 await navigation.NavigateTo(ShellRoutes.Profile + $"?userid={AppManager.Instance.ConnectedUser.UserId}");
@@ -146,6 +155,7 @@ namespace GetSanger.Services
 
         private async static void handleMessage(string i_Title, string i_Body, string i_Json)
         {
+            bool choice = true;
             string txt = i_Body + "\nMove to chat page?";
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             ChatDatabase.ChatDatabase db = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
@@ -153,7 +163,10 @@ namespace GetSanger.Services
             await db.SaveItemAsync(message, message.FromId);
 
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            bool choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
+            if (i_Title != null)
+            {
+                choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
+            }
             if (choice == true)
             {
                 await navigation.NavigateTo(ShellRoutes.ChatView + $"?user={message.FromId}");
@@ -181,26 +194,38 @@ namespace GetSanger.Services
 
         private async static void handleActivity(string i_Title, string i_Body, string i_Json)
         {
+            bool choice = true;
+            string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
+            if (i_Title != null)
+            {
+                choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+            }
+            if (choice == true)
+            {
+                await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
+            }
         }
 
         private async static void handleJobOffer(string i_Title, string i_Body, string i_Json)
         {
+            bool choice = true;
             string message = i_Body + "\nDo you want to navigate the the job offer page?";
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             string jobJson = ObjectJsonSerializer.SerializeForPage(job);
-            bool choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+            if (i_Title != null)
+            {
+                choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+            }
             if (choice == true)
             {
-                await navigation.NavigateTo(ShellRoutes.ViewJobOffer +
-                                            $"?jobOffer={jobJson}");
+                await navigation.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={jobJson}");
             }
         }
 
-        private static Type getTypeOfData(string i_Type)
+        public static Type getTypeOfData(string i_Type)
         {
             Type type = null;
             if (i_Type.Equals(typeof(JobOffer).Name.ToString()))

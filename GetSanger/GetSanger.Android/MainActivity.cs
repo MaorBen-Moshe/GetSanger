@@ -13,6 +13,7 @@ using Firebase.Messaging;
 using Plugin.CurrentActivity;
 using Android.Views;
 using GetSanger.Services;
+using GetSanger.Droid.Services;
 
 namespace GetSanger.Droid
 {
@@ -22,7 +23,7 @@ namespace GetSanger.Droid
         internal static readonly string CHANNEL_ID = "notification_channel";
         internal static readonly int NOTIFICATION_ID = 100;
         internal static MainActivity Instance { get; private set; }
-
+        internal PushService m_PushService = new PushService();
         public static readonly int PickImageId = 1000;
 
         public TaskCompletionSource<Stream> PickImageTaskCompletionSource { set; get; }
@@ -40,11 +41,10 @@ namespace GetSanger.Droid
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             ImageCircleRenderer.Init();
             LoadApplication(new App());
-            Services.PushService pushService = new Services.PushService();
-            pushService.PushHelper(Intent, this);
+            m_PushService.PushHelper(Intent, this);
 
             //TEMPORARY
-            FirebaseMessaging.Instance.SubscribeToTopic("Topic");
+            FirebaseMessaging.Instance.SubscribeToTopic("Test");
             
         }
 
@@ -90,6 +90,7 @@ namespace GetSanger.Droid
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
+            m_PushService.PushHelper(intent, Instance);
         }
     }
 }
