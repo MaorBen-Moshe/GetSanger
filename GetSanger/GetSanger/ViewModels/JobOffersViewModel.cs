@@ -9,30 +9,16 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public class JobOffersViewModel : BaseViewModel
+    public class JobOffersViewModel : ListBaseViewModel<JobOffer>
     {
         #region Fields
-        private ObservableCollection<JobOffer> m_JobOffersSource;
-        private bool m_IsListRefreshing;
         #endregion
 
         #region Properties
-        public ObservableCollection<JobOffer> JobOffersSource
-        {
-            get => m_JobOffersSource;
-            set => SetClassProperty(ref m_JobOffersSource, value);
-        }
-
-        public bool IsListRefreshing
-        {
-            get => m_IsListRefreshing;
-            set => SetStructProperty(ref m_IsListRefreshing, value);
-        }
         #endregion
 
         #region Commands
         public ICommand ConfirmJobOfferCommand { get; set; }
-        public ICommand RefreshingCommand { get; set; }
         public ICommand SelectedJobOfferCommand { get; set; }
         public ICommand DeleteMyJobOfferCommand { get; set; }
         #endregion
@@ -54,7 +40,6 @@ namespace GetSanger.ViewModels
         private void setCommands()
         {
             ConfirmJobOfferCommand = new Command(confirmJobOffer);
-            RefreshingCommand = new Command(refreshList);
             SelectedJobOfferCommand = new Command(selectedJobOffer);
             DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
         }
@@ -78,14 +63,14 @@ namespace GetSanger.ViewModels
                 {
                     JobOffer job = i_Param as JobOffer;
                     AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
-                    JobOffersSource.Remove(job);
-                    IsVisibleViewList = JobOffersSource.Count > 0;
+                    Collection.Remove(job);
+                    IsVisibleViewList = Collection.Count > 0;
                     await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId)); 
                 }
             }
         }
 
-        private void refreshList()
+        protected override void refreshList()
         {
             setJobOffers();
             IsListRefreshing = false;
@@ -115,8 +100,8 @@ namespace GetSanger.ViewModels
                     break;
             }
 
-            JobOffersSource = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
-            IsVisibleViewList = JobOffersSource.Count > 0;
+            Collection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
+            IsVisibleViewList = Collection.Count > 0;
         }
         #endregion
     }

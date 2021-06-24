@@ -2,13 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
-             xmlns:behaviors ="clr-namespace:GetSanger.Behaviors"
-             xmlns:converters="clr-namespace:GetSanger.Converters"
              xmlns:controls="clr-namespace:GetSanger.Controls"
-             x:Class="GetSanger.Views.ActivitiesListPage">
-    
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             xmlns:converters="clr-namespace:GetSanger.Converters"
+             x:Class="GetSanger.Views.MyRatingsPage">
+
     <ContentPage.BindingContext>
-        <vm:ActivitiesListViewModel />
+        <vm:MyRatingsViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
@@ -19,31 +19,25 @@
     </ContentPage.Resources>
 
     <Shell.SearchHandler>
-        <controls:ActivitiesSearchHandler Placeholder="Search activity..."
+        <controls:RatingsSearchHandler Placeholder="Search Rating..."
                                     ShowsResults="True"
                                     SearchBoxVisibility="Collapsible"
                                     x:Name="searchHandler">
-            <controls:ActivitiesSearchHandler.ItemTemplate>
+            <controls:RatingsSearchHandler.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="10"
-                          ColumnDefinitions="0.15*,0.85*">
-                        <!--<Image Source="{Binding}"
-                               HeightRequest="40"
-                               WidthRequest="40" />-->
+                    <Grid Padding="10" VerticalOptions="Center">
                         <Label Grid.Column="1"
-                               Text="{Binding Title}"
-                               FontAttributes="Bold"
-                               VerticalOptions="Center" />
+                               Text="{Binding RatingWriterName}"/>
+                        <controls:RatingStars Rating="{Binding Score}" Review="{Binding Description}"/>
                     </Grid>
                 </DataTemplate>
-            </controls:ActivitiesSearchHandler.ItemTemplate>
-        </controls:ActivitiesSearchHandler>
+            </controls:RatingsSearchHandler.ItemTemplate>
+        </controls:RatingsSearchHandler>
     </Shell.SearchHandler>
 
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                
                 <ListView x:Name="m_ListView" 
                       ItemsSource="{Binding Collection}"
                       IsRefreshing="{Binding IsListRefreshing}"
@@ -52,28 +46,25 @@
                       RefreshCommand="{Binding RefreshingCommand}"
                       HasUnevenRows="true">
                     <ListView.Behaviors>
-                        <behaviors:EventToCommandBehavior Command="{Binding SelectedActivityCommand}" 
+                        <behaviors:EventToCommandBehavior Command="{Binding SelectedRatingCommand}" 
                                                           EventName="ItemSelected"
                                                           Converter="{StaticResource SelectedItemConverter}"/>
                     </ListView.Behaviors>
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <ViewCell.ContextActions>
-                                    <MenuItem Text="Confirm" Command="{Binding ConfirmActivityCommand}" CommandParameter="{Binding .}" />
-                                    <MenuItem Text="Reject" Command="{Binding RejectActivityCommand}" CommandParameter="{Binding .}" IsDestructive="True"/>
-                                </ViewCell.ContextActions>
-                                <StackLayout>
-                                    <Image />
-                                    <Label Text="{Binding Title}"/>
-                                    <Label Text="{Binding JobOffer.Description}" />
-                                </StackLayout>
+                                <Frame BorderColor="Black" BackgroundColor="AliceBlue">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding RatingWriterName}" FontAttributes="Bold" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"/>
+                                        <controls:RatingStars Rating="{Binding Score}" Review="{Binding Description}" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"/>
+                                    </StackLayout>
+                                </Frame>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsInListTemplate Text="No Activities" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}" />
+                <controls:NoItemsInListTemplate Text="No Ratings" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

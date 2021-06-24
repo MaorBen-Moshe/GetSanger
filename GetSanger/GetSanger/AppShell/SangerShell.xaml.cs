@@ -35,6 +35,7 @@ namespace GetSanger.AppShell
             r_Routes.Add(ShellRoutes.AddRating, typeof(AddRatingPage));
             r_Routes.Add(ShellRoutes.SangerNotes, typeof(SangerNotesView));
             r_Routes.Add(ShellRoutes.LinkEmail, typeof(LinkEmailPage));
+            r_Routes.Add(ShellRoutes.MyRatings, typeof(MyRatingsPage));
 
             foreach (var route in r_Routes)
             {

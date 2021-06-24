@@ -10,25 +10,16 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels.chat
 {
-    public class ChatListViewModel : BaseViewModel
+    public class ChatListViewModel : ListBaseViewModel<ChatUser>
     {
         #region Fields
-        private bool m_IsRefreshing;
         #endregion
 
         #region Properties
-        public ObservableCollection<ChatUser> Users { get; set; }
-
-        public bool IsRefreshing
-        {
-            get => m_IsRefreshing;
-            set => SetStructProperty(ref m_IsRefreshing, value);
-        }
         #endregion
 
         #region Commands
         public ICommand UserSelectedCommand { get; set; }
-        public ICommand RefreshCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -47,13 +38,12 @@ namespace GetSanger.ViewModels.chat
         private void setCommands()
         {
             UserSelectedCommand = new Command(userSelected);
-            RefreshCommand = new Command(refresh);
         }
 
-        private void refresh()
+        protected override void refreshList()
         {
             setUsers();
-            IsRefreshing = false;
+            IsListRefreshing = false;
         }
 
         private async void userSelected(object i_Param)
@@ -66,8 +56,8 @@ namespace GetSanger.ViewModels.chat
         {
             ChatDatabase.ChatDatabase database = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
             List<ChatUser> users = await database.GetChatUsers();
-            Users = new ObservableCollection<ChatUser>(users?.OrderBy(user => user.LastMessage));
-            IsVisibleViewList = Users.Count > 0;
+            Collection = new ObservableCollection<ChatUser>(users?.OrderBy(user => user.LastMessage));
+            IsVisibleViewList = Collection.Count > 0;
         }
         #endregion
     }

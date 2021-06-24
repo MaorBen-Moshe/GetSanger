@@ -54,5 +54,7 @@
         public const string ChatView = "chat";
 
         public const string LinkEmail = "linkEmail";
+
+        public const string MyRatings = "myRatings";
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Models.chat;
+using GetSanger.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,7 +41,8 @@ namespace GetSanger.Controls
 
             ShellNavigationState state = (App.Current.MainPage as Shell).CurrentState;
             // The following route works because route names are unique in this application.
-            await Shell.Current.GoToAsync(ShellRoutes.ChatView + $"?userTo={((ChatUser)item).User}");
+            string json = ObjectJsonSerializer.SerializeForPage(((ChatUser)item).User);
+            await Shell.Current.GoToAsync(ShellRoutes.ChatView + $"?user={json}");
         }
 
         #endregion
