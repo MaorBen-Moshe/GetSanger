@@ -63,7 +63,7 @@ namespace GetSanger.Services
 
             if (photoUrl != null)
             {
-                await m_PhotoHelper.TryGetPictureFromUri(photoUrl, user);
+                user.ProfilePictureUri = new Uri(photoUrl);
             }
 
             return user;

@@ -6,7 +6,9 @@
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
              x:Class="GetSanger.Views.chat.ChatView"
              x:Name="chatView"
-             Title="{Binding UserToChat.PersonalDetails.NickName}">
+             BackgroundColor="AliceBlue"
+             Shell.NavBarHasShadow="False">
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <controls:ChatTemplateSelector x:Key="MessageTemplateSelector"/>
@@ -17,25 +19,44 @@
         <vm:ChatPageViewModel />
     </ContentPage.BindingContext>
 
+
+    <Shell.TitleView>
+        <StackLayout Orientation="Horizontal" BackgroundColor="AliceBlue">
+            <controls:RoundedImage ImageSource="{Binding UserPicture}" 
+                                   ImageWidth="36"
+                                   ImageHeight="36"
+                                   Margin="10"
+                                   HorizontalOptions="StartAndExpand"/>
+            <Label Text="{Binding UserToChat.PersonalDetails.NickName}" 
+                   HorizontalOptions="CenterAndExpand" 
+                   Margin="10"/>
+            <ImageButton Source="whatsapp.png"
+                         BackgroundColor="Transparent" 
+                         HorizontalOptions="EndAndExpand"
+                         WidthRequest="20"
+                         HeightRequest="20"
+                         Margin="10, 0, 0, 0"
+                         Command="{Binding SendWhatsappCommand}"/>
+            <ImageButton Source="phone.png"
+                         BackgroundColor="Transparent" 
+                         HorizontalOptions="EndAndExpand"
+                         WidthRequest="20"
+                         HeightRequest="20"
+                         Margin="0,0,10,0"
+                         Command="{Binding CallCommand}"/>
+        </StackLayout>
+    </Shell.TitleView>
+
     <ContentPage.Content>
         <Grid RowSpacing="0" 
            ColumnSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.15*" />
-                <RowDefinition Height="0.75*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="1" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <StackLayout Orientation="Horizontal" Padding="20">
-                <Image Source="{Binding UserPicture}" WidthRequest="36" HeightRequest="36"/>
-                <Label Text="{Binding UserToChat.PersonalDetails.NickName}" HorizontalOptions="CenterAndExpand"/>
-                <Label Text="Send Whatsapp" BackgroundColor="Transparent" HorizontalOptions="EndAndExpand">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SendWhatsappCommand}">
-                        </TapGestureRecognizer>
-                    </Label.GestureRecognizers>
-                </Label>
-            </StackLayout>
-            <controls:ExtendedListView Grid.Row="1" 
+            
+            <controls:ExtendedListView Grid.Row="0" 
                  ItemTemplate="{StaticResource MessageTemplateSelector}" 
                  ItemsSource="{Binding MessagesSource}" 
                  ItemAppearingCommand="{Binding MessageAppearingCommand}"

@@ -83,6 +83,7 @@ namespace GetSanger.ViewModels.chat
         public ICommand MessageDisappearingCommand { get; set; }
         public ICommand DeleteMessageCommand { get; set; }
         public ICommand SendWhatsappCommand { get; set; }
+        public ICommand CallCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -119,6 +120,7 @@ namespace GetSanger.ViewModels.chat
             MessageDisappearingCommand = new Command(messageDisappearing);
             DeleteMessageCommand = new Command(deleteMessage);
             SendWhatsappCommand = new Command(sendWhatsapp);
+            CallCommand = new Command(call);
         }
 
         private async void sendMessage(object i_Param)
@@ -228,7 +230,6 @@ namespace GetSanger.ViewModels.chat
 
         private async void sendWhatsapp(object i_Param)
         {
-            // this code can be in the chat page instead of here !!!
             if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
             {
                 r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
@@ -238,6 +239,18 @@ namespace GetSanger.ViewModels.chat
                     r_DialService.SendDefAppMsg();
                 }
 
+                return;
+            }
+            
+            await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+        }
+
+        private async void call(object i_Param)
+        {
+            if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
+            {
+                r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
+                r_DialService.Call();
                 return;
             }
 
