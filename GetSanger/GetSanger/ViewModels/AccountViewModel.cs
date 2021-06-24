@@ -133,6 +133,12 @@ namespace GetSanger.ViewModels
             try
             {
                 r_LoadingService.ShowPopup();
+                if (i_CurrentProvider.Equals(eSocialProvider.Email))
+                {
+                    await r_NavigationService.NavigateTo(ShellRoutes.LinkEmail);
+                    return;
+                }
+
                 Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
                 string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
 

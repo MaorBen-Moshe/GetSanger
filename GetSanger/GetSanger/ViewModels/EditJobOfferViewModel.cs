@@ -131,6 +131,7 @@ namespace GetSanger.ViewModels
             {
                 Location location = await r_LocationServices.GetCurrentLocation();
                 MyPlaceMark ??= await r_LocationServices.PickedLocation(location);
+                JobPlaceMark ??= MyPlaceMark;
             }
             catch (PermissionException)
             {

@@ -52,5 +52,7 @@
         public const string ChatsList = "chatsList";
 
         public const string ChatView = "chat";
+
+        public const string LinkEmail = "linkEmail";
     }
 }
