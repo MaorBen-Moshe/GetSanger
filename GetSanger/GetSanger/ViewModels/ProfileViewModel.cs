@@ -159,24 +159,8 @@ namespace GetSanger.ViewModels
 
         private async void sendMessageToUser(object i_Param)
         {
-            // navigate to app chat
-            //ShellPassComplexDataService<User>.ComplexObject = CurrentUser;
-            //await r_NavigationService.NavigateTo(ShellRoutes.ChatView);
-
-            // this code can be in the chat page instead of here
-            if (r_DialService.IsValidPhone(CurrentUser.PersonalDetails.Phone))
-            {
-                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
-                bool succeeded = await r_DialService.SendWhatsapp();
-                if (!succeeded)
-                {
-                    r_DialService.SendDefAppMsg();
-                }
-
-                return;
-            }
-
-            await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+            string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
+            await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
         }
 
         private async void reportUser(object i_Param)

@@ -1,5 +1,6 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Views;
+using GetSanger.Views.chat;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -36,6 +37,7 @@ namespace GetSanger.AppShell
             r_Routes.Add(ShellRoutes.SangerNotes, typeof(SangerNotesView));
             r_Routes.Add(ShellRoutes.LinkEmail, typeof(LinkEmailPage));
             r_Routes.Add(ShellRoutes.MyRatings, typeof(MyRatingsPage));
+            r_Routes.Add(ShellRoutes.ChatView, typeof(ChatView));
 
             foreach (var route in r_Routes)
             {

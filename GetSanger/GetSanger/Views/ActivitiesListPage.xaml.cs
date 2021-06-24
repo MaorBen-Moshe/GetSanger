@@ -21,7 +21,6 @@ namespace GetSanger.Views
         protected override void OnAppearing()
         {
             (BindingContext as BaseViewModel).Appearing();
-            searchHandler.Activities = (BindingContext as ActivitiesListViewModel).Collection;
             base.OnAppearing();
         }
     }

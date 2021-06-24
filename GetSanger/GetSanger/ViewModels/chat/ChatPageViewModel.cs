@@ -20,6 +20,7 @@ namespace GetSanger.ViewModels.chat
         private bool m_ShowScrollTap;
         private bool m_LastMessageVisible;
         private ObservableCollection<Message> m_MessagesSource;
+        private ImageSource m_UserPicture;
         #endregion
 
         #region Properties
@@ -41,6 +42,12 @@ namespace GetSanger.ViewModels.chat
             {
                 UserToChat = ObjectJsonSerializer.DeserializeForPage<User>(value);
             }
+        }
+
+        public ImageSource UserPicture
+        {
+            get => m_UserPicture;
+            set => SetClassProperty(ref m_UserPicture, value);
         }
 
         public bool ShowScrollTap
@@ -75,6 +82,7 @@ namespace GetSanger.ViewModels.chat
         public ICommand MessageAppearingCommand { get; set; }
         public ICommand MessageDisappearingCommand { get; set; }
         public ICommand DeleteMessageCommand { get; set; }
+        public ICommand SendWhatsappCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -87,6 +95,7 @@ namespace GetSanger.ViewModels.chat
         #region Methods
         public async override void Appearing()
         {
+            UserPicture = r_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
             DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);
@@ -109,6 +118,7 @@ namespace GetSanger.ViewModels.chat
             MessageAppearingCommand = new Command(messageAppearing);
             MessageDisappearingCommand = new Command(messageDisappearing);
             DeleteMessageCommand = new Command(deleteMessage);
+            SendWhatsappCommand = new Command(sendWhatsapp);
         }
 
         private async void sendMessage(object i_Param)
@@ -214,6 +224,24 @@ namespace GetSanger.ViewModels.chat
                 });
 
             }
+        }
+
+        private async void sendWhatsapp(object i_Param)
+        {
+            // this code can be in the chat page instead of here !!!
+            if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
+            {
+                r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
+                bool succeeded = await r_DialService.SendWhatsapp();
+                if (!succeeded)
+                {
+                    r_DialService.SendDefAppMsg();
+                }
+
+                return;
+            }
+
+            await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
         }
         #endregion
     }

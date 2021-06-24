@@ -8,10 +8,9 @@ using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
-    public class ChatSearchHandler : SearchHandler
+    public class ChatSearchHandler : BaseSearchHandler<ChatUser>
     {
         #region Properties
-        public IList<ChatUser> Users { get; set; }
         #endregion
 
         #region Methods
@@ -26,7 +25,7 @@ namespace GetSanger.Controls
             }
             else
             {
-                ItemsSource = Users
+                ItemsSource = Source
                     .Where(user => user.User.PersonalDetails.NickName.ToLower().Contains(newValue.ToLower()))
                     .ToList();
             }

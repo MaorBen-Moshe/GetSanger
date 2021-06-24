@@ -21,11 +21,21 @@
         <Grid RowSpacing="0" 
            ColumnSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="1" />
+                <RowDefinition Height="0.15*" />
+                <RowDefinition Height="0.75*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <controls:ExtendedListView Grid.Row="0" 
+            <StackLayout Orientation="Horizontal" Padding="20">
+                <Image Source="{Binding UserPicture}" WidthRequest="36" HeightRequest="36"/>
+                <Label Text="{Binding UserToChat.PersonalDetails.NickName}" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="Send Whatsapp" BackgroundColor="Transparent" HorizontalOptions="EndAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SendWhatsappCommand}">
+                        </TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            <controls:ExtendedListView Grid.Row="1" 
                  ItemTemplate="{StaticResource MessageTemplateSelector}" 
                  ItemsSource="{Binding MessagesSource}" 
                  ItemAppearingCommand="{Binding MessageAppearingCommand}"

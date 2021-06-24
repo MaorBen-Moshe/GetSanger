@@ -10,6 +10,7 @@ namespace GetSanger.ViewModels
         private bool m_IsListRefreshing;
         private bool m_IsVisibleEmptyListLabel;
         private ObservableCollection<T> m_Collection;
+        private ObservableCollection<T> m_SearchCollection;
         #endregion
 
         #region Properties
@@ -29,6 +30,12 @@ namespace GetSanger.ViewModels
         {
             get => m_Collection;
             set => SetClassProperty(ref m_Collection, value);
+        }
+
+        public ObservableCollection<T> SearchCollection
+        {
+            get => m_SearchCollection;
+            set => SetClassProperty(ref m_SearchCollection, value);
         }
         #endregion
 

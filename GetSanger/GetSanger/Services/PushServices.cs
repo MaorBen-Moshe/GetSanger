@@ -133,14 +133,14 @@ namespace GetSanger.Services
 
         private async static void handleRating(string i_Title, string i_Body, string i_Json)
         {
-            string message = i_Body + "\nGo to profile page to view your ratings?";
+            string message = i_Body + "\nGo to ratings page to view your ratings?";
             //Rating rating = ObjectJsonSerializer.DeserializeForServer<Rating>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
            // string ratingJson = ObjectJsonSerializer.SerializeForPage(rating);
             bool choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             if (choice == true)
             {
-                await navigation.NavigateTo(ShellRoutes.Profile + $"?userid={AppManager.Instance.ConnectedUser.UserId}");
+                await navigation.NavigateTo(ShellRoutes.MyRatings);
             }
         }
 

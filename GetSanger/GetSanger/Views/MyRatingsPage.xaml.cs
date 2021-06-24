@@ -21,7 +21,6 @@ namespace GetSanger.Views
         protected override void OnAppearing()
         {
             (BindingContext as MyRatingsViewModel).Appearing();
-            searchHandler.Ratings = (BindingContext as MyRatingsViewModel).Collection;
             base.OnAppearing();
         }
 

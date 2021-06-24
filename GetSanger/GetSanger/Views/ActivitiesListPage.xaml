@@ -22,7 +22,7 @@
         <controls:ActivitiesSearchHandler Placeholder="Search activity..."
                                     ShowsResults="True"
                                     SearchBoxVisibility="Collapsible"
-                                    x:Name="searchHandler">
+                                    Source="{Binding SearchCollection}">
             <controls:ActivitiesSearchHandler.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"
