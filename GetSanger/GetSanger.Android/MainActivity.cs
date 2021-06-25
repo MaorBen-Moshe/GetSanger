@@ -17,7 +17,7 @@ using GetSanger.Droid.Services;
 
 namespace GetSanger.Droid
 {
-    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         internal static readonly string CHANNEL_ID = "notification_channel";
@@ -61,6 +61,7 @@ namespace GetSanger.Droid
         protected override void OnResume()
         {
             base.OnResume();
+            Instance = this;
         }
 
         protected override void OnPause()
@@ -112,5 +113,6 @@ namespace GetSanger.Droid
             base.OnNewIntent(intent);
             m_PushService.PushHelper(intent, Instance);
         }
+
     }
 }

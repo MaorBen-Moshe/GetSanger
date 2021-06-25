@@ -44,6 +44,7 @@ namespace GetSanger.Droid.Services
         internal void PushHelper(Intent intent,
             MainActivity invoker)
         {
+
             if (intent.Extras != null)
             {
                 string json = null;
@@ -64,9 +65,7 @@ namespace GetSanger.Droid.Services
                 Dictionary<string, string> dict = new Dictionary<string, string>();
                 dict["Json"] = json;
                 dict["Type"] = type;
-
-                GetSanger.Services.PushServices.handleMessageReceived(null, null, dict);
-
+                PushServices.handleMessageReceived(null, null, dict);
             }
 
             if (!IsPlayServicesAvailable(invoker))
@@ -79,7 +78,7 @@ namespace GetSanger.Droid.Services
             CreateNotificationChannel();
         }
 
-        public bool IsPlayServicesAvailable(MainActivity Invoker)
+        public static bool IsPlayServicesAvailable(MainActivity Invoker)
         {
             int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Invoker);
             if (resultCode != ConnectionResult.Success)
@@ -96,7 +95,7 @@ namespace GetSanger.Droid.Services
             }
         }
 
-        void CreateNotificationChannel()
+        public static void CreateNotificationChannel()
         {
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)
             {

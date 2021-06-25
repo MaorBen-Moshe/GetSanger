@@ -119,7 +119,12 @@ namespace GetSanger.Services
                         }
                         else if (type.Equals(typeof(Models.Activity)))
                         {
-                            handleActivity(i_Title, i_Body, i_Message["Json"]);
+                            int mode;
+                            if(i_Message.ContainsKey("Mode"))
+                            {
+                                mode = (int)Enum.Parse(typeof(AppMode), i_Message["Mode"]);
+                            }
+                            handleActivity(i_Title, i_Body, i_Message["Json"], mode);
                         }
                         else if (type.Equals(typeof(Models.chat.Message)))
                         {
@@ -195,9 +200,10 @@ namespace GetSanger.Services
             }
         }
 
-        private async static void handleActivity(string i_Title, string i_Body, string i_Json)
+        private async static void handleActivity(string i_Title, string i_Body, string i_Json, int i_Mode)
         {
             bool choice = true;
+            AppMode mode = (AppMode)i_Mode;
             string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
@@ -207,6 +213,17 @@ namespace GetSanger.Services
             }
             if (choice == true)
             {
+                AppManager.Instance.CurrentMode = mode;
+                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                switch(mode)
+                {
+                    case AppMode.Sanger:
+                        Application.Current.MainPage = new GetSanger.AppShell.SangerShell();
+                        break;
+                    case AppMode.Client:
+                        Application.Current.MainPage = new GetSanger.AppShell.UserShell();
+                        break;
+                }
                 await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
             }
         }
@@ -224,6 +241,9 @@ namespace GetSanger.Services
             }
             if (choice == true)
             {
+                AppManager.Instance.CurrentMode = AppMode.Sanger;
+                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                Application.Current.MainPage = new GetSanger.AppShell.SangerShell();
                 await navigation.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={jobJson}");
             }
         }
