@@ -119,7 +119,7 @@ namespace GetSanger.Services
                         }
                         else if (type.Equals(typeof(Models.Activity)))
                         {
-                            int mode;
+                            int mode = -1; // if Mode not set in dictionary, then do not change mode
                             if(i_Message.ContainsKey("Mode"))
                             {
                                 mode = (int)Enum.Parse(typeof(AppMode), i_Message["Mode"]);
