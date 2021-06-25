@@ -3,7 +3,6 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using Android.Gms.Common;
-using ImageCircle.Forms.Plugin.Droid;
 using System.Threading.Tasks;
 using System.IO;
 using Android.Content;
@@ -36,9 +35,9 @@ namespace GetSanger.Droid
             Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
-            ImageCircleRenderer.Init();
             LoadApplication(new App());
             Services.PushService pushService = new Services.PushService();
             pushService.PushHelper(Intent, this);

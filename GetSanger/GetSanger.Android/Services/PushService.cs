@@ -13,7 +13,6 @@ using Xamarin.Forms;
 using GetSanger.Droid.Services;
 using Android.Gms.Common;
 using Android.Content.PM;
-using ImageCircle.Forms.Plugin.Droid;
 using System.Threading.Tasks;
 using System.IO;
 using Android.Gms.Extensions;

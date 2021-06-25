@@ -1,13 +1,22 @@
-﻿using System.Windows.Input;
+﻿using FFImageLoading;
+using FFImageLoading.Cache;
+using FFImageLoading.Forms;
+using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
     public class RoundedImage : StackLayout
     {
+        #region Fields
         private Frame m_Frame;
-        private Image m_Image;
+        private CachedImage m_CachedImage;
+        //private Image m_Image;
+        #endregion
 
+        #region Properties
         public ICommand Command
         {
             get => (ICommand)GetValue(CommandProperty);
@@ -69,10 +78,33 @@ namespace GetSanger.Controls
                                                          validateValue: null,
                                                          propertyChanged: imagePropertyChanged);
 
+        public bool IsCacheEnable
+        {
+            get => (bool)GetValue(IsCacheEnableProperty);
+            set => SetValue(IsCacheEnableProperty, value);
+        }
+
+        public static readonly BindableProperty IsCacheEnableProperty = BindableProperty.Create(
+                                                                propertyName:"IsCacheEnable",
+                                                                returnType: typeof(bool),
+                                                                declaringType: typeof(RoundedImage),
+                                                                defaultValue: true,
+                                                                defaultBindingMode: BindingMode.OneWay,
+                                                                validateValue: null,
+                                                                propertyChanged: cachePropertyChanged);
+
+        #endregion
+
+        #region Constructor
+
         public RoundedImage()
         {
             setView();
         }
+
+        #endregion
+
+        #region Methods
 
         private void setView()
         {
@@ -87,18 +119,21 @@ namespace GetSanger.Controls
                 HasShadow = false,
                 BorderColor = Color.Transparent,
                 HorizontalOptions = LayoutOptions.Center,
-                Content = m_Image = new Image
+                Content = m_CachedImage = new CachedImage
                 {
                     WidthRequest = Radius,
                     HeightRequest = Radius,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
-                    Aspect = Aspect.AspectFill
+                    Aspect = Aspect.AspectFill,
+                    FadeAnimationEnabled = true,
+                    BitmapOptimizations = true
                 }
             };
 
+            setCache();
             setImage(this, ImageSource);
-            m_Image.GestureRecognizers.Add(new TapGestureRecognizer
+            m_CachedImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = Command,
                 CommandParameter = CommandParameter
@@ -117,9 +152,14 @@ namespace GetSanger.Controls
             setImage(thisInstance, newImageSource);
         }
 
-        private static void setImage(RoundedImage bindable, ImageSource i_NewSource)
+        private async static void setImage(RoundedImage bindable, ImageSource i_NewSource)
         {
-            (bindable.m_Frame.Content as Image).Source = i_NewSource;
+            if (!bindable.IsCacheEnable)
+            {
+                await ImageService.Instance.InvalidateCacheAsync(CacheType.All);
+            }
+
+            bindable.m_CachedImage.Source = i_NewSource;
         }
 
         private static void CommandPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
@@ -144,9 +184,8 @@ namespace GetSanger.Controls
 
         private void setComanndAndParam(ICommand i_Command, object i_Param)
         {
-            var image = m_Frame.Content as Image;
-            image.GestureRecognizers.Clear();
-            image.GestureRecognizers.Add(new TapGestureRecognizer
+            m_CachedImage.GestureRecognizers.Clear();
+            m_CachedImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = i_Command,
                 CommandParameter = i_Param
@@ -162,5 +201,31 @@ namespace GetSanger.Controls
 
             thisInstance.setView();
         }
+
+        private static void cachePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
+        {
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is bool val))
+            {
+                return;
+            }
+
+            thisInstance.setView();
+        }
+
+        private void setCache()
+        {
+            if (IsCacheEnable)
+            {
+                m_CachedImage.CacheType = CacheType.All;
+                m_CachedImage.CacheDuration = new TimeSpan(1, 0, 0, 0);
+            }
+            else
+            {
+                m_CachedImage.CacheType = CacheType.Memory;
+                m_CachedImage.CacheDuration = new TimeSpan(0);
+            }
+        }
+
+        #endregion
     }
 }
