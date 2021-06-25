@@ -28,7 +28,7 @@
                     <ViewCell>
                         <controls:RoundedImage ImageSource="{Binding ProfileImage}" 
                                      Command="{Binding ImageChosenCommand}"
-                                     Radius="200"
+                                     Radius="100"
                                      BackgroundColor="Transparent"
                                      HorizontalOptions="Center"/>
                     </ViewCell>

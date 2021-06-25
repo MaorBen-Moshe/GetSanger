@@ -34,8 +34,7 @@
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center">
 
-            <controls:RoundedImage ImageSource="{Binding PersonalImage}"
-                                   Radius="64"/>
+            <controls:RoundedImage ImageSource="{Binding PersonalImage}" Radius="100"/>
             <Button Text="Upload Photo" 
                     CornerRadius="20" 
                     Margin="100,20, 100, 20" 

@@ -86,15 +86,15 @@ namespace GetSanger.Controls
                 IsClippedToBounds = true,
                 HasShadow = false,
                 BorderColor = Color.Transparent,
-                HorizontalOptions = LayoutOptions.Center
-            };
-
-            m_Image = new Image
-            {
-                WidthRequest = Radius,
-                HeightRequest = Radius,
                 HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center
+                Content = m_Image = new Image
+                {
+                    WidthRequest = Radius,
+                    HeightRequest = Radius,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    Aspect = Aspect.AspectFill
+                }
             };
 
             setImage(this, ImageSource);
@@ -104,7 +104,6 @@ namespace GetSanger.Controls
                 CommandParameter = CommandParameter
             });
 
-            m_Frame.Content = m_Image;
             Children.Add(m_Frame);
         }
 

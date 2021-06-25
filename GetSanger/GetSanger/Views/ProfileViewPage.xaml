@@ -15,7 +15,7 @@
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"/>
             <controls:RoundedImage ImageSource="{Binding UserImage}"
-                                   Radius="64" />
+                                   Radius="100" />
             <!--User average rating-->
             <StackLayout HorizontalOptions="Center">
                 <controls:RatingStars Rating="{Binding AverageRating}"

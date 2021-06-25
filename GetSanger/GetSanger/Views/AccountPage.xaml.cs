@@ -17,7 +17,6 @@ namespace GetSanger.Views
         public AccountPage()
         {
             InitializeComponent();
-           
         }
 
         protected override void OnAppearing()
