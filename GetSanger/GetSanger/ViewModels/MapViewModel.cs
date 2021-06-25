@@ -67,6 +67,8 @@ namespace GetSanger.ViewModels
 
         public ICommand CallTripCommand { get; private set; }
 
+        public ICommand ExitCommand { get; set; }
+
         #endregion
 
         #region Constructor
@@ -111,6 +113,7 @@ namespace GetSanger.ViewModels
             MapClicked = new Command(mapClickedHelper);
             PinClicked = new Command(pinClickedHelper);
             CallTripCommand = new Command(callTripHelper);
+            ExitCommand = new Command(exit);
         }
 
         private void mapClickedHelper(object i_Args)
@@ -173,6 +176,11 @@ namespace GetSanger.ViewModels
                     Span = new MapSpan(position, 0.01, 0.01);
                 }
             }
+        }
+
+        private async void exit(object i_Param)
+        {
+            await GoBack();
         }
 
         private void cancelation()

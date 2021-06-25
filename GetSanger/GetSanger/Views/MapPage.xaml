@@ -4,7 +4,8 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converter="clr-namespace:GetSanger.Converters"
-             x:Class="GetSanger.Views.MapPage">
+             x:Class="GetSanger.Views.MapPage"
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -57,11 +58,30 @@
             <Button Text="Call" 
                     BackgroundColor="White"
                     IsVisible="{Binding IsTrip}"
-                    VerticalOptions="End"
-                    HorizontalOptions="Center"
+                    VerticalOptions="EndAndExpand"
+                    HorizontalOptions="CenterAndExpand"
                     CornerRadius="20"
-                    Padding="0, 0, 0, 20"
+                    Padding="0, 10"
+                    Margin="70"
                     Command="{Binding CallTripCommand}"/>
+            <Frame BackgroundColor="Transparent"
+                   VerticalOptions="EndAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   BorderColor="Black"
+                   HasShadow="True"
+                   Padding="10,5"
+                   Margin="10">
+
+                <Label Text="Exit" 
+                       TextColor="Red"
+                       FontSize="Large"
+                       BackgroundColor="Transparent">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ExitCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Frame>
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>
