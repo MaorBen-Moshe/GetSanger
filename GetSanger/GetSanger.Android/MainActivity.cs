@@ -13,6 +13,7 @@ using Firebase.Messaging;
 using Plugin.CurrentActivity;
 using Android.Views;
 using GetSanger.Services;
+using GetSanger.Droid.Services;
 
 namespace GetSanger.Droid
 {
@@ -22,7 +23,7 @@ namespace GetSanger.Droid
         internal static readonly string CHANNEL_ID = "notification_channel";
         internal static readonly int NOTIFICATION_ID = 100;
         internal static MainActivity Instance { get; private set; }
-
+        internal PushService m_PushService = new PushService();
         public static readonly int PickImageId = 1000;
 
         public TaskCompletionSource<Stream> PickImageTaskCompletionSource { set; get; }
@@ -32,20 +33,24 @@ namespace GetSanger.Droid
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-            base.OnCreate(savedInstanceState);
+            
             Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             ImageCircleRenderer.Init();
-            LoadApplication(new App());
-            Services.PushService pushService = new Services.PushService();
-            pushService.PushHelper(Intent, this);
+            
+            
 
             //TEMPORARY
-            FirebaseMessaging.Instance.SubscribeToTopic("Topic");
-            
+            FirebaseMessaging.Instance.SubscribeToTopic("Test");
+
+
+
+            base.OnCreate(savedInstanceState);
+            LoadApplication(new App());
+            m_PushService.PushHelper(Intent, this);
         }
 
         protected override void OnStart()
@@ -53,10 +58,25 @@ namespace GetSanger.Droid
             base.OnStart();
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+        }
+
         protected override void OnPause()
         {
             base.OnPause();
             Instance = this;
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -90,6 +110,7 @@ namespace GetSanger.Droid
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
+            m_PushService.PushHelper(intent, Instance);
         }
     }
 }
