@@ -8,10 +8,9 @@ using GetSanger.Services;
 
 namespace GetSanger.Controls
 {
-    public class JobOffersSearchHandler : SearchHandler
+    public class JobOffersSearchHandler : BaseSearchHandler<JobOffer>
     {
         #region Properties
-        public IList<JobOffer> JobOffers { get; set; }
         #endregion
 
         #region Methods
@@ -26,7 +25,7 @@ namespace GetSanger.Controls
             }
             else
             {
-                ItemsSource = JobOffers
+                ItemsSource = Source
                     .Where(job => job.Title.ToLower().Contains(newValue.ToLower()) || job.CategoryName.ToLower().Contains(newValue.ToLower()))
                     .ToList();
             }

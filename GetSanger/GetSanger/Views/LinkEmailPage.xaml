@@ -9,10 +9,10 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-            <Entry Text="{Binding Email, Mode=TwoWay}" Keyboard="Email" />
-            <Entry Text="{Binding Password, Mode=TwoWay}" IsPassword="True" />
-            <Button Text="Link" Command="{Binding LinkCommand}"/>
+        <StackLayout VerticalOptions="CenterAndExpand" Padding="20">
+            <Entry Text="{Binding Email, Mode=TwoWay}" Keyboard="Email" Placeholder="Email"/>
+            <Entry Text="{Binding Password, Mode=TwoWay}" IsPassword="True" Placeholder="Password"/>
+            <Button Text="Link" Command="{Binding LinkCommand}" HorizontalOptions="CenterAndExpand"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

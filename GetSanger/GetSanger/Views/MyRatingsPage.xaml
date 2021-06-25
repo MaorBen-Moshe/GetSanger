@@ -22,7 +22,7 @@
         <controls:RatingsSearchHandler Placeholder="Search Rating..."
                                     ShowsResults="True"
                                     SearchBoxVisibility="Collapsible"
-                                    x:Name="searchHandler">
+                                    Source="{Binding SearchCollection}">
             <controls:RatingsSearchHandler.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10" VerticalOptions="Center">

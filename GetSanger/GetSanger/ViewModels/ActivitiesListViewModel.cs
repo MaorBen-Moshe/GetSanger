@@ -127,6 +127,7 @@ namespace GetSanger.ViewModels
             }
 
             Collection = new ObservableCollection<Activity>(activities);
+            SearchCollection = new ObservableCollection<Activity>(Collection);
             IsVisibleViewList = Collection.Count > 0;
         }
         #endregion

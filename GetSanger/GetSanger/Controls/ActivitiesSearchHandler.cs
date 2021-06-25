@@ -1,17 +1,16 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Models;
 using GetSanger.Services;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
-    public class ActivitiesSearchHandler : SearchHandler
+    public class ActivitiesSearchHandler : BaseSearchHandler<Activity>
     {
         #region Properties
-        public IList<Activity> Activities { get; set; }
+
         #endregion
 
         #region Methods
@@ -26,7 +25,7 @@ namespace GetSanger.Controls
             }
             else
             {
-                ItemsSource = Activities
+                ItemsSource = Source
                     .Where(activity =>
                            activity.JobDetails.Description.ToLower().Contains(newValue) ||
                            activity.Title.ToLower().Contains(newValue) ||

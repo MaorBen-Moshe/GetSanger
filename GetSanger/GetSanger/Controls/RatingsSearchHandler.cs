@@ -7,10 +7,9 @@ using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
-    public class RatingsSearchHandler : SearchHandler
+    public class RatingsSearchHandler : BaseSearchHandler<Rating>
     {
         #region Properties
-        public IList<Rating> Ratings { get; set; }
         #endregion
 
         #region Methods
@@ -25,7 +24,7 @@ namespace GetSanger.Controls
             }
             else
             {
-                ItemsSource = Ratings
+                ItemsSource = Source
                     .Where(rating =>
                     rating.RatingWriterName.ToLower().Contains(newValue) ||
                     rating.Description.ToLower().Contains(newValue)

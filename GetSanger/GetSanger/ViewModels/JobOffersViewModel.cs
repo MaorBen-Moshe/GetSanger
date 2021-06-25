@@ -101,6 +101,7 @@ namespace GetSanger.ViewModels
             }
 
             Collection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
+            SearchCollection = new ObservableCollection<JobOffer>(Collection);
             IsVisibleViewList = Collection.Count > 0;
         }
         #endregion

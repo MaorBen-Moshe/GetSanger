@@ -22,7 +22,7 @@
         <controls:ChatSearchHandler Placeholder="Search user..."
                                     ShowsResults="True"
                                     SearchBoxVisibility="Collapsible"
-                                    x:Name="searchHandler">
+                                    Source="{Binding SearchCollection}">
             <controls:ChatSearchHandler.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"

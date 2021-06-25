@@ -22,7 +22,7 @@
         <controls:JobOffersSearchHandler Placeholder="Search job offer..."
                                     ShowsResults="True"
                                     SearchBoxVisibility="Collapsible"
-                                    x:Name="searchHandler">
+                                    Source="{Binding SearchCollection}">
             <controls:JobOffersSearchHandler.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"

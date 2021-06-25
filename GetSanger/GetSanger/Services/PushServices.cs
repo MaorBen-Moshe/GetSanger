@@ -149,7 +149,7 @@ namespace GetSanger.Services
             }
             if (choice == true)
             {
-                await navigation.NavigateTo(ShellRoutes.Profile + $"?userid={AppManager.Instance.ConnectedUser.UserId}");
+                await navigation.NavigateTo(ShellRoutes.MyRatings);
             }
         }
 

@@ -21,7 +21,6 @@ namespace GetSanger.Views
         protected override void OnAppearing()
         {
             (BindingContext as JobOffersViewModel).Appearing();
-            searchHandler.JobOffers = (BindingContext as JobOffersViewModel).Collection;
             base.OnAppearing();
         }
     }
