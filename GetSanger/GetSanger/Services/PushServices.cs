@@ -104,34 +104,37 @@ namespace GetSanger.Services
         }
 
         public static void handleMessageReceived(string i_Title, string i_Body ,IDictionary<string, string> i_Message)
-        {  
-            if (i_Message != null)
+        {
+            if (AuthHelper.IsLoggedIn())
             {
-                if (i_Message.ContainsKey("Type"))
+                if (i_Message != null)
                 {
+                    if (i_Message.ContainsKey("Type"))
+                    {
 
-                    Type type = getTypeOfData(i_Message["Type"]);
-                    if (type.Equals(typeof(JobOffer)))
-                    {
-                        handleJobOffer(i_Title, i_Body, i_Message["Json"]);
+                        Type type = getTypeOfData(i_Message["Type"]);
+                        if (type.Equals(typeof(JobOffer)))
+                        {
+                            handleJobOffer(i_Title, i_Body, i_Message["Json"]);
+                        }
+                        else if (type.Equals(typeof(Models.Activity)))
+                        {
+                            handleActivity(i_Title, i_Body, i_Message["Json"]);
+                        }
+                        else if (type.Equals(typeof(Models.chat.Message)))
+                        {
+                            handleMessage(i_Title, i_Body, i_Message["Json"]);
+                        }
+                        else if (type.Equals(typeof(Models.Rating)))
+                        {
+                            handleRating(i_Title, i_Body, i_Message["Json"]);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Type of object received is not allowed");
+                        }
+
                     }
-                    else if (type.Equals(typeof(Models.Activity)))
-                    {
-                        handleActivity(i_Title, i_Body, i_Message["Json"]);
-                    }
-                    else if (type.Equals(typeof(Models.chat.Message)))
-                    {
-                        handleMessage(i_Title, i_Body, i_Message["Json"]);
-                    }
-                    else if (type.Equals(typeof(Models.Rating)))
-                    {
-                        handleRating(i_Title, i_Body, i_Message["Json"]);
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Type of object received is not allowed");
-                    }
-                    
                 }
             }
         }

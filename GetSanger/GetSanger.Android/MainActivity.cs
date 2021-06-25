@@ -33,19 +33,24 @@ namespace GetSanger.Droid
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-            base.OnCreate(savedInstanceState);
+            
             Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             ImageCircleRenderer.Init();
-            LoadApplication(new App());
-            m_PushService.PushHelper(Intent, this);
+            
+            
 
             //TEMPORARY
             FirebaseMessaging.Instance.SubscribeToTopic("Test");
-            
+
+
+
+            base.OnCreate(savedInstanceState);
+            LoadApplication(new App());
+            m_PushService.PushHelper(Intent, this);
         }
 
         protected override void OnStart()
@@ -53,10 +58,25 @@ namespace GetSanger.Droid
             base.OnStart();
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+        }
+
         protected override void OnPause()
         {
             base.OnPause();
             Instance = this;
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

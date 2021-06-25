@@ -23,6 +23,7 @@ using Java.Lang;
 using Task = Android.Gms.Tasks.Task;
 using GetSanger.Services;
 using GetSanger.Constants;
+using Xamarin.Essentials;
 
 [assembly: Dependency(typeof(GetSanger.Droid.Services.PushService))]
 
@@ -63,7 +64,9 @@ namespace GetSanger.Droid.Services
                 Dictionary<string, string> dict = new Dictionary<string, string>();
                 dict["Json"] = json;
                 dict["Type"] = type;
+
                 GetSanger.Services.PushServices.handleMessageReceived(null, null, dict);
+
             }
 
             if (!IsPlayServicesAvailable(invoker))
