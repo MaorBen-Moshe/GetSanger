@@ -20,6 +20,9 @@ using Android.Gms.Tasks;
 using Firebase.Messaging;
 using Java.Lang;
 using Task = Android.Gms.Tasks.Task;
+using GetSanger.Services;
+using GetSanger.Constants;
+using Xamarin.Essentials;
 
 [assembly: Dependency(typeof(GetSanger.Droid.Services.PushService))]
 
@@ -40,13 +43,28 @@ namespace GetSanger.Droid.Services
         internal void PushHelper(Intent intent,
             MainActivity invoker)
         {
+
             if (intent.Extras != null)
             {
+                string json = null;
+                string type = null;
                 foreach (var key in intent.Extras.KeySet())
                 {
                     var value = intent.Extras.GetString(key);
                     // We can add here more logic as needed
+                    if(key == "Json")
+                    {
+                        json = value;
+                    }
+                    else if(key == "Type")
+                    {
+                        type = value;
+                    }
                 }
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                dict["Json"] = json;
+                dict["Type"] = type;
+                PushServices.handleMessageReceived(null, null, dict);
             }
 
             if (!IsPlayServicesAvailable(invoker))
@@ -59,7 +77,7 @@ namespace GetSanger.Droid.Services
             CreateNotificationChannel();
         }
 
-        public bool IsPlayServicesAvailable(MainActivity Invoker)
+        public static bool IsPlayServicesAvailable(MainActivity Invoker)
         {
             int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(Invoker);
             if (resultCode != ConnectionResult.Success)
@@ -76,7 +94,7 @@ namespace GetSanger.Droid.Services
             }
         }
 
-        void CreateNotificationChannel()
+        public static void CreateNotificationChannel()
         {
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)
             {
@@ -97,5 +115,6 @@ namespace GetSanger.Droid.Services
                 (NotificationManager) Android.App.Application.Context.GetSystemService(Android.Content.Context.NotificationService);
             notificationManager.CreateNotificationChannel(channel);
         }
+
     }
 }
