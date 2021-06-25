@@ -21,10 +21,11 @@ namespace GetSanger.Droid.Services
                 user = getUser();
             }
 
-            Android.Gms.Tasks.Task getIdTokenTask = user.GetIdToken(true);
-            await getIdTokenTask;
 
-            return user.Zze();
+            GetTokenResult getTokenResult = (GetTokenResult) await user.GetIdToken(true);
+            string token = getTokenResult.Token;
+
+            return token;
         }
 
         public string GetUserId()

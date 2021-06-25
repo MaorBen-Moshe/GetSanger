@@ -32,6 +32,7 @@
 
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center">
+            
             <Image Source="{Binding PersonalImage}" 
                    HeightRequest="64"
                    WidthRequest="64">
