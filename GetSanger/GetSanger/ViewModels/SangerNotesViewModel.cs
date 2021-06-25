@@ -1,6 +1,8 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.Extensions;
+using GetSanger.Models;
 using GetSanger.Services;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -67,7 +69,7 @@ namespace GetSanger.ViewModels
                     LocationActivatedBySanger = false
                 };
 
-                User.AppendCollections(AppManager.Instance.ConnectedUser.Activities, new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
+                AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
                 await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
                 await GoBack();
             }

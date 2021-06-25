@@ -10,6 +10,7 @@ using GetSanger.Constants;
 using GetSanger.Converters;
 using System.Collections.Generic;
 using System.Linq;
+using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels
 {
@@ -176,8 +177,7 @@ namespace GetSanger.ViewModels
             NewJobOffer.JobLocation = JobPlaceMark?.Location;
             NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
             List<JobOffer> job = await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer));
-            User.AppendCollections(AppManager.Instance.ConnectedUser.JobOffers,
-            new ObservableCollection<JobOffer>(job));
+            AppManager.Instance.ConnectedUser.JobOffers.Append<ObservableCollection<JobOffer>, JobOffer>(new ObservableCollection<JobOffer>(job));
             await r_PageService.DisplayAlert("Success", "Job sent!", "Thanks");
             string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
             await GoBack();
