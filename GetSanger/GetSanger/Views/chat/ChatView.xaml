@@ -23,8 +23,7 @@
     <Shell.TitleView>
         <StackLayout Orientation="Horizontal" BackgroundColor="AliceBlue">
             <controls:RoundedImage ImageSource="{Binding UserPicture}" 
-                                   ImageWidth="36"
-                                   ImageHeight="36"
+                                   Radius="36"
                                    Margin="10"
                                    HorizontalOptions="StartAndExpand"/>
             <Label Text="{Binding UserToChat.PersonalDetails.NickName}" 

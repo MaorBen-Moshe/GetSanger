@@ -14,7 +14,8 @@
                    FontSize="Title"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"/>
-            <Image Source="{Binding UserImage}" HeightRequest="64" WidthRequest="64"/>
+            <controls:RoundedImage ImageSource="{Binding UserImage}"
+                                   Radius="64" />
             <!--User average rating-->
             <StackLayout HorizontalOptions="Center">
                 <controls:RatingStars Rating="{Binding AverageRating}"

@@ -26,11 +26,9 @@
             <TableRoot>
                 <TableSection Title="Change Picture">
                     <ViewCell>
-                        <ImageButton Source="{Binding ProfileImage, Mode=TwoWay}" 
+                        <controls:RoundedImage ImageSource="{Binding ProfileImage}" 
                                      Command="{Binding ImageChosenCommand}"
-                                     HeightRequest="96"
-                                     WidthRequest="96"
-                                     BorderColor="Transparent"
+                                     Radius="200"
                                      BackgroundColor="Transparent"
                                      HorizontalOptions="Center"/>
                     </ViewCell>

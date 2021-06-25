@@ -21,7 +21,6 @@ namespace GetSanger.ViewModels
         private ImageSource m_ProfileImage;
         private IList<GenderType> m_GenderItems;
         private User m_ConnectedUser;
-        private string m_ClonedUserData;
         private bool m_ValidInput;
         private DateTime m_MaxDate;
 
@@ -100,15 +99,14 @@ namespace GetSanger.ViewModels
 
         private void initialData()
         {
-            ConnectedUser = AppManager.Instance.ConnectedUser;
-            m_ClonedUserData = ObjectJsonSerializer.SerializeForPage(ConnectedUser);
+            string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
+            ConnectedUser = ObjectJsonSerializer.DeserializeForPage<User>(json);
             ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
             MaxDate = DateTime.Now.AddYears(-18);
         }
 
         private async void backButtonBehavior(object i_Param)
         {
-            User oldUser = ObjectJsonSerializer.DeserializeForPage<User>(m_ClonedUserData);
             // if data has not changed do not call update user
             if (string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) ||
                 !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
@@ -116,13 +114,13 @@ namespace GetSanger.ViewModels
             )
             {
                 await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
-                AppManager.Instance.ConnectedUser = oldUser; // delete the new changes
             }
             else
             {
                 // if the data has changed we update in the server, else we do nothing
-                if (m_ConnectedUser.PersonalDetails.Equals(oldUser.PersonalDetails) == false)
+                if (ConnectedUser.PersonalDetails.Equals(AppManager.Instance.ConnectedUser.PersonalDetails) == false)
                 {
+                    AppManager.Instance.ConnectedUser = ConnectedUser;
                     await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser), "Saving...");
                 }
             }
