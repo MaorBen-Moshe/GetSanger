@@ -127,7 +127,8 @@ namespace GetSanger.Controls
                     VerticalOptions = LayoutOptions.Center,
                     Aspect = Aspect.AspectFill,
                     FadeAnimationEnabled = true,
-                    BitmapOptimizations = true
+                    BitmapOptimizations = true,
+                    LoadingPlaceholder = ImageSource.FromFile("profile.png")
                 }
             };
 

@@ -5,6 +5,7 @@
              xmlns:views="clr-namespace:GetSanger.Views"
              x:Class="GetSanger.AppShell.SangerShell"
              FlowDirection="LeftToRight">
+
     
     <TabBar>
         <Tab Title="Account"

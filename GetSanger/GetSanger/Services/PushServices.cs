@@ -167,8 +167,7 @@ namespace GetSanger.Services
             string txt = i_Body + "\nMove to chat page?";
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             ChatDatabase.ChatDatabase db = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
-            checkIfFirstMessageReceived(message, db);
-            await db.SaveItemAsync(message, message.FromId);
+            await db.AddMessageAsync(message, message.FromId);
 
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             if (i_Title != null)
@@ -178,25 +177,6 @@ namespace GetSanger.Services
             if (choice == true)
             {
                 await navigation.NavigateTo(ShellRoutes.ChatView + $"?user={message.FromId}");
-            }
-        }
-
-        private async static void checkIfFirstMessageReceived(Message i_Message, ChatDatabase.ChatDatabase i_DB)
-        {
-            bool found = false;
-            List<string> usersInDB = await i_DB.GetUsersIDsInDB();
-            foreach (var chatUserID in usersInDB)
-            {
-                if (chatUserID.Equals(i_Message.FromId))
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) // first time
-            {
-                await i_DB.SaveUserAsync(i_Message.FromId);
             }
         }
 

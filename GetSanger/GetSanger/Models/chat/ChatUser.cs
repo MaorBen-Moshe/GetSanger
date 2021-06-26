@@ -1,7 +1,6 @@
 ﻿using GetSanger.Services;
+using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GetSanger.Models.chat
 {
@@ -10,9 +9,18 @@ namespace GetSanger.Models.chat
         #region Fields
         private User m_User;
         private DateTime m_LastMessage;
+        private int m_Id = 0;
         #endregion
 
         #region Properties
+
+        [PrimaryKey, AutoIncrement]
+        public int DbId
+        {
+            get => m_Id;
+            set => SetStructProperty(ref m_Id, value);
+        }
+
         public User User
         {
             get => m_User;

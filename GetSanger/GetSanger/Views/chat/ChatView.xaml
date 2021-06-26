@@ -6,7 +6,7 @@
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
              x:Class="GetSanger.Views.chat.ChatView"
              x:Name="chatView"
-             BackgroundColor="AliceBlue"
+             BackgroundColor="FloralWhite"
              Shell.NavBarHasShadow="False">
 
     <ContentPage.Resources>
@@ -53,7 +53,7 @@
            ColumnSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="1" />
+                <!--<RowDefinition Height="1" />-->
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             
@@ -97,14 +97,21 @@
                     <TapGestureRecognizer Tapped="ScrollTap"/>
                 </Frame.GestureRecognizers>
             </Frame>
-            <BoxView HorizontalOptions="FillAndExpand"
+            <!--<BoxView HorizontalOptions="FillAndExpand"
                  HeightRequest="1"
                  BackgroundColor="LightGray"
-                 Grid.Row="1"/>
+                 Grid.Row="1"/>-->
+
+            <Frame Grid.Row="1"
+                   IsClippedToBounds="True"
+                   Margin="10,0,10,10"
+                   Padding="10"
+                   CornerRadius="30"
+                   BackgroundColor="WhiteSmoke"
+                   BorderColor="Black">
+                <chat:ChatInputBarView x:Name="chatInput"/>    
+            </Frame>
             
-            <chat:ChatInputBarView Grid.Row="2"
-                                   Margin="0,0,10,0"
-                                   x:Name="chatInput"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

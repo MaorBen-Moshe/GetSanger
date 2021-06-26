@@ -95,6 +95,9 @@
     <PackageReference Include="Plugin.CurrentActivity">
       <Version>2.1.0.4</Version>
     </PackageReference>
+    <PackageReference Include="sqlite-net-pcl">
+      <Version>1.7.335</Version>
+    </PackageReference>
     <PackageReference Include="System.Numerics.Vectors">
       <Version>4.5.0</Version>
     </PackageReference>
@@ -153,6 +156,7 @@
   <ItemGroup>
     <Compile Include="Effects\AndroidLongPressedEffect.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Persistence\SQLiteDb.cs" />
     <Compile Include="Rendrers\CustomEditorRendrer.cs" />
     <Compile Include="Services\FCM\AndroidFirebaseMessagingService.cs" />
     <Compile Include="Services\Auth.cs" />
