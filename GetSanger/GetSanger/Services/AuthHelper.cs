@@ -45,7 +45,6 @@ namespace GetSanger.Services
                 }
 
                 await LoginViaEmail(i_Email, i_Password);
-                await SendVerificationEmail();
             }
             else
             {
