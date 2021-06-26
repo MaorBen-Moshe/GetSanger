@@ -24,6 +24,7 @@ namespace GetSanger.Services
                 if (!s_Auth.IsAnonymousUser())
                 {
                     s_Auth.SignOut();
+                    await s_Auth.SignInAnonymouslyAsync();
                 }
 
                 Dictionary<string, string> details = new Dictionary<string, string>()
