@@ -220,16 +220,19 @@ namespace GetSanger.Services
                 case eSocialProvider.Facebook:
                     string facebookAccessToken = await getSocialAuthIdToken("Facebook");
                     requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
+                    requestDictionary["ProviderId"] = "facebook.com";
                     break;
 
                 case eSocialProvider.Google:
                     string googleIdToken = await getSocialAuthIdToken("Google");
                     requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
+                    requestDictionary["ProviderId"] = "google.com";
                     break;
 
                 case eSocialProvider.Apple:
                     string appleIdToken = await getSocialAuthIdToken("Apple");
                     requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
+                    requestDictionary["ProviderId"] = "apple.com";
                     break;
 
                 default:
@@ -293,7 +296,8 @@ namespace GetSanger.Services
                     {
                         string clientId = "328227848585394";
                         string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithFacebook";
-                        uriString = $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email&auth_type=rerequest,reauthenticate";
+                        uriString =
+                            $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email&auth_type=rerequest,reauthenticate";
                         r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
                         idToken = r.AccessToken;
                     }
