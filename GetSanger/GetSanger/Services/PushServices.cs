@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using GetSanger.Exceptions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace GetSanger.Services
@@ -103,7 +105,7 @@ namespace GetSanger.Services
             return await sr_Push.GetRegistrationToken();
         }
 
-        public static void handleMessageReceived(string i_Title, string i_Body ,IDictionary<string, string> i_Message)
+        public static void handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
         {
             if (AuthHelper.IsLoggedIn())
             {
@@ -111,7 +113,6 @@ namespace GetSanger.Services
                 {
                     if (i_Message.ContainsKey("Type"))
                     {
-
                         Type type = getTypeOfData(i_Message["Type"]);
                         if (type.Equals(typeof(JobOffer)))
                         {
@@ -120,10 +121,11 @@ namespace GetSanger.Services
                         else if (type.Equals(typeof(Models.Activity)))
                         {
                             int mode = -1; // if Mode not set in dictionary, then do not change mode
-                            if(i_Message.ContainsKey("Mode"))
+                            if (i_Message.ContainsKey("Mode"))
                             {
-                                mode = (int)Enum.Parse(typeof(AppMode), i_Message["Mode"]);
+                                mode = (int) Enum.Parse(typeof(AppMode), i_Message["Mode"]);
                             }
+
                             handleActivity(i_Title, i_Body, i_Message["Json"], mode);
                         }
                         else if (type.Equals(typeof(Models.chat.Message)))
@@ -138,7 +140,6 @@ namespace GetSanger.Services
                         {
                             throw new ArgumentException("Type of object received is not allowed");
                         }
-
                     }
                 }
             }
@@ -155,6 +156,7 @@ namespace GetSanger.Services
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
+
             if (choice == true)
             {
                 await navigation.NavigateTo(ShellRoutes.MyRatings);
@@ -174,6 +176,7 @@ namespace GetSanger.Services
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
             }
+
             if (choice == true)
             {
                 await navigation.NavigateTo(ShellRoutes.ChatView + $"?user={message.FromId}");
@@ -183,7 +186,7 @@ namespace GetSanger.Services
         private async static void handleActivity(string i_Title, string i_Body, string i_Json, int i_Mode)
         {
             bool choice = true;
-            AppMode mode = (AppMode)i_Mode;
+            AppMode mode = (AppMode) i_Mode;
             string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
@@ -191,11 +194,12 @@ namespace GetSanger.Services
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
+
             if (choice == true)
             {
                 AppManager.Instance.CurrentMode = mode;
                 await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                switch(mode)
+                switch (mode)
                 {
                     case AppMode.Sanger:
                         Application.Current.MainPage = new GetSanger.AppShell.SangerShell();
@@ -204,6 +208,7 @@ namespace GetSanger.Services
                         Application.Current.MainPage = new GetSanger.AppShell.UserShell();
                         break;
                 }
+
                 await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
             }
         }
@@ -219,6 +224,7 @@ namespace GetSanger.Services
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
+
             if (choice == true)
             {
                 AppManager.Instance.CurrentMode = AppMode.Sanger;
@@ -253,6 +259,57 @@ namespace GetSanger.Services
             }
 
             return type;
+        }
+
+        public async Task<bool> IsRegistrationTokenChanged()
+        {
+            User connectedUser = AppManager.Instance.ConnectedUser;
+
+            return await GetRegistrationToken() != connectedUser.RegistrationToken;
+        }
+
+        public async void UnsubscribeUser(string i_UserId)
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UnsubscribeUser";
+
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                {
+                    ["UserId"] = i_UserId
+                };
+
+                string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+        }
+
+        public async void SubscribeUser(string i_UserId)
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SubscribeUser";
+
+                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
+                {
+                    ["UserId"] = i_UserId
+                };
+
+                string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
         }
     }
 }

@@ -14,11 +14,14 @@ namespace GetSanger.ViewModels
     public class AccountViewModel : BaseViewModel
     {
         #region Fields
+
         private User m_CurrentUser;
         private ImageSource m_UserImage;
+
         #endregion
 
         #region Properties
+
         public User CurrentUser
         {
             get => m_CurrentUser;
@@ -30,9 +33,11 @@ namespace GetSanger.ViewModels
             get => m_UserImage;
             set => SetClassProperty(ref m_UserImage, value);
         }
+
         #endregion
 
         #region Commands
+
         public ICommand EditProfileCommand { get; set; }
 
         public ICommand SettingCommand { get; set; }
@@ -48,17 +53,19 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Constructor
+
         public AccountViewModel()
         {
             setCommands();
         }
+
         #endregion
 
         #region Methods
 
         public override void Appearing()
         {
-            initialPage();   
+            initialPage();
         }
 
         private void setCommands()
@@ -91,10 +98,12 @@ namespace GetSanger.ViewModels
             UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
         }
 
-        
+
         private void logout(object i_Param)
         {
             // do logout
+            r_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
+
             AuthHelper.SignOut();
             Application.Current.MainPage = new AuthShell();
         }
@@ -121,12 +130,13 @@ namespace GetSanger.ViewModels
 
         private async void linkSocial(object i_Param)
         {
-            List<eSocialProvider> providers = AppManager.Instance.GetListOfEnumNames(typeof(eSocialProvider)).Select(item => (eSocialProvider)Enum.Parse(typeof(eSocialProvider), item)).ToList();
+            List<eSocialProvider> providers = AppManager.Instance.GetListOfEnumNames(typeof(eSocialProvider))
+                .Select(item => (eSocialProvider) Enum.Parse(typeof(eSocialProvider), item)).ToList();
             string[] buttons = providers.Select(item => item.ToString()).ToArray();
             string choice = await r_PageService.DisplayActionSheet("Choose Provider", "Cancel", null, buttons);
-            if(choice.Equals("Cancel") == false)
+            if (choice.Equals("Cancel") == false)
             {
-                eSocialProvider parsedProvider = (eSocialProvider)Enum.Parse(typeof(eSocialProvider), choice);
+                eSocialProvider parsedProvider = (eSocialProvider) Enum.Parse(typeof(eSocialProvider), choice);
                 providerSelected(parsedProvider);
             }
         }
