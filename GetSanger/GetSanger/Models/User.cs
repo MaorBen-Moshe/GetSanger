@@ -84,13 +84,5 @@ namespace GetSanger.Models
         {
             return base.GetHashCode();
         }
-
-        public static void AppendCollections<T>(ObservableCollection<T> i_FirstCollection, ObservableCollection<T> i_SecondCollection)
-        {
-            foreach (T item in i_SecondCollection)
-            {
-                i_FirstCollection.Add(item);
-            }
-        }
     }
 }

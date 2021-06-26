@@ -1,5 +1,4 @@
 using Foundation;
-using ImageCircle.Forms.Plugin.iOS;
 using UIKit;
 using Firebase.Core;
 using UserNotifications;
@@ -38,7 +37,7 @@ namespace GetSanger.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            ImageCircleRenderer.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
             Messaging.SharedInstance.ShouldEstablishDirectChannel = true;
             LoadApplication(new App());

@@ -1,4 +1,5 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.Extensions;
+using GetSanger.Models;
 using GetSanger.Services;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace GetSanger.ViewModels
             NewRating.RatingOwnerId = RatedUser.UserId;
             NewRating.TimeAdded = DateTime.Now;
 
-            User.AppendCollections(AppManager.Instance.ConnectedUser.Ratings, new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating))));
+            AppManager.Instance.ConnectedUser.Ratings.Append<ObservableCollection<Rating>, Rating>(new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating))));
             await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
             await GoBack();
         }

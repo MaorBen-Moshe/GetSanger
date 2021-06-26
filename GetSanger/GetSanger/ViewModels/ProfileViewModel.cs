@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace GetSanger.ViewModels
 {
     [QueryProperty(nameof(UserId), "userid")]
-    public class ProfileViewModel : BaseViewModel
+    public class ProfileViewModel : ListBaseViewModel<Rating>
     {
         #region Fields
         private User m_CurrenUser;
@@ -22,7 +22,6 @@ namespace GetSanger.ViewModels
         private int m_AverageRating;
         private ImageSource m_UserImage;
         private string m_Location;
-        private bool m_IsListRefreshing;
         #endregion
 
         #region Properties
@@ -52,12 +51,6 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_Location, value);
         }
 
-        public bool IsListRefreshing
-        {
-            get => m_IsListRefreshing;
-            set => SetStructProperty(ref m_IsListRefreshing, value);
-        }
-
         #endregion
 
         #region Commands
@@ -68,8 +61,6 @@ namespace GetSanger.ViewModels
         public ICommand ReportUserCommand { get; set; }
 
         public ICommand AddRatingCommand { get; set; }
-
-        public ICommand RefreshingCommand { get; set; }
 
         #endregion
 
@@ -93,7 +84,6 @@ namespace GetSanger.ViewModels
             AddRatingCommand = new Command(addRating);
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
-            RefreshingCommand = new Command(refreshList);
         }
 
         private async void setUser()
@@ -113,6 +103,7 @@ namespace GetSanger.ViewModels
                     throw new ArgumentException("User details aren't available.");
                 }
 
+                Collection = new ObservableCollection<Rating>(CurrentUser.Ratings);
                 UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
                 Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
                 UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
@@ -132,14 +123,14 @@ namespace GetSanger.ViewModels
         private int getAverage()
         {
             int avg = 0;
-            foreach(var rating in CurrentUser.Ratings)
+            foreach(var rating in Collection)
             {
                 avg += rating.Score;
             }
 
-            if(CurrentUser.Ratings.Count > 0)
+            if(Collection.Count > 0)
             {
-                avg /= CurrentUser.Ratings.Count;
+                avg /= Collection.Count;
             }
             
             return (avg > 0) ? avg : 1;
@@ -198,11 +189,12 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo($"{ShellRoutes.AddRating}?ratedUser={json}");
         }
 
-        private async void refreshList()
+        protected override async void refreshList()
         {
             try
             {
-                CurrentUser.Ratings = new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.GetRatings(CurrentUser.UserId)));
+                Collection = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserId));
+                CurrentUser.Ratings = new ObservableCollection<Rating>(Collection);
                 IsListRefreshing = false;
             }
             catch

@@ -73,6 +73,7 @@ namespace GetSanger.ViewModels
 
         private async void initialPage()
         {
+            CurrentUser = null;
             if (AppManager.Instance.ConnectedUser == null)
             {
                 try

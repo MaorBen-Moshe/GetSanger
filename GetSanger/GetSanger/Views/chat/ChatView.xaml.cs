@@ -43,10 +43,7 @@ namespace GetSanger.Views.chat
                         vm.PendingMessageCount = 0;
                         ChatList?.ScrollToFirst();
                     });
-
-
                 }
-
             }
         }
 

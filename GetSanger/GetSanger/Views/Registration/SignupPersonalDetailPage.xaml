@@ -4,6 +4,7 @@
              x:Class="GetSanger.Views.Registration.SignupPersonalDetailPage"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:Converters="clr-namespace:GetSanger.Converters"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Name="PersonalDetails">
             
 
@@ -32,19 +33,11 @@
 
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center">
-            
-            <Image Source="{Binding PersonalImage}" 
-                   HeightRequest="64"
-                   WidthRequest="64">
-            </Image>
-            <Button Text="Upload Photo" 
-                    CornerRadius="20" 
-                    Margin="100,20, 100, 20" 
-                    BorderColor="Transparent" 
-                    BorderWidth="0"
-                    x:Name="UploadButton"
-                    Command="{Binding ImagePickerCommand}"
-                    CommandParameter="{x:Reference UploadButton}"/>
+
+            <controls:RoundedImage ImageSource="{Binding PersonalImage}" 
+                                   Radius="100" 
+                                   IsCacheEnable="False"
+                                   Command="{Binding ImagePickerCommand}"/>
             <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName}" x:Name="NameEntry"/>
 
             <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone}" x:Name="PhoneEntry">

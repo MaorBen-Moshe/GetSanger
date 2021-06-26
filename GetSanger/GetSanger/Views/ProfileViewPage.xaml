@@ -8,23 +8,36 @@
     <ContentPage.BindingContext>
         <vm:ProfileViewModel />
     </ContentPage.BindingContext>
+
+    <Shell.TitleView>
+        <StackLayout VerticalOptions="CenterAndExpand"
+                     HorizontalOptions="CenterAndExpand"
+                     Orientation="Horizontal">
+            <controls:RoundedImage ImageSource="{Binding UserImage}"
+                                   Radius="50" 
+                                   Margin="5"
+                                   HorizontalOptions="CenterAndExpand"/>
+            <Label Text="{Binding CurrentUser.PersonalDetails.NickName}"
+                   FontSize="Title"
+                   TextColor="WhiteSmoke"
+                   BackgroundColor="Transparent" 
+                   HorizontalOptions="CenterAndExpand"
+                   Margin="0,5"/>
+        </StackLayout>
+    </Shell.TitleView>
+    
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="{Binding CurrentUser.PersonalDetails.NickName, Mode=TwoWay}"
-                   FontSize="Title"
-                   VerticalOptions="StartAndExpand"
-                   HorizontalOptions="CenterAndExpand"/>
-            <Image Source="{Binding UserImage}" HeightRequest="64" WidthRequest="64"/>
             <!--User average rating-->
-            <StackLayout HorizontalOptions="Center">
-                <controls:RatingStars Rating="{Binding AverageRating}"
+            <controls:RatingStars Rating="{Binding AverageRating}"
                                           Review="" 
-                                          IsImageEnabled="False"/>
-            </StackLayout>
+                                          IsImageEnabled="False"
+                                          HorizontalOptions="Center"
+                                  Margin="20"/>
             <Grid RowSpacing="0" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="0.3*" />
+                    <ColumnDefinition Width="0.7*" />
 
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -38,15 +51,15 @@
                 <Label Grid.Row="1" Grid.Column="0" Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:dd/MM/yyyy}'}"  
                            Margin="10,0,0,0"/>
             </Grid>
-            <Label Text="Ratings:" FontSize="Title"/>
-            <ListView ItemsSource="{Binding  CurrentUser.Ratings}"
-                                            HasUnevenRows="True"
-                                            RefreshCommand="{Binding RefreshingCommand}"
-                                            IsRefreshing="{Binding IsListRefreshing}"
-                                            IsPullToRefreshEnabled="True">
+            <Label Text="Ratings:" FontSize="Large"/>
+            <ListView ItemsSource="{Binding Collection}"
+                      HasUnevenRows="True"
+                      RefreshCommand="{Binding RefreshingCommand}"
+                      IsRefreshing="{Binding IsListRefreshing}"
+                      IsPullToRefreshEnabled="True"
+                      VerticalOptions="CenterAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-
                         <ViewCell>
                             <Grid>
                                 <Label Text="{Binding RatingWriterName}" Grid.Column="0" Grid.Row="1"/>
@@ -58,7 +71,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Grid>
+            <Grid Margin="0,10,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />

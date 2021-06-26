@@ -1,16 +1,22 @@
-﻿using System.Windows.Input;
+﻿using FFImageLoading;
+using FFImageLoading.Cache;
+using FFImageLoading.Forms;
+using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
     public class RoundedImage : StackLayout
     {
+        #region Fields
         private Frame m_Frame;
-        private Image m_Image;
-        private ImageButton m_ImageButton;
+        private CachedImage m_CachedImage;
+        //private Image m_Image;
+        #endregion
 
-        public bool IsImageButton { get; set; }
-
+        #region Properties
         public ICommand Command
         {
             get => (ICommand)GetValue(CommandProperty);
@@ -41,35 +47,21 @@ namespace GetSanger.Controls
                                                          validateValue: null,
                                                          propertyChanged: CommandParameterPropertyChanged);
 
-        public int ImageWidth
+        // Please use only even numbers!!
+        public int Radius
         {
-            get => (int)GetValue(ImageWidthProperty);
-            set => SetValue(ImageWidthProperty, value);
+            get => (int)GetValue(RadiusProperty);
+            set => SetValue(RadiusProperty, value);
         }
 
-        public static readonly BindableProperty ImageWidthProperty = BindableProperty.Create(
-                                                         propertyName: "ImageWidth",
+        public static readonly BindableProperty RadiusProperty = BindableProperty.Create(
+                                                         propertyName: "Radius",
                                                          returnType: typeof(int),
                                                          declaringType: typeof(RoundedImage),
-                                                         defaultValue: 20,
+                                                         defaultValue: 36,
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
-                                                         propertyChanged: WidthHeightPropertyChanged);
-
-        public int ImageHeight
-        {
-            get => (int)GetValue(ImageHeightProperty);
-            set => SetValue(ImageHeightProperty, value);
-        }
-
-        public static readonly BindableProperty ImageHeightProperty = BindableProperty.Create(
-                                                         propertyName: "ImageHeight",
-                                                         returnType: typeof(int),
-                                                         declaringType: typeof(RoundedImage),
-                                                         defaultValue: 20,
-                                                         defaultBindingMode: BindingMode.OneWay,
-                                                         validateValue: null,
-                                                         propertyChanged: WidthHeightPropertyChanged);
+                                                         propertyChanged: RadiusPropertyChanged);
 
         public ImageSource ImageSource
         {
@@ -86,55 +78,67 @@ namespace GetSanger.Controls
                                                          validateValue: null,
                                                          propertyChanged: imagePropertyChanged);
 
+        public bool IsCacheEnable
+        {
+            get => (bool)GetValue(IsCacheEnableProperty);
+            set => SetValue(IsCacheEnableProperty, value);
+        }
+
+        public static readonly BindableProperty IsCacheEnableProperty = BindableProperty.Create(
+                                                                propertyName:"IsCacheEnable",
+                                                                returnType: typeof(bool),
+                                                                declaringType: typeof(RoundedImage),
+                                                                defaultValue: true,
+                                                                defaultBindingMode: BindingMode.OneWay,
+                                                                validateValue: null,
+                                                                propertyChanged: cachePropertyChanged);
+
+        #endregion
+
+        #region Constructor
+
         public RoundedImage()
         {
             setView();
         }
+
+        #endregion
+
+        #region Methods
 
         private void setView()
         {
             Children.Clear();
             m_Frame = new Frame
             {
-                CornerRadius = 100,
+                CornerRadius = Radius / 2,
                 Padding = 0,
-                HeightRequest = ImageHeight,
-                WidthRequest = ImageWidth,
+                HeightRequest = Radius,
+                WidthRequest = Radius,
                 IsClippedToBounds = true,
                 HasShadow = false,
-                BorderColor = Color.Transparent
+                BorderColor = Color.Transparent,
+                HorizontalOptions = LayoutOptions.Center,
+                Content = m_CachedImage = new CachedImage
+                {
+                    WidthRequest = Radius,
+                    HeightRequest = Radius,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    Aspect = Aspect.AspectFill,
+                    FadeAnimationEnabled = true,
+                    BitmapOptimizations = true
+                }
             };
 
-            if (IsImageButton)
-            {
-                m_ImageButton = new ImageButton
-                {
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                };
-
-                m_ImageButton.Command = Command;
-                m_ImageButton.CommandParameter = CommandParameter;
-                m_Frame.Content = m_ImageButton;
-            }
-            else
-            {
-                m_Image = new Image
-                {
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                };
-
-                m_Image.GestureRecognizers.Add(new TapGestureRecognizer
-                {
-                    Command = Command,
-                    CommandParameter = CommandParameter
-                });
-
-                m_Frame.Content = m_Image;
-            }
-
+            setCache();
             setImage(this, ImageSource);
+            m_CachedImage.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = Command,
+                CommandParameter = CommandParameter
+            });
+
             Children.Add(m_Frame);
         }
 
@@ -148,16 +152,14 @@ namespace GetSanger.Controls
             setImage(thisInstance, newImageSource);
         }
 
-        private static void setImage(RoundedImage bindable, ImageSource i_NewSource)
+        private async static void setImage(RoundedImage bindable, ImageSource i_NewSource)
         {
-            if (bindable.IsImageButton)
+            if (!bindable.IsCacheEnable)
             {
-                (bindable.m_Frame.Content as ImageButton).Source = i_NewSource;
+                await ImageService.Instance.InvalidateCacheAsync(CacheType.All);
             }
-            else
-            {
-                (bindable.m_Frame.Content as Image).Source = i_NewSource;
-            }
+
+            bindable.m_CachedImage.Source = i_NewSource;
         }
 
         private static void CommandPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
@@ -167,30 +169,7 @@ namespace GetSanger.Controls
                 return;
             }
 
-            setCommand(thisInstance, newCommand);
-        }
-
-        private static void setCommand(RoundedImage bindable, ICommand i_Command)
-        {
-            if (bindable.IsImageButton)
-            {
-                (bindable.m_Frame.Content as ImageButton).Command = i_Command;
-            }
-            else
-            {
-                var image = (bindable.m_Frame.Content as Image);
-                if (image.GestureRecognizers.Count > 0)
-                {
-                    foreach(var current in image.GestureRecognizers)
-                    {
-                        if(current is TapGestureRecognizer)
-                        {
-                            (current as TapGestureRecognizer).Command = i_Command;
-                            break;
-                        }
-                    }
-                }
-            }
+            thisInstance.setComanndAndParam(newCommand, thisInstance.CommandParameter);
         }
 
         private static void CommandParameterPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
@@ -200,40 +179,53 @@ namespace GetSanger.Controls
                 return;
             }
 
-            setCommandParameter(thisInstance, newParam);
+            thisInstance.setComanndAndParam(thisInstance.Command, newParam);
         }
 
-        private static void setCommandParameter(RoundedImage bindable, object i_Param)
+        private void setComanndAndParam(ICommand i_Command, object i_Param)
         {
-            if (bindable.IsImageButton)
+            m_CachedImage.GestureRecognizers.Clear();
+            m_CachedImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                (bindable.m_Frame.Content as ImageButton).CommandParameter = i_Param;
-            }
-            else
-            {
-                var image = (bindable.m_Frame.Content as Image);
-                if (image.GestureRecognizers.Count > 0)
-                {
-                    foreach (var current in image.GestureRecognizers)
-                    {
-                        if (current is TapGestureRecognizer)
-                        {
-                            (current as TapGestureRecognizer).CommandParameter = i_Param;
-                            break;
-                        }
-                    }
-                }
-            }
+                Command = i_Command,
+                CommandParameter = i_Param
+            });
         }
 
-        private static void WidthHeightPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
+        private static void RadiusPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            if (!(bindable is RoundedImage thisInstance) || !(newValue is int))
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is int val))
             {
                 return;
             }
 
             thisInstance.setView();
         }
+
+        private static void cachePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
+        {
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is bool val))
+            {
+                return;
+            }
+
+            thisInstance.setView();
+        }
+
+        private void setCache()
+        {
+            if (IsCacheEnable)
+            {
+                m_CachedImage.CacheType = CacheType.All;
+                m_CachedImage.CacheDuration = new TimeSpan(1, 0, 0, 0);
+            }
+            else
+            {
+                m_CachedImage.CacheType = CacheType.Memory;
+                m_CachedImage.CacheDuration = new TimeSpan(0);
+            }
+        }
+
+        #endregion
     }
 }

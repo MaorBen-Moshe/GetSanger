@@ -17,7 +17,8 @@
                          VerticalOptions="CenterAndExpand"
                          HorizontalOptions="CenterAndExpand"
                          Spacing="20">
-                <Image Source="{Binding UserImage}" WidthRequest="64" HeightRequest="64"/>
+                <controls:RoundedImage ImageSource="{Binding UserImage}"
+                                       Radius="100"/>
                 <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat='Hello, {0}'}"
                        FontSize="Title" 
                        FontAttributes="Italic"/>

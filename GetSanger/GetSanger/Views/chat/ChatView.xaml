@@ -21,28 +21,29 @@
 
 
     <Shell.TitleView>
-        <StackLayout Orientation="Horizontal" BackgroundColor="AliceBlue">
+        <StackLayout Orientation="Horizontal">
             <controls:RoundedImage ImageSource="{Binding UserPicture}" 
-                                   ImageWidth="36"
-                                   ImageHeight="36"
-                                   Margin="10"
+                                   Radius="40"
+                                   Margin="5,10"
                                    HorizontalOptions="StartAndExpand"/>
             <Label Text="{Binding UserToChat.PersonalDetails.NickName}" 
-                   HorizontalOptions="CenterAndExpand" 
-                   Margin="10"/>
+                   BackgroundColor="Transparent"
+                   TextColor="WhiteSmoke"
+                   HorizontalOptions="StartAndExpand" 
+                   Margin="5,10,0,10"/>
             <ImageButton Source="whatsapp.png"
                          BackgroundColor="Transparent" 
                          HorizontalOptions="EndAndExpand"
                          WidthRequest="20"
                          HeightRequest="20"
-                         Margin="10, 0, 0, 0"
+                         Margin="90, 0, 0, 0"
                          Command="{Binding SendWhatsappCommand}"/>
             <ImageButton Source="phone.png"
                          BackgroundColor="Transparent" 
                          HorizontalOptions="EndAndExpand"
                          WidthRequest="20"
                          HeightRequest="20"
-                         Margin="0,0,10,0"
+                         Margin="0,0,0,0"
                          Command="{Binding CallCommand}"/>
         </StackLayout>
     </Shell.TitleView>
