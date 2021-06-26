@@ -13,6 +13,7 @@ using Plugin.CurrentActivity;
 using Android.Views;
 using GetSanger.Services;
 using GetSanger.Droid.Services;
+using ImageCircle.Forms.Plugin.Droid;
 
 namespace GetSanger.Droid
 {
