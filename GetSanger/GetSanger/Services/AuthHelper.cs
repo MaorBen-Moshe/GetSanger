@@ -189,11 +189,6 @@ namespace GetSanger.Services
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
-                    if (!await IsVerifiedEmail())
-                    {
-                        await SendVerificationEmail();
-                    }
-
                     return responseDictionary;
                 }
                 else
