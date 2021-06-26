@@ -45,7 +45,6 @@ namespace GetSanger.Services
                 }
 
                 await LoginViaEmail(i_Email, i_Password);
-                await SendVerificationEmail();
             }
             else
             {
@@ -127,18 +126,7 @@ namespace GetSanger.Services
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
             string responseString = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
-                Dictionary<string, object> responseDictionary =
-                    ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
-
-                bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                if (!isEmailVerified)
-                {
-                    await SendVerificationEmail();
-                }
-            }
-            else
+            if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(responseString);
             }
@@ -189,11 +177,6 @@ namespace GetSanger.Services
                     s_Auth.SignOut();
                     await s_Auth.SignInWithCustomToken(customToken);
 
-                    if (!await IsVerifiedEmail())
-                    {
-                        await SendVerificationEmail();
-                    }
-
                     return responseDictionary;
                 }
                 else
@@ -220,16 +203,19 @@ namespace GetSanger.Services
                 case eSocialProvider.Facebook:
                     string facebookAccessToken = await getSocialAuthIdToken("Facebook");
                     requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
+                    requestDictionary["ProviderId"] = "facebook.com";
                     break;
 
                 case eSocialProvider.Google:
                     string googleIdToken = await getSocialAuthIdToken("Google");
                     requestDictionary["postBody"] = $"id_token={googleIdToken}&providerId=google.com";
+                    requestDictionary["ProviderId"] = "google.com";
                     break;
 
                 case eSocialProvider.Apple:
                     string appleIdToken = await getSocialAuthIdToken("Apple");
                     requestDictionary["postBody"] = $"id_token={appleIdToken}&providerId=apple.com";
+                    requestDictionary["ProviderId"] = "apple.com";
                     break;
 
                 default:
@@ -293,7 +279,8 @@ namespace GetSanger.Services
                     {
                         string clientId = "328227848585394";
                         string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithFacebook";
-                        uriString = $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email&auth_type=rerequest,reauthenticate";
+                        uriString =
+                            $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email&auth_type=rerequest,reauthenticate";
                         r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
                         idToken = r.AccessToken;
                     }
