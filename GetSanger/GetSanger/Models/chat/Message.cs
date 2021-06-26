@@ -13,10 +13,10 @@ namespace GetSanger.Models.chat
         private DateTime m_TimeSent;
         private bool m_MessageSent;
         private int m_MessageId;
-        private int m_ChatId;
 
         #region ViewCellCommand
         // the only way that worked to bind the view cell(in a separate file) to the command
+        [Ignore]
         public ICommand DeleteMessageCommand { get; set; }
         #endregion
 

@@ -7,7 +7,7 @@ namespace GetSanger.Models.chat
     public class ChatUser : PropertySetter
     {
         #region Fields
-        private User m_User;
+        private string m_UserId;
         private DateTime m_LastMessage;
         private int m_Id = 0;
         #endregion
@@ -21,10 +21,10 @@ namespace GetSanger.Models.chat
             set => SetStructProperty(ref m_Id, value);
         }
 
-        public User User
+        public string UserId
         {
-            get => m_User;
-            set => SetClassProperty(ref m_User, value);
+            get => m_UserId;
+            set => SetClassProperty(ref m_UserId, value);
         }
 
         public DateTime LastMessage

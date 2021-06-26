@@ -23,6 +23,8 @@ namespace GetSanger.ChatDatabase
         #region Constructor
         public ChatDatabase()
         {
+            m_IsUsersCreated = false;
+            m_IsMessagesCreated = false;
         }
         #endregion
 
@@ -33,29 +35,31 @@ namespace GetSanger.ChatDatabase
             if (!m_IsUsersCreated)
             {
                 await m_Connection.CreateTableAsync<ChatUser>();
+                m_IsUsersCreated = true;
             }
             if (!m_IsMessagesCreated)
             {
                 await m_Connection.CreateTableAsync<Message>();
+                m_IsMessagesCreated = true;
             }
         }
 
-        public async Task<int> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null)
+        public Task<int> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null)
         {
             SetDependencies();
             ChatUser newUser = new ChatUser
             {
-                User = await FireStoreHelper.GetUser(i_UserId),
+                UserId = i_UserId,
                 LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now 
             };
 
-            return await m_Connection.InsertAsync(newUser);
+            return m_Connection.InsertAsync(newUser);
         }
 
         public async Task<int> DeleteUserAsync(string i_UserId)
         {
             SetDependencies();
-            ChatUser toDelete = await m_Connection.Table<ChatUser>().Where(user => user.User.UserId.Equals(i_UserId)).FirstAsync();
+            ChatUser toDelete = await m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_UserId)).FirstAsync();
             if(toDelete != null)
             {
                 return await m_Connection.DeleteAsync(toDelete);
@@ -68,7 +72,7 @@ namespace GetSanger.ChatDatabase
 
         public Task<ChatUser> GetUserAsync(string i_Id)
         {
-            return m_Connection.Table<ChatUser>().Where(user => user.User.UserId.Equals(i_Id)).FirstAsync();
+            return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id)).FirstAsync();
         }
 
         public Task<List<ChatUser>> GetAllUsersAsync()
