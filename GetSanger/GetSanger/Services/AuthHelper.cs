@@ -126,18 +126,7 @@ namespace GetSanger.Services
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
             string responseString = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode)
-            {
-                Dictionary<string, object> responseDictionary =
-                    ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
-
-                bool isEmailVerified = (bool) responseDictionary["emailVerified"];
-                if (!isEmailVerified)
-                {
-                    await SendVerificationEmail();
-                }
-            }
-            else
+            if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(responseString);
             }
