@@ -19,6 +19,9 @@
         <Frame.Effects>
             <effects:LongPressedEffect />
         </Frame.Effects>
-        <Label Text="{Binding Text}"/>
+        <Label Text="{Binding Text}"
+               TextColor="White" 
+               BackgroundColor="Transparent"
+               HorizontalOptions="StartAndExpand"/>
     </Frame>
 </ViewCell>

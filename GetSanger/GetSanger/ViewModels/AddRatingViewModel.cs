@@ -66,11 +66,11 @@ namespace GetSanger.ViewModels
             NewRating.RatingWriterName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
             NewRating.RatingOwnerId = RatedUser.UserId;
             NewRating.TimeAdded = DateTime.Now;
-
-            AppManager.Instance.ConnectedUser.Ratings.Append<ObservableCollection<Rating>, Rating>(new ObservableCollection<Rating>(await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating))));
+            List<Rating> ratings = await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
             await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
             await GoBack();
         }
+
         #endregion
     }
 }

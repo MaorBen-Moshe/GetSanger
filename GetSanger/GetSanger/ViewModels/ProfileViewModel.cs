@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using GetSanger.Interfaces;
 using GetSanger.Views;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels
 {
@@ -78,6 +80,11 @@ namespace GetSanger.ViewModels
             setUser();
         }
 
+        public void Disappearing()
+        {
+            CurrentUser = null;
+        }
+
         private void setCommands()
         {
             CallCommand = new Command(callUser);
@@ -95,8 +102,6 @@ namespace GetSanger.ViewModels
                 {
                     throw new ArgumentException("User details aren't available.");
                 }
-
-
                 CurrentUser = await FireStoreHelper.GetUser(UserId);
                 if (CurrentUser == null)
                 {
@@ -104,6 +109,8 @@ namespace GetSanger.ViewModels
                 }
 
                 Collection = new ObservableCollection<Rating>(CurrentUser.Ratings);
+                Collection.OrderByDescending(rating => rating.TimeAdded);
+                IsVisibleViewList = Collection.Count > 0;
                 UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
                 Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
                 UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
@@ -193,8 +200,10 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Collection = new ObservableCollection<Rating>(await FireStoreHelper.GetRatings(CurrentUser.UserId));
+                List<Rating> ratings = await FireStoreHelper.GetRatings(CurrentUser.UserId);
+                Collection = new ObservableCollection<Rating>(ratings);
                 CurrentUser.Ratings = new ObservableCollection<Rating>(Collection);
+                Collection.OrderByDescending(rating => rating.TimeAdded);
                 IsListRefreshing = false;
             }
             catch

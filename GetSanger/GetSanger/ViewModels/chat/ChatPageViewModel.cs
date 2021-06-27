@@ -139,7 +139,7 @@ namespace GetSanger.ViewModels.chat
                 try
                 {
                     MessagesSource.Insert(0, msg);
-                    await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
+                    await r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
                     // adding the message to the local DB
                     msg.MessageSent = true; // removing the '!' in the UI does not work
                     await DB.AddMessageAsync(msg, msg.ToId);
@@ -164,7 +164,7 @@ namespace GetSanger.ViewModels.chat
                 {
                     if (msg.MessageSent == false)
                     {
-                        await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
+                        await r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message.");
                         await DB.UpdateMessageAsync(msg);
                         msg.MessageSent = true;
                     }

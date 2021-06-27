@@ -24,6 +24,7 @@
             </Grid.ColumnDefinitions>
             <Label Text="{Binding Text}"
                    TextColor="White" 
+                   BackgroundColor="Transparent"
                    HorizontalOptions="StartAndExpand"
                    Grid.Column="0"/>
             <Label Text="!"
