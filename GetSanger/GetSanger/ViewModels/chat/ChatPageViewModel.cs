@@ -232,7 +232,7 @@ namespace GetSanger.ViewModels.chat
                 bool succeeded = await r_DialService.SendWhatsapp();
                 if (!succeeded)
                 {
-                    r_DialService.SendDefAppMsg();
+                    await r_DialService.SendDefAppMsg();
                 }
 
                 return;

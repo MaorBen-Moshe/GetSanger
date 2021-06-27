@@ -45,9 +45,9 @@ namespace GetSanger.Services
             PhoneDialer.Open(PhoneNumber);
         }
 
-        public async void SendDefAppMsg()
+        public Task SendDefAppMsg()
         {
-            await Xamarin.Essentials.Sms.ComposeAsync(new SmsMessage(Message, PhoneNumber));
+            return Xamarin.Essentials.Sms.ComposeAsync(new SmsMessage(Message, PhoneNumber));
         }
 
         public async Task<bool> SendWhatsapp()

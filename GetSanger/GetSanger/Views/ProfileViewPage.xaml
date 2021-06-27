@@ -38,7 +38,7 @@
         <StackLayout>
             <Frame HorizontalOptions="EndAndExpand"
                    BackgroundColor="Transparent"
-                   Margin="0,0,10,0"
+                   Margin="0,10,10,10"
                    Padding="7"
                    CornerRadius="20"
                    BorderColor="Red">
