@@ -109,6 +109,18 @@ namespace GetSanger.Services
         {
             if (AuthHelper.IsLoggedIn() && i_Message != null && i_Message.ContainsKey("Type"))
             {
+                if(Shell.Current == null)
+                {
+                    switch (AppManager.Instance.CurrentMode)
+                    {
+                        case AppMode.Sanger:
+                            Application.Current.MainPage = new GetSanger.AppShell.SangerShell();
+                            break;
+                        case AppMode.Client:
+                            Application.Current.MainPage = new GetSanger.AppShell.UserShell();
+                            break;
+                    }
+                }
                 Type type = getTypeOfData(i_Message["Type"]);
                 if (type.Equals(typeof(JobOffer)))
                 {
