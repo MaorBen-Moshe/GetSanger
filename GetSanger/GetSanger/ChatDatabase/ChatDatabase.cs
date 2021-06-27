@@ -1,132 +1,166 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GetSanger.Models.chat;
+using PCLStorage;
 using System.Linq;
 using GetSanger.Services;
 using Xamarin.Essentials;
-using GetSanger.Interfaces;
-using Xamarin.Forms;
-using SQLite;
-using GetSanger.Models;
-using System;
 
 namespace GetSanger.ChatDatabase
 {
     public class ChatDatabase : Service
     {
         #region Fields
-        private SQLiteAsyncConnection m_Connection;
-        private bool m_IsUsersCreated;
-        private bool m_IsMessagesCreated;
+        private const string k_DatabaseFilename = "ChatMessages.db3";
         #endregion
 
         #region Constructor
         public ChatDatabase()
         {
-            m_IsUsersCreated = false;
-            m_IsMessagesCreated = false;
         }
         #endregion
 
         #region Methods
-        public async override void SetDependencies()
+        public override void SetDependencies()
         {
-            m_Connection ??= DependencyService.Get<ISQLiteDb>().GetConnection();
-            if (!m_IsUsersCreated)
-            {
-                await m_Connection.CreateTableAsync<ChatUser>();
-                m_IsUsersCreated = true;
-            }
-            if (!m_IsMessagesCreated)
-            {
-                await m_Connection.CreateTableAsync<Message>();
-                m_IsMessagesCreated = true;
-            }
         }
 
-        public Task<int> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null)
+        public async Task<List<ChatUser>> GetChatUsers()
         {
-            SetDependencies();
-            ChatUser newUser = new ChatUser
+            List<string> usersId = await GetUsersIDsInDB();
+            List<Task<ChatUser>> taskUsers = usersId?.Select(async userID => new ChatUser
             {
-                UserId = i_UserId,
-                LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now 
-            };
+                User = await FireStoreHelper.GetUser(userID),
+                LastMessage = (await GetItemsAsync(userID)).FirstOrDefault().TimeSent
+            }).ToList();
 
-            return m_Connection.InsertAsync(newUser);
-        }
-
-        public async Task<int> DeleteUserAsync(string i_UserId)
-        {
-            SetDependencies();
-            ChatUser toDelete = await m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_UserId)).FirstAsync();
-            if(toDelete != null)
+            List<ChatUser> users = new List<ChatUser>();
+            if(taskUsers != null)
             {
-                return await m_Connection.DeleteAsync(toDelete);
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        public Task<ChatUser> GetUserAsync(string i_Id)
-        {
-            return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id)).FirstAsync();
-        }
-
-        public Task<List<ChatUser>> GetAllUsersAsync()
-        {
-            SetDependencies();
-            return m_Connection.Table<ChatUser>().ToListAsync();
-        }
-
-        public Task<List<Message>> GetMessagesAsync(string i_UserToChatId)
-        {
-            SetDependencies();
-            string i_MyId = AppManager.Instance.ConnectedUser.UserId;
-            return m_Connection.Table<Message>().Where(item => (item.ToId.Equals(i_MyId) && item.FromId.Equals(i_UserToChatId)) 
-                                                               || (item.ToId.Equals(i_UserToChatId) && item.FromId.Equals(i_MyId))).ToListAsync();
-        }
-
-        public async Task<int> AddMessageAsync(Message i_Message, string i_ChatId) // chat id is most of the time the userTo id
-        {
-            SetDependencies();
-            ChatUser user = null;
-            if (i_ChatId != null)
-            {
-                user = await GetUserAsync(i_ChatId);
-            }
-            
-            if(user == null)
-            {
-                await AddUserAsync(i_ChatId, i_Message.TimeSent);
-            }
-
-            return await m_Connection.InsertAsync(i_Message);
-        }
-
-        public async Task<int> DeleteMessageAsync(Message i_Message)
-        {
-            SetDependencies();
-            int deleted = await m_Connection.DeleteAsync(i_Message);
-            if(deleted > 0)
-            {
-                string id = i_Message.ToId.Equals(AppManager.Instance.ConnectedUser.UserId) ? i_Message.FromId : i_Message.ToId;
-                List<Message> messages= await GetMessagesAsync(id);
-                if(messages.Count == 0)
+                foreach (var item in taskUsers)
                 {
-                    await DeleteUserAsync(id);
+                    users.Add(item.Result);
                 }
             }
 
-            return deleted;
+            return users;
         }
 
-        public Task UpdateMessageAsync(Message i_Message)
+        public async Task SaveUserAsync(string i_UserId)
         {
-            SetDependencies();
-            return m_Connection.UpdateAsync(i_Message);
+            List<string> usersId = await GetUsersIDsInDB();
+            if (usersId.Contains(i_UserId) == false)
+            {
+                usersId.Add(i_UserId);
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    IFile current = await openMessagesDB(Constants.Constants.UsersDB);
+                    string json = ObjectJsonSerializer.SerializeForPage(usersId);
+                    await current.WriteAllTextAsync(json);
+                });
+            }
+        }
+
+        public async Task DeleteUserChatAsync(string i_UserID)
+        {
+            IFile deleted = await openMessagesDB(i_UserID);
+            await deleted.DeleteAsync();
+            List<string> usersID = await GetUsersIDsInDB();
+            usersID.Remove(i_UserID);
+            if(usersID.Count == 0)
+            {
+                IFile current = await openMessagesDB(Constants.Constants.UsersDB);
+                await current.DeleteAsync();
+                return;
+            }
+
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                IFile current = await openMessagesDB(Constants.Constants.UsersDB);
+                string json = ObjectJsonSerializer.SerializeForPage(usersID);
+                await current.WriteAllTextAsync(json);
+            });
+        }
+
+        public async Task<List<string>> GetUsersIDsInDB()
+        {
+            IFile current = await openMessagesDB(Constants.Constants.UsersDB);
+            string json = await current.ReadAllTextAsync();
+            return ObjectJsonSerializer.DeserializeForPage<List<string>>(json);
+        }
+
+        public async Task<List<Message>> GetItemsAsync(string i_ToID)
+        {
+            List<Message> messages = await getDB(i_ToID);
+            return messages;
+        }
+
+        public async Task SaveItemAsync(Message i_Item, string i_ToID)
+        {
+            List<Message> messages = await getDB(i_ToID);
+            messages.Insert(0, i_Item);
+            setDB(messages, i_ToID);
+        }
+
+        public async Task UpdateSentItemAsync(Message i_Item, string i_ToID)
+        {
+            List<Message> messages = await getDB(i_ToID);
+            foreach(Message msg in messages)
+            {
+                if (msg.Equals(i_Item))
+                {
+                    msg.MessageSent = true;
+                    break;
+                }
+            }
+
+            setDB(messages, i_ToID);
+        }
+
+        public async Task DeleteItemAsync(Message i_Item, string i_ToID)
+        {
+            List<Message> messages = await getDB(i_ToID);
+            messages = messages.Where(msg => msg.Equals(i_Item) == false).ToList();
+            setDB(messages, i_ToID);
+        }
+
+        private async Task<IFolder> createMessagesFolder()
+        {
+            IFolder root = PCLStorage.FileSystem.Current.LocalStorage;
+            return await root.CreateFolderAsync("Messages", CreationCollisionOption.OpenIfExists);
+        }
+
+        private async Task<IFile> openMessagesDB(string i_ToID)
+        {
+            IFolder current = await createMessagesFolder();
+            return await current.CreateFileAsync(i_ToID, CreationCollisionOption.OpenIfExists); ;
+        }
+
+        private async Task<List<Message>> getDB(string i_ToID)
+        {
+            IFile current = await openMessagesDB(i_ToID);
+            string json = await current.ReadAllTextAsync();
+            List<Message> messages;
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                messages = new List<Message>();
+            }
+            else
+            {
+                messages = ObjectJsonSerializer.DeserializeForPage<List<Message>>(json);
+            }
+
+            return messages;
+        }
+
+        private void setDB(List<Message> i_Data, string i_ToID)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                IFile current = await openMessagesDB(i_ToID);
+                string json = ObjectJsonSerializer.SerializeForPage(i_Data);
+                await current.WriteAllTextAsync(json);
+            });
         }
         #endregion
     }

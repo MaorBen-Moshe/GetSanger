@@ -15,6 +15,13 @@ namespace GetSanger.Droid.Services
         {
             FirebaseUser user = getUser();
 
+            if (user == null)
+            {
+                await FirebaseAuth.Instance.SignInAnonymouslyAsync();
+                user = getUser();
+            }
+
+
             GetTokenResult getTokenResult = (GetTokenResult) await user.GetIdToken(true);
             string token = getTokenResult.Token;
 
@@ -67,11 +74,6 @@ namespace GetSanger.Droid.Services
         public string GetGoogleClientId()
         {
             return "889764842790-5125j7nj3p06j7ffivd4765ctvht9cnk.apps.googleusercontent.com";
-        }
-
-        public async Task SignInAnonymouslyAsync()
-        {
-            await FirebaseAuth.Instance.SignInAnonymouslyAsync();
         }
 
         private FirebaseUser getUser()

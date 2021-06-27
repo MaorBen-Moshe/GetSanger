@@ -18304,19 +18304,16 @@ namespace GetSanger.Droid
 			public const int ratingStarOn2x = 2131165377;
 			
 			// aapt resource value: 0x7F0700C2
-			public const int rolling = 2131165378;
+			public const int test_custom_background = 2131165378;
 			
 			// aapt resource value: 0x7F0700C3
-			public const int test_custom_background = 2131165379;
+			public const int tooltip_frame_dark = 2131165379;
 			
 			// aapt resource value: 0x7F0700C4
-			public const int tooltip_frame_dark = 2131165380;
+			public const int tooltip_frame_light = 2131165380;
 			
 			// aapt resource value: 0x7F0700C5
-			public const int tooltip_frame_light = 2131165381;
-			
-			// aapt resource value: 0x7F0700C6
-			public const int whatsapp = 2131165382;
+			public const int whatsapp = 2131165381;
 			
 			static Drawable()
 			{

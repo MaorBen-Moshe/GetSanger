@@ -20,6 +20,12 @@ namespace GetSanger.iOS.Services
         {
             User user = getUser();
 
+            if (user == null)
+            {
+                await Auth.DefaultInstance.SignInAnonymouslyAsync();
+                user = getUser();
+            }
+
             string idToken = await user.GetIdTokenAsync(true);
 
             return idToken;
@@ -77,11 +83,6 @@ namespace GetSanger.iOS.Services
         public string GetGoogleClientId()
         {
             throw new NotImplementedException();
-        }
-
-        public async Task SignInAnonymouslyAsync()
-        {
-            await Auth.DefaultInstance.SignInAnonymouslyAsync();
         }
     }
 }

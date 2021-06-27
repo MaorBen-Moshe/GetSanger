@@ -35,14 +35,22 @@ namespace GetSanger.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+            
             Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
+            ImageCircleRenderer.Init();
+            
+            
+
             //TEMPORARY
             FirebaseMessaging.Instance.SubscribeToTopic("Test");
+
+
+
             base.OnCreate(savedInstanceState);
             LoadApplication(new App());
             await m_PushService.PushHelper(Intent, this);

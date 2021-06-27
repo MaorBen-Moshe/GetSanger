@@ -23,7 +23,7 @@
                        FontSize="Title" 
                        FontAttributes="Italic"/>
             </StackLayout>
-            <Grid AbsoluteLayout.LayoutBounds="0.5,0.3, 0.5, 0.05" 
+            <Grid AbsoluteLayout.LayoutBounds="0.5,0.4, 0.5, 0.05" 
                   AbsoluteLayout.LayoutFlags="All">
                 <Label Text="Client" Grid.Column="0"
                        FontAttributes="Bold"
@@ -47,7 +47,7 @@
                 </Label>
             </Grid>
 
-            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.5, 1, 0.4"
+            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.7, 1, 0.4"
                          AbsoluteLayout.LayoutFlags="All">
                 <Button Text="Edit Profile" Command="{Binding EditProfileCommand}" Grid.Row="0"/>
                 <Button Text="My Ratings" Command="{Binding MyRatingsCommand}" Grid.Row="1"/>

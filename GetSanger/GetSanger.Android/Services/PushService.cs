@@ -28,6 +28,7 @@ namespace GetSanger.Droid.Services
 
         internal async Task PushHelper(Intent intent, MainActivity invoker)
         {
+
             if (intent.Extras != null)
             {
                 string json = null;
