@@ -7,11 +7,7 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
-using GetSanger.Interfaces;
-using GetSanger.Views;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels
 {
@@ -56,7 +52,6 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
-        public ICommand CallCommand { get; set; }
 
         public ICommand SendMessageCommand { get; set; }
 
@@ -86,8 +81,7 @@ namespace GetSanger.ViewModels
         }
 
         private void setCommands()
-        {
-            CallCommand = new Command(callUser);
+        { 
             AddRatingCommand = new Command(addRating);
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
@@ -141,18 +135,6 @@ namespace GetSanger.ViewModels
             }
             
             return (avg > 0) ? avg : 1;
-        }
-
-        private async void callUser(object i_Param)
-        {
-            if (!string.IsNullOrEmpty(CurrentUser.PersonalDetails.Phone))
-            {
-                r_DialService.PhoneNumber = CurrentUser.PersonalDetails.Phone;
-                r_DialService.Call();
-                return;
-            }
-
-            await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
         }
 
         private async void sendMessageToUser(object i_Param)
