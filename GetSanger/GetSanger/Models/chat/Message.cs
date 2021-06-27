@@ -1,4 +1,5 @@
 ﻿using GetSanger.Services;
+using SQLite;
 using System;
 using System.Windows.Input;
 
@@ -11,11 +12,20 @@ namespace GetSanger.Models.chat
         private string m_ToId; // who receive the message
         private DateTime m_TimeSent;
         private bool m_MessageSent;
+        private int m_MessageId;
 
         #region ViewCellCommand
         // the only way that worked to bind the view cell(in a separate file) to the command
+        [Ignore]
         public ICommand DeleteMessageCommand { get; set; }
         #endregion
+
+        [PrimaryKey, AutoIncrement]
+        public int MessageId
+        {
+            get => m_MessageId;
+            set => SetStructProperty(ref m_MessageId, value);
+        }
 
         public string Text
         {

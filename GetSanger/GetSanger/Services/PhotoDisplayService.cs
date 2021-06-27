@@ -54,8 +54,11 @@ namespace GetSanger.Services
                 using var stream = new MemoryStream(content);
                 var destStream = new MemoryStream();
                 await stream.CopyToAsync(destStream);
-                await m_StorageHelper.SetUserProfileImage(i_User, destStream);
-                await FireStoreHelper.UpdateUser(i_User);
+                if(i_User.ProfilePictureUri == null)
+                {
+                    await m_StorageHelper.SetUserProfileImage(i_User, destStream);
+                    await FireStoreHelper.UpdateUser(i_User);
+                }
             }
         }
 

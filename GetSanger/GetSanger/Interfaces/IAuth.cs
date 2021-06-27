@@ -14,5 +14,6 @@ namespace GetSanger.Interfaces
         Task SignInWithCustomToken(string i_Token);
         bool IsAnonymousUser();
         string GetGoogleClientId();
+        Task SignInAnonymouslyAsync();
     }
 }

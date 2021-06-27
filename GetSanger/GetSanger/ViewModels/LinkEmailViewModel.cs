@@ -11,7 +11,7 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private string m_Email;
-        private string m_password;
+        private string m_Password;
         #endregion
 
         #region Properties
@@ -23,8 +23,8 @@ namespace GetSanger.ViewModels
 
         public string Password
         {
-            get => m_Email;
-            set => SetClassProperty(ref m_password, value);
+            get => m_Password;
+            set => SetClassProperty(ref m_Password, value);
         }
         #endregion
 
@@ -65,6 +65,7 @@ namespace GetSanger.ViewModels
                 {
                     await AuthHelper.LinkWithEmailAndPassword(Email, Password);
                     await r_PageService.DisplayAlert("Success", $"Your account has linked with {Email}", "Thanks");
+                    r_LoadingService.HidePopup();
                     await GoBack();
                 }
                 else
@@ -74,11 +75,8 @@ namespace GetSanger.ViewModels
             }
             catch(Exception e)
             {
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
-            }
-            finally
-            {
                 r_LoadingService.HidePopup();
+                await r_PageService.DisplayAlert("Error", e.Message, "OK");
             }
         }
         #endregion

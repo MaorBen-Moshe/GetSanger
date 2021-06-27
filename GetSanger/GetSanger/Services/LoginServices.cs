@@ -35,6 +35,14 @@ namespace GetSanger.Services
                 {
                     AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
                     AppManager.Instance.ConnectedUser.UserLocation ??= await m_Location.GetCurrentLocation();
+                    PushServices pushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
+
+                    bool isRegistrationTokenChanged = await pushService.IsRegistrationTokenChanged();
+                    if (isRegistrationTokenChanged)
+                    {
+                        AppManager.Instance.ConnectedUser.RegistrationToken = await pushService.GetRegistrationToken();
+                    }
+
                     await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                     AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
                     if (mode == null)
@@ -51,20 +59,11 @@ namespace GetSanger.Services
                 }
                 else
                 {
-                    try
-                    {
-                        AppManager.Instance.ConnectedUser = new User {UserId = userId};
-                        //string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
-                        string json = null;
-                        await Task.Delay(1500);
-                        Application.Current.MainPage = new AuthShell();
-                        await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}&userJson={json}");
-                    }
-                    catch (Exception e)
-                    {
-                        string message = e.Message;
-                        Console.WriteLine(message);
-                    }
+                    AppManager.Instance.ConnectedUser = new User {UserId = userId};
+                    string json = null;
+                    await Task.Delay(1500);
+                    Application.Current.MainPage = new AuthShell();
+                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}&userJson={json}");
                 }
             }
             else
@@ -88,9 +87,20 @@ namespace GetSanger.Services
                     verified = await AuthHelper.IsVerifiedEmail();
                     AppManager.Instance.ConnectedUser = user;
                     AppManager.Instance.ConnectedUser.UserLocation ??= await m_Location.GetCurrentLocation();
+                    PushServices pushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
+
+                    bool isRegistrationTokenChanged = await pushService.IsRegistrationTokenChanged();
+                    if (isRegistrationTokenChanged)
+                    {
+                        AppManager.Instance.ConnectedUser.RegistrationToken = await pushService.GetRegistrationToken();
+                    }
+
                     await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+
                     if (verified)
                     {
+                        pushService.SubscribeUser(AppManager.Instance.ConnectedUser.UserId);
+
                         if (i_Mode != null) // we are here from mode page or from auto login
                         {
                             SetMode((AppMode) i_Mode);

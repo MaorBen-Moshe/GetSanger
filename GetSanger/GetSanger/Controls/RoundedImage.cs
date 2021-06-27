@@ -1,6 +1,7 @@
 ﻿using FFImageLoading;
 using FFImageLoading.Cache;
 using FFImageLoading.Forms;
+using FFImageLoading.Work;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -63,17 +64,17 @@ namespace GetSanger.Controls
                                                          validateValue: null,
                                                          propertyChanged: RadiusPropertyChanged);
 
-        public ImageSource ImageSource
+        public Xamarin.Forms.ImageSource ImageSource
         {
-            get => (ImageSource)GetValue(ImageSourceProperty);
+            get => (Xamarin.Forms.ImageSource)GetValue(ImageSourceProperty);
             set => SetValue(ImageSourceProperty, value);
         }
 
         public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(
                                                          propertyName: "ImageSource",
-                                                         returnType: typeof(ImageSource),
+                                                         returnType: typeof(Xamarin.Forms.ImageSource),
                                                          declaringType: typeof(RoundedImage),
-                                                         defaultValue: ImageSource.FromFile("profile.png"),
+                                                         defaultValue: Xamarin.Forms.ImageSource.FromFile("profile.png"),
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
                                                          propertyChanged: imagePropertyChanged);
@@ -127,7 +128,8 @@ namespace GetSanger.Controls
                     VerticalOptions = LayoutOptions.Center,
                     Aspect = Aspect.AspectFill,
                     FadeAnimationEnabled = true,
-                    BitmapOptimizations = true
+                    BitmapOptimizations = true,  
+                    LoadingPlaceholder = Xamarin.Forms.ImageSource.FromFile("rolling.gif")
                 }
             };
 
@@ -144,7 +146,7 @@ namespace GetSanger.Controls
 
         private static void imagePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            if (!(bindable is RoundedImage thisInstance) || !(newValue is ImageSource newImageSource))
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is Xamarin.Forms.ImageSource newImageSource))
             {
                 return;
             }
@@ -152,7 +154,7 @@ namespace GetSanger.Controls
             setImage(thisInstance, newImageSource);
         }
 
-        private async static void setImage(RoundedImage bindable, ImageSource i_NewSource)
+        private async static void setImage(RoundedImage bindable, Xamarin.Forms.ImageSource i_NewSource)
         {
             if (!bindable.IsCacheEnable)
             {

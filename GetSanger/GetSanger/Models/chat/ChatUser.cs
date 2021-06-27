@@ -1,22 +1,30 @@
 ﻿using GetSanger.Services;
+using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GetSanger.Models.chat
 {
     public class ChatUser : PropertySetter
     {
         #region Fields
-        private User m_User;
+        private string m_UserId;
         private DateTime m_LastMessage;
+        private int m_Id = 0;
         #endregion
 
         #region Properties
-        public User User
+
+        [PrimaryKey, AutoIncrement]
+        public int DbId
         {
-            get => m_User;
-            set => SetClassProperty(ref m_User, value);
+            get => m_Id;
+            set => SetStructProperty(ref m_Id, value);
+        }
+
+        public string UserId
+        {
+            get => m_UserId;
+            set => SetClassProperty(ref m_UserId, value);
         }
 
         public DateTime LastMessage

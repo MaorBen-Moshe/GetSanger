@@ -163,49 +163,42 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior(object i_Param) // when move from email page back to registration page
         {
-            try
+            if (IsFacebookGmail == false && InPersonalPage == true)
             {
-                if (IsFacebookGmail == false && InPersonalPage == true)
+                await GoBack();
+            }
+            else
+            {
+                PropertyInfo[] properties = GetType()
+                    .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+                foreach (var property in properties)
                 {
-                    await GoBack();
-                }
-                else
-                {
-                    PropertyInfo[] properties = GetType()
-                        .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-                    foreach (var property in properties)
+                    if (property.PropertyType.Equals(typeof(ICommand))
+                        || property.Name.Equals(nameof(GenderItems))
+                        || property.Name.Equals(nameof(MaxDatePicker)))
                     {
-                        if (property.PropertyType.Equals(typeof(ICommand)) 
-                            || property.Name.Equals(nameof(GenderItems))
-                            || property.Name.Equals(nameof(MaxDatePicker)))
+                        continue;
+                    }
+                    else if (IsFacebookGmail && (property.Name.Equals(nameof(Email)) ||
+                                                 property.Name.Equals(nameof(Password)) ||
+                                                 property.Name.Equals(nameof(ConfirmPassword))))
+                    {
+                        continue;
+                    }
+                    else if (property.Name.Equals(nameof(CategoriesItems)))
+                    {
+                        foreach (var cell in CategoriesItems)
                         {
-                            continue;
-                        }
-                        else if (IsFacebookGmail && (property.Name.Equals(nameof(Email)) ||
-                                                     property.Name.Equals(nameof(Password)) ||
-                                                     property.Name.Equals(nameof(ConfirmPassword))))
-                        {
-                            continue;
-                        }
-                        else if (property.Name.Equals(nameof(CategoriesItems)))
-                        {
-                            foreach (var cell in CategoriesItems)
-                            {
-                                cell.Checked = false;
-                            }
-
-                            continue;
+                            cell.Checked = false;
                         }
 
-                        property.SetValue(this, null);
+                        continue;
                     }
 
-                    await GoBack();
+                    property.SetValue(this, null);
                 }
-            }
-            catch(Exception e)
-            {
 
+                await GoBack();
             }
         }
 
@@ -271,7 +264,7 @@ namespace GetSanger.ViewModels
             try
             {
                 CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
-                await RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(CreatedUser));
+                await r_PhotoDisplay.TryGetPictureFromStream(CreatedUser);
                 PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             }
             catch
