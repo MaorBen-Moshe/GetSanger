@@ -130,7 +130,7 @@ namespace GetSanger.ViewModels
 
         private async void imageChanged(object i_Param)
         {
-            await RunTaskWhileLoading(r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser), "Saving...");
+            await r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser);
             ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
         }
 
