@@ -28,7 +28,7 @@
             <Label Text="Send"
                Grid.Row="0"
                Grid.Column="1"
-               BackgroundColor="Transparent"
+               BackgroundColor="AliceBlue"
                VerticalTextAlignment="Center">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer

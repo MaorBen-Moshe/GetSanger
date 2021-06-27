@@ -1,9 +1,7 @@
 ﻿using GetSanger.Constants;
-using GetSanger.Models;
 using GetSanger.Models.chat;
 using GetSanger.Services;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -17,7 +15,7 @@ namespace GetSanger.Controls
 
         #region Methods
 
-        protected async override void OnQueryChanged(string oldValue, string newValue)
+        protected override void OnQueryChanged(string oldValue, string newValue)
         {
             base.OnQueryChanged(oldValue, newValue);
 
@@ -27,17 +25,9 @@ namespace GetSanger.Controls
             }
             else
             {
-                ObservableCollection<ChatUser> newSource = new ObservableCollection<ChatUser>();
-                foreach(var current in Source)
-                {
-                    User user = await FireStoreHelper.GetUser(current.UserId);
-                    if (user.PersonalDetails.NickName.ToLower().Contains(newValue.ToLower()))
-                    {
-                        newSource.Add(current);
-                    }
-                }
-
-                ItemsSource = newSource;
+                ItemsSource = Source
+                    .Where(user => user.User.PersonalDetails.NickName.ToLower().Contains(newValue.ToLower()))
+                    .ToList();
             }
         }
 
@@ -50,7 +40,7 @@ namespace GetSanger.Controls
 
             ShellNavigationState state = (App.Current.MainPage as Shell).CurrentState;
             // The following route works because route names are unique in this application.
-            string json = ObjectJsonSerializer.SerializeForPage(await FireStoreHelper.GetUser(((ChatUser)item).UserId));
+            string json = ObjectJsonSerializer.SerializeForPage(((ChatUser)item).User);
             await Shell.Current.GoToAsync(ShellRoutes.ChatView + $"?user={json}");
         }
 

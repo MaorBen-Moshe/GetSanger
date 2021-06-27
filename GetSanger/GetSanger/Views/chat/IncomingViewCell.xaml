@@ -10,9 +10,6 @@
               Padding="10"
               HasShadow="false"
               Margin="10,10,80,10"
-              IsClippedToBounds="True"
-              CornerRadius="30"
-              BorderColor="Black"
               effects:LongPressedEffect.Command="{Binding DeleteMessageCommand}"
               effects:LongPressedEffect.CommandParameter="{Binding .}">
 

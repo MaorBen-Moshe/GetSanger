@@ -99,7 +99,7 @@ namespace GetSanger.ViewModels.chat
             UserPicture = r_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
             DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-            List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
+            List<Message> messages = await DB.GetItemsAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>((messages.Select(item => { item.DeleteMessageCommand = DeleteMessageCommand; return item; })).ToList());
             sendUnsentMessages();
             ShowScrollTap = false;
@@ -142,7 +142,7 @@ namespace GetSanger.ViewModels.chat
                     await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
                     // adding the message to the local DB
                     msg.MessageSent = true; // removing the '!' in the UI does not work
-                    await DB.AddMessageAsync(msg, msg.ToId);
+                    await DB.SaveItemAsync(msg, msg.ToId);
                     TextToSend = string.Empty;
                 }
                 catch
@@ -165,7 +165,7 @@ namespace GetSanger.ViewModels.chat
                     if (msg.MessageSent == false)
                     {
                         await RunTaskWhileLoading(r_PushService.SendToDevice(msg.ToId, msg, msg.GetType(), "Message received", $"{ AppManager.Instance.ConnectedUser.PersonalDetails.NickName} sent you a message."));
-                        await DB.UpdateMessageAsync(msg);
+                        await DB.UpdateSentItemAsync(msg, msg.ToId);
                         msg.MessageSent = true;
                     }
                 }
@@ -180,8 +180,12 @@ namespace GetSanger.ViewModels.chat
                 if (answer)
                 {
                     Message message = i_Param as Message;
-                    await DB.DeleteMessageAsync(message);
+                    await DB.DeleteItemAsync(message, UserToChat.UserId);
                     MessagesSource.Remove(message);
+                    if(MessagesSource.Count == 0)
+                    {
+                        await DB.DeleteUserChatAsync(UserToChat.UserId);
+                    }
                 }
             }
             catch

@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using GetSanger.Exceptions;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace GetSanger.Services
@@ -105,7 +103,7 @@ namespace GetSanger.Services
             return await sr_Push.GetRegistrationToken();
         }
 
-        public static void handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
+        public static void handleMessageReceived(string i_Title, string i_Body ,IDictionary<string, string> i_Message)
         {
             if (AuthHelper.IsLoggedIn() && i_Message != null && i_Message.ContainsKey("Type"))
             {
@@ -149,7 +147,6 @@ namespace GetSanger.Services
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
-
             if (choice == true)
             {
                 await navigation.NavigateTo(ShellRoutes.MyRatings);
@@ -162,17 +159,36 @@ namespace GetSanger.Services
             string txt = i_Body + "\nMove to chat page?";
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             ChatDatabase.ChatDatabase db = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
-            await db.AddMessageAsync(message, message.FromId);
+            checkIfFirstMessageReceived(message, db);
+            await db.SaveItemAsync(message, message.FromId);
 
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             if (i_Title != null)
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
             }
-
             if (choice == true)
             {
                 await navigation.NavigateTo(ShellRoutes.ChatView + $"?user={message.FromId}");
+            }
+        }
+
+        private async static void checkIfFirstMessageReceived(Message i_Message, ChatDatabase.ChatDatabase i_DB)
+        {
+            bool found = false;
+            List<string> usersInDB = await i_DB.GetUsersIDsInDB();
+            foreach (var chatUserID in usersInDB)
+            {
+                if (chatUserID.Equals(i_Message.FromId))
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) // first time
+            {
+                await i_DB.SaveUserAsync(i_Message.FromId);
             }
         }
 
@@ -187,7 +203,6 @@ namespace GetSanger.Services
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
-
             if (choice == true)
             {
                 if (i_Mode != -1)
@@ -221,7 +236,6 @@ namespace GetSanger.Services
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
-
             if (choice == true)
             {
                 AppManager.Instance.CurrentMode = AppMode.Sanger;
@@ -256,57 +270,6 @@ namespace GetSanger.Services
             }
 
             return type;
-        }
-
-        public async Task<bool> IsRegistrationTokenChanged()
-        {
-            User connectedUser = AppManager.Instance.ConnectedUser;
-
-            return await GetRegistrationToken() != connectedUser.RegistrationToken;
-        }
-
-        public async void UnsubscribeUser(string i_UserId)
-        {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UnsubscribeUser";
-
-                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
-                {
-                    ["UserId"] = i_UserId
-                };
-
-                string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
-                string idToken = await AuthHelper.GetIdTokenAsync();
-
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            }
-            else
-            {
-                throw new NoInternetException("No Internet");
-            }
-        }
-
-        public async void SubscribeUser(string i_UserId)
-        {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SubscribeUser";
-
-                Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
-                {
-                    ["UserId"] = i_UserId
-                };
-
-                string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
-                string idToken = await AuthHelper.GetIdTokenAsync();
-
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-            }
-            else
-            {
-                throw new NoInternetException("No Internet");
-            }
         }
     }
 }

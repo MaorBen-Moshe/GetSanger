@@ -43,6 +43,7 @@ namespace GetSanger.Droid.Services
         internal void PushHelper(Intent intent,
             MainActivity invoker)
         {
+
             if (intent.Extras != null)
             {
                 string json = null;
