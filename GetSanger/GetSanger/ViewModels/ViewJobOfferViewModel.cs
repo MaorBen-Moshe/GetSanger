@@ -86,9 +86,9 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public override void Appearing()
+        public override async void Appearing()
         {
-            initData();
+            await initData();
         }
 
         public void Disappearing()
@@ -100,9 +100,9 @@ namespace GetSanger.ViewModels
             ProfileCommand = new Command(moveProfile);
         }
 
-        private async void initData()
+        private async Task initData()
         {
-            r_LoadingService.ShowPopup();
+            //r_LoadingService.ShowPopup();
             ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
 
             if (Job.Location != null)
@@ -118,7 +118,7 @@ namespace GetSanger.ViewModels
             }
 
             IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
-            r_LoadingService.HidePopup();
+            //r_LoadingService.HidePopup();
         }
 
         private async void moveProfile(object i_Param)

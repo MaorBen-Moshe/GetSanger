@@ -73,9 +73,9 @@ namespace GetSanger.Droid.Services.FCM
         private void handleMessageReceived(RemoteMessage i_Message)
         {
             // validation of data first
-            MainThread.BeginInvokeOnMainThread(() =>
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                PushServices.handleMessageReceived(i_Message.GetNotification().Title, i_Message.GetNotification().Body, i_Message.Data);
+                await PushServices.handleMessageReceived(i_Message.GetNotification().Title, i_Message.GetNotification().Body, i_Message.Data);
             });
             
         }

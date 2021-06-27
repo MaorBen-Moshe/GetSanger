@@ -1,28 +1,14 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using GetSanger.Interfaces;
 using Xamarin.Forms;
-using GetSanger.Droid.Services;
 using Android.Gms.Common;
-using Android.Content.PM;
 using System.Threading.Tasks;
-using System.IO;
 using Android.Gms.Extensions;
-using Android.Gms.Tasks;
 using Firebase.Messaging;
-using Java.Lang;
-using Task = Android.Gms.Tasks.Task;
 using GetSanger.Services;
-using GetSanger.Constants;
-using Xamarin.Essentials;
 
 [assembly: Dependency(typeof(GetSanger.Droid.Services.PushService))]
 
@@ -34,14 +20,13 @@ namespace GetSanger.Droid.Services
 
         public async Task<string> GetRegistrationToken()
         {
-            Task getTokenTask = FirebaseMessaging.Instance.GetToken();
+            Android.Gms.Tasks.Task getTokenTask = FirebaseMessaging.Instance.GetToken();
             string token = (string) await getTokenTask;
 
             return token;
         }
 
-        internal void PushHelper(Intent intent,
-            MainActivity invoker)
+        internal async Task PushHelper(Intent intent, MainActivity invoker)
         {
             if (intent.Extras != null)
             {
@@ -51,19 +36,23 @@ namespace GetSanger.Droid.Services
                 {
                     var value = intent.Extras.GetString(key);
                     // We can add here more logic as needed
-                    if(key == "Json")
+                    if (key == "Json")
                     {
                         json = value;
                     }
-                    else if(key == "Type")
+                    else if (key == "Type")
                     {
                         type = value;
                     }
                 }
-                Dictionary<string, string> dict = new Dictionary<string, string>();
-                dict["Json"] = json;
-                dict["Type"] = type;
-                PushServices.handleMessageReceived(null, null, dict);
+
+                Dictionary<string, string> dict = new Dictionary<string, string>
+                {
+                    ["Json"] = json,
+                    ["Type"] = type
+                };
+
+                await PushServices.handleMessageReceived(null, null, dict);
             }
 
             if (!IsPlayServicesAvailable(invoker))
@@ -114,6 +103,5 @@ namespace GetSanger.Droid.Services
                 (NotificationManager) Android.App.Application.Context.GetSystemService(Android.Content.Context.NotificationService);
             notificationManager.CreateNotificationChannel(channel);
         }
-
     }
 }
