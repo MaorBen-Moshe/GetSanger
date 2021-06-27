@@ -9,6 +9,7 @@ using Android.Content;
 
 //TEMPORARY
 using Firebase.Messaging;
+using Plugin.CurrentActivity;
 using Android.Views;
 using GetSanger.Services;
 using GetSanger.Droid.Services;
@@ -36,13 +37,12 @@ namespace GetSanger.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             //TEMPORARY
             FirebaseMessaging.Instance.SubscribeToTopic("Test");
             base.OnCreate(savedInstanceState);
-            m_PushService.PushHelper(Intent, this);
-
             LoadApplication(new App());
-            
+            m_PushService.PushHelper(Intent, this);
         }
 
         protected override void OnStart()
