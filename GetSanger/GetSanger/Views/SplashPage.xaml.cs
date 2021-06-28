@@ -32,7 +32,7 @@ namespace GetSanger.Views
                     await DisplayAlert("ERROR", "No Connection.", "Try again");
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 // log errors
             }
