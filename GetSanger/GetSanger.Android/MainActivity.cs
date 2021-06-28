@@ -1,9 +1,6 @@
-﻿using System;
-using Android.App;
-using Android.Content.PM;
+﻿using Android.App;
 using Android.Runtime;
 using Android.OS;
-using Android.Gms.Common;
 using System.Threading.Tasks;
 using System.IO;
 using Android.Content;
@@ -11,12 +8,7 @@ using Android.Content;
 //TEMPORARY
 using Firebase.Messaging;
 using Plugin.CurrentActivity;
-using Android.Views;
-using GetSanger.Services;
 using GetSanger.Droid.Services;
-using Xamarin.Essentials;
-using Xamarin.Forms.Internals;
-using Log = Android.Util.Log;
 
 namespace GetSanger.Droid
 {

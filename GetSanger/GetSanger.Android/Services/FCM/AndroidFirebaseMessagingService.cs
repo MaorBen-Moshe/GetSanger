@@ -47,27 +47,27 @@ namespace GetSanger.Droid.Services.FCM
 
         void SendNotification(string messageBody, IDictionary<string, string> data)
         {
-            var intent = new Intent(this, typeof(MainActivity));
-            intent.AddFlags(ActivityFlags.ClearTop);
-            foreach (var key in data.Keys)
-            {
-                intent.PutExtra(key, data[key]);
-            }
+            //var intent = new Intent(this, typeof(MainActivity));
+            //intent.AddFlags(ActivityFlags.ClearTop);
+            //foreach (var key in data.Keys)
+            //{
+            //    intent.PutExtra(key, data[key]);
+            //}
 
-            var pendingIntent = PendingIntent.GetActivity(this,
-                                                          MainActivity.NOTIFICATION_ID,
-                                                          intent,
-                                                          PendingIntentFlags.OneShot);
+            //var pendingIntent = PendingIntent.GetActivity(this,
+            //                                              MainActivity.NOTIFICATION_ID,
+            //                                              intent,
+            //                                              PendingIntentFlags.OneShot);
 
-            var notificationBuilder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID)
-                                      .SetSmallIcon(Resource.Drawable.notificationPic)
-                                      .SetContentTitle("FCM Message")
-                                      .SetContentText(messageBody)
-                                      .SetAutoCancel(true)
-                                      .SetContentIntent(pendingIntent);
+            //var notificationBuilder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID)
+            //                          .SetSmallIcon(Resource.Drawable.notificationPic)
+            //                          .SetContentTitle("FCM Message")
+            //                          .SetContentText(messageBody)
+            //                          .SetAutoCancel(true)
+            //                          .SetContentIntent(pendingIntent);
 
-            var notificationManager = NotificationManagerCompat.From(this);
-            notificationManager.Notify(MainActivity.NOTIFICATION_ID, notificationBuilder.Build());
+            //var notificationManager = NotificationManagerCompat.From(this);
+            //notificationManager.Notify(MainActivity.NOTIFICATION_ID, notificationBuilder.Build());
         }
 
         private void handleMessageReceived(RemoteMessage i_Message)
