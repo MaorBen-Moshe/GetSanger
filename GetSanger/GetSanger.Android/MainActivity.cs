@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
@@ -13,6 +14,9 @@ using Plugin.CurrentActivity;
 using Android.Views;
 using GetSanger.Services;
 using GetSanger.Droid.Services;
+using Xamarin.Essentials;
+using Xamarin.Forms.Internals;
+using Log = Android.Util.Log;
 
 namespace GetSanger.Droid
 {
@@ -27,9 +31,8 @@ namespace GetSanger.Droid
 
         public TaskCompletionSource<Stream> PickImageTaskCompletionSource { set; get; }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
-
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
             Instance = this;
@@ -42,7 +45,7 @@ namespace GetSanger.Droid
             FirebaseMessaging.Instance.SubscribeToTopic("Test");
             base.OnCreate(savedInstanceState);
             LoadApplication(new App());
-            m_PushService.PushHelper(Intent, this);
+            await m_PushService.PushHelper(Intent, this);
         }
 
         protected override void OnStart()
@@ -72,7 +75,8 @@ namespace GetSanger.Droid
             base.OnDestroy();
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
+            [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -100,11 +104,10 @@ namespace GetSanger.Droid
             }
         }
 
-        protected override void OnNewIntent(Intent intent)
+        protected override async void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
-            m_PushService.PushHelper(intent, Instance);
+            await m_PushService.PushHelper(intent, Instance);
         }
-
     }
 }

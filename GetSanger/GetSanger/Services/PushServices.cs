@@ -105,7 +105,7 @@ namespace GetSanger.Services
             return await sr_Push.GetRegistrationToken();
         }
 
-        public static void handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
+        public static async Task handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
         {
             if (AuthHelper.IsLoggedIn())
             {
@@ -116,7 +116,7 @@ namespace GetSanger.Services
                         Type type = getTypeOfData(i_Message["Type"]);
                         if (type.Equals(typeof(JobOffer)))
                         {
-                            handleJobOffer(i_Title, i_Body, i_Message["Json"]);
+                            await handleJobOffer(i_Title, i_Body, i_Message["Json"]);
                         }
                         else if (type.Equals(typeof(Models.Activity)))
                         {
@@ -126,15 +126,15 @@ namespace GetSanger.Services
                                 mode = (int) Enum.Parse(typeof(AppMode), i_Message["Mode"]);
                             }
 
-                            handleActivity(i_Title, i_Body, i_Message["Json"], mode);
+                            await handleActivity(i_Title, i_Body, i_Message["Json"], mode);
                         }
                         else if (type.Equals(typeof(Models.chat.Message)))
                         {
-                            handleMessage(i_Title, i_Body, i_Message["Json"]);
+                            await handleMessage(i_Title, i_Body, i_Message["Json"]);
                         }
                         else if (type.Equals(typeof(Models.Rating)))
                         {
-                            handleRating(i_Title, i_Body, i_Message["Json"]);
+                            await handleRating(i_Title, i_Body, i_Message["Json"]);
                         }
                         else
                         {
@@ -145,7 +145,7 @@ namespace GetSanger.Services
             }
         }
 
-        private async static void handleRating(string i_Title, string i_Body, string i_Json)
+        private static async Task handleRating(string i_Title, string i_Body, string i_Json)
         {
             bool choice = true;
             string message = i_Body + "\nGo to profile page to view your ratings?";
@@ -163,7 +163,7 @@ namespace GetSanger.Services
             }
         }
 
-        private async static void handleMessage(string i_Title, string i_Body, string i_Json)
+        private static async Task handleMessage(string i_Title, string i_Body, string i_Json)
         {
             bool choice = true;
             string txt = i_Body + "\nMove to chat page?";
@@ -183,7 +183,7 @@ namespace GetSanger.Services
             }
         }
 
-        private async static void handleActivity(string i_Title, string i_Body, string i_Json, int i_Mode)
+        private static async Task handleActivity(string i_Title, string i_Body, string i_Json, int i_Mode)
         {
             bool choice = true;
             AppMode mode = (AppMode) i_Mode;
@@ -213,7 +213,7 @@ namespace GetSanger.Services
             }
         }
 
-        private async static void handleJobOffer(string i_Title, string i_Body, string i_Json)
+        private static async Task handleJobOffer(string i_Title, string i_Body, string i_Json)
         {
             bool choice = true;
             string message = i_Body + "\nDo you want to navigate the the job offer page?";
