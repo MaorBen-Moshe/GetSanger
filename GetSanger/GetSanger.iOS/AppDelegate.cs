@@ -43,6 +43,7 @@ namespace GetSanger.iOS
             Messaging.SharedInstance.ShouldEstablishDirectChannel = true;
             LoadApplication(new App());
             Firebase.Core.App.Configure();
+            Firebase.Crashlytics.Crashlytics.SharedInstance.Init();
             Messaging.SharedInstance.Delegate = this as Firebase.CloudMessaging.IMessagingDelegate;
 
             RegisterForRemoteNotifications();

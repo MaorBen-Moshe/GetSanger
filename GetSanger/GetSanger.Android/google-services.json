@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "889764842790-5125j7nj3p06j7ffivd4765ctvht9cnk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.companyname.getsanger",
+            "certificate_hash": "0f919cdcc4e62226270c0d441665de9a7704156c"
+          }
+        },
+        {
           "client_id": "889764842790-4sni1ulkm38maitr4h1ibqamchcv8qkl.apps.googleusercontent.com",
           "client_type": 3
         }
