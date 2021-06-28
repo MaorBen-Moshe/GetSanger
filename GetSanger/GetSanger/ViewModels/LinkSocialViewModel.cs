@@ -76,24 +76,26 @@ namespace GetSanger.ViewModels
                 {
                     var page = new LinkEmailPage();
                     await PopupNavigation.Instance.PushAsync(page);
-                    return;
                 }
-
-                r_LoadingService.ShowPopup();
-                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
-                string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
-
-                await r_PhotoDisplay.TryGetPictureFromUri(photoUrl, AppManager.Instance.ConnectedUser);
-                await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
-                SelectedItem = null;
-                r_LoadingService.HidePopup();
-                await PopupNavigation.Instance.PopAsync();
+                else
+                {
+                    r_LoadingService.ShowPopup();
+                    Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
+                    string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
+                    await r_PhotoDisplay.TryGetPictureFromUri(photoUrl, AppManager.Instance.ConnectedUser);
+                    await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
+                    r_LoadingService.HidePopup();
+                    await PopupNavigation.Instance.PopAsync();
+                }
             }
             catch (Exception e)
             {
                 r_LoadingService.HidePopup();
-                SelectedItem = null;
                 await r_PageService.DisplayAlert("Error", e.Message, "OK");
+            }
+            finally
+            {
+                SelectedItem = null;
             }
         }
 
