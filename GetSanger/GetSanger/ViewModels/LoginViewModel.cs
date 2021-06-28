@@ -3,7 +3,9 @@ using GetSanger.Exceptions;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Views.popups;
 using GetSanger.Views.Registration;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -103,7 +105,9 @@ namespace GetSanger.ViewModels
 
         private async void ForgotPasswordClicked(object obj)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
+            var page = new ForgotPasswordPage();
+            await PopupNavigation.Instance.PushAsync(page);
+            //await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
         }
 
         private async void socialClicked(object i_Param)

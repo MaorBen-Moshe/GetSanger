@@ -3,6 +3,8 @@ using GetSanger.Constants;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Views.popups;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -136,7 +138,8 @@ namespace GetSanger.ViewModels
 
         private async void changePassword(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.ChangePassword);
+            var page = new ChangePasswordPage();
+            await PopupNavigation.Instance.PushAsync(page);
         }
 
         private async void deleteAccount()

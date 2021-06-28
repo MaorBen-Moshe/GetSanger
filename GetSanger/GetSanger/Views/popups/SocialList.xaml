@@ -27,16 +27,19 @@
         </ResourceDictionary>
     </popup:PopupPage.Resources>
 
-    <Grid VerticalOptions="Center"
-          HorizontalOptions="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.3*"/>
-            <RowDefinition Height="0.5*"/>
-        </Grid.RowDefinitions>
+    <Frame CornerRadius="10"
+                   Padding="10"
+                   Margin="20, 0"
+                   BorderColor="Red"
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand">
         <ListView ItemsSource="{Binding Socials}"
                   HasUnevenRows="True"
-                  BackgroundColor="WhiteSmoke"
-                  Grid.Row="1">
+                  BackgroundColor="GhostWhite"
+                  SelectedItem="{Binding SelectedItem}"
+                  HeightRequest="200"
+                  SeparatorVisibility="None">
             <ListView.Behaviors>
                 <behaviors:EventToCommandBehavior Command="{Binding LinkSocialCommand}" 
                                               EventName="ItemSelected"
@@ -54,12 +57,12 @@
                                    Grid.Column="1"
                                    Grid.ColumnSpan="1"
                                HorizontalOptions="CenterAndExpand"
-                               WidthRequest="20"
-                               HeightRequest="20"/>
+                               WidthRequest="30"
+                               HeightRequest="30"/>
                             <Label Text="{Binding SocialProvider}"
                                    BackgroundColor="Transparent"
                                    Grid.Column="2"
-                                   FontSize="12"
+                                   FontSize="20"
                                    FontAttributes="Bold"
                                    Margin="0,5"
                                    Grid.ColumnSpan="2"
@@ -69,6 +72,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </Grid>
+    </Frame>
 
 </popup:PopupPage>

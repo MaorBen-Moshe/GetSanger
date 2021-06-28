@@ -1,4 +1,5 @@
 ﻿using GetSanger.Constants;
+using GetSanger.Extensions;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
@@ -214,8 +215,15 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(CreatedUser.Email, Password));
-                    await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
+                    if (Password.IsValidPassword())
+                    {
+                        await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(CreatedUser.Email, Password));
+                        await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
+                    }
+                    else
+                    {
+                        await r_PageService.DisplayAlert("Note", "Password of at least 6 chars must contain at list: one capital letter, one lower letter, one digit, one special character", "OK");
+                    }
                 }
                 catch (Exception e)
                 {

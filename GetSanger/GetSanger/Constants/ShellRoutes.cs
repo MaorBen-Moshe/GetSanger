@@ -16,7 +16,6 @@
 
         public const string Login = "login";
 
-        public const string ForgotPassword = "forgotPassword";
         #endregion
 
         public const string Categories = "categories";
@@ -42,8 +41,6 @@
         public const string LoadingPage = "loading";
 
         public const string EditProfile = "editProfile";
-
-        public const string ChangePassword = "changePassword";
 
         public const string AddRating = "addRating";
 

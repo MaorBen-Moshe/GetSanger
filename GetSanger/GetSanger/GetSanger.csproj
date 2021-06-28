@@ -85,7 +85,7 @@
     <EmbeddedResource Update="Views\CategoriesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\ChangePasswordPage.xaml">
+    <EmbeddedResource Update="Views\popups\ChangePasswordPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\chat\ChatInputBarView.xaml">

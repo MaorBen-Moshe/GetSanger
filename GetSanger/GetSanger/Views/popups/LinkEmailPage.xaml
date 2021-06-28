@@ -25,6 +25,7 @@
     
     <StackLayout VerticalOptions="CenterAndExpand" 
                  Padding="20"
+                 Margin="20"
                  BackgroundColor="WhiteSmoke">
         <Label Text="Link With Email:"
                    HorizontalOptions="CenterAndExpand"

@@ -1,4 +1,6 @@
-﻿using GetSanger.Services;
+﻿using GetSanger.Extensions;
+using GetSanger.Services;
+using Rg.Plugins.Popup.Services;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -58,15 +60,21 @@ namespace GetSanger.ViewModels
             bool isUserOldPassword = await AuthHelper.IsUserPassword(OldPassword);
             if (isUserOldPassword)
             {
-                // also need to check if the new password follow the convention of right password.
                 if (NewPassword.Equals(ConfirmPassword))
                 {
                     try
                     {
-                        await RunTaskWhileLoading(AuthHelper.ChangePassword(OldPassword, NewPassword));
-                        await r_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
-                        await GoBack();
-                        return;
+                        if (NewPassword.IsValidPassword())
+                        {
+                            await RunTaskWhileLoading(AuthHelper.ChangePassword(OldPassword, NewPassword));
+                            await r_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
+                            await PopupNavigation.Instance.PopAsync();
+                            return;
+                        }
+                        else
+                        {
+                            await r_PageService.DisplayAlert("Note", "Password of at least 6 chars must contain at list: one capital letter, one lower letter, one digit, one special character" , "OK");
+                        }
                     }
                     catch
                     {
