@@ -56,23 +56,20 @@ namespace GetSanger.ViewModels
 
         private async void sendNotes()
         {
-            if(string.IsNullOrEmpty(Notes) == false)
+            CurrentJob.SangerNotes = Notes;
+            Activity activity = new Activity
             {
-                CurrentJob.SangerNotes = Notes;
-                Activity activity = new Activity
-                {
-                    JobDetails = CurrentJob,
-                    SangerID = AuthHelper.GetLoggedInUserId(),
-                    ClientID = CurrentJob.ClientID,
-                    Title = "No title", // need to change
-                    Status = ActivityStatus.Pending,
-                    LocationActivatedBySanger = false
-                };
+                JobDetails = CurrentJob,
+                SangerID = AuthHelper.GetLoggedInUserId(),
+                ClientID = CurrentJob.ClientID,
+                Title = CurrentJob.Title, // need to change
+                Status = ActivityStatus.Pending,
+                LocationActivatedBySanger = false
+            };
 
-                AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
-                await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
-                await GoBack();
-            }
+            AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
+            await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
+            await GoBack();
         }
         #endregion
     }

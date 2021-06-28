@@ -37,6 +37,7 @@ namespace GetSanger.Droid
             ToolbarResource = Resource.Layout.Toolbar;
             Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            Rg.Plugins.Popup.Popup.Init(this);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
@@ -73,6 +74,11 @@ namespace GetSanger.Droid
         protected override void OnDestroy()
         {
             base.OnDestroy();
+        }
+
+        public override void OnBackPressed()
+        {
+            Rg.Plugins.Popup.Popup.SendBackPressed(base.OnBackPressed);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions,

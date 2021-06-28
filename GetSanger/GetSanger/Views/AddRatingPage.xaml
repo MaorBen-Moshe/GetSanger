@@ -11,18 +11,20 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
-        <Converters:EntryMaxLenghtToBoolConverter x:Key="EntryMaxLenghtToBoolConverter"/>
+        <ResourceDictionary>
+            <Converters:EntryMaxLenghtToBoolConverter x:Key="EntryMaxLenghtToBoolConverter"/>
+        </ResourceDictionary>
     </ContentPage.Resources>
 
-
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout HorizontalOptions="CenterAndExpand"
+                 VerticalOptions="CenterAndExpand">
             <Label Text="Choose rating:"/>
             <controls:RatingStars Rating="{Binding NewRating.Score}" IsImageEnabled="True" Review="" 
-                                  Margin="20, 0, 0, 0" Scale="1.8" HorizontalOptions="Center"/> <!--need to implement choosing how many starts to rate-->
+                                  Margin="20, 0, 0, 0" Scale="1.8" HorizontalOptions="Center"/>
             <Frame
-                       VerticalOptions="FillAndExpand"
-                       HasShadow="True">
+                VerticalOptions="FillAndExpand"
+                HasShadow="True">
                 <StackLayout>
                     <Label Text="Describe your experience here:"/>
                     <Editor IsSpellCheckEnabled="True"
@@ -51,8 +53,8 @@
                         <Setter Property="IsEnabled" Value="True"/>
                     </MultiTrigger>
                 </Button.Triggers>
-
             </Button>
         </StackLayout>
     </ContentPage.Content>
+    
 </ContentPage>

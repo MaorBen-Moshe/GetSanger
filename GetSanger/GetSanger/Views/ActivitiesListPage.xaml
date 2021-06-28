@@ -50,7 +50,7 @@
                       IsPullToRefreshEnabled="True" 
                       IsVisible="{Binding IsVisibleViewList}"
                       RefreshCommand="{Binding RefreshingCommand}"
-                      HasUnevenRows="true">
+                      HasUnevenRows="True">
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior Command="{Binding SelectedActivityCommand}" 
                                                           EventName="ItemSelected"

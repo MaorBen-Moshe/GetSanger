@@ -2,10 +2,10 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace GetSanger.Views
+namespace GetSanger.Views.popups
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LinkEmailPage : ContentPage
+    public partial class LinkEmailPage : Rg.Plugins.Popup.Pages.PopupPage
     {
         public LinkEmailPage()
         {

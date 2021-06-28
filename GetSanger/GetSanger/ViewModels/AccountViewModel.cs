@@ -2,6 +2,8 @@
 using GetSanger.Constants;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Views.popups;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -130,47 +132,13 @@ namespace GetSanger.ViewModels
 
         private async void linkSocial(object i_Param)
         {
-            List<eSocialProvider> providers = AppManager.Instance.GetListOfEnumNames(typeof(eSocialProvider))
-                .Select(item => (eSocialProvider) Enum.Parse(typeof(eSocialProvider), item)).ToList();
-            string[] buttons = providers.Select(item => item.ToString()).ToArray();
-            string choice = await r_PageService.DisplayActionSheet("Choose Provider", "Cancel", null, buttons);
-            if (choice.Equals("Cancel") == false)
-            {
-                eSocialProvider parsedProvider = (eSocialProvider) Enum.Parse(typeof(eSocialProvider), choice);
-                providerSelected(parsedProvider);
-            }
+            var page = new SocialList();
+            await PopupNavigation.Instance.PushAsync(page);
         }
 
         private async void myRatings(object i_Param)
         {
             await r_NavigationService.NavigateTo(ShellRoutes.MyRatings);
-        }
-
-        private async void providerSelected(eSocialProvider i_CurrentProvider)
-        {
-            try
-            {
-                r_LoadingService.ShowPopup();
-                if (i_CurrentProvider.Equals(eSocialProvider.Email))
-                {
-                    await r_NavigationService.NavigateTo(ShellRoutes.LinkEmail);
-                    return;
-                }
-
-                Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
-                string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
-
-                await r_PhotoDisplay.TryGetPictureFromUri(photoUrl, AppManager.Instance.ConnectedUser);
-                await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
-            }
-            catch (Exception e)
-            {
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
-            }
-            finally
-            {
-                r_LoadingService.HidePopup();
-            }
         }
 
         #endregion
