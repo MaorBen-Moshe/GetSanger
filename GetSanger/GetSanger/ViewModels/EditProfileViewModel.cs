@@ -133,6 +133,7 @@ namespace GetSanger.ViewModels
         private async void imageChanged(object i_Param)
         {
             await r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser);
+            await FireStoreHelper.UpdateUser(ConnectedUser);
             ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
         }
 
