@@ -79,6 +79,7 @@
     <Compile Include="Rendrers\CustomEditorRendrer.cs" />
     <Compile Include="Rendrers\ExtendedListViewRenderer.cs" />
     <Compile Include="Services\AuthIOs.cs" />
+    <Compile Include="Services\Crashlytics.cs" />
     <Compile Include="Services\LoadingServices.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
     <Compile Include="Services\PushService.cs" />

@@ -106,6 +106,7 @@ namespace GetSanger.Services
             Services.Add(typeof(SocialAdapterService), new SocialAdapterService());
             Services.Add(typeof(LoadingService), new LoadingService());
             Services.Add(typeof(RunTasksService), new RunTasksService());
+            Services.Add(typeof(CrashlyticsService), new CrashlyticsService());
 
             m_UserShell = new UserShell();
             m_SangerShell = new SangerShell();
