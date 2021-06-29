@@ -203,12 +203,16 @@ namespace GetSanger.ViewModels
             });
 
             // when sanger is near to us we want to stop asking for location, 0.3 kilometers
-            if (Location.CalculateDistance(await r_LocationServices.GetCurrentLocation(), sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
+            Location location = await r_LocationServices.GetCurrentLocation();
+            if(location != null)
             {
-                await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
-                r_LocationServices.LeaveTripThread(handleTrip);
-                MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
-                await GoBack();
+                if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
+                {
+                    await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
+                    r_LocationServices.LeaveTripThread(handleTrip);
+                    MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
+                    await GoBack();
+                }
             }
         }
 
@@ -229,6 +233,11 @@ namespace GetSanger.ViewModels
             try
             {
                 Location location = await r_LocationServices.GetCurrentLocation();
+                if(location == null)
+                {
+                    return;
+                }
+
                 Position position = new Position(location.Latitude, location.Longitude);
                 Span = new MapSpan(position, 0.01, 0.01);
                 Pins = new ObservableCollection<Pin>

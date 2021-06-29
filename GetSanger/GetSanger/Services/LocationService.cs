@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GetSanger.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,24 +11,53 @@ namespace GetSanger.Services
     public class LocationService : Service
     {
         private System.Timers.Timer m_Timer;
+        private IPageService m_PageService;
 
         public LocationService()
         {
+            SetDependencies();
         }
 
         public CancellationTokenSource Cts { get; private set; }
 
-        public Task<Location> GetCurrentLocation()
+        public async Task<Location> GetCurrentLocation()
         {
-            Task<Location> location = Geolocation.GetLastKnownLocationAsync();
-            if (location == null)
+            Location location = await Geolocation.GetLastKnownLocationAsync();
+            if (location == null && (await IsLocationGranted()) == PermissionStatus.Granted)
             {
                 GeolocationRequest geoReq = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
                 Cts = new CancellationTokenSource();
-                location = Geolocation.GetLocationAsync(geoReq, Cts.Token);
+                location = await Geolocation.GetLocationAsync(geoReq, Cts.Token);
+            }
+            else
+            {
+                location = null;
             }
 
             return location;
+        }
+
+        public async Task<PermissionStatus> IsLocationGranted()
+        {
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+
+            if(status == PermissionStatus.Granted)
+            {
+                return status;
+            }
+
+            if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
+            {
+                await m_PageService.DisplayAlert("Error", "Please go to your settings and enable the location!", "OK");
+                return status;
+            }
+
+            if (Permissions.ShouldShowRationale<Permissions.LocationWhenInUse>())
+            {
+                await m_PageService.DisplayAlert("Note", "We need your Location to be able to give the best service with your job offer", "Thanks");
+            }
+
+            return await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
         }
 
         public async Task<Placemark> PickedLocation(Location i_Location)
@@ -71,12 +101,15 @@ namespace GetSanger.Services
         private async void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
         {
             AppManager.Instance.ConnectedUser.UserLocation = await GetCurrentLocation();
-            await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            if(AppManager.Instance.ConnectedUser.UserLocation != null)
+            {
+                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            }
         }
 
         public override void SetDependencies()
         {
-            //
+            m_PageService ??= AppManager.Instance.Services.GetService(typeof(IPageService)) as IPageService;
         }
     }
 }
