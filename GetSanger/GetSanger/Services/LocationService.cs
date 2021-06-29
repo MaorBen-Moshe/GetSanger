@@ -15,13 +15,13 @@ namespace GetSanger.Services
 
         public LocationService()
         {
-            SetDependencies();
         }
 
         public CancellationTokenSource Cts { get; private set; }
 
         public async Task<Location> GetCurrentLocation()
         {
+            SetDependencies();
             Location location = await Geolocation.GetLastKnownLocationAsync();
             if (location == null && (await IsLocationGranted()) == PermissionStatus.Granted)
             {
@@ -39,6 +39,7 @@ namespace GetSanger.Services
 
         public async Task<PermissionStatus> IsLocationGranted()
         {
+            SetDependencies();
             var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
 
             if(status == PermissionStatus.Granted)
@@ -109,7 +110,7 @@ namespace GetSanger.Services
 
         public override void SetDependencies()
         {
-            m_PageService ??= new PageServices();
+            m_PageService ??= AppManager.Instance.Services.GetService(typeof(IPageService)) as IPageService;
         }
     }
 }
