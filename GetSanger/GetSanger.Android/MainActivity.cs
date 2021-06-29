@@ -37,8 +37,8 @@ namespace GetSanger.Droid
             //TEMPORARY
             FirebaseMessaging.Instance.SubscribeToTopic("Test");
             base.OnCreate(savedInstanceState);
-            LoadApplication(new App());
             await m_PushService.PushHelper(Intent, this);
+            LoadApplication(new App());
         }
 
         protected override void OnStart()

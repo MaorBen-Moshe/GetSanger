@@ -17,6 +17,8 @@ namespace GetSanger.Services
     {
         private static readonly IPushService sr_Push = DependencyService.Get<IPushService>();
 
+        public static Dictionary<string, string> BackgroundPushData { get; } = new Dictionary<string, string>();
+
         public async Task SendToDevice<T>(string i_UserId, T i_Data, Type i_DataType, string i_Title = "", string i_Message = null) where T : class
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
@@ -107,40 +109,29 @@ namespace GetSanger.Services
 
         public static async Task handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
         {
-            if (AuthHelper.IsLoggedIn())
+            if (i_Message != null && i_Message.ContainsKey("Type"))
             {
-                if (i_Message != null)
-                {
-                    if (i_Message.ContainsKey("Type"))
-                    {
-                        Type type = getTypeOfData(i_Message["Type"]);
-                        if (type.Equals(typeof(JobOffer)))
-                        {
-                            await handleJobOffer(i_Title, i_Body, i_Message["Json"]);
-                        }
-                        else if (type.Equals(typeof(Models.Activity)))
-                        {
-                            int mode = -1; // if Mode not set in dictionary, then do not change mode
-                            if (i_Message.ContainsKey("Mode"))
-                            {
-                                mode = (int) Enum.Parse(typeof(AppMode), i_Message["Mode"]);
-                            }
+                string type = i_Message["Type"];
+                string json = i_Message["Json"];
+                string mode = i_Message.ContainsKey("Mode") ? i_Message["Mode"] : null;
+                i_Message.Clear();
 
-                            await handleActivity(i_Title, i_Body, i_Message["Json"], mode);
-                        }
-                        else if (type.Equals(typeof(Models.chat.Message)))
-                        {
-                            await handleMessage(i_Title, i_Body, i_Message["Json"]);
-                        }
-                        else if (type.Equals(typeof(Models.Rating)))
-                        {
-                            await handleRating(i_Title, i_Body, i_Message["Json"]);
-                        }
-                        else
-                        {
-                            throw new ArgumentException("Type of object received is not allowed");
-                        }
-                    }
+                switch (type)
+                {
+                    case nameof(JobOffer):
+                        await handleJobOffer(i_Title, i_Body, json);
+                        break;
+                    case nameof(Activity):
+                        await handleActivity(i_Title, i_Body, json, mode);
+                        break;
+                    case nameof(Message):
+                        await handleMessage(i_Title, i_Body, json);
+                        break;
+                    case nameof(Rating):
+                        await handleRating(i_Title, i_Body, json);
+                        break;
+                    default:
+                        throw new ArgumentException("Type of object received is not allowed");
                 }
             }
         }
@@ -183,10 +174,10 @@ namespace GetSanger.Services
             }
         }
 
-        private static async Task handleActivity(string i_Title, string i_Body, string i_Json, int i_Mode)
+        private static async Task handleActivity(string i_Title, string i_Body, string i_Json, string i_Mode)
         {
             bool choice = true;
-            AppMode mode = (AppMode) i_Mode;
+            AppMode mode = Enum.Parse<AppMode>(i_Mode);
             string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
@@ -232,33 +223,6 @@ namespace GetSanger.Services
                 Application.Current.MainPage = new GetSanger.AppShell.SangerShell();
                 await navigation.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={jobJson}");
             }
-        }
-
-        public static Type getTypeOfData(string i_Type)
-        {
-            Type type = null;
-            if (i_Type.Equals(typeof(JobOffer).Name.ToString()))
-            {
-                type = typeof(JobOffer);
-            }
-            else if (i_Type.Equals(typeof(Activity).Name.ToString()))
-            {
-                type = typeof(Activity);
-            }
-            else if (i_Type.Equals(typeof(Rating).Name.ToString()))
-            {
-                type = typeof(Rating);
-            }
-            else if (i_Type.Equals(typeof(Message).Name.ToString()))
-            {
-                type = typeof(Message);
-            }
-            else
-            {
-                throw new ArgumentException("Type of object received is not allowed");
-            }
-
-            return type;
         }
 
         public async Task<bool> IsRegistrationTokenChanged()

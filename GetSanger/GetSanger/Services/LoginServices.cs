@@ -2,6 +2,7 @@
 using GetSanger.Constants;
 using GetSanger.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -44,18 +45,24 @@ namespace GetSanger.Services
                     }
 
                     await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                    AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
-                    if (mode == null)
+
+                    if (PushServices.BackgroundPushData.Count > 0)
                     {
-                        await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
+                        await PushServices.handleMessageReceived(null, null, PushServices.BackgroundPushData);
                     }
                     else
                     {
-                        AppManager.Instance.CurrentMode = (AppMode) mode;
-                        Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
+                        AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
+                        if (mode == null)
+                        {
+                            await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
+                        }
+                        else
+                        {
+                            AppManager.Instance.CurrentMode = (AppMode) mode;
+                            Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
+                        }
                     }
-
-                    return;
                 }
                 else
                 {

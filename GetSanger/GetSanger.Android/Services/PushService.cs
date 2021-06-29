@@ -30,29 +30,26 @@ namespace GetSanger.Droid.Services
         {
             if (intent.Extras != null)
             {
-                string json = null;
-                string type = null;
+                Dictionary<string, string> backgroundPushData = PushServices.BackgroundPushData;
+                backgroundPushData.Clear();
+
                 foreach (var key in intent.Extras.KeySet())
                 {
                     var value = intent.Extras.GetString(key);
                     // We can add here more logic as needed
                     if (key == "Json")
                     {
-                        json = value;
+                        backgroundPushData["Json"] = value;
                     }
                     else if (key == "Type")
                     {
-                        type = value;
+                        backgroundPushData["Type"] = value;
+                    }
+                    else if (key == "Mode")
+                    {
+                        backgroundPushData["Mode"] = value;
                     }
                 }
-
-                Dictionary<string, string> dict = new Dictionary<string, string>
-                {
-                    ["Json"] = json,
-                    ["Type"] = type
-                };
-
-                await PushServices.handleMessageReceived(null, null, dict);
             }
 
             if (!IsPlayServicesAvailable(invoker))
