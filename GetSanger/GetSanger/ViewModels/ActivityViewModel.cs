@@ -100,6 +100,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
+            r_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
             setLocationsLabels();
             IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&

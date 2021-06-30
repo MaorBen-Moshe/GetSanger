@@ -50,9 +50,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
-            crashlyticsService.LogPageEntrance(nameof(SettingViewModel));
-
+            r_CrashlyticsService.LogPageEntrance(nameof(SettingViewModel));
             CategoriesItems = new ObservableCollection<CategoryCell>(
             (from
                 category in AppManager.Instance.GetListOfEnumNames(typeof(eCategory))

@@ -39,9 +39,7 @@ namespace GetSanger.ViewModels.chat
 
         public override void Appearing()
         {
-            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
-            crashlyticsService.LogPageEntrance(nameof(ChatListViewModel));
-
+            r_CrashlyticsService.LogPageEntrance(nameof(ChatListViewModel));
             setUsers();
         }
 

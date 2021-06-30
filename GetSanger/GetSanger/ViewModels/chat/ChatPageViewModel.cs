@@ -96,9 +96,7 @@ namespace GetSanger.ViewModels.chat
         #region Methods
         public override async void Appearing()
         {
-            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
-            crashlyticsService.LogPageEntrance(nameof(ChatPageViewModel));
-
+            r_CrashlyticsService.LogPageEntrance(nameof(ChatPageViewModel));
             UserPicture = r_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
             DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;

@@ -44,8 +44,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
-            crashlyticsService.LogPageEntrance(nameof(LinkEmailViewModel));
+            r_CrashlyticsService.LogPageEntrance(nameof(LinkEmailViewModel));
         }
 
         public void Disappearing()

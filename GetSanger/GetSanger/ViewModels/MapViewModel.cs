@@ -82,9 +82,7 @@ namespace GetSanger.ViewModels
 
         public override async void Appearing()
         {
-            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
-            crashlyticsService.LogPageEntrance(nameof(MapViewModel));
-
+            r_CrashlyticsService.LogPageEntrance(nameof(MapViewModel));
             createMapSpan();
             if (IsSearch)
             {
