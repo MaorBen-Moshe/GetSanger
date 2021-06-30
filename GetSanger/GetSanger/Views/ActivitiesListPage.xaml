@@ -91,7 +91,7 @@
                                                     FontSize="12"
                                                     FontAttributes="Bold"
                                                     BackgroundColor="Transparent"
-                                                    Command="{Binding ConfirmActivityCommand}" 
+                                                    Command="{Binding ConfirmActivityCommand, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}}" 
                                                     CommandParameter="{Binding .}"
                                                     BorderColor="Transparent"
                                                     HorizontalOptions="CenterAndExpand"/>
@@ -100,7 +100,7 @@
                                                     BorderColor="Transparent"
                                                     FontSize="12"
                                                     BackgroundColor="Transparent"
-                                                    Command="{Binding RejectActivityCommand}"
+                                                    Command="{Binding RejectActivityCommand, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}}"
                                                     CommandParameter="{Binding .}"
                                                     HorizontalOptions="CenterAndExpand"/>
                                         </StackLayout>

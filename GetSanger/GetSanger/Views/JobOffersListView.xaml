@@ -88,7 +88,7 @@
                                                     FontSize="12"
                                                     FontAttributes="Bold"
                                                     BackgroundColor="Transparent"
-                                                    Command="{Binding ConfirmJobOfferCommand}" 
+                                                    Command="{Binding ConfirmJobOfferCommand, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}}" 
                                                     CommandParameter="{Binding .}"
                                                     BorderColor="Transparent"
                                                     HorizontalOptions="CenterAndExpand"/>
@@ -97,7 +97,7 @@
                                                     BorderColor="Transparent"
                                                     FontSize="12"
                                                     BackgroundColor="Transparent"
-                                                    Command="{Binding DeleteMyJobOfferCommand}" 
+                                                    Command="{Binding DeleteMyJobOfferCommand, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}}" 
                                                     CommandParameter="{Binding .}"
                                                     HorizontalOptions="CenterAndExpand"/>
                                         </StackLayout>
