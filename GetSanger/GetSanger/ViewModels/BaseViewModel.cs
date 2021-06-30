@@ -26,6 +26,7 @@ namespace GetSanger.ViewModels
         protected readonly LocationService r_LocationServices;
         protected readonly SocialAdapterService r_SocialService;
         protected readonly LoadingService r_LoadingService;
+        protected readonly CrashlyticsService r_CrashlyticsService;
         #endregion
 
         #region Properties
@@ -68,7 +69,8 @@ namespace GetSanger.ViewModels
             r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
             r_RunTasks = AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
             r_LoadingService = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
-
+            r_CrashlyticsService = AppManager.Instance.Services.GetService(typeof(CrashlyticsService)) as CrashlyticsService;
+            
             IsEnabledsendBtn = false;
         }
         #endregion

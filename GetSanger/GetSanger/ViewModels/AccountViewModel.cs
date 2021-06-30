@@ -105,7 +105,6 @@ namespace GetSanger.ViewModels
         {
             // do logout
             r_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
-
             AuthHelper.SignOut();
             Application.Current.MainPage = new AuthShell();
         }
