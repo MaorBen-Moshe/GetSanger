@@ -9,12 +9,11 @@ namespace GetSanger.Services
 
         public Service GetService(Type type)
         {
-            Service service;
-            if (TryGetValue(type, out service) == false)
+            if (TryGetValue(type, out Service service) == false)
             {
                 throw new ArgumentException($"Service of type {type} does not exist in app services.");
             }
-            
+
             return service;
         }
 
@@ -29,7 +28,7 @@ namespace GetSanger.Services
                 service.SetDependencies();
             }
         }
-        #endregion
 
+        #endregion
     }
 }

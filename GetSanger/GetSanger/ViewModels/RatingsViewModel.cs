@@ -9,12 +9,27 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public class MyRatingsViewModel : ListBaseViewModel<Rating>
+    [QueryProperty(nameof(IsMyRatings), "isMyRatings")]
+    [QueryProperty(nameof(Id), "id")]
+    public class RatingsViewModel : ListBaseViewModel<Rating>
     {
         #region Fields
+        private bool m_IsMyRatings;
+        private string m_Id;
         #endregion
 
         #region Properties
+        public bool IsMyRatings
+        {
+            get => m_IsMyRatings;
+            set => SetStructProperty(ref m_IsMyRatings, value);
+        }
+
+        public string Id
+        {
+            get => m_Id;
+            set => SetClassProperty(ref m_Id, value);
+        }
         #endregion
 
         #region Commands
@@ -22,7 +37,7 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Constructor
-        public MyRatingsViewModel()
+        public RatingsViewModel()
         {
             setCommands();
         }
@@ -33,7 +48,10 @@ namespace GetSanger.ViewModels
         public async override void Appearing()
         {
             setRatings();
-            await r_PageService.DisplayAlert("Note", "Click on rating to move to the writer's profile!", "OK");
+            if (IsMyRatings)
+            {
+                await r_PageService.DisplayAlert("Note", "Click on rating to move to the writer's profile!", "OK");
+            }
         }
 
         public void Disappearing()
@@ -53,17 +71,24 @@ namespace GetSanger.ViewModels
 
         private async void selectedRating(object i_Param)
         {
-            Rating current = i_Param as Rating;
-            await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={current.RatingWriterId}");
+            if (IsMyRatings)
+            {
+                Rating current = i_Param as Rating;
+                await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={current.RatingWriterId}");
+            }
         }
 
         private async void setRatings()
         {
-            List<Rating> ratingLst = await RunTaskWhileLoading(FireStoreHelper.GetRatings(AppManager.Instance.ConnectedUser.UserId));
+            List<Rating> ratingLst = await RunTaskWhileLoading(FireStoreHelper.GetRatings(Id));
             ratingLst.OrderBy(rating => rating.TimeAdded);
             Collection = new ObservableCollection<Rating>(ratingLst);
             SearchCollection = new ObservableCollection<Rating>(Collection);
-            AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst);
+            if (IsMyRatings)
+            {
+                AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst);
+            }
+            
             IsVisibleViewList = Collection.Count > 0;
         }
 

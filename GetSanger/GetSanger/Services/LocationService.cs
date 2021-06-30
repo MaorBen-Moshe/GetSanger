@@ -110,7 +110,7 @@ namespace GetSanger.Services
 
         public override void SetDependencies()
         {
-            m_PageService ??= AppManager.Instance.Services.GetService(typeof(IPageService)) as IPageService;
+            m_PageService ??= AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
         }
     }
 }

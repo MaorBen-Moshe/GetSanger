@@ -50,6 +50,6 @@
 
         public const string ChatView = "chat";
 
-        public const string MyRatings = "myRatings";
+        public const string Ratings = "myRatings";
     }
 }

@@ -59,6 +59,8 @@ namespace GetSanger.ViewModels
 
         public ICommand AddRatingCommand { get; set; }
 
+        public ICommand ViewRatingsCommand { get; set; }
+
         #endregion
 
         #region Constructor
@@ -85,6 +87,7 @@ namespace GetSanger.ViewModels
             AddRatingCommand = new Command(addRating);
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
+            ViewRatingsCommand = new Command(viewRatings);
         }
 
         private async void setUser()
@@ -176,6 +179,11 @@ namespace GetSanger.ViewModels
         {
             string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
             await r_NavigationService.NavigateTo($"{ShellRoutes.AddRating}?ratedUser={json}");
+        }
+
+        private async void viewRatings(object i_Param)
+        {
+            await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?id={CurrentUser.UserId}&isMyRatings={false}");
         }
 
         protected override async void refreshList()

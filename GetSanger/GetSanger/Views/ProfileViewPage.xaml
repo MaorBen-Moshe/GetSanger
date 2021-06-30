@@ -5,6 +5,7 @@
              xmlns:controls ="clr-namespace:GetSanger.Controls"
              xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.ProfileViewPage">
+    
     <ContentPage.BindingContext>
         <vm:ProfileViewModel />
     </ContentPage.BindingContext>
@@ -16,23 +17,17 @@
     </ContentPage.Resources>
 
     <Shell.TitleView>
-        <StackLayout VerticalOptions="CenterAndExpand"
-                     HorizontalOptions="CenterAndExpand"
-                     Orientation="Horizontal"
-                     Spacing="0">
-            <controls:RoundedImage ImageSource="{Binding UserImage}"
-                                   Radius="50" 
-                                   Margin="0,5"
-                                   HorizontalOptions="CenterAndExpand"/>
-            <Label Text="{Binding CurrentUser.PersonalDetails.NickName}"
+        <StackLayout HorizontalOptions="CenterAndExpand"
+                     VerticalOptions="CenterAndExpand">
+            <Label Text="Profile" 
+                   TextColor="White"
                    FontSize="Title"
-                   TextColor="WhiteSmoke"
                    BackgroundColor="Transparent"
-                   Margin="0,5"
                    HorizontalOptions="CenterAndExpand"
-                   />
+                   VerticalOptions="CenterAndExpand"/>
         </StackLayout>
     </Shell.TitleView>
+
     
     <ContentPage.Content>
         <StackLayout>
@@ -50,53 +45,74 @@
                     TextColor="Red"
                     TextTransform="None"/>    
             </Frame>
-            
+
+            <StackLayout VerticalOptions="Start"
+                     HorizontalOptions="CenterAndExpand"
+                     Spacing="0">
+                <controls:RoundedImage ImageSource="{Binding UserImage}"
+                                       Radius="64" 
+                                       Margin="0,5"
+                                       HorizontalOptions="Center"
+                                       BackgroundColor="Transparent"/>
+                <Label Text="{Binding CurrentUser.PersonalDetails.NickName}"
+                   FontSize="Title"
+                   TextColor="Black"
+                   BackgroundColor="Transparent"
+                   Margin="0,5"
+                   HorizontalOptions="CenterAndExpand"
+                   />
+            </StackLayout>
+
             <!--User average rating-->
             <controls:RatingStars Rating="{Binding AverageRating}"
                                           Review="" 
                                           IsImageEnabled="False"
-                                          HorizontalOptions="Center"/>
-            <Grid RowSpacing="0" ColumnSpacing="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.3*" />
-                    <ColumnDefinition Width="0.7*" />
+                                          HorizontalOptions="CenterAndExpand"/>
 
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Text="{Binding  CurrentUser.PersonalDetails.Phone, Mode=TwoWay}" 
-                           Margin="10,0,0,0" />
-                <Label Grid.Row="0" Grid.Column="1" Text="{Binding  CurrentUser.PersonalDetails.Gender, Mode=TwoWay}"  
-                           Margin="10,0,0,0" />
-                <Label Grid.Row="1" Grid.Column="0" Text="{Binding  CurrentUser.PersonalDetails.Birthday, Mode=TwoWay, StringFormat='{0:dd/MM/yyyy}'}"  
-                           Margin="10,0,0,0"/>
-            </Grid>
-            <StackLayout Margin="10,0">
-                <Label Text="Ratings:" FontSize="Large"/>
-                <ListView ItemsSource="{Binding Collection}"
-                          HasUnevenRows="True"
-                          RefreshCommand="{Binding RefreshingCommand}"
-                          IsRefreshing="{Binding IsListRefreshing}"
-                          IsVisible="{Binding IsVisibleViewList}"
-                          IsPullToRefreshEnabled="True"
-                          VerticalOptions="CenterAndExpand">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
+            <Frame Padding="0"
+                   BorderColor="Black"
+                   Margin="50,20,50,0">
+                <TableView VerticalOptions="Center"
+                           HeightRequest="136">
+                    <TableRoot TextColor="Black">
+                        <TableSection Title="Details" TextColor="Black">
                             <ViewCell>
-                                <Grid>
-                                    <Label Text="{Binding RatingWriterName}" Grid.Column="0" Grid.Row="1"/>
-                                    <controls:RatingStars Review="{Binding Description}" 
-                                                          Grid.Column="1" Grid.Row="1"
-                                                          Rating="{Binding Score}"/>
-                                </Grid>
+                                <StackLayout Orientation="Horizontal"
+                                         Margin="10,0">
+                                    <Label Text="Gender: "/>
+                                    <Label Text="{Binding  CurrentUser.PersonalDetails.Gender}"/>
+                                </StackLayout>
                             </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <controls:NoItemsInListTemplate Text="No Ratings" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
-            </StackLayout>
+
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal"
+                                         Margin="10,0">
+                                    <Label Text="Birthday: "/>
+                                    <Label Text="{Binding  CurrentUser.PersonalDetails.Birthday, StringFormat='{0:dd/MM/yyyy}'}"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+            </Frame>
+
+            <Frame Padding="10"
+                   BorderColor="Black"
+                   Margin="50, 10, 50, 0">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ViewRatingsCommand}" />
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Ratings"  
+                           VerticalOptions="Center"
+                           HorizontalOptions="StartAndExpand"
+                           BackgroundColor="Transparent"/>
+                    <Label Text=">" 
+                           BackgroundColor="Transparent"
+                           HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+            </Frame>
+
             <StackLayout Orientation="Horizontal" 
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="EndAndExpand"
@@ -108,8 +124,7 @@
                         BackgroundColor="Transparent"
                         Command="{Binding AddRatingCommand}"/>
             </StackLayout>
-            
-            
+           
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

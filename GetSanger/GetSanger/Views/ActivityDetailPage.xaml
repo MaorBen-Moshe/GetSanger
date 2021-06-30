@@ -68,7 +68,15 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Format="dd MMM yyyy" Date="{Binding ConnectedActivity.JobDetails.Date}" Grid.Column="1" IsEnabled="False"/>
+                    <StackLayout Orientation="Horizontal" 
+                                 Spacing="20"
+                                 Grid.Column="1">
+                        <DatePicker Format="dd MMM yyyy" 
+                                    Date="{Binding ConnectedActivity.JobDetails.Date}" 
+                                    IsEnabled="False"/>
+                        <TimePicker Time="{Binding ConnectedActivity.JobDetails.Time}"
+                                    IsEnabled="False" />
+                    </StackLayout>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"

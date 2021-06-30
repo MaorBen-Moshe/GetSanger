@@ -15,6 +15,7 @@
         <ResourceDictionary>
             <converters:SelectedItemConverter x:Key="SelectedItemConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -31,7 +32,7 @@
                                HeightRequest="40"
                                WidthRequest="40" />-->
                         <Label Grid.Column="1"
-                               Text="{Binding Title}"
+                               Text="{Binding JobOffer.Title}"
                                FontAttributes="Bold"
                                VerticalOptions="Center" />
                     </Grid>
@@ -45,12 +46,13 @@
             <StackLayout>
                 
                 <ListView x:Name="m_ListView" 
-                      ItemsSource="{Binding Collection}"
-                      IsRefreshing="{Binding IsListRefreshing}"
-                      IsPullToRefreshEnabled="True" 
-                      IsVisible="{Binding IsVisibleViewList}"
-                      RefreshCommand="{Binding RefreshingCommand}"
-                      HasUnevenRows="True">
+                          ItemsSource="{Binding Collection}"
+                          IsRefreshing="{Binding IsListRefreshing}"
+                          IsPullToRefreshEnabled="True" 
+                          IsVisible="{Binding IsVisibleViewList}"
+                          RefreshCommand="{Binding RefreshingCommand}"
+                          SeparatorVisibility="None"
+                          HasUnevenRows="True">
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior Command="{Binding SelectedActivityCommand}" 
                                                           EventName="ItemSelected"
@@ -59,15 +61,51 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <ViewCell.ContextActions>
-                                    <MenuItem Text="Confirm" Command="{Binding ConfirmActivityCommand}" CommandParameter="{Binding .}" />
-                                    <MenuItem Text="Reject" Command="{Binding RejectActivityCommand}" CommandParameter="{Binding .}" IsDestructive="True"/>
-                                </ViewCell.ContextActions>
-                                <StackLayout>
-                                    <Image />
-                                    <Label Text="{Binding Title}"/>
-                                    <Label Text="{Binding JobOffer.Description}" />
-                                </StackLayout>
+                                <Frame BorderColor="WhiteSmoke" 
+                                       Padding="0"
+                                       Margin="10">
+                                    <StackLayout Padding="20">
+                                        <StackLayout Orientation="Horizontal"
+                                                     HorizontalOptions="StartAndExpand"
+                                                     VerticalOptions="StartAndExpand" >
+                                            <Ellipse Fill="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                                     WidthRequest="22"
+                                                     HeightRequest="22"
+                                                     Margin="5"/>
+
+                                            <Label Text="{Binding Status}" />
+                                        </StackLayout>
+                                        
+                                        <Label Text="{Binding JobDetails.Title}" 
+                                               FontAttributes="Bold" 
+                                               HorizontalOptions="CenterAndExpand"
+                                               VerticalOptions="Start"
+                                               BackgroundColor="Transparent"/>
+                                        <Label Text="{Binding JobDetails.Description}"
+                                               BackgroundColor="Transparent" 
+                                               HorizontalOptions="CenterAndExpand"
+                                               VerticalOptions="Start"/>
+
+                                        <StackLayout Orientation="Horizontal">
+                                            <Button Text="Confirm"
+                                                    FontSize="12"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding ConfirmActivityCommand}" 
+                                                    CommandParameter="{Binding .}"
+                                                    BorderColor="Transparent"
+                                                    HorizontalOptions="CenterAndExpand"/>
+                                            <Button Text="Delete"
+                                                    TextColor="Red"
+                                                    BorderColor="Transparent"
+                                                    FontSize="12"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding RejectActivityCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    HorizontalOptions="CenterAndExpand"/>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>

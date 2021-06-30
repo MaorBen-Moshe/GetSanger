@@ -150,7 +150,7 @@ namespace GetSanger.Services
 
             if (choice == true)
             {
-                await navigation.NavigateTo(ShellRoutes.MyRatings);
+                await navigation.NavigateTo(ShellRoutes.Ratings);
             }
         }
 

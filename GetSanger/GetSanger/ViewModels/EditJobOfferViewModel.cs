@@ -105,6 +105,8 @@ namespace GetSanger.ViewModels
             NewJobOffer = new JobOffer
             {
                 Date = DateTime.Now,
+                Time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0),
+                ClientPhoneNumber = AppManager.Instance.ConnectedUser.PersonalDetails.Phone,
                 Title = "New Job Offer"
             };
         }

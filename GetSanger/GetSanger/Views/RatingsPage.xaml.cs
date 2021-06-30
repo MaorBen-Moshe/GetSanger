@@ -11,22 +11,22 @@ using Xamarin.Forms.Xaml;
 namespace GetSanger.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MyRatingsPage : ContentPage
+    public partial class RatingsPage : ContentPage
     {
-        public MyRatingsPage()
+        public RatingsPage()
         {
             InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
-            (BindingContext as MyRatingsViewModel).Appearing();
+            (BindingContext as RatingsViewModel).Appearing();
             base.OnAppearing();
         }
 
         protected override void OnDisappearing()
         {
-            (BindingContext as MyRatingsViewModel).Disappearing();
+            (BindingContext as RatingsViewModel).Disappearing();
             base.OnDisappearing();
         }
     }
