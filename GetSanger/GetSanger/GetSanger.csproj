@@ -82,7 +82,7 @@
     <EmbeddedResource Update="Views\ActivityDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\AddRatingPage.xaml">
+    <EmbeddedResource Update="Views\popups\AddRatingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CategoriesPage.xaml">

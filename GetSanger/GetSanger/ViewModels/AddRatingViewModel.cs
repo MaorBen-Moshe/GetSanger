@@ -1,6 +1,7 @@
 ﻿using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,23 +11,19 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    [QueryProperty(nameof(RatedUserJson), "ratedUser")]
+    [QueryProperty(nameof(RatedUserId), "ratedUserId")]
     public class AddRatingViewModel : BaseViewModel
     {
+        #region Events
+        public event Action RatingAddedEvent;
+        #endregion
+
         #region Fields
         private Rating m_NewRating;
         #endregion
 
         #region Properties
-        public User RatedUser { get; set; }
-
-        public string RatedUserJson
-        {
-            set
-            {
-                RatedUser = ObjectJsonSerializer.DeserializeForPage<User>(value);
-            }
-        }
+        public string RatedUserId { get; set; }
 
         public Rating NewRating
         {
@@ -64,11 +61,12 @@ namespace GetSanger.ViewModels
         {
             NewRating.RatingWriterId = AppManager.Instance.ConnectedUser.UserId;
             NewRating.RatingWriterName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
-            NewRating.RatingOwnerId = RatedUser.UserId;
+            NewRating.RatingOwnerId = RatedUserId;
             NewRating.TimeAdded = DateTime.Now;
-            List<Rating> ratings = await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
+            await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
             await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
-            await GoBack();
+            RatingAddedEvent?.Invoke();
+            await PopupNavigation.Instance.PopAsync();
         }
 
         #endregion

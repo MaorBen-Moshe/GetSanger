@@ -1,22 +1,17 @@
 ﻿using GetSanger.ViewModels;
 using Rg.Plugins.Popup.Pages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace GetSanger.Views
+namespace GetSanger.Views.popups
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddRatingPage : ContentPage
+    public partial class AddRatingPage : PopupPage
     {
-        public AddRatingPage()
+        public AddRatingPage(string i_RatedUserId)
         {
             InitializeComponent();
+
+            (BindingContext as AddRatingViewModel).RatedUserId = i_RatedUserId;
         }
 
         protected override void OnAppearing()

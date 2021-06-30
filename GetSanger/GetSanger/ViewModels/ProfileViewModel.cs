@@ -8,11 +8,13 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using Rg.Plugins.Popup.Services;
+using GetSanger.Views.popups;
 
 namespace GetSanger.ViewModels
 {
     [QueryProperty(nameof(UserId), "userid")]
-    public class ProfileViewModel : ListBaseViewModel<Rating>
+    public class ProfileViewModel : BaseViewModel
     {
         #region Fields
         private User m_CurrenUser;
@@ -105,14 +107,11 @@ namespace GetSanger.ViewModels
                     throw new ArgumentException("User details aren't available.");
                 }
 
-                Collection = new ObservableCollection<Rating>(CurrentUser.Ratings);
-                Collection.OrderByDescending(rating => rating.TimeAdded);
-                IsVisibleViewList = Collection.Count > 0;
+                List<Rating> ratings = new List<Rating>(CurrentUser.Ratings);
                 UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
                 Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
                 UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
-                AverageRating = getAverage();
-                IsListRefreshing = false;
+                AverageRating = getAverage(ratings);
             }
             catch(Exception e)
             {
@@ -124,17 +123,17 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private int getAverage()
+        private int getAverage(List<Rating> i_Ratings)
         {
             int avg = 0;
-            foreach(var rating in Collection)
+            foreach(var rating in i_Ratings)
             {
                 avg += rating.Score;
             }
 
-            if(Collection.Count > 0)
+            if(i_Ratings.Count > 0)
             {
-                avg /= Collection.Count;
+                avg /= i_Ratings.Count;
             }
             
             return (avg > 0) ? avg : 1;
@@ -177,29 +176,14 @@ namespace GetSanger.ViewModels
 
         private async void addRating(object i_Param)
         {
-            string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
-            await r_NavigationService.NavigateTo($"{ShellRoutes.AddRating}?ratedUser={json}");
+            var ratingsPopup = new AddRatingPage(CurrentUser.UserId);
+            (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += async () => AverageRating = getAverage(await FireStoreHelper.GetRatings(CurrentUser.UserId));
+            await PopupNavigation.Instance.PushAsync(ratingsPopup);
         }
 
         private async void viewRatings(object i_Param)
         {
             await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?id={CurrentUser.UserId}&isMyRatings={false}");
-        }
-
-        protected override async void refreshList()
-        {
-            try
-            {
-                List<Rating> ratings = await FireStoreHelper.GetRatings(CurrentUser.UserId);
-                Collection = new ObservableCollection<Rating>(ratings);
-                CurrentUser.Ratings = new ObservableCollection<Rating>(Collection);
-                Collection.OrderByDescending(rating => rating.TimeAdded);
-                IsListRefreshing = false;
-            }
-            catch
-            {
-                IsListRefreshing = false;
-            }
         }
 
         #endregion
