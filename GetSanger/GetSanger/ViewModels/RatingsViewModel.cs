@@ -45,8 +45,11 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public async override void Appearing()
+        public override async void Appearing()
         {
+            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
+            crashlyticsService.LogPageEntrance(nameof(RatingsViewModel));
+
             setRatings();
             if (IsMyRatings)
             {

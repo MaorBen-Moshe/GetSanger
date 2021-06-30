@@ -117,6 +117,9 @@ namespace GetSanger.ViewModels
 
         public override async void Appearing()
         {
+            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
+            crashlyticsService.LogPageEntrance(nameof(EditJobOfferViewModel));
+
             await InitialCurrentLocation();
             MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage,  (sender, args) =>
             {
