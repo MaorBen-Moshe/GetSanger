@@ -1,6 +1,10 @@
 ﻿using GetSanger.Constants;
+using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Views;
+using GetSanger.Views.popups;
+using Rg.Plugins.Popup.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,15 +16,23 @@ namespace GetSanger.ViewModels
     public class JobOffersViewModel : ListBaseViewModel<JobOffer>
     {
         #region Fields
+        private string m_Notes;
         #endregion
 
         #region Properties
+        public JobOffer CurrentConfirmedJobOffer { get; set; }
+        public string Notes
+        {
+            get => m_Notes;
+            set => SetClassProperty(ref m_Notes, value);
+        }
         #endregion
 
         #region Commands
         public ICommand ConfirmJobOfferCommand { get; set; }
         public ICommand SelectedJobOfferCommand { get; set; }
         public ICommand DeleteMyJobOfferCommand { get; set; }
+        public ICommand SendNotesCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -42,15 +54,33 @@ namespace GetSanger.ViewModels
             ConfirmJobOfferCommand = new Command(confirmJobOffer);
             SelectedJobOfferCommand = new Command(selectedJobOffer);
             DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
+            SendNotesCommand = new Command(sendNotes);
+        }
+
+        private async void sendNotes()
+        {
+            CurrentConfirmedJobOffer.SangerNotes = Notes;
+            Activity activity = new Activity
+            {
+                JobDetails = CurrentConfirmedJobOffer,
+                SangerID = AuthHelper.GetLoggedInUserId(),
+                ClientID = CurrentConfirmedJobOffer.ClientID,
+                Status = ActivityStatus.Pending,
+                LocationActivatedBySanger = false
+            };
+
+            AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
+            await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
+            await PopupNavigation.Instance.PopAsync();
+            CurrentConfirmedJobOffer = null;
         }
 
         private async void confirmJobOffer(object i_Param)
         {
-            JobOffer job = i_Param as JobOffer;
+            CurrentConfirmedJobOffer = i_Param as JobOffer;
             if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
             {
-                string json = ObjectJsonSerializer.SerializeForPage(job);
-                await r_NavigationService.NavigateTo(ShellRoutes.SangerNotes + $"job={json}");
+                await PopupNavigation.Instance.PushAsync(new SangerNotesView(this));
             }
         }
 

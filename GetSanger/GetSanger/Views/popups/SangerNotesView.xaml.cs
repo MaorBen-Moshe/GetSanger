@@ -1,20 +1,16 @@
 ﻿using GetSanger.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms.Xaml;
 
-namespace GetSanger.Views
+namespace GetSanger.Views.popups
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SangerNotesView : ContentPage
+    public partial class SangerNotesView : PopupPage
     {
-        public SangerNotesView()
+        public SangerNotesView(JobOffersViewModel i_BindingContext)
         {
+            BindingContext = i_BindingContext;
+
             InitializeComponent();
         }
 

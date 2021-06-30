@@ -42,8 +42,6 @@
 
         public const string EditProfile = "editProfile";
 
-        public const string SangerNotes = "sangerNotes";
-
         public const string ChatsList = "chatsList";
 
         public const string ChatView = "chat";
