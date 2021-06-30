@@ -19,6 +19,11 @@ namespace GetSanger.Services
             sr_Crashlytics.SetCustomKeys(i_Dictionary);
         }
 
+        public void SetCustomKey(string key, object value)
+        {
+            sr_Crashlytics.SetCustomKey(key, value);
+        }
+
         /// <summary>
         /// To give yourself more context for the events leading up to a crash, you can add custom Crashlytics logs to your app.
         /// Crashlytics associates the logs with your crash data and displays them in the Crashlytics page of the Firebase console, under the Logs tab.
@@ -26,7 +31,10 @@ namespace GetSanger.Services
         /// <param name="i_Message">The message to log.</param>
         public void AddCustomLogMessage(string i_Message)
         {
-            sr_Crashlytics.AddCustomLogMessage(i_Message);
+            if(i_Message != null)
+            {
+                sr_Crashlytics.AddCustomLogMessage(i_Message);
+            }
         }
 
         /// <summary>
@@ -34,7 +42,7 @@ namespace GetSanger.Services
         /// Crashlytics includes a way to anonymously identify users in your crash reports.
         /// </summary>
         /// <param name="i_UserId">The unique id of the user.</param>
-        public void SetUserId(string i_UserId)
+        public void SetUserId(string i_UserId = "0") // if userid == 0  its mean the crash occurred in auth shell
         {
             sr_Crashlytics.SetUserId(i_UserId);
         }

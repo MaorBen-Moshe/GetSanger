@@ -60,7 +60,6 @@ namespace GetSanger.Services
                             await Task.Delay(1500);
                             Application.Current.MainPage = new AuthShell();
                             await PopupNavigation.Instance.PushAsync(new ModePage());
-                            //await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
                         }
                         else
                         {

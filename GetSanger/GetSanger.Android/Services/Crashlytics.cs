@@ -51,6 +51,37 @@ namespace GetSanger.Droid.Services
             Instance.SetCustomKeys(customKeysAndValues);
         }
 
+        public void SetCustomKey(string key, object value) 
+        {
+            if(key != null)
+            {
+                if (value is string strValue)
+                {
+                    Instance.SetCustomKey(key, strValue);
+            }
+                else if (value is bool boolValue)
+                {
+                    Instance.SetCustomKey(key, boolValue);
+                }
+                else if (value is int intValue)
+                {
+                    Instance.SetCustomKey(key, intValue);
+                }
+                else if (value is long longValue)
+                {
+                    Instance.SetCustomKey(key, longValue);
+                }
+                else if (value is float floatValue)
+                {
+                    Instance.SetCustomKey(key, floatValue);
+                }
+                else if (value is double doubleValue)
+                {
+                    Instance.SetCustomKey(key, doubleValue);
+                }
+            }
+        }
+
         public void AddCustomLogMessage(string i_Message)
         {
             Instance.Log(i_Message);

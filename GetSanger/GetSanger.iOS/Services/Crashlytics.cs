@@ -18,31 +18,7 @@ namespace GetSanger.iOS.Services
             foreach (string key in i_Dictionary.Keys)
             {
                 object value = i_Dictionary[key];
-
-                if (value is string strValue)
-                {
-                    SharedInstance.SetCustomValue(NSObject.FromObject(strValue), key);
-                }
-                else if (value is bool boolValue)
-                {
-                    SharedInstance.SetCustomValue(NSObject.FromObject(boolValue), key);
-                }
-                else if (value is int intValue)
-                {
-                    SharedInstance.SetCustomValue(NSObject.FromObject(intValue), key);
-                }
-                else if (value is long longValue)
-                {
-                    SharedInstance.SetCustomValue(NSObject.FromObject(longValue), key);
-                }
-                else if (value is float floatValue)
-                {
-                    SharedInstance.SetCustomValue(NSObject.FromObject(floatValue), key);
-                }
-                else if (value is double doubleValue)
-                {
-                    SharedInstance.SetCustomValue(NSObject.FromObject(doubleValue), key);
-                }
+                setValueHelper(key, value);
             }
         }
 
@@ -59,6 +35,42 @@ namespace GetSanger.iOS.Services
         public void RecordException(Exception i_Exception)
         {
             SharedInstance.RecordExceptionModel(ExceptionModel.Create(i_Exception.Message, i_Exception.StackTrace));
+        }
+
+        public void SetCustomKey(string key, object value)
+        {
+            if(key != null)
+            {
+                setValueHelper(key, value);
+            }
+        }
+
+        private void setValueHelper(string key, object value)
+        {
+            if (value is string strValue)
+            {
+                SharedInstance.SetCustomValue(NSObject.FromObject(strValue), key);
+            }
+            else if (value is bool boolValue)
+            {
+                SharedInstance.SetCustomValue(NSObject.FromObject(boolValue), key);
+            }
+            else if (value is int intValue)
+            {
+                SharedInstance.SetCustomValue(NSObject.FromObject(intValue), key);
+            }
+            else if (value is long longValue)
+            {
+                SharedInstance.SetCustomValue(NSObject.FromObject(longValue), key);
+            }
+            else if (value is float floatValue)
+            {
+                SharedInstance.SetCustomValue(NSObject.FromObject(floatValue), key);
+            }
+            else if (value is double doubleValue)
+            {
+                SharedInstance.SetCustomValue(NSObject.FromObject(doubleValue), key);
+            }
         }
     }
 }
