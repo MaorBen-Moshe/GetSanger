@@ -149,6 +149,9 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
+            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
+            crashlyticsService.LogPageEntrance(nameof(SignUpPageViewModel));
+
             CreatedUser ??= new User();
             PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);

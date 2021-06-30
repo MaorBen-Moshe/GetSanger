@@ -18,13 +18,14 @@ namespace GetSanger.Extensions
         }
 
 
-        public static async Task LogAndDisplayError(this Exception i_Exception, string i_NameOfClassCrashes = null, string i_Header = null, string i_CustomMessage = null)
+        public static async Task LogAndDisplayError(this Exception i_Exception, string i_NameOfClassCrashes = null, string i_Header = null,
+            string i_CustomMessage = null)
         {
-            string LoggedError = GetErrorLogString(i_Exception);
-            sr_CrashesService.SetUserId(AppManager.Instance.ConnectedUser.UserId);
-            sr_CrashesService.AddCustomLogMessage(LoggedError ?? i_NameOfClassCrashes);
+            sr_CrashesService.SetUserId(AppManager.Instance.ConnectedUser != null ? AppManager.Instance.ConnectedUser.UserId : "0");
+            sr_CrashesService.AddCustomLogMessage($"Crashed in class: {i_NameOfClassCrashes}");
             sr_CrashesService.RecordException(i_Exception);
-            sr_CrashesService.SetCustomKey(i_NameOfClassCrashes, i_Exception);
+            sr_CrashesService.SetCustomKey("ClassName", i_NameOfClassCrashes);
+            sr_CrashesService.SetCustomKey("AppMode", AppManager.Instance.CurrentMode.ToString());
 
             await PopupNavigation.Instance.PushAsync(new ErrorPage(i_Header, i_CustomMessage));
         }
@@ -41,7 +42,7 @@ namespace GetSanger.Extensions
                 for (int i = 0; i <= exceptionCounter; i++)
                 {
                     loggedExceptionStringBuilder
-                    .Append("-");
+                        .Append("-");
                 }
 
                 loggedExceptionStringBuilder

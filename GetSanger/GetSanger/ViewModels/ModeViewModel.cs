@@ -26,6 +26,8 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
+            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
+            crashlyticsService.LogPageEntrance(nameof(ModeViewModel));
         }
 
         private void setCommands()
