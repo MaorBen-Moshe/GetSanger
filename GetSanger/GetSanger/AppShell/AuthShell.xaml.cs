@@ -31,7 +31,6 @@ namespace GetSanger.AppShell
             r_Routes.Add(ShellRoutes.SignupEmail, typeof(SignupEmailPage));
             r_Routes.Add(ShellRoutes.SignupPersonalDetails, typeof(SignupPersonalDetailPage));
             r_Routes.Add(ShellRoutes.SignupCategories, typeof(SignupCategoriesPage));
-            r_Routes.Add(ShellRoutes.ModePage, typeof(ModePage));
             r_Routes.Add(ShellRoutes.LoadingPage, typeof(LoadingPage));
 
             foreach (var route in r_Routes)

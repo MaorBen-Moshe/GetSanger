@@ -3,6 +3,8 @@ using GetSanger.Extensions;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Views.popups;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -245,21 +247,20 @@ namespace GetSanger.ViewModels
 
         private async void categoriesPartClicked()
         {
-            m_CheckedItems = (from category in CategoriesItems
-                where category.Checked == true && category.Category.Equals(eCategory.All) == false
-                select category.Category).ToList();
-
-            CreatedUser.Categories = new ObservableCollection<eCategory>(m_CheckedItems);
-            CreatedUser.RegistrationToken = await r_PushService.GetRegistrationToken();
-
             try
             {
+                m_CheckedItems = (from category in CategoriesItems
+                where category.Checked == true && category.Category.Equals(eCategory.All) == false
+                select category.Category).ToList();
+                CreatedUser.Categories = new ObservableCollection<eCategory>(m_CheckedItems);
+                CreatedUser.RegistrationToken = await r_PushService.GetRegistrationToken();
                 CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
                 CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserId,
                     (m_CheckedItems.Select(category => ((int) category).ToString())).ToArray()));
-                await r_NavigationService.NavigateTo(ShellRoutes.ModePage);
+                await PopupNavigation.Instance.PushAsync(new ModePage());
+                await r_NavigationService.NavigateTo("../../..");
             }
             catch (Exception e)
             {

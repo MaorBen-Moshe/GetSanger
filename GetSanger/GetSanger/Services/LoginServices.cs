@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Threading;
 using Xamarin.Essentials;
+using Rg.Plugins.Popup.Services;
+using GetSanger.Views.popups;
 
 namespace GetSanger.Services
 {
@@ -55,7 +57,10 @@ namespace GetSanger.Services
                         AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
                         if (mode == null)
                         {
-                            await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
+                            await Task.Delay(1500);
+                            Application.Current.MainPage = new AuthShell();
+                            await PopupNavigation.Instance.PushAsync(new ModePage());
+                            //await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
                         }
                         else
                         {
@@ -116,7 +121,8 @@ namespace GetSanger.Services
                         {
                             if (user.LastUserMode == null)
                             {
-                                await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
+                                await PopupNavigation.Instance.PushAsync(new ModePage());
+                                //await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
                             }
                             else
                             {

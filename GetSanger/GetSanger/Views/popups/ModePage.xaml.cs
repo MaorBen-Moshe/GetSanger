@@ -1,11 +1,12 @@
 ﻿using GetSanger.ViewModels;
+using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace GetSanger.Views.Registration
+namespace GetSanger.Views.popups
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ModePage : ContentPage
+    public partial class ModePage : PopupPage
     {
         public ModePage()
         {

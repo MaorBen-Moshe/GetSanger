@@ -23,23 +23,26 @@ namespace GetSanger.Behaviors
         {
             var entry = (Entry)sender;
 
-            // if Entry text is longer than valid length  
-            if (entry.Text.Length > this.MaxLength)
+            if (entry != null)
             {
-                string entryText = entry.Text;
-                entryText = entryText.Remove(entryText.Length - 1); // remove last chars  
-                entry.Text = entryText;
-            }
-
-            if (MinLength > 0)
-            {
-                if (entry.Text.Length < this.MinLength)
+                // if Entry text is longer than valid length  
+                if (entry.Text != null && entry.Text.Length > MaxLength)
                 {
-                    ((Entry)sender).TextColor = Color.Red;
+                    string entryText = entry.Text;
+                    entryText = entryText.Remove(entryText.Length - 1); // remove last chars  
+                    entry.Text = entryText;
                 }
-                else
+
+                if (MinLength > 0)
                 {
-                    ((Entry)sender).TextColor = Color.Black;
+                    if (entry.Text != null && entry?.Text?.Length < MinLength)
+                    {
+                        entry.TextColor = Color.Red;
+                    }
+                    else
+                    {
+                        entry.TextColor = Color.Black;
+                    }
                 }
             }
         }

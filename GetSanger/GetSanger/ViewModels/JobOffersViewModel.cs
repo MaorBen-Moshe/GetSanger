@@ -8,6 +8,7 @@ using Rg.Plugins.Popup.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -72,6 +73,7 @@ namespace GetSanger.ViewModels
             AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
             await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
             await PopupNavigation.Instance.PopAsync();
+            setJobOffers();
             CurrentConfirmedJobOffer = null;
         }
 
@@ -122,10 +124,7 @@ namespace GetSanger.ViewModels
                     currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId())));
                     break;
                 case AppMode.Sanger:
-                    IEnumerable<eCategory> obsCollection = AppManager.Instance.ConnectedUser.Categories;
-                    string currentId = AppManager.Instance.ConnectedUser.UserId;
-                    List<JobOffer> temp = await RunTaskWhileLoading(FireStoreHelper.GetAllJobOffers(obsCollection.ToList()));
-                    temp = temp.Where(current => current.ClientID != currentId).ToList();
+                    List<JobOffer> temp = await RunTaskWhileLoading(getSangerJobOffers());
                     currentList = new ObservableCollection<JobOffer>(temp);
                     break;
             }
@@ -133,6 +132,37 @@ namespace GetSanger.ViewModels
             Collection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
             SearchCollection = new ObservableCollection<JobOffer>(Collection);
             IsVisibleViewList = Collection.Count > 0;
+        }
+
+        private async Task<List<JobOffer>> getSangerJobOffers()
+        {
+            IEnumerable<eCategory> obsCollection = AppManager.Instance.ConnectedUser.Categories;
+            string currentId = AppManager.Instance.ConnectedUser.UserId;
+            List<JobOffer> joboffers = await FireStoreHelper.GetAllJobOffers(obsCollection.ToList());
+            joboffers = joboffers.Where(current => current.ClientID != currentId).ToList();
+            List<Activity> activities = await FireStoreHelper.GetActivities(currentId);
+            AppManager.Instance.ConnectedUser.Activities = new ObservableCollection<Activity>(activities);
+            List<JobOffer> toRetList = new List<JobOffer>();
+            bool found = false;
+            foreach (JobOffer job in joboffers)
+            {
+                found = false;
+                foreach (Activity activity in activities)
+                {
+                    if (activity.JobDetails.Equals(job))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(found == false)
+                {
+                    toRetList.Add(job);
+                }
+            }
+
+            return toRetList;
         }
         #endregion
     }

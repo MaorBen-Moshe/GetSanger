@@ -1,4 +1,5 @@
 ﻿using GetSanger.Services;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -42,6 +43,10 @@ namespace GetSanger.ViewModels
                 {
                     await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
                 }
+                else
+                {
+                    await PopupNavigation.Instance.PopAsync();
+                }
             }
             catch(Exception e)
             {
@@ -57,6 +62,10 @@ namespace GetSanger.ViewModels
                 if (!verified)
                 {
                     await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                }
+                else
+                {
+                    await PopupNavigation.Instance.PopAsync();
                 }
             }
             catch(Exception e)

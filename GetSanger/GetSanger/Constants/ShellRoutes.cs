@@ -12,8 +12,6 @@
 
         public const string SignupCategories = "signupCategories";
 
-        public const string ModePage = "mode";
-
         public const string Login = "login";
 
         #endregion
