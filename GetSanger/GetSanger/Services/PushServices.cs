@@ -148,9 +148,11 @@ namespace GetSanger.Services
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
 
-            if (choice == true)
+            if (choice)
             {
-                await navigation.NavigateTo(ShellRoutes.Ratings);
+                AppManager.Instance.CurrentMode = AppManager.Instance.ConnectedUser.LastUserMode.GetValueOrDefault(AppMode.Client);
+                Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
+                await navigation.NavigateTo($"{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
             }
         }
 
@@ -177,7 +179,7 @@ namespace GetSanger.Services
         private static async Task handleActivity(string i_Title, string i_Body, string i_Json, string i_Mode)
         {
             bool choice = true;
-            AppMode mode = Enum.Parse<AppMode>(i_Mode);
+            AppMode mode = i_Mode != null ? Enum.Parse<AppMode>(i_Mode) : AppManager.Instance.CurrentMode;
             string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
@@ -186,19 +188,12 @@ namespace GetSanger.Services
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
 
-            if (choice == true)
+            if (choice)
             {
                 AppManager.Instance.CurrentMode = mode;
+                AppManager.Instance.ConnectedUser.LastUserMode = mode;
                 await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                switch (mode)
-                {
-                    case AppMode.Sanger:
-                        Application.Current.MainPage = new GetSanger.AppShell.SangerShell();
-                        break;
-                    case AppMode.Client:
-                        Application.Current.MainPage = new GetSanger.AppShell.UserShell();
-                        break;
-                }
+                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
 
                 await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
             }
@@ -216,11 +211,13 @@ namespace GetSanger.Services
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
             }
 
-            if (choice == true)
+            if (choice)
             {
                 AppManager.Instance.CurrentMode = AppMode.Sanger;
+                AppManager.Instance.ConnectedUser.LastUserMode = AppMode.Sanger;
                 await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                Application.Current.MainPage = new GetSanger.AppShell.SangerShell();
+                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(AppMode.Sanger);
+
                 await navigation.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={jobJson}");
             }
         }
