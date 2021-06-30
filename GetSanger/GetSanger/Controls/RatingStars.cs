@@ -171,6 +171,7 @@ namespace GetSanger.Controls
         //Set the Display of the Review Label 
         public void updateReviewsDisplay()
         {
+            _ = string.IsNullOrWhiteSpace(Review) ? ReviewsLabel.IsVisible = false : ReviewsLabel.IsVisible = true;
             ReviewsLabel.Text = Review;
         }
 

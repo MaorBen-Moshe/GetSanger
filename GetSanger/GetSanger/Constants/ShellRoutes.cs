@@ -42,14 +42,12 @@
 
         public const string EditProfile = "editProfile";
 
-        public const string AddRating = "addRating";
-
         public const string SangerNotes = "sangerNotes";
 
         public const string ChatsList = "chatsList";
 
         public const string ChatView = "chat";
 
-        public const string MyRatings = "myRatings";
+        public const string Ratings = "myRatings";
     }
 }

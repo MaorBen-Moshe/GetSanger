@@ -28,7 +28,7 @@ namespace GetSanger.Controls
                 ItemsSource = Source
                     .Where(activity =>
                            activity.JobDetails.Description.ToLower().Contains(newValue) ||
-                           activity.Title.ToLower().Contains(newValue) ||
+                           activity.JobDetails.Title.ToLower().Contains(newValue) ||
                            activity.Status.ToString().ToLower().Contains(newValue) ||
                            activity.JobDetails.Category.ToString().ToLower().Contains(newValue))
                     .ToList();

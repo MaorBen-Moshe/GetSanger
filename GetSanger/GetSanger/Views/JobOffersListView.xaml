@@ -15,6 +15,7 @@
         <ResourceDictionary>
             <converters:SelectedItemConverter x:Key="SelectedItemConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:CategoryToStringConverter x:Key="CategoryToStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -49,6 +50,7 @@
                       IsPullToRefreshEnabled="True" 
                       IsVisible="{Binding IsVisibleViewList}"
                       RefreshCommand="{Binding RefreshingCommand}"
+                      SeparatorVisibility="None"
                       HasUnevenRows="true">
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior Command="{Binding SelectedJobOfferCommand}" 
@@ -58,27 +60,47 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <ViewCell.ContextActions>
-                                    <MenuItem Text="Confirm" Command="{Binding ConfirmJobOfferCommand}" CommandParameter="{Binding .}" />
-                                    <MenuItem Text="Delete" Command="{Binding DeleteMyJobOfferCommand}" CommandParameter="{Binding .}" IsDestructive="True"/>
-                                </ViewCell.ContextActions>
-                                <Frame BorderColor="Black" BackgroundColor="AliceBlue">
-                                    <StackLayout Orientation="Horizontal">
-                                        <!--
-                                        <Label BackgroundColor="Transparent">
-                                            <Label.Text>
-                                                <MultiBinding StringFormat="{}{0}&#x0a; {1}">
-                                                    
-                                                    <Binding Path="Title"  />
-                                                    <Binding Path="Description" />
-                                                </MultiBinding>
-                                            </Label.Text>
-                                        </Label>
-                                        -->
+                                <Frame BorderColor="WhiteSmoke" 
+                                       Padding="0"
+                                       Margin="10">
+                                    <StackLayout Padding="20">
+                                        <StackLayout Orientation="Horizontal"
+                                                     HorizontalOptions="StartAndExpand"
+                                                     VerticalOptions="StartAndExpand" >
+                                            <Ellipse Fill="Gray"
+                                                     WidthRequest="22"
+                                                     HeightRequest="22"
+                                                     Margin="5"/>
+                                            <Label Text="{Binding Category, Converter={StaticResource CategoryToStringConverter}}" />
+                                        </StackLayout>
+                                        <Label Text="{Binding Title}" 
+                                               FontAttributes="Bold" 
+                                               HorizontalOptions="CenterAndExpand"
+                                               VerticalOptions="Start"
+                                               BackgroundColor="Transparent"/>
+                                        <Label Text="{Binding Description}"
+                                               BackgroundColor="Transparent" 
+                                               HorizontalOptions="CenterAndExpand"
+                                               VerticalOptions="Start"/>
                                         
-                                        <Label Text="{Binding Title}" FontAttributes="Bold" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"/>
-                                        <Label Text="{Binding Description}" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"/>
-                                        
+                                        <StackLayout Orientation="Horizontal">
+                                            <Button Text="Confirm"
+                                                    FontSize="12"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding ConfirmJobOfferCommand}" 
+                                                    CommandParameter="{Binding .}"
+                                                    BorderColor="Transparent"
+                                                    HorizontalOptions="CenterAndExpand"/>
+                                            <Button Text="Delete"
+                                                    TextColor="Red"
+                                                    BorderColor="Transparent"
+                                                    FontSize="12"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding DeleteMyJobOfferCommand}" 
+                                                    CommandParameter="{Binding .}"
+                                                    HorizontalOptions="CenterAndExpand"/>
+                                        </StackLayout>
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>

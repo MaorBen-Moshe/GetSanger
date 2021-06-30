@@ -23,14 +23,14 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.25*"></RowDefinition>
+                <RowDefinition Height="0.2*"></RowDefinition>
                 
             </Grid.RowDefinitions>
             <Label Text="Job Offer"
                    FontSize="Title"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"
-                   Padding="50"
+                   Padding="0"
                    Grid.Row="0"/>
 
             <StackLayout Grid.Row="1" >
@@ -73,7 +73,14 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <DatePicker Format="dd/MM/yyyy" MinimumDate="{x:Static system:DateTime.Now}" Date="{Binding NewJobOffer.Date}" Grid.Column="1"/>
+                    <StackLayout Orientation="Horizontal" 
+                                 Spacing="20"
+                                 Grid.Column="1">
+                        <DatePicker Format="dd/MM/yyyy" 
+                                MinimumDate="{x:Static system:DateTime.Now}" 
+                                Date="{Binding NewJobOffer.Date}" />
+                        <TimePicker Time="{Binding NewJobOffer.Time}" />
+                    </StackLayout>
                 </Grid>
                 <Frame
                        VerticalOptions="FillAndExpand"

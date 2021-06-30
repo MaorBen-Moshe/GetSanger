@@ -5,10 +5,10 @@
              xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converters="clr-namespace:GetSanger.Converters"
-             x:Class="GetSanger.Views.MyRatingsPage">
+             x:Class="GetSanger.Views.RatingsPage">
 
     <ContentPage.BindingContext>
-        <vm:MyRatingsViewModel />
+        <vm:RatingsViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
@@ -39,12 +39,13 @@
         <ScrollView>
             <StackLayout>
                 <ListView x:Name="m_ListView" 
-                      ItemsSource="{Binding Collection}"
-                      IsRefreshing="{Binding IsListRefreshing}"
-                      IsPullToRefreshEnabled="True" 
-                      IsVisible="{Binding IsVisibleViewList}"
-                      RefreshCommand="{Binding RefreshingCommand}"
-                      HasUnevenRows="true">
+                          ItemsSource="{Binding Collection}"
+                          IsRefreshing="{Binding IsListRefreshing}"
+                          IsPullToRefreshEnabled="True" 
+                          IsVisible="{Binding IsVisibleViewList}"
+                          RefreshCommand="{Binding RefreshingCommand}"
+                          SeparatorVisibility="None"
+                          HasUnevenRows="true">
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior Command="{Binding SelectedRatingCommand}" 
                                                           EventName="ItemSelected"
@@ -53,10 +54,28 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame BorderColor="Black" BackgroundColor="AliceBlue">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding RatingWriterName}" FontAttributes="Bold" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"/>
-                                        <controls:RatingStars Rating="{Binding Score}" Review="{Binding Description}" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"/>
+                                <Frame BorderColor="DarkSlateGray" 
+                                       BackgroundColor="Transparent"
+                                       Padding="0"
+                                       Margin="10">
+                                    <StackLayout Orientation="Horizontal"
+                                                 Padding="20"
+                                                 VerticalOptions="StartAndExpand">
+                                        <StackLayout HorizontalOptions="Start"
+                                                     Spacing="5">
+                                            <Label Text="{Binding RatingWriterName}" 
+                                               FontAttributes="Bold" 
+                                               BackgroundColor="Transparent" 
+                                               HorizontalOptions="Start"/>
+                                            <Label Text="{Binding Description}" />
+                                        </StackLayout>
+                                      
+                                        <controls:RatingStars Rating="{Binding Score}" 
+                                                              Review=""
+                                                              BackgroundColor="Transparent" 
+                                                              HorizontalOptions="EndAndExpand"
+                                                              VerticalOptions="Start"
+                                                              Margin="5"/>
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>

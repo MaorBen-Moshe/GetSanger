@@ -14,6 +14,7 @@ namespace GetSanger.Models
         private string m_ClientId;
         private string m_SangertId;
         private ActivityStatus m_Status;
+        private JobOffer m_JobDetails;
         private bool m_LocationActivatedBySanger;
         #endregion
 
@@ -28,8 +29,11 @@ namespace GetSanger.Models
             get => m_SangertId;
             set => SetClassProperty(ref m_SangertId, value);
         }
-        public string Title { get; set; }
-        public JobOffer JobDetails { get; set; }
+        public JobOffer JobDetails
+        {
+            get => m_JobDetails;
+            set => SetClassProperty(ref m_JobDetails, value);
+        }
         public ActivityStatus Status
         {
             get => m_Status;

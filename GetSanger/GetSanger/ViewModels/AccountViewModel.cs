@@ -138,7 +138,7 @@ namespace GetSanger.ViewModels
 
         private async void myRatings(object i_Param)
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.MyRatings);
+            await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
         }
 
         #endregion

@@ -1,5 +1,4 @@
 ﻿using GetSanger.ViewModels;
-using Rg.Plugins.Popup.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +11,23 @@ using Xamarin.Forms.Xaml;
 namespace GetSanger.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddRatingPage : ContentPage
+    public partial class RatingsPage : ContentPage
     {
-        public AddRatingPage()
+        public RatingsPage()
         {
             InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
-            (BindingContext as BaseViewModel).Appearing();
+            (BindingContext as RatingsViewModel).Appearing();
             base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as RatingsViewModel).Disappearing();
+            base.OnDisappearing();
         }
     }
 }

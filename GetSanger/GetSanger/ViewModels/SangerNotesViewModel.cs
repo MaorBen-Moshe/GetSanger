@@ -62,7 +62,6 @@ namespace GetSanger.ViewModels
                 JobDetails = CurrentJob,
                 SangerID = AuthHelper.GetLoggedInUserId(),
                 ClientID = CurrentJob.ClientID,
-                Title = CurrentJob.Title, // need to change
                 Status = ActivityStatus.Pending,
                 LocationActivatedBySanger = false
             };

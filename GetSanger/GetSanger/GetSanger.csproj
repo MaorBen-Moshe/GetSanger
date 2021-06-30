@@ -55,6 +55,9 @@
     <Compile Update="Views\EditJobOfferPage.xaml.cs">
       <DependentUpon>EditJobOfferPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\RatingsPage.xaml.cs">
+      <DependentUpon>RatingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Registration\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
@@ -79,7 +82,7 @@
     <EmbeddedResource Update="Views\ActivityDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\AddRatingPage.xaml">
+    <EmbeddedResource Update="Views\popups\AddRatingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CategoriesPage.xaml">
@@ -121,7 +124,7 @@
     <EmbeddedResource Update="Views\MapPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\MyRatingsPage.xaml">
+    <EmbeddedResource Update="Views\RatingsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\PopupReport.xaml">

@@ -16,6 +16,7 @@ namespace GetSanger.Models
         private eCategory m_Category;
         private string m_Phone;
         private DateTime m_Date;
+        private TimeSpan m_Time;
         private string m_Description;
         private string m_SangerNotes;
 
@@ -69,6 +70,12 @@ namespace GetSanger.Models
         {
             get => m_Date;
             set => SetStructProperty(ref m_Date, value);
+        }
+
+        public TimeSpan Time
+        {
+            get => m_Time;
+            set => SetStructProperty(ref m_Time, value);
         }
 
         public string Description
