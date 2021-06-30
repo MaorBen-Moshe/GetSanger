@@ -19,6 +19,12 @@ namespace GetSanger.Services
             sr_Crashlytics.SetCustomKeys(i_Dictionary);
         }
 
+        /// <summary>
+        /// Custom keys help you get the specific state of your app leading up to a crash.
+        /// You can associate arbitrary key/value pairs with your crash reports, then use the custom keys to search and filter crash reports in the Firebase console. 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void SetCustomKey(string key, object value)
         {
             sr_Crashlytics.SetCustomKey(key, value);
@@ -31,7 +37,7 @@ namespace GetSanger.Services
         /// <param name="i_Message">The message to log.</param>
         public void AddCustomLogMessage(string i_Message)
         {
-            if(i_Message != null)
+            if (i_Message != null)
             {
                 sr_Crashlytics.AddCustomLogMessage(i_Message);
             }
@@ -58,6 +64,11 @@ namespace GetSanger.Services
 
         public override void SetDependencies()
         {
+        }
+
+        public void LogPageEntrance(string i_PageName)
+        {
+            AddCustomLogMessage($"Entered page: {i_PageName}, current app mode is:{AppManager.Instance.CurrentMode}");
         }
     }
 }

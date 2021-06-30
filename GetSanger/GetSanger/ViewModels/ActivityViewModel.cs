@@ -89,6 +89,9 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ActivityViewModel()
         {
+            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
+            crashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
+
             setCommands();
         }
         #endregion

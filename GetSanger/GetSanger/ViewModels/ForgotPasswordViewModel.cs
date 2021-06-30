@@ -38,6 +38,15 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Methods
+
+        public override void Appearing()
+        {
+            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
+            crashlyticsService.LogPageEntrance(nameof(ForgotPasswordViewModel));
+
+            base.Appearing();
+        }
+
         private void setCommands()
         {
             SendCommand = new Command(this.SendClicked);

@@ -13,25 +13,35 @@ namespace GetSanger.ViewModels.chat
     public class ChatListViewModel : ListBaseViewModel<ChatUser>
     {
         #region Fields
+
         #endregion
 
         #region Properties
+
         #endregion
 
         #region Commands
+
         public ICommand UserSelectedCommand { get; set; }
+
         #endregion
 
         #region Constructor
+
         public ChatListViewModel()
         {
             setCommands();
         }
+
         #endregion
 
         #region Methods
+
         public override void Appearing()
         {
+            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
+            crashlyticsService.LogPageEntrance(nameof(ChatListViewModel));
+
             setUsers();
         }
 
@@ -54,12 +64,14 @@ namespace GetSanger.ViewModels.chat
 
         private async void setUsers()
         {
-            ChatDatabase.ChatDatabase database = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
+            ChatDatabase.ChatDatabase database =
+                AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
             List<ChatUser> users = await database.GetAllUsersAsync();
             Collection = new ObservableCollection<ChatUser>(users?.OrderBy(user => user.LastMessage));
             SearchCollection = new ObservableCollection<ChatUser>(Collection);
             IsVisibleViewList = Collection.Count > 0;
         }
+
         #endregion
     }
 }

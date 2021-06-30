@@ -15,50 +15,21 @@ namespace GetSanger.Droid.Services
     {
         public void SetCustomKeys(Dictionary<string, object> i_Dictionary)
         {
-            CustomKeysAndValues.Builder builder = new CustomKeysAndValues.Builder();
-
             foreach (string key in i_Dictionary.Keys)
             {
                 object value = i_Dictionary[key];
-
-                if (value is string strValue)
-                {
-                    builder.PutString(key, strValue);
-                }
-                else if (value is bool boolValue)
-                {
-                    builder.PutBoolean(key, boolValue);
-                }
-                else if (value is int intValue)
-                {
-                    builder.PutInt(key, intValue);
-                }
-                else if (value is long longValue)
-                {
-                    builder.PutLong(key, longValue);
-                }
-                else if (value is float floatValue)
-                {
-                    builder.PutFloat(key, floatValue);
-                }
-                else if (value is double doubleValue)
-                {
-                    builder.PutDouble(key, doubleValue);
-                }
+                SetCustomKey(key, value);
             }
-
-            CustomKeysAndValues customKeysAndValues = builder.Build();
-            Instance.SetCustomKeys(customKeysAndValues);
         }
 
-        public void SetCustomKey(string key, object value) 
+        public void SetCustomKey(string key, object value)
         {
-            if(key != null)
+            if (key != null)
             {
                 if (value is string strValue)
                 {
                     Instance.SetCustomKey(key, strValue);
-            }
+                }
                 else if (value is bool boolValue)
                 {
                     Instance.SetCustomKey(key, boolValue);
