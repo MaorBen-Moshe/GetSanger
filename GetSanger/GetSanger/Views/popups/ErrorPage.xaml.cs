@@ -13,6 +13,7 @@ namespace GetSanger.Views.popups
         {
             InitializeComponent();
 
+            CloseWhenBackgroundIsClicked = false;
             headerLabel.Text = header ?? "Error";
             textLabel.Text = message ?? "Something went wrong! :(";
         }
