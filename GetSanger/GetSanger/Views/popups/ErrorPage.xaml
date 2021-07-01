@@ -27,16 +27,20 @@
                Margin="20"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand">
-            <StackLayout Padding="40" 
+            <StackLayout Padding="50" 
                          BackgroundColor="Transparent">
                 <Label Text="Error!"
                        x:Name="headerLabel"
                        VerticalOptions="StartAndExpand" 
+                       Margin="0,0,0,20"
                        HorizontalOptions="CenterAndExpand" 
                        BackgroundColor="Transparent"/>
 
                 <Label Text="This is a generic error message!"
                        x:Name="textLabel"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="5"
                        VerticalOptions="CenterAndExpand" 
                        HorizontalOptions="CenterAndExpand" 
                        BackgroundColor="Transparent"/>
@@ -45,6 +49,7 @@
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand" 
                        BackgroundColor="Transparent"
+                       Margin="0,20,0,0"
                        x:Name="okLabel">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>

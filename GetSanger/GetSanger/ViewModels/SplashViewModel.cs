@@ -30,7 +30,7 @@ namespace GetSanger.ViewModels
             }
             catch (Exception e)
             {
-                await e.LogAndDisplayError(nameof(SplashViewModel), "Error", e.Message);
+                await e.LogAndDisplayError($"{nameof(SplashViewModel)}:Appearing", "Error", e.Message);
             }
         }
 
