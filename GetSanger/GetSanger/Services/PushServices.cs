@@ -112,7 +112,7 @@ namespace GetSanger.Services
             if (i_Message != null && i_Message.ContainsKey("Type"))
             {
                 string type = i_Message["Type"];
-                string json = i_Message["Json"];
+                string json = i_Message.ContainsKey("Json") ? i_Message["Json"] : null;
                 string mode = i_Message.ContainsKey("Mode") ? i_Message["Mode"] : null;
                 i_Message.Clear();
 
@@ -125,10 +125,13 @@ namespace GetSanger.Services
                         await handleActivity(i_Title, i_Body, json, mode);
                         break;
                     case nameof(Message):
-                        await handleMessage(i_Title, i_Body, json);
+                        await handleMessage(json);
                         break;
                     case nameof(Rating):
                         await handleRating(i_Title, i_Body, json);
+                        break;
+                    case "MessageInfo":
+                        await handleMessageInfo(i_Title, i_Body, json);
                         break;
                     default:
                         throw new ArgumentException("Type of object received is not allowed");
@@ -143,6 +146,10 @@ namespace GetSanger.Services
             //Rating rating = ObjectJsonSerializer.DeserializeForServer<Rating>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             // string ratingJson = ObjectJsonSerializer.SerializeForPage(rating);
+
+            AppManager.Instance.CurrentMode = AppManager.Instance.ConnectedUser.LastUserMode.GetValueOrDefault(AppMode.Client);
+            Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
+
             if (i_Title != null)
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
@@ -150,30 +157,43 @@ namespace GetSanger.Services
 
             if (choice)
             {
-                AppManager.Instance.CurrentMode = AppManager.Instance.ConnectedUser.LastUserMode.GetValueOrDefault(AppMode.Client);
-                Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
                 await navigation.NavigateTo($"{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
             }
         }
 
-        private static async Task handleMessage(string i_Title, string i_Body, string i_Json)
+        private static async Task handleMessageInfo(string i_Title, string i_Body, string i_Json)
         {
             bool choice = true;
             string txt = i_Body + "\nMove to chat page?";
-            Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
-            ChatDatabase.ChatDatabase db = await ChatDatabase.ChatDatabase.Instance;
-            await db.AddMessageAsync(message, message.FromId);
 
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+
+            User connectedUser = AppManager.Instance.ConnectedUser;
+
+            AppManager.Instance.CurrentMode = connectedUser.LastUserMode.GetValueOrDefault(AppMode.Client);
+            Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
+
             if (i_Title != null)
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
             }
 
-            if (choice == true)
+            if (choice)
             {
-                await navigation.NavigateTo(ShellRoutes.ChatView + $"?user={message.FromId}");
+                Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
+                string senderId = message.FromId;
+                User sender = await FireStoreHelper.GetUser(senderId);
+
+                await navigation.NavigateTo(ShellRoutes.ChatView + $"?user={ObjectJsonSerializer.SerializeForPage(sender)}");
             }
+        }
+
+        private static async Task handleMessage(string i_Json)
+        {
+            Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
+            message.MessageSent = true;
+            ChatDatabase.ChatDatabase db = await ChatDatabase.ChatDatabase.Instance;
+            await db.AddMessageAsync(message, message.FromId);
         }
 
         private static async Task handleActivity(string i_Title, string i_Body, string i_Json, string i_Mode)
@@ -183,6 +203,12 @@ namespace GetSanger.Services
             string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+
+            AppManager.Instance.CurrentMode = mode;
+            AppManager.Instance.ConnectedUser.LastUserMode = mode;
+            await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
+
             if (i_Title != null)
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
@@ -190,11 +216,6 @@ namespace GetSanger.Services
 
             if (choice)
             {
-                AppManager.Instance.CurrentMode = mode;
-                AppManager.Instance.ConnectedUser.LastUserMode = mode;
-                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
-
                 await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
             }
         }
@@ -206,6 +227,12 @@ namespace GetSanger.Services
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             string jobJson = ObjectJsonSerializer.SerializeForPage(job);
+
+            AppManager.Instance.CurrentMode = AppMode.Sanger;
+            AppManager.Instance.ConnectedUser.LastUserMode = AppMode.Sanger;
+            await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            Application.Current.MainPage = AppManager.Instance.GetCurrentShell(AppMode.Sanger);
+
             if (i_Title != null)
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
@@ -213,11 +240,6 @@ namespace GetSanger.Services
 
             if (choice)
             {
-                AppManager.Instance.CurrentMode = AppMode.Sanger;
-                AppManager.Instance.ConnectedUser.LastUserMode = AppMode.Sanger;
-                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(AppMode.Sanger);
-
                 await navigation.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={jobJson}");
             }
         }
@@ -263,6 +285,23 @@ namespace GetSanger.Services
                 };
 
                 string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
+                string idToken = await AuthHelper.GetIdTokenAsync();
+
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+            }
+            else
+            {
+                throw new NoInternetException("No Internet");
+            }
+        }
+
+        public async void SendChatMessage(Message i_Message) // no need for await because it's not the user's fault if there is an error
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendChatMessage";
+
+                string json = ObjectJsonSerializer.SerializeForServer(i_Message);
                 string idToken = await AuthHelper.GetIdTokenAsync();
 
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
