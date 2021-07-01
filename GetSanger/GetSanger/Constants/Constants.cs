@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,18 +11,15 @@ namespace GetSanger.Constants
 
         public static string GenericNotificationTopic { get; } = "Generic";
 
-        public static string GetSangerMail { get; } = "GetSanger@gmail.com";
-
-        public static string GetSangerMailPassword { get; } = "$MRGS44$";
-
-        public static string FirebaseStorage = "gs://get-sanger.appspot.com";
-
         public static string LocationMessage = "Location";
 
         public static string ActivatedLocationMessage = "ActivatedLocation";
 
-        public static string UsersDB = "UsersFile";
+        public static string ChatDatabaseName = "Chat.db3";
 
-       // public static int MaxDescriptionEditorLength = 100;
+        public static SQLite.SQLiteOpenFlags ChatDbFlags = 
+                                                            SQLiteOpenFlags.ReadWrite | 
+                                                            SQLiteOpenFlags.Create | 
+                                                            SQLiteOpenFlags.SharedCache;
     }
 }

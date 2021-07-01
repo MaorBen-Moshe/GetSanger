@@ -13,8 +13,8 @@ namespace GetSanger.iOS.Persistence
         public SQLiteAsyncConnection GetConnection()
         {
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string path = Path.Combine(documentsPath, "Chat.db3");
-            return new SQLiteAsyncConnection(path);
+            string path = Path.Combine(documentsPath, Constants.Constants.ChatDatabaseName);
+            return new SQLiteAsyncConnection(path, Constants.Constants.ChatDbFlags);
         }
     }
 }

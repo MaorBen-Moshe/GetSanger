@@ -7,8 +7,6 @@ namespace GetSanger.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SplashPage : ContentPage
     {
-        private bool m_ConnectivtyChanged = false;
-
         public SplashPage()
         {
             InitializeComponent();

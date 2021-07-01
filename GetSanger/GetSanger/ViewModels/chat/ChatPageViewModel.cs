@@ -99,7 +99,7 @@ namespace GetSanger.ViewModels.chat
         {
             r_CrashlyticsService.LogPageEntrance(nameof(ChatPageViewModel));
             UserPicture = r_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
-            DB = (ChatDatabase.ChatDatabase)AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase));
+            DB = await ChatDatabase.ChatDatabase.Instance;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>((messages.Select(item => { item.DeleteMessageCommand = DeleteMessageCommand; return item; })).ToList());

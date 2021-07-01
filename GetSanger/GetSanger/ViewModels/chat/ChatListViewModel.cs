@@ -62,8 +62,7 @@ namespace GetSanger.ViewModels.chat
 
         private async void setUsers()
         {
-            ChatDatabase.ChatDatabase database =
-                AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
+            ChatDatabase.ChatDatabase database = await ChatDatabase.ChatDatabase.Instance;
             List<ChatUser> users = await database.GetAllUsersAsync();
             Collection = new ObservableCollection<ChatUser>(users?.OrderBy(user => user.LastMessage));
             SearchCollection = new ObservableCollection<ChatUser>(Collection);

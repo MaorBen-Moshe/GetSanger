@@ -1,52 +1,46 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GetSanger.Models.chat;
-using System.Linq;
 using GetSanger.Services;
-using Xamarin.Essentials;
 using GetSanger.Interfaces;
 using Xamarin.Forms;
 using SQLite;
-using GetSanger.Models;
 using System;
 
 namespace GetSanger.ChatDatabase
 {
-    public class ChatDatabase : Service
+    public class ChatDatabase
     {
         #region Fields
-        private SQLiteAsyncConnection m_Connection;
-        private bool m_IsUsersCreated;
-        private bool m_IsMessagesCreated;
+        private static SQLiteAsyncConnection m_Connection;
+        #endregion
+
+        #region Instance
+        public static readonly AsyncLazy<ChatDatabase> Instance = new AsyncLazy<ChatDatabase>(async () => {
+            ChatDatabase db = new ChatDatabase();
+            await db.CreateTablesAsnyc();
+            await m_Connection.EnableWriteAheadLoggingAsync();
+            return db;
+        });
         #endregion
 
         #region Constructor
         public ChatDatabase()
         {
-            m_IsUsersCreated = false;
-            m_IsMessagesCreated = false;
+            m_Connection = DependencyService.Get<ISQLiteDb>().GetConnection();
         }
         #endregion
 
         #region Methods
-        public async override void SetDependencies()
+        public async Task CreateTablesAsnyc()
         {
-            m_Connection ??= DependencyService.Get<ISQLiteDb>().GetConnection();
-            if (!m_IsUsersCreated)
-            {
-                await m_Connection.CreateTableAsync<ChatUser>();
-                m_IsUsersCreated = true;
-            }
-            if (!m_IsMessagesCreated)
-            {
-                await m_Connection.CreateTableAsync<Message>();
-                m_IsMessagesCreated = true;
-            }
+            await m_Connection.CreateTableAsync<ChatUser>();
+            await m_Connection.CreateTableAsync<Message>();
         }
 
+        #region UsersTable
         public Task<int> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null)
         {
-            SetDependencies();
             ChatUser newUser = new ChatUser
             {
                 UserId = i_UserId,
@@ -58,7 +52,6 @@ namespace GetSanger.ChatDatabase
 
         public async Task<int> DeleteUserAsync(string i_UserId)
         {
-            SetDependencies();
             ChatUser toDelete = await m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_UserId)).FirstAsync();
             if(toDelete != null)
             {
@@ -77,13 +70,15 @@ namespace GetSanger.ChatDatabase
 
         public Task<List<ChatUser>> GetAllUsersAsync()
         {
-            SetDependencies();
             return m_Connection.Table<ChatUser>().ToListAsync();
         }
 
+        #endregion
+
+        #region MessagesTable
+
         public Task<List<Message>> GetMessagesAsync(string i_UserToChatId)
         {
-            SetDependencies();
             string i_MyId = AppManager.Instance.ConnectedUser.UserId;
             return m_Connection.Table<Message>().Where(item => (item.ToId.Equals(i_MyId) && item.FromId.Equals(i_UserToChatId)) 
                                                                || (item.ToId.Equals(i_UserToChatId) && item.FromId.Equals(i_MyId))).ToListAsync();
@@ -91,7 +86,6 @@ namespace GetSanger.ChatDatabase
 
         public async Task<int> AddMessageAsync(Message i_Message, string i_ChatId) // chat id is most of the time the userTo id
         {
-            SetDependencies();
             ChatUser user = null;
             if (i_ChatId != null)
             {
@@ -108,7 +102,6 @@ namespace GetSanger.ChatDatabase
 
         public async Task<int> DeleteMessageAsync(Message i_Message)
         {
-            SetDependencies();
             int deleted = await m_Connection.DeleteAsync(i_Message);
             if(deleted > 0)
             {
@@ -125,9 +118,11 @@ namespace GetSanger.ChatDatabase
 
         public Task UpdateMessageAsync(Message i_Message)
         {
-            SetDependencies();
             return m_Connection.UpdateAsync(i_Message);
         }
+
+        #endregion
+
         #endregion
     }
 }

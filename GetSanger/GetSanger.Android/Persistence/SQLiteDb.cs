@@ -13,8 +13,8 @@ namespace GetSanger.Droid.Persistence
         public SQLiteAsyncConnection GetConnection()
         {
             var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var path = Path.Combine(documentsPath, "Chat.db3");
-            return new SQLiteAsyncConnection(path);
+            var path = Path.Combine(documentsPath, Constants.Constants.ChatDatabaseName);
+            return new SQLiteAsyncConnection(path, Constants.Constants.ChatDbFlags);
         }
     }
 }
