@@ -102,7 +102,7 @@ namespace GetSanger.ViewModels.chat
             DB = await ChatDatabase.ChatDatabase.Instance;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
-            MessagesSource = new ObservableCollection<Message>((messages.Select(item => { item.DeleteMessageCommand = DeleteMessageCommand; return item; })).ToList());
+            MessagesSource = new ObservableCollection<Message>(messages);
             sendUnsentMessages();
             ShowScrollTap = false;
             DelayedMessages = new Queue<Message>();
@@ -147,8 +147,9 @@ namespace GetSanger.ViewModels.chat
                     await DB.AddMessageAsync(msg, msg.ToId);
                     TextToSend = string.Empty;
                 }
-                catch
+                catch(Exception e)
                 {
+                    await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:sendMessage", "Error", e.Message);
                 }
             }
         }

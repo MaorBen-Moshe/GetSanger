@@ -161,7 +161,7 @@ namespace GetSanger.Services
             bool choice = true;
             string txt = i_Body + "\nMove to chat page?";
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
-            ChatDatabase.ChatDatabase db = AppManager.Instance.Services.GetService(typeof(ChatDatabase.ChatDatabase)) as ChatDatabase.ChatDatabase;
+            ChatDatabase.ChatDatabase db = await ChatDatabase.ChatDatabase.Instance;
             await db.AddMessageAsync(message, message.FromId);
 
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;

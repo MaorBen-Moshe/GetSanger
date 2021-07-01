@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:effects="clr-namespace:GetSanger.Effects"
-             x:Class="GetSanger.Views.chat.IncomingViewCell">
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:vm="clr-namespace:GetSanger.ViewModels.chat"
+          xmlns:effects="clr-namespace:GetSanger.Effects"
+          x:Class="GetSanger.Views.chat.IncomingViewCell">
 
     <Frame BackgroundColor="LightBlue"
               Rotation="180"
@@ -13,7 +14,7 @@
               IsClippedToBounds="True"
               CornerRadius="30"
               BorderColor="Black"
-              effects:LongPressedEffect.Command="{Binding DeleteMessageCommand}"
+              effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
               effects:LongPressedEffect.CommandParameter="{Binding .}">
 
         <Frame.Effects>

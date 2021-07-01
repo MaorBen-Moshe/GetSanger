@@ -1,10 +1,4 @@
-﻿using GetSanger.ViewModels.chat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -25,7 +19,6 @@ namespace GetSanger.Views.chat
 
         public void Handle_Completed(object sender, EventArgs e)
         {
-            (this.Parent.Parent.BindingContext as ChatPageViewModel).SendMessageCommand.Execute(null);
             chatTextInput.Focus();
         }
 

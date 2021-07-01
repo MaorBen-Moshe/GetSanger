@@ -56,15 +56,20 @@ namespace GetSanger.ViewModels.chat
 
         private async void userSelected(object i_Param)
         {
-            string json = ObjectJsonSerializer.SerializeForPage(i_Param as User);
-            await r_NavigationService.NavigateTo(ShellRoutes.ChatView + $"user={json}");
+            string json = ObjectJsonSerializer.SerializeForPage((i_Param as ChatUser).User);
+            await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
         }
 
         private async void setUsers()
         {
             ChatDatabase.ChatDatabase database = await ChatDatabase.ChatDatabase.Instance;
-            List<ChatUser> users = await database.GetAllUsersAsync();
-            Collection = new ObservableCollection<ChatUser>(users?.OrderBy(user => user.LastMessage));
+            List<ChatUser> users = ((await database.GetAllUsersAsync())?.OrderBy(user => user.LastMessage)).ToList();
+            foreach(var user in users)
+            {
+                user.User = await FireStoreHelper.GetUser(user.UserId);
+            }
+
+            Collection = new ObservableCollection<ChatUser>(users);
             SearchCollection = new ObservableCollection<ChatUser>(Collection);
             IsVisibleViewList = Collection.Count > 0;
         }

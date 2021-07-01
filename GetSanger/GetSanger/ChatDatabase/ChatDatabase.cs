@@ -39,7 +39,7 @@ namespace GetSanger.ChatDatabase
         }
 
         #region UsersTable
-        public Task<int> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null)
+        public async Task<ChatUser> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null)
         {
             ChatUser newUser = new ChatUser
             {
@@ -47,7 +47,7 @@ namespace GetSanger.ChatDatabase
                 LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now 
             };
 
-            return m_Connection.InsertAsync(newUser);
+            return (await m_Connection.InsertAsync(newUser) == 1) ? newUser : null;
         }
 
         public async Task<int> DeleteUserAsync(string i_UserId)
@@ -65,7 +65,7 @@ namespace GetSanger.ChatDatabase
 
         public Task<ChatUser> GetUserAsync(string i_Id)
         {
-            return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id)).FirstAsync();
+            return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id)).FirstOrDefaultAsync();
         }
 
         public Task<List<ChatUser>> GetAllUsersAsync()
