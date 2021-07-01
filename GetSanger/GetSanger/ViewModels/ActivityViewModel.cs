@@ -1,6 +1,8 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Views.popups;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -16,10 +18,11 @@ namespace GetSanger.ViewModels
         private Activity m_ConnectedActivity;
         private string m_Location;
         private string m_JobLocation;
-        private string m_Phone;
         private string m_ActivatedButtonText;
         private bool m_IsActivetdLocationButton;
         private bool m_IsActivatedEndButton;
+        private string m_ProfileName;
+        private bool m_IsSangerNotesVisible;
         #endregion
 
         #region Properties
@@ -63,17 +66,22 @@ namespace GetSanger.ViewModels
 
         public string JobLocation
         {
-            get => m_JobLocation; 
-            set => SetClassProperty(ref m_JobLocation, value); 
+            get => m_JobLocation;
+            set => SetClassProperty(ref m_JobLocation, value);
         }
 
-        public string Phone
+        public string ProfileName
         {
-            get => m_Phone;
-            set => SetClassProperty(ref m_Phone, value);
+            get => m_ProfileName;
+            set => SetClassProperty(ref m_ProfileName, value);
         }
 
-        public string Category { get => ConnectedActivity.JobDetails.Category.ToString(); }
+        public bool IsSangerNotesVisible
+        {
+            get => m_IsSangerNotesVisible;
+            set => SetStructProperty(ref m_IsSangerNotesVisible, value);
+        }
+
         #endregion
 
         #region Commands
@@ -83,6 +91,8 @@ namespace GetSanger.ViewModels
         public ICommand LocationCommand { get; private set; }
 
         public ICommand EndActivityCommand { get; private set; }
+
+        public ICommand NotesCommand { get; private set; }
 
         #endregion
 
@@ -102,10 +112,13 @@ namespace GetSanger.ViewModels
         {
             r_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
             setLocationsLabels();
+            ProfileName = setProfileName();
             IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
                                    AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
                                    ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
+            IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
+                                   AppManager.Instance.CurrentMode.Equals(AppMode.Client);
             MessagingCenter.Subscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage, (sender, args) =>
             {
                 IsActivatedLocationButton = args;
@@ -121,6 +134,22 @@ namespace GetSanger.ViewModels
             ProfileCommand = new Command(profilePage);
             EndActivityCommand = new Command(endActivity);
             LocationCommand = new Command(locationCommandHelper);
+            NotesCommand = new Command(showNotes);
+        }
+
+        private string setProfileName()
+        {
+            string name;
+            if (AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID))
+            {
+                name = ConnectedActivity.JobDetails.ClientName;
+            }
+            else // the client of the activity
+            {
+                name = ConnectedActivity.SangerName;
+            }
+
+            return name;
         }
 
         private async void setLocationsLabels()
@@ -235,11 +264,30 @@ namespace GetSanger.ViewModels
 
         private async void profilePage()
         {
-            User user = ConnectedActivity.ClientID.Equals(AppManager.Instance.ConnectedUser.UserId) ?
-                        await RunTaskWhileLoading(FireStoreHelper.GetUser(ConnectedActivity.SangerID)) :
-                        await RunTaskWhileLoading(FireStoreHelper.GetUser(ConnectedActivity.ClientID));
+            string user = ConnectedActivity.ClientID.Equals(AppManager.Instance.ConnectedUser.UserId) ?
+                        ConnectedActivity.SangerID :
+                       ConnectedActivity.ClientID;
 
-            await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?user={user}");
+            await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={user}");
+        }
+
+        private async void showNotes(object i_Param)
+        {
+            string error = "Fail showing description in activity page";
+            bool succeeded = byte.TryParse((i_Param as string), out byte result);
+            if (succeeded)
+            {
+                switch (result)
+                {
+                    case 0: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.JobDetails.Description, "Job Description")); break;
+                    case 1: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.JobDetails.SangerNotes, "Sanger Notes")); break;
+                    default: throw new ArgumentException(error);
+                }
+            }
+            else
+            {
+                throw new ArgumentException(error);
+            }
         }
 
         #endregion

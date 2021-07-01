@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animation="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             x:Class="GetSanger.Views.popups.EditorPopup">
+
+
+    <popup:PopupPage.Animation>
+        <animation:ScaleAnimation PositionIn="Center"
+                                  PositionOut="Center"
+                                  ScaleIn="1.2"
+                                  ScaleOut="0.8"
+                                  DurationIn="400"
+                                  DurationOut="300"
+                                  EasingIn="SinOut"
+                                  EasingOut="SinIn"
+                                  HasBackgroundAnimation="True"/>
+    </popup:PopupPage.Animation>
+
+    <popup:PopupPage.Content>
+        <Frame HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand"
+               Margin="20, 160"
+               CornerRadius="20"
+               BackgroundColor="AliceBlue"
+               Padding="10"
+               BorderColor="Black"
+               HasShadow="True">
+            <Editor IsSpellCheckEnabled="True"
+                    IsTextPredictionEnabled="True"
+                    VerticalOptions="FillAndExpand"
+                    Margin="15"
+                    x:Name="editor"
+                    IsEnabled="False">
+            </Editor>
+        </Frame>
+    </popup:PopupPage.Content>
+</popup:PopupPage>

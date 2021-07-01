@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm ="clr-namespace:GetSanger.ViewModels"
+             xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.ActivityDetailPage">
 
     <ContentPage.BindingContext>
@@ -9,96 +10,138 @@
     </ContentPage.BindingContext>
 
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Shell.TitleView>
+        <StackLayout>
+            <Label Text="{Binding ConnectedActivity.JobDetails.Title}"
+                   TextColor="White"
+                   FontSize="20"
+                   Margin="50, 0, 0, 0"
+                   BackgroundColor="Transparent"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </Shell.TitleView>
+
+
     <ContentPage.Content>
-        <Grid Padding="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"></RowDefinition>
-            </Grid.RowDefinitions>
-            
-            <AbsoluteLayout Grid.Row="0"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Start">
-                <Label Text="Current Job"
-                       FontSize="50"
-                       AbsoluteLayout.LayoutBounds="0.5, 0.1, 1, 0.75"
-                       AbsoluteLayout.LayoutFlags="All"/>
-                <StackLayout AbsoluteLayout.LayoutBounds="0.5, 0.4, 0.75, 0.2"
-                             AbsoluteLayout.LayoutFlags="All">
-                    <Label Text="{Binding Path=ConnectedActivity.Status, StringFormat='Status: {0}'}"
-                           FontSize="Title"
-                           HorizontalOptions="CenterAndExpand"/>
-                    <Button Text="User/Sanger Profile"
-                            Command="{Binding ProfileCommand}" />
+
+        <StackLayout>
+            <Frame HorizontalOptions="Center"
+                   Margin="0,5,0,0"
+                   Padding="40, 30"
+                   BorderColor="Black">
+                <StackLayout>
+                    <Label Text="{Binding ConnectedActivity.Status, StringFormat='Status: {0}'}"
+                           HorizontalOptions="CenterAndExpand"
+                           FontSize="Large"
+                           Margin="0,5,0,0"/>
+                    <Label Text="{Binding ConnectedActivity.JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, StringFormat='Job Category: {0}'}"
+                           HorizontalOptions="CenterAndExpand"
+                           Margin="0,0,0,5"
+                           VerticalOptions="Center"/>
+                    <Button Text="{Binding ProfileName, StringFormat='{0}\'s Profile'}" 
+                            TextTransform="None"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="Center"
+                            BackgroundColor="Transparent"
+                            Margin="0,5,0,0"
+                            Command="{Binding ProfileCommand}"/>
                 </StackLayout>
-            </AbsoluteLayout>
+            </Frame>
 
-            <StackLayout Grid.Row="1" >
-                <Grid >
-                    <Entry Text="Category here" IsEnabled="False" Grid.Column="0"/>
-                    <Entry Text="Sub Category here" IsEnabled="False" Grid.Column="1"/>
-                </Grid>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.6*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Text="End Location:" Grid.Column="0"/>
-                    <Entry Placeholder="My Location" 
-                           Text="{Binding Location, Mode=TwoWay}" 
-                           IsEnabled="False" 
-                           Grid.Column="1" 
-                           Grid.ColumnSpan="2" />
-                </Grid>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.6*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-            <Label Text="Job Location:" Grid.Column="0"/>
-                    <Entry Placeholder="Job Location" 
-                           Text="{Binding JobLocation, Mode=TwoWay}"
-                           IsEnabled="False" 
-                           Grid.Column="1" 
-                           Grid.ColumnSpan="2" />
-                </Grid>
-
-                <Entry Placeholder="Phone number" IsEnabled="False"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                    <StackLayout Orientation="Horizontal" 
-                                 Spacing="20"
-                                 Grid.Column="1">
-                        <DatePicker Format="dd MMM yyyy" 
+            <Frame HorizontalOptions="Center"
+                   Margin="10,5,10,10"
+                   Padding="20"
+                   BorderColor="Black">
+                <StackLayout Spacing="10">
+                    <Label Text="Job Details:" 
+                           TextDecorations="Underline"
+                           HorizontalOptions="CenterAndExpand"/>
+                    <Label Text="{Binding Location, StringFormat=' End Location:&#x0a; {0}'}"
+                           Margin="5"
+                           BackgroundColor="Transparent"/>
+                    <Label Text="{Binding JobLocation, StringFormat=' Job Location:&#x0a; {0}'}"
+                           Margin="5"
+                           BackgroundColor="Transparent"/>
+                    <Frame HorizontalOptions="FillAndExpand"
+                           Margin="12, 0"
+                           Padding="5"
+                           BorderColor="Black">
+                        <StackLayout Orientation="Horizontal" 
+                                 HorizontalOptions="FillAndExpand">
+                            <DatePicker Format="dd MMM yyyy" 
                                     Date="{Binding ConnectedActivity.JobDetails.Date}" 
+                                    HorizontalOptions="FillAndExpand"
+                                    Margin="10,0,0,0"
                                     IsEnabled="False"/>
-                        <TimePicker Time="{Binding ConnectedActivity.JobDetails.Time}"
+                            <TimePicker Time="{Binding ConnectedActivity.JobDetails.Time}"
+                                    Margin="0,0,10,0"
                                     IsEnabled="False" />
-                    </StackLayout>
-                </Grid>
-                <Frame
-                       VerticalOptions="FillAndExpand"
-                       HasShadow="True">
-                    <Editor Text="{Binding ConnectedActivity.JobDetails.Description}"
-                        IsSpellCheckEnabled="True"
-                        IsTextPredictionEnabled="True"
-                        Placeholder="Job Description"
-                        VerticalOptions="FillAndExpand"
-                        IsEnabled="False">
-                    </Editor>
-                </Frame>
-                
+                        </StackLayout>
+                    </Frame>
+
+                    <Frame HorizontalOptions="FillAndExpand"
+                           Margin="12, 0"
+                           Padding="5"
+                           BorderColor="Black">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NotesCommand}"
+                                                  CommandParameter="0">
+                                
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Job description"
+                                   HorizontalOptions="StartAndExpand"/>
+                            <Label Text=">" 
+                                   HorizontalOptions="EndAndExpand"/> 
+                        </StackLayout>
+                    </Frame>
+
+                    <Frame HorizontalOptions="FillAndExpand"
+                           Margin="12, 0"
+                           Padding="5"
+                           BorderColor="Black"
+                           IsVisible="{Binding IsSangerNotesVisible}"
+                           IsEnabled="{Binding IsSangerNotesVisible}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NotesCommand}"
+                                                  CommandParameter="1">
+
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Sanger notes"
+                                   HorizontalOptions="StartAndExpand"/>
+                            <Label Text=">" 
+                                   HorizontalOptions="EndAndExpand"/>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </Frame>
+
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="CenterAndExpand"
+                         VerticalOptions="StartAndExpand"
+                         Margin="10"
+                         Spacing="5">
                 <Button Text="{Binding ActivatedButtonText}"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="CenterAndExpand"
                         IsVisible="{Binding IsActivatedLocationButton}"
                         IsEnabled="{Binding IsActivatedLocationButton}"
-                        HorizontalOptions="CenterAndExpand"
                         VerticalOptions="End"
                         CornerRadius="20"
                         Command="{Binding LocationCommand}"/>
-                
+
                 <Button Text="End Activity"
+                        BackgroundColor="Transparent"
                         IsVisible="{Binding IsActivatedEndButton}"
                         IsEnabled="{Binding IsActivatedEndButton}"
                         HorizontalOptions="CenterAndExpand"
@@ -108,6 +151,6 @@
                         Command="{Binding EndActivityCommand}"/>
             </StackLayout>
 
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

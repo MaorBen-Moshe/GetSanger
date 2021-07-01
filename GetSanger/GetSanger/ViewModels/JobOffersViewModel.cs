@@ -66,6 +66,7 @@ namespace GetSanger.ViewModels
             {
                 JobDetails = CurrentConfirmedJobOffer,
                 SangerID = AuthHelper.GetLoggedInUserId(),
+                SangerName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName,
                 ClientID = CurrentConfirmedJobOffer.ClientID,
                 Status = ActivityStatus.Pending,
                 LocationActivatedBySanger = false
