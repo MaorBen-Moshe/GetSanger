@@ -62,6 +62,7 @@ namespace GetSanger.ViewModels.chat
 
         private async void setUsers()
         {
+            r_LoadingService.ShowPopup();
             ChatDatabase.ChatDatabase database = await ChatDatabase.ChatDatabase.Instance;
             List<ChatUser> users = ((await database.GetAllUsersAsync())?.OrderBy(user => user.LastMessage)).ToList();
             foreach(var user in users)
@@ -72,6 +73,7 @@ namespace GetSanger.ViewModels.chat
             Collection = new ObservableCollection<ChatUser>(users);
             SearchCollection = new ObservableCollection<ChatUser>(Collection);
             IsVisibleViewList = Collection.Count > 0;
+            r_LoadingService.HidePopup();
         }
 
         #endregion

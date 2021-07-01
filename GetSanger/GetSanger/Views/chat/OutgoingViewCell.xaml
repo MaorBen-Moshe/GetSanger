@@ -30,9 +30,11 @@
                    Grid.Column="0"/>
             <Label Text="!"
                    TextColor="Red"
+                   BackgroundColor="Transparent"
                    IsVisible="{Binding MessageSent, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
                    Grid.Column="1"
-                   HorizontalOptions="EndAndExpand"/>
+                   HorizontalOptions="EndAndExpand"
+                   VerticalOptions="EndAndExpand"/>
         </Grid>
     </Frame>
 </ViewCell>

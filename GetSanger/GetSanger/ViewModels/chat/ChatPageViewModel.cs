@@ -73,7 +73,7 @@ namespace GetSanger.ViewModels.chat
 
         public int PendingMessageCount { get; set; }
 
-        public bool PendingMessageCountVisible { get { return PendingMessageCount > 2; } }
+        public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
 
         public Queue<Message> DelayedMessages { get; set; }
         #endregion
@@ -102,7 +102,7 @@ namespace GetSanger.ViewModels.chat
             DB = await ChatDatabase.ChatDatabase.Instance;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
-            MessagesSource = new ObservableCollection<Message>(messages);
+            MessagesSource = new ObservableCollection<Message>(messages.OrderByDescending(item => item.MessageId));
             sendUnsentMessages();
             ShowScrollTap = false;
             DelayedMessages = new Queue<Message>();
@@ -138,6 +138,7 @@ namespace GetSanger.ViewModels.chat
                     MessageSent = false
                 };
 
+                TextToSend = string.Empty;
                 try
                 {
                     MessagesSource.Insert(0, msg);
@@ -145,7 +146,6 @@ namespace GetSanger.ViewModels.chat
                     // adding the message to the local DB
                     msg.MessageSent = true; // removing the '!' in the UI does not work
                     await DB.AddMessageAsync(msg, msg.ToId);
-                    TextToSend = string.Empty;
                 }
                 catch(Exception e)
                 {
@@ -197,7 +197,7 @@ namespace GetSanger.ViewModels.chat
         {
             Message message = i_Param as Message;
             var idx = MessagesSource.IndexOf(message);
-            if (idx <= 6)
+            if (idx <= 1)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
@@ -205,6 +205,7 @@ namespace GetSanger.ViewModels.chat
                     {
                         MessagesSource.Insert(0, DelayedMessages.Dequeue());
                     }
+
                     ShowScrollTap = false;
                     LastMessageVisible = true;
                     PendingMessageCount = 0;
@@ -216,7 +217,7 @@ namespace GetSanger.ViewModels.chat
         {
             Message message = i_Param as Message;
             var idx = MessagesSource.IndexOf(message);
-            if (idx >= 6)
+            if (idx >= 1)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {

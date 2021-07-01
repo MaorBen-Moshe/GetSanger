@@ -6,7 +6,7 @@
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
              x:Class="GetSanger.Views.chat.ChatView"
              x:Name="chatView"
-             BackgroundColor="FloralWhite"
+             BackgroundColor="White"
              Shell.NavBarHasShadow="False">
 
     <ContentPage.Resources>
@@ -97,10 +97,6 @@
                     <TapGestureRecognizer Tapped="ScrollTap"/>
                 </Frame.GestureRecognizers>
             </Frame>
-            <!--<BoxView HorizontalOptions="FillAndExpand"
-                 HeightRequest="1"
-                 BackgroundColor="LightGray"
-                 Grid.Row="1"/>-->
 
             <Frame Grid.Row="1"
                    IsClippedToBounds="True"
