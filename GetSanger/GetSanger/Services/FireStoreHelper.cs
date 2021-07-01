@@ -19,32 +19,6 @@ namespace GetSanger.Services
 
     public static class FireStoreHelper
     {
-        // experiment
-
-        #region Generic_Methods
-
-        public static async Task<List<T>> GetCollection<T>(string i_UserId,
-            CollectionType i_Type)
-        {
-            string uri = "uri here";
-            Dictionary<string, string> id = new Dictionary<string, string>
-            {
-                ["userid"] = i_UserId,
-                ["type"] = i_Type.ToString()
-            };
-
-            string json = ObjectJsonSerializer.SerializeForServer(id);
-            HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
-            }
-
-            return ObjectJsonSerializer.DeserializeForServer<List<T>>(await response.Content.ReadAsStringAsync());
-        }
-
-        #endregion
-
         #region Activities
 
         public static async Task<List<Activity>> GetActivities(string i_UserID)

@@ -1,5 +1,6 @@
 ﻿using GetSanger.AppShell;
 using GetSanger.Constants;
+using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
@@ -90,9 +91,9 @@ namespace GetSanger.ViewModels
                 {
                     AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
                 }
-                catch
+                catch(Exception e)
                 {
-                    await r_PageService.DisplayAlert("Error", "Something went wrong.\nPlease contact us!", "OK");
+                    await e.LogAndDisplayError($"{nameof(AccountViewModel)}:initialPage", "Error", "Something went wrong.\nPlease contact us!");
                     Application.Current.MainPage = new AuthShell();
                 }
             }

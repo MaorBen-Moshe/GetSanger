@@ -140,9 +140,9 @@ namespace GetSanger.ViewModels
                     JobPlaceMark ??= MyPlaceMark;
                 }
             }
-            catch (PermissionException)
+            catch (PermissionException e)
             {
-                await r_PageService.DisplayAlert("Error", "Please allow location!", "OK");
+                await e.LogAndDisplayError($"{nameof(EditJobOfferViewModel)}:InitialCurrentLocation", "Error", "Please allow location!");
             }
         }
 

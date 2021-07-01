@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
 using Xamarin.Essentials;
@@ -143,15 +144,15 @@ namespace GetSanger.ViewModels
             }
             catch(ArgumentNullException anex)
             {
-                await r_PageService.DisplayAlert("Error", anex.Message, "Ok");
+                await anex.LogAndDisplayError($"{nameof(MapViewModel)}:callTripHelper", "Error", anex.Message);
             }
             catch(FeatureNotSupportedException fnx)
             {
-                await r_PageService.DisplayAlert("Error", fnx.Message, "Ok");
+                await fnx.LogAndDisplayError($"{nameof(MapViewModel)}:callTripHelper", "Error", fnx.Message);
             }
-            catch
+            catch(Exception e)
             {
-                await r_PageService.DisplayAlert("שגיאה", "משהו נכשל, תנסה שוב מאוחר יותר.", "Ok", "ok");
+                await e.LogAndDisplayError($"{nameof(MapViewModel)}:callTripHelper", "Error", "Something went wrong! \n Please try again later.");
             }
         }
 
@@ -251,11 +252,10 @@ namespace GetSanger.ViewModels
                     }
                 };
             }
-            catch (PermissionException)
+            catch (PermissionException e)
             {
-                await r_PageService.DisplayAlert("Error", "Please allow location services", "OK");
+                await e.LogAndDisplayError($"{nameof(MapViewModel)}:createMapSpan", "Error", "Please allow location services");
             }
-            
         }
         #endregion
     }

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
 using Xamarin.Essentials;
+using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -185,9 +186,9 @@ namespace GetSanger.ViewModels.chat
                     MessagesSource.Remove(message);
                 }
             }
-            catch
+            catch(Exception e)
             {
-                await r_PageService.DisplayAlert("Error", "Something went wrong!", "OK");
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:deleteMessage", "Error", "Something went wrong!");
             }
         }
 

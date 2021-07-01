@@ -1,4 +1,5 @@
-﻿using GetSanger.Services;
+﻿using GetSanger.Extensions;
+using GetSanger.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -77,7 +78,7 @@ namespace GetSanger.ViewModels
             catch(Exception e)
             {
                 r_LoadingService.HidePopup();
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
+                await e.LogAndDisplayError($"{nameof(LinkEmailViewModel)}:link", "Error", e.Message);
             }
         }
         #endregion

@@ -16,13 +16,13 @@ namespace GetSanger.Views.popups
 
         protected override bool OnBackButtonPressed()
         {
-            setBackBehavior();
+            (BindingContext as ModeViewModel).SetBackBehavior();
             return base.OnBackButtonPressed();
         }
 
         protected override bool OnBackgroundClicked()
         {
-            setBackBehavior();
+            (BindingContext as ModeViewModel).SetBackBehavior();
             return base.OnBackgroundClicked();
         }
 
@@ -31,14 +31,6 @@ namespace GetSanger.Views.popups
             DisplayAlert("Note", "You must choose a mode to continue.", "OK");
             (BindingContext as BaseViewModel).Appearing();
             base.OnAppearing();
-        }
-
-        private void setBackBehavior()
-        {
-            if (AuthHelper.IsLoggedIn())
-            {
-                AuthHelper.SignOut();
-            }
         }
     }
 }

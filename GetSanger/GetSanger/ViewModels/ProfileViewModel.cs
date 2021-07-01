@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Views.popups;
+using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels
 {
@@ -116,7 +117,7 @@ namespace GetSanger.ViewModels
             }
             catch(Exception e)
             {
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
+                await e.LogAndDisplayError($"{nameof(ProfileViewModel)}:setUser", "Error", e.Message);
             }
             finally
             {
@@ -170,7 +171,7 @@ namespace GetSanger.ViewModels
                 }
                 catch (Exception e)
                 {
-                    await r_PageService.DisplayAlert("Oh No", e.Message, "Sorry");
+                    await e.LogAndDisplayError($"{nameof(ProfileViewModel)}:reportUser", "Oh No", e.Message);
                 }
             }
         }

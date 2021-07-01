@@ -179,7 +179,7 @@ namespace GetSanger.Controls
         //Set the correct images for the stars based on the rating 
         public void updateStarsDisplay()
         {
-            for (int i = 0; i < 5; i++) // "rating" insated of 5 will show just fulll stars. 
+            for (int i = 0; i < 5; i++) // "rating" instead of 5 will show just full stars. 
             {
                 StarImages[i].Source = GetStarFileName(i);
             }

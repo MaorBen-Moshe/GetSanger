@@ -1,4 +1,5 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.Extensions;
+using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
@@ -92,7 +93,7 @@ namespace GetSanger.ViewModels
             catch (Exception e)
             {
                 r_LoadingService.HidePopup();
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
+                await e.LogAndDisplayError($"{nameof(LinkSocialViewModel)}:providerSelected", "Error", e.Message);
             }
             finally
             {

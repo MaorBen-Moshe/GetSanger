@@ -1,6 +1,8 @@
 ﻿using GetSanger.Extensions;
 using GetSanger.Services;
+using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
+using System;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -77,9 +79,9 @@ namespace GetSanger.ViewModels
                             await r_PageService.DisplayAlert("Note", "Password of at least 6 chars must contain at list: one capital letter, one lower letter, one digit, one special character" , "OK");
                         }
                     }
-                    catch
+                    catch(Exception e)
                     {
-                        await r_PageService.DisplayAlert("Note", "Please check if you wrote the write confirm password", "OK");
+                        await e.LogAndDisplayError($"{nameof(ChangePasswordViewModel)}:changePassword", "Note", "Please check if you wrote the write confirm password");
                     }
                 }
                 else

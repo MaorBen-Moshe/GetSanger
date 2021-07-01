@@ -1,5 +1,6 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Exceptions;
+using GetSanger.Extensions;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
@@ -95,7 +96,7 @@ namespace GetSanger.ViewModels
             }
             catch (Exception e)
             {
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
+                await e.LogAndDisplayError($"{nameof(LoginViewModel)}:LoginClicked", "Error", e.Message);
             }
         }
 
@@ -131,7 +132,7 @@ namespace GetSanger.ViewModels
                 }
                 catch(Exception e)
                 {
-                    await r_PageService.DisplayAlert("Error", e.Message, "OK");
+                    await e.LogAndDisplayError($"{nameof(LoginViewModel)}:socialClicked", "Error", e.Message);
                 }
             }
         }

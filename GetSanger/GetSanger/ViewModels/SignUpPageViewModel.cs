@@ -230,7 +230,7 @@ namespace GetSanger.ViewModels
                 }
                 catch (Exception e)
                 {
-                    await r_PageService.DisplayAlert("Notice", e.Message, "OK");
+                    await e.LogAndDisplayError($"{nameof(SignUpPageViewModel)}:emailPartClicked", "Notice", e.Message);
                 }
             }
             else
@@ -265,7 +265,7 @@ namespace GetSanger.ViewModels
             }
             catch (Exception e)
             {
-                await r_PageService.DisplayAlert("Notice", e.Message, "OK");
+                await e.LogAndDisplayError($"{nameof(SignUpPageViewModel)}:categoriesPartClicked", "Notice", e.Message);
             }
         }
 
@@ -277,9 +277,9 @@ namespace GetSanger.ViewModels
                 await r_PhotoDisplay.TryGetPictureFromStream(CreatedUser);
                 PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             }
-            catch
+            catch(Exception e)
             {
-                await r_PageService.DisplayAlert("Error", "Something went wrong, please try again later", "OK");
+                await e.LogAndDisplayError($"{nameof(SignUpPageViewModel)}:imagePicker", "Error", "Something went wrong, please try again later");
             }
         }
 

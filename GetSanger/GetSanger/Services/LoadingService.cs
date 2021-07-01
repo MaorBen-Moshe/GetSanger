@@ -32,7 +32,7 @@ namespace GetSanger.Services
 
         public override void SetDependencies()
         {
-            m_LoadingService = DependencyService.Get<ILoadingService>();
+            m_LoadingService ??= DependencyService.Get<ILoadingService>();
         }
     }
 }

@@ -29,7 +29,6 @@ namespace GetSanger.Services
 
         public override void SetDependencies()
         {
-            //
         }
     }
 }

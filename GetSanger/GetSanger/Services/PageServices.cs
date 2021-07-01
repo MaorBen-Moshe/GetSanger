@@ -24,7 +24,6 @@ namespace GetSanger.Services
 
         public override void SetDependencies()
         {
-            //;
         }
 
         public  Task<string> DisplayActionSheet(string i_Title, string i_Cancel, string i_Distruction, params string[] i_Buttons)

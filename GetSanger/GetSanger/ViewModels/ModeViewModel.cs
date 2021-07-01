@@ -1,6 +1,8 @@
-﻿using GetSanger.Services;
+﻿using GetSanger.Extensions;
+using GetSanger.Services;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -29,6 +31,14 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(ModeViewModel));
         }
 
+        public void SetBackBehavior()
+        {
+            if (AuthHelper.IsLoggedIn())
+            {
+                AuthHelper.SignOut();
+            }
+        }
+
         private void setCommands()
         {
             UserCommand = new Command(userCommandHelper);
@@ -51,7 +61,7 @@ namespace GetSanger.ViewModels
             }
             catch(Exception e)
             {
-                handleException(e);
+                await e.LogAndDisplayError($"{nameof(ModeViewModel)}:userCommandHelper", "Error", e.Message);
             }
         }
 
@@ -71,20 +81,8 @@ namespace GetSanger.ViewModels
             }
             catch(Exception e)
             {
-                handleException(e);
+                await e.LogAndDisplayError($"{nameof(ModeViewModel)}:sangerCommandHelper", "Error", e.Message);
             }
-        }
-
-
-        private async void handleException(Exception e)
-        {
-            string message = e.Message;
-            if (e.InnerException != null)
-            {
-                message = string.Format("{0} \n {1}", message, e.InnerException.Message);
-            }
-
-            await r_PageService.DisplayAlert("Error", message, "OK");
         }
         #endregion
     }

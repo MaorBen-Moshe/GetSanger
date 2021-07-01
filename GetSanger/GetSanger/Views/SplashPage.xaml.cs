@@ -1,4 +1,5 @@
-﻿using GetSanger.Services;
+﻿using GetSanger.Extensions;
+using GetSanger.Services;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -32,9 +33,9 @@ namespace GetSanger.Views
                     await DisplayAlert("ERROR", "No Connection.", "Try again");
                 }
             }
-            catch(Exception)
+            catch(Exception e)
             {
-                // log errors
+                await e.LogAndDisplayError(nameof(SplashPage), "Error", e.Message);
             }
         }
 

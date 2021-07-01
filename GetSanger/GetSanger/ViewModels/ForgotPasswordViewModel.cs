@@ -1,4 +1,5 @@
-﻿using GetSanger.Services;
+﻿using GetSanger.Extensions;
+using GetSanger.Services;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Windows.Input;
@@ -67,7 +68,7 @@ namespace GetSanger.ViewModels
             }
             catch(Exception e)
             {
-                await r_PageService.DisplayAlert("Error", e.Message, "OK");
+                await e.LogAndDisplayError($"{nameof(ForgotPasswordViewModel)}:SendClicked", "Error", e.Message);
             }
         }
 
