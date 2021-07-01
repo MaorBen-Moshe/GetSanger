@@ -2,6 +2,7 @@
 using SQLite;
 using System;
 using System.Windows.Input;
+using Newtonsoft.Json;
 
 namespace GetSanger.Models.chat
 {
@@ -16,7 +17,7 @@ namespace GetSanger.Models.chat
 
         #region ViewCellCommand
         // the only way that worked to bind the view cell(in a separate file) to the command
-        [Ignore]
+        [Ignore] [JsonIgnore]
         public ICommand DeleteMessageCommand { get; set; }
         #endregion
 

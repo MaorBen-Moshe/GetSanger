@@ -18,17 +18,18 @@ using GetSanger.Models.chat;
 namespace GetSanger.Droid.Services.FCM
 {
     [Service]
-    [IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]
-    [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
+    [IntentFilter(new[] {"com.google.firebase.MESSAGING_EVENT"})]
+    [IntentFilter(new[] {"com.google.firebase.INSTANCE_ID_EVENT"})]
     public class AndroidFirebaseMessagingService : FirebaseMessagingService
     {
         const string TAG = "MyFirebaseMsgService";
 
         public override void OnMessageReceived(RemoteMessage message)
-        {//Sets how the app handles messages and notifications in foreground (background messages are not passed here)
-            handleMessageReceived(message);
-
+        {
+            //Sets how the app handles messages and notifications in foreground (background messages are not passed here)
             base.OnMessageReceived(message);
+
+            handleMessageReceived(message);
 
             //SendNotification(message.GetNotification().Body, message.Data);
         }
@@ -38,7 +39,7 @@ namespace GetSanger.Droid.Services.FCM
             base.OnNewToken(newToken);
             SendRegistrationToServer(newToken);
         }
-        
+
         void SendRegistrationToServer(string newToken)
         {
             // Add custom implementation, as needed.
@@ -73,12 +74,11 @@ namespace GetSanger.Droid.Services.FCM
         private void handleMessageReceived(RemoteMessage i_Message)
         {
             // validation of data first
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                await PushServices.handleMessageReceived(i_Message.GetNotification().Title, i_Message.GetNotification().Body, i_Message.Data);
-            });
-            
-        }
+            string title = i_Message.GetNotification() != null ? i_Message.GetNotification().Title : null;
+            string body = i_Message.GetNotification() != null ? i_Message.GetNotification().Body : null;
+            IDictionary<string, string> messageData = i_Message.Data;
 
+            MainThread.BeginInvokeOnMainThread(async () => await PushServices.handleMessageReceived(title, body, messageData));
+        }
     }
 }
