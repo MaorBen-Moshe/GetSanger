@@ -1,6 +1,7 @@
 ﻿using GetSanger.AppShell;
 using GetSanger.Constants;
 using GetSanger.Extensions;
+using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
@@ -53,6 +54,12 @@ namespace GetSanger.ViewModels
 
         public ICommand MyRatingsCommand { get; set; }
 
+        public ICommand AboutusCommand { get; set; }
+
+        public ICommand TermOfServiceCommand { get; set; }
+
+        public ICommand RateUsCommand { get; set; }
+
         #endregion
 
         #region Constructor
@@ -80,6 +87,9 @@ namespace GetSanger.ViewModels
             LogoutCommand = new Command(logout);
             LinkSocialCommand = new Command(linkSocial);
             MyRatingsCommand = new Command(myRatings);
+            AboutusCommand = new Command(aboutus);
+            TermOfServiceCommand = new Command(termOfService);
+            RateUsCommand = new Command(rateUs);
         }
 
         private async void initialPage()
@@ -100,6 +110,7 @@ namespace GetSanger.ViewModels
 
             CurrentUser = AppManager.Instance.ConnectedUser;
             UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
+
         }
 
 
@@ -140,6 +151,20 @@ namespace GetSanger.ViewModels
         private async void myRatings(object i_Param)
         {
             await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
+        }
+
+        private void termOfService(object i_Param)
+        {
+        }
+
+        private void aboutus(object i_Param)
+        {
+        }
+
+        private void rateUs(object i_Param)
+        {
+            IAppRating ratingService = DependencyService.Get<IAppRating>();
+            ratingService?.RateApp();
         }
 
         #endregion

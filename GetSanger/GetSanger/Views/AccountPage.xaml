@@ -25,40 +25,55 @@
             </StackLayout>
             <Grid AbsoluteLayout.LayoutBounds="0.5,0.3, 0.5, 0.05" 
                   AbsoluteLayout.LayoutFlags="All">
-                <Label Text="Client" Grid.Column="0"
-                       FontAttributes="Bold"
-                       x:Name="ClientLabel">
-                    <Label.GestureRecognizers>
+                <Frame Padding="0"
+                       Grid.Column="0"
+                       x:Name="ClientFrame">
+                    <Frame.GestureRecognizers>
                         <TapGestureRecognizer
                             Command="{Binding ChangeModeCommand}"
                             CommandParameter="{Binding Source={x:Reference ClientLabel}, Path=Text}">
                         </TapGestureRecognizer>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label Text="Sanger" Grid.Column="1"
+                    </Frame.GestureRecognizers>
+                    <Label Text="Client"
                        FontAttributes="Bold"
-                       x:Name="SangerLabel">
-                    <Label.GestureRecognizers>
+                       x:Name="ClientLabel">
+                    </Label>
+                </Frame>
+
+                <Frame Padding="0"
+                       Grid.Column="1"
+                       x:Name="SangerFrame">
+                    <Frame.GestureRecognizers>
                         <TapGestureRecognizer
                             Command="{Binding ChangeModeCommand}"
                             CommandParameter="{Binding Source={x:Reference SangerLabel}, Path=Text}">
                         </TapGestureRecognizer>
-                    </Label.GestureRecognizers>
-                </Label>
+                    </Frame.GestureRecognizers>
+
+                    <Label Text="Sanger" 
+                       FontAttributes="Bold"
+                       x:Name="SangerLabel">
+                    </Label>
+                </Frame>
             </Grid>
 
-            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.5, 1, 0.4"
-                         AbsoluteLayout.LayoutFlags="All">
+            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.6, 1, 0.4"
+                  AbsoluteLayout.LayoutFlags="All"
+                  Margin="5">
                 <Button Text="Edit Profile" Command="{Binding EditProfileCommand}" Grid.Row="0"/>
                 <Button Text="My Ratings" Command="{Binding MyRatingsCommand}" Grid.Row="1"/>
                 <Button Text="Settings" Command="{Binding SettingCommand}" Grid.Row="2"/>
                 <Button Text="Link Account with Social Networks" Command="{Binding LinkSocialCommand}" Grid.Row="3"/>
+                <Button Text="About us" Command="{Binding AboutusCommand}" Grid.Row="4"/>
+                <Button Text="Rate us" Command="{Binding RateUsCommand}" Grid.Row="5"/>
+                <Button Text="Terms Of Service" Command="{Binding TermOfServiceCommand}" Grid.Row="6"/>
             </Grid>
-            
+
             <Button Text="Logout" 
                     FontSize="Large"
                     Padding="10, 0, 10, 10" 
                     CornerRadius="20" 
+                    Margin="5"
                     AbsoluteLayout.LayoutBounds="0.5, 0.99, 0.99, 0.06" 
                     AbsoluteLayout.LayoutFlags="All"
                     Command="{Binding LogoutCommand}"/>   

@@ -173,6 +173,7 @@
     <Compile Include="Services\LoadingService.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
     <Compile Include="Services\PushService.cs" />
+    <Compile Include="Services\RateAppService.cs" />
     <Compile Include="Services\WebAuthenticationCallbackActivity.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -83,6 +83,7 @@
     <Compile Include="Services\LoadingServices.cs" />
     <Compile Include="Services\PhotoPickerService.cs" />
     <Compile Include="Services\PushService.cs" />
+    <Compile Include="Services\RateAppService.cs" />
     <None Include="Entitlements.plist" />
     <BundleResource Include="GoogleService-Info.plist" />
     <None Include="Info.plist" />

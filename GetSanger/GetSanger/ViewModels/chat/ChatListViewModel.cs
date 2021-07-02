@@ -64,13 +64,13 @@ namespace GetSanger.ViewModels.chat
         {
             r_LoadingService.ShowPopup();
             ChatDatabase.ChatDatabase database = await ChatDatabase.ChatDatabase.Instance;
-            List<ChatUser> users = ((await database.GetAllUsersAsync())?.OrderBy(user => user.LastMessage)).ToList();
+            List<ChatUser> users = (await database.GetAllUsersAsync()).ToList();
             foreach(var user in users)
             {
                 user.User = await FireStoreHelper.GetUser(user.UserId);
             }
 
-            Collection = new ObservableCollection<ChatUser>(users);
+            Collection = new ObservableCollection<ChatUser>(users.OrderByDescending(user => user.LastMessage));
             SearchCollection = new ObservableCollection<ChatUser>(Collection);
             IsVisibleViewList = Collection.Count > 0;
             r_LoadingService.HidePopup();
