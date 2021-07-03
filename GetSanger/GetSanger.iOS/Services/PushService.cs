@@ -24,10 +24,10 @@ namespace GetSanger.iOS.Services
             set { m_FCMToken = value; }
         }
 
-        public Task<string> GetRegistrationToken()
+        public async Task<string> GetRegistrationToken()
         {
-            throw new NotImplementedException();
-            //return FCMToken;
+            string fcmToken = Firebase.CloudMessaging.Messaging.SharedInstance.FcmToken;
+            return await new Task<string>(()=>fcmToken);
         }
     }
 }
