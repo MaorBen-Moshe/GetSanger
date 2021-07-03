@@ -40,11 +40,12 @@ namespace GetSanger.iOS
             global::Xamarin.Forms.Forms.Init();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
-            Messaging.SharedInstance.ShouldEstablishDirectChannel = true;
-            LoadApplication(new App());
             Firebase.Core.App.Configure();
             Firebase.Crashlytics.Crashlytics.SharedInstance.Init();
+            Firebase.Auth.Auth.DefaultInstance.Init();
+            Messaging.SharedInstance.Init();
             Messaging.SharedInstance.Delegate = this as Firebase.CloudMessaging.IMessagingDelegate;
+            LoadApplication(new App());
 
             RegisterForRemoteNotifications();
 
@@ -68,7 +69,7 @@ namespace GetSanger.iOS
 
                 var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
                 UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
-                    Console.WriteLine("in RegisterForRemoteNotifications, {1}", granted);
+                    Console.WriteLine("in RegisterForRemoteNotifications, {0}", granted);
                 });
             }
             else

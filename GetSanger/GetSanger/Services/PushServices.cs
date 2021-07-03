@@ -104,7 +104,8 @@ namespace GetSanger.Services
 
         public async Task<string> GetRegistrationToken()
         {
-            return await sr_Push.GetRegistrationToken();
+            string token = await sr_Push.GetRegistrationToken();
+            return token;
         }
 
         public static async Task handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)

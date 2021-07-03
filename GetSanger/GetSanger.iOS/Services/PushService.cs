@@ -1,13 +1,7 @@
-﻿using Foundation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UIKit;
+﻿using System.Threading.Tasks;
 using GetSanger.Interfaces;
 using Xamarin.Forms;
-using GetSanger.iOS.Services;
+using static Firebase.CloudMessaging.Messaging;
 
 [assembly: Dependency(typeof(GetSanger.iOS.Services.PushService))]
 
@@ -26,8 +20,8 @@ namespace GetSanger.iOS.Services
 
         public Task<string> GetRegistrationToken()
         {
-            throw new NotImplementedException();
-            //return FCMToken;
+            string fcmToken = SharedInstance.FcmToken;
+            return Task.FromResult(fcmToken);
         }
     }
 }
