@@ -2,7 +2,7 @@
 
 namespace GetSanger.Behaviors
 {
-    public class PhoneEntryLengthValidator : BehaviorBase<Entry>
+    public class EntryLengthValidator : BehaviorBase<Entry>
     {
         public int MaxLength { get; set; }
         public int MinLength { get; set; } = 0;

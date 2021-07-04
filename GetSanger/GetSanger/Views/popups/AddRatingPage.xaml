@@ -57,12 +57,13 @@
                     <StackLayout>
                         <Label Text="Describe your experience here:"/>
                         <Editor IsSpellCheckEnabled="True"
-                            IsTextPredictionEnabled="True"
-                            Placeholder="Add description"
-                            VerticalOptions="FillAndExpand"
-                            HeightRequest="200"
-                            WidthRequest="300"
-                            Text="{Binding NewRating.Description}" x:Name="EditorDescription">
+                                IsTextPredictionEnabled="True"
+                                Placeholder="Add description"
+                                VerticalOptions="FillAndExpand"
+                                MaxLength="255"
+                                HeightRequest="200"
+                                WidthRequest="300"
+                                Text="{Binding NewRating.Description, Mode=TwoWay}" x:Name="EditorDescription">
                             <Editor.Keyboard>
                                 <Keyboard x:FactoryMethod="Create" >
                                     <x:Arguments>

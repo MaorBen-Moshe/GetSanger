@@ -1,6 +1,7 @@
-﻿
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.Registration.SignupEmailPage"
              xmlns:Converters="clr-namespace:GetSanger.Converters">
 
@@ -31,8 +32,19 @@
                 <Label Text="Registration" FontSize="Title" />
             </StackLayout>
             <Entry Placeholder="Email" Keyboard="Email" Text="{Binding CreatedUser.Email}" x:Name="EmailEntry" />
-            <Entry IsPassword="True" Placeholder="Password" Text="{Binding Password}" x:Name="PasswordEntry" />
-            <Entry IsPassword="True" Placeholder="Confirm Password" Text="{Binding ConfirmPassword}" x:Name="ConfirmPasswordEntry" />
+            <Entry IsPassword="True" Placeholder="Password" 
+                   Text="{Binding Password}" 
+                   x:Name="PasswordEntry">
+                <Entry.Behaviors>
+                    <behaviors:EntryLengthValidator MinLength="6" MaxLength="12"/> 
+                </Entry.Behaviors>
+            </Entry>
+            <Entry IsPassword="True" Placeholder="Confirm Password"
+                   Text="{Binding ConfirmPassword}" x:Name="ConfirmPasswordEntry">
+                <Entry.Behaviors>
+                    <behaviors:EntryLengthValidator MinLength="6" MaxLength="12"/>
+                </Entry.Behaviors>
+            </Entry>
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">
                 <Button Text="Continue" Padding="5" HeightRequest="55" WidthRequest="100" Command="{Binding EmailPartCommand}" IsEnabled="False">
                     <Button.Triggers>

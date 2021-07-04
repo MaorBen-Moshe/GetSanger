@@ -35,7 +35,17 @@
                     </ViewCell>
                 </TableSection>
                 <TableSection Title="Details">
-                    <EntryCell Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" Placeholder="Name" />
+                    <ViewCell>
+                        <Entry Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" 
+                               Keyboard="Text" 
+                               Placeholder="Name"
+                               Margin="20">
+                            <Entry.Behaviors>
+                                <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                    </ViewCell>
+
                     <ViewCell>
                         <Entry Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" 
                                Keyboard="Telephone" 
@@ -43,7 +53,7 @@
                                Margin="20">
                             <Entry.Behaviors>
                                 <behaviors:PhoneNumberMaskBehavior />
-                                <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
+                                <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
                             </Entry.Behaviors>
                         </Entry>
                     </ViewCell>

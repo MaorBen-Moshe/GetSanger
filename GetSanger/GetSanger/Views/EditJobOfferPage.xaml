@@ -36,7 +36,13 @@
             <StackLayout Grid.Row="1" >
                 <Grid>
                     <Entry Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" IsReadOnly="True" Grid.Column="0"/>
-                    <Entry Text="{Binding NewJobOffer.Title}" Placeholder="Job Title" Grid.Column="1" />
+                    <Entry Text="{Binding NewJobOffer.Title}" 
+                           Placeholder="Job Title" 
+                           Grid.Column="1">
+                        <Entry.Behaviors>
+                            <behaviors:EntryLengthValidator MinLength="5" MaxLength="20"/>
+                        </Entry.Behaviors>
+                    </Entry>
                 </Grid>
 
                 <Grid>
@@ -65,7 +71,7 @@
                         x:Name="Phone">
                     <Entry.Behaviors>
                         <behaviors:PhoneNumberMaskBehavior />
-                        <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
+                        <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
                     </Entry.Behaviors>
                 </Entry>
                 <Grid>
@@ -89,6 +95,7 @@
                             IsTextPredictionEnabled="True"
                             Placeholder="Job Description"
                             VerticalOptions="FillAndExpand"
+                            MaxLength="255"
                             Text="{Binding NewJobOffer.Description}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >

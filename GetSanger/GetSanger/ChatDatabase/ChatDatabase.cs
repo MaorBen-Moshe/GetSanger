@@ -98,6 +98,10 @@ namespace GetSanger.ChatDatabase
                 user = await GetUserAsync(i_ChatId);
                 user.LastMessage = i_Message.TimeSent;
             }
+            else
+            {
+                throw new ArgumentNullException("You must provide chat id!");
+            }
 
             if (user == null)
             {

@@ -13,6 +13,7 @@ namespace GetSanger.ViewModels
         #region Fields
         private string m_Email;
         private string m_Password;
+        private string m_ConfirmPassword;
         #endregion
 
         #region Properties
@@ -26,6 +27,12 @@ namespace GetSanger.ViewModels
         {
             get => m_Password;
             set => SetClassProperty(ref m_Password, value);
+        }
+
+        public string ConfirmPassword
+        {
+            get => m_ConfirmPassword;
+            set => SetClassProperty(ref m_ConfirmPassword, value);
         }
         #endregion
 
@@ -63,7 +70,7 @@ namespace GetSanger.ViewModels
             try
             {
                 r_LoadingService.ShowPopup();
-                if (Email != null && Password != null)
+                if (Email != null && Password != null && ConfirmPassword.Equals(Password) && Password.IsValidPassword())
                 {
                     await AuthHelper.LinkWithEmailAndPassword(Email, Password);
                     await r_PageService.DisplayAlert("Success", $"Your account has linked with {Email}", "Thanks");
