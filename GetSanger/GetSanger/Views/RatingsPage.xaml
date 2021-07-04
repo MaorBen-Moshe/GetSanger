@@ -83,7 +83,9 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsInListTemplate Text="No Ratings" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
+                <controls:NoItemsInListTemplate Text="No Ratings" 
+                                                RefreshListCommand="{Binding RefreshingCommand}"
+                                                IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

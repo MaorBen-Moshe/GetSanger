@@ -111,7 +111,9 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsInListTemplate Text="No Activities" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}" />
+                <controls:NoItemsInListTemplate Text="No Activities" 
+                                                RefreshListCommand="{Binding RefreshingCommand}"
+                                                IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
