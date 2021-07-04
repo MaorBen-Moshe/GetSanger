@@ -7,11 +7,11 @@ using Xamarin.Forms.Xaml;
 namespace GetSanger.Views.popups
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ErrorPage : PopupPage
+    public partial class DisplayAlertPage : PopupPage
     {
         private readonly Action<bool> r_UserChoseOptionAction;
 
-        public ErrorPage(string header, 
+        public DisplayAlertPage(string header, 
                          string message,
                          string okText = "OK",
                          string cancelText = null,

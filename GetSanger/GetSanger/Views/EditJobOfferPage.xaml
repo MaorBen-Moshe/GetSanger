@@ -76,10 +76,11 @@
                 </Entry>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.3*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
                     <StackLayout Orientation="Horizontal" 
+                                 HorizontalOptions="StartAndExpand"
                                  Spacing="20"
                                  Grid.Column="1">
                         <DatePicker Format="dd/MM/yyyy" 
@@ -88,14 +89,18 @@
                         <TimePicker Time="{Binding NewJobOffer.Time}" />
                     </StackLayout>
                 </Grid>
-                <Frame
+                <Frame 
                        VerticalOptions="FillAndExpand"
+                       Padding="10"
+                       BorderColor="Black"
+                       Margin="5,5,5,20"
                        HasShadow="True">
                     <Editor IsSpellCheckEnabled="True"
                             IsTextPredictionEnabled="True"
                             Placeholder="Job Description"
                             VerticalOptions="FillAndExpand"
                             MaxLength="255"
+                            HeightRequest="220"
                             Text="{Binding NewJobOffer.Description}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >
@@ -108,7 +113,7 @@
                 </Frame>
                 <Button Text="Send" 
                     HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="End"
+                    VerticalOptions="EndAndExpand"
                     CornerRadius="20"
                     Margin="5"
                     Command="{Binding SendJobCommand}"/>

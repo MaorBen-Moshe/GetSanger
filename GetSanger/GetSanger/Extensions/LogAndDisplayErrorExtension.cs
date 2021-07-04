@@ -27,7 +27,7 @@ namespace GetSanger.Extensions
             sr_CrashesService.SetCustomKey("ClassName", i_NameOfClassCrashes);
             sr_CrashesService.SetCustomKey("AppMode", AppManager.Instance.CurrentMode.ToString());
 
-            await PopupNavigation.Instance.PushAsync(new ErrorPage(i_Header, i_CustomMessage));
+            await PopupNavigation.Instance.PushAsync(new DisplayAlertPage(i_Header, i_CustomMessage));
         }
 
         private static string GetErrorLogString(Exception i_Exception)

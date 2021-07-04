@@ -15,7 +15,7 @@ namespace GetSanger.Services
                                        string i_Cancel = null, 
                                        Action<bool> UserChoseOptionAction = null)
         {
-            var page = new ErrorPage(i_Title, i_Message, i_Accept, i_Cancel, UserChoseOptionAction);
+            var page = new DisplayAlertPage(i_Title, i_Message, i_Accept, i_Cancel, UserChoseOptionAction);
             await PopupNavigation.Instance.PushAsync(page);
         }
 
