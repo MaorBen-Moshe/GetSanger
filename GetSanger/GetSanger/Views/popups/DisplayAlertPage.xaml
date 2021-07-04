@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
              xmlns:animation="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
-             x:Class="GetSanger.Views.popups.ErrorPage">
+             x:Class="GetSanger.Views.popups.DisplayAlertPage">
     
     
     <popup:PopupPage.Animation>
@@ -44,17 +44,31 @@
                        VerticalOptions="CenterAndExpand" 
                        HorizontalOptions="CenterAndExpand" 
                        BackgroundColor="Transparent"/>
-
-                <Label Text="OK" 
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="CenterAndExpand"
+                             VerticalOptions="CenterAndExpand">
+                    <Label Text="OK" 
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand" 
                        BackgroundColor="Transparent"
                        Margin="0,20,0,0"
                        x:Name="okLabel">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
-                    </Label.GestureRecognizers>
-                </Label>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OkTapGestureRecognizer_Tapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label 
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand" 
+                           BackgroundColor="Transparent"
+                           Margin="0,20,0,0"
+                           x:Name="cancelLabel">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="CancelTapGestureRecognizer_Tapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
             </StackLayout>
         </Frame>
         

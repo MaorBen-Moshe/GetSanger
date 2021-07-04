@@ -55,6 +55,9 @@
     <Compile Update="Views\EditJobOfferPage.xaml.cs">
       <DependentUpon>EditJobOfferPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\popups\DisplayAlertPage.xaml.cs">
+      <DependentUpon>DisplayAlertPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\RatingsPage.xaml.cs">
       <DependentUpon>RatingsPage.xaml</DependentUpon>
     </Compile>
@@ -80,6 +83,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ActivityDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\popups\AboutUsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\popups\AddRatingPage.xaml">
@@ -118,7 +124,7 @@
     <EmbeddedResource Update="Views\popups\EditorPopup.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\popups\ErrorPage.xaml">
+    <EmbeddedResource Update="Views\popups\DisplayAlertPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\popups\LinkEmailPage.xaml">

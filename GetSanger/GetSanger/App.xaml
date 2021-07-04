@@ -11,7 +11,8 @@
                 <Setter Property="BackgroundColor" Value="White" />
                 <Setter Property="FontSize" Value="17"/>
                 <Setter Property="Padding" Value="5"/>
-
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
+                <Setter Property="MaxLines" Value="7" />
             </Style>
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="Black" />

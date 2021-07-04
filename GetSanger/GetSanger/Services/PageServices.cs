@@ -1,4 +1,7 @@
 ﻿using GetSanger.Interfaces;
+using GetSanger.Views.popups;
+using Rg.Plugins.Popup.Services;
+using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -6,20 +9,14 @@ namespace GetSanger.Services
 {
     class PageServices : Service, IPageService
     {
-        public async Task<bool> DisplayAlert(string i_Title, string i_Message, string i_Accept, string i_Cancel = null)
+        public async Task DisplayAlert(string i_Title, 
+                                       string i_Message, 
+                                       string i_Accept, 
+                                       string i_Cancel = null, 
+                                       Action<bool> UserChoseOptionAction = null)
         {
-            bool retVal;
-            if(i_Cancel == null)
-            {
-                await Application.Current.MainPage.DisplayAlert(i_Title, i_Message, i_Accept);
-                retVal = true;
-            }
-            else
-            {
-                retVal = await Application.Current.MainPage.DisplayAlert(i_Title, i_Message, i_Accept, i_Cancel);
-            }
-
-            return retVal;
+            var page = new DisplayAlertPage(i_Title, i_Message, i_Accept, i_Cancel, UserChoseOptionAction);
+            await PopupNavigation.Instance.PushAsync(page);
         }
 
         public override void SetDependencies()

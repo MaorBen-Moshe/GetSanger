@@ -161,17 +161,39 @@ namespace GetSanger.ViewModels
         private async void getCurrentLocation()
         {
             m_IsMyLocation = true;
-            bool answer = await r_PageService.DisplayAlert("Note", $"Are you sure {MyLocation} is not your location?", "Yes", "No");
-            if (answer)
-            {
-                await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
-            }
+            await r_PageService.DisplayAlert("Note",
+                                             $"Are you sure {MyLocation} is not your location?",
+                                             "Yes",
+                                             "No",
+                                              async (answer) =>
+                                              {
+                                                  if (answer)
+                                                  {
+                                                      bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+                                                      if (locationGranted)
+                                                      {
+                                                          await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+                                                      }
+                                                      else
+                                                      {
+                                                          await r_PageService.DisplayAlert("Note", "Please allow location!", "OK");
+                                                      }
+                                                  }
+                                              });
         }
 
         private async void getJobLocation()
         {
             m_IsMyLocation = false;
-            await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+            bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+            if (locationGranted)
+            {
+                await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+            }
+            else
+            {
+                await r_PageService.DisplayAlert("Note", "Please allow location!", "OK");
+            }
         }
 
         private async void sendJob()

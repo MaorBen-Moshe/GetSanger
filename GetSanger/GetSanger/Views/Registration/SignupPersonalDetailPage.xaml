@@ -38,12 +38,18 @@
                                    Radius="100" 
                                    IsCacheEnable="False"
                                    Command="{Binding ImagePickerCommand}"/>
-            <Entry Placeholder="Nick Name" Keyboard="Text" Text="{Binding CreatedUser.PersonalDetails.NickName}" x:Name="NameEntry"/>
+            <Entry Placeholder="Nick Name" 
+                   Keyboard="Text" 
+                   Text="{Binding CreatedUser.PersonalDetails.NickName}" x:Name="NameEntry">
+                <Entry.Behaviors>
+                    <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
+                </Entry.Behaviors>
+            </Entry>
 
             <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone}" x:Name="PhoneEntry">
                 <Entry.Behaviors>
                     <behaviors:PhoneNumberMaskBehavior />
-                    <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
+                    <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
                 </Entry.Behaviors>
             </Entry>
             <Picker SelectedIndex="1" 

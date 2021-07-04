@@ -179,13 +179,19 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                bool answer = await r_PageService.DisplayAlert("Note", "Are you sure?\nMessage will be deleted on your device only.", "Yes", "No");
-                if (answer)
-                {
-                    Message message = i_Param as Message;
-                    await DB.DeleteMessageAsync(message);
-                    MessagesSource.Remove(message);
-                }
+                await r_PageService.DisplayAlert("Note",
+                                                 "Are you sure?\nMessage will be deleted on your device only.",
+                                                 "Yes",
+                                                 "No",
+                                                 async (answer) =>
+                                                 {
+                                                     if (answer)
+                                                     {
+                                                         Message message = i_Param as Message;
+                                                         await DB.DeleteMessageAsync(message);
+                                                         MessagesSource.Remove(message);
+                                                     }
+                                                 });
             }
             catch(Exception e)
             {

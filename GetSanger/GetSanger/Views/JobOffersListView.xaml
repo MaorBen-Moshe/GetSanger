@@ -108,7 +108,9 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsInListTemplate Text="No Job Offers" IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
+                <controls:NoItemsInListTemplate Text="No Job Offers" 
+                                                RefreshListCommand="{Binding RefreshingCommand}"
+                                                IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

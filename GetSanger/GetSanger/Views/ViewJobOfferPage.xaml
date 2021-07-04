@@ -54,7 +54,7 @@
                    IsReadOnly="True">
                 <Entry.Behaviors>
                     <behaviors:PhoneNumberMaskBehavior />
-                    <behaviors:PhoneEntryLengthValidator MaxLength="11"/>
+                    <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
                 </Entry.Behaviors>
             </Entry>
             <Grid>

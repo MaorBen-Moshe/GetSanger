@@ -222,12 +222,18 @@ namespace GetSanger.ViewModels
         {
             Placemark placemark = await r_LocationServices.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
             string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
-            bool answer = await r_PageService.DisplayAlert("Location Chosen", location, "Yes", "No");
-            if (answer)
-            {
-                MessagingCenter.Send(this, Constants.Constants.LocationMessage, placemark);
-                await GoBack();
-            }
+            await r_PageService.DisplayAlert("Location Chosen",
+                                             location,
+                                             "Yes",
+                                             "No",
+                                             async (answer) =>
+                                             {
+                                                 if (answer)
+                                                 {
+                                                     MessagingCenter.Send(this, Constants.Constants.LocationMessage, placemark);
+                                                     await GoBack();
+                                                 }
+                                             });
         }
 
         private async void createMapSpan()

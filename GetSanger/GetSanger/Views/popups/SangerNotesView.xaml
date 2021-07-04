@@ -40,6 +40,7 @@
                             IsTextPredictionEnabled="True"
                             Placeholder="Your notes here..."
                             Margin="0"
+                            MaxLength="255"
                             HeightRequest="200"
                             WidthRequest="300"
                             VerticalOptions="FillAndExpand"

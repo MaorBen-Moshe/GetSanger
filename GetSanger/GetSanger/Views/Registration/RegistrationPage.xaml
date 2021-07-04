@@ -5,6 +5,7 @@
              x:Class="GetSanger.Views.Registration.RegistrationPage"
              xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:Converters="clr-namespace:GetSanger.Converters"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.BindingContext>
@@ -39,7 +40,11 @@
                            Text="{Binding Email, Mode=TwoWay}" x:Name ="EmailEntry" />
                     <Entry IsPassword="True" 
                            Placeholder="Password" 
-                           Text="{Binding Password, Mode=TwoWay}" x:Name = "PasswordEntry" />
+                           Text="{Binding Password, Mode=TwoWay}" x:Name = "PasswordEntry">
+                        <Entry.Behaviors>
+                            <behaviors:EntryLengthValidator MinLength="6" MaxLength="12"/>
+                        </Entry.Behaviors>
+                    </Entry>
 
 
                 </StackLayout>

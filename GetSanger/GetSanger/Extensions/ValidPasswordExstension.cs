@@ -10,6 +10,7 @@ namespace GetSanger.Extensions
         public static bool IsValidPassword(this string i_Password)
         {
             return i_Password.Length >= 6 &&
+                   i_Password.Length <= 12 &&
                    i_Password.Any(c => IsCapital(c)) &&
                    i_Password.Any(c => IsLower(c)) &&
                    i_Password.Any(c => IsDigit(c)) &&

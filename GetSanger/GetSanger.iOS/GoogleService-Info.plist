@@ -6,6 +6,8 @@
 	<string>889764842790-0sjbp4gbopeb2vcgipmngebs4p16tuv4.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.889764842790-0sjbp4gbopeb2vcgipmngebs4p16tuv4</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>889764842790-5125j7nj3p06j7ffivd4765ctvht9cnk.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDx3PAbwz5DPIXeEjDlFoHVInodGGDdSLQ</string>
 	<key>GCM_SENDER_ID</key>
@@ -19,8 +21,16 @@
 	<key>STORAGE_BUCKET</key>
 	<string>get-sanger.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:889764842790:ios:2b797face90e2bb40a85e7</string>
 </dict>
 </plist>

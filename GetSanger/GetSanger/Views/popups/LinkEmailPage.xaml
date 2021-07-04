@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
              xmlns:animation="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              x:Class="GetSanger.Views.popups.LinkEmailPage"
              SystemPaddingSides="All">
@@ -31,7 +32,16 @@
                    HorizontalOptions="CenterAndExpand"
                    FontSize="Title"/>
         <Entry Text="{Binding Email, Mode=TwoWay}" Keyboard="Email" Placeholder="Email"/>
-        <Entry Text="{Binding Password, Mode=TwoWay}" IsPassword="True" Placeholder="Password"/>
+        <Entry Text="{Binding Password, Mode=TwoWay}" IsPassword="True" Placeholder="Password">
+            <Entry.Behaviors>
+                <behaviors:EntryLengthValidator MinLength="6" MaxLength="12"/>
+            </Entry.Behaviors>
+        </Entry>
+        <Entry Text="{Binding ConfirmPassword, Mode=TwoWay}" IsPassword="True" Placeholder="Confirm Password">
+            <Entry.Behaviors>
+                <behaviors:EntryLengthValidator MinLength="6" MaxLength="12"/>
+            </Entry.Behaviors>
+        </Entry>
         <Button Text="Link" Command="{Binding LinkCommand}" HorizontalOptions="CenterAndExpand"/>
     </StackLayout>
 </popup:PopupPage>
