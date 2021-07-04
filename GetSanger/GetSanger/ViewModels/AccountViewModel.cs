@@ -153,12 +153,14 @@ namespace GetSanger.ViewModels
             await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
         }
 
-        private void termOfService(object i_Param)
+        private async void termOfService(object i_Param)
         {
+            await PopupNavigation.Instance.PushAsync(new TermsOfServicePage());
         }
 
-        private void aboutus(object i_Param)
+        private async void aboutus(object i_Param)
         {
+            await PopupNavigation.Instance.PushAsync(new AboutUsPage());
         }
 
         private void rateUs(object i_Param)
