@@ -6,6 +6,7 @@ using GetSanger.Interfaces;
 using Xamarin.Forms;
 using SQLite;
 using System;
+using System.Linq;
 
 namespace GetSanger.ChatDatabase
 {
@@ -63,6 +64,11 @@ namespace GetSanger.ChatDatabase
             }
         }
 
+        public Task<int> UpdateUserAsync(ChatUser i_ToUpdate)
+        {
+            return m_Connection.UpdateAsync(i_ToUpdate);
+        }
+
         public Task<ChatUser> GetUserAsync(string i_Id)
         {
             return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id)).FirstOrDefaultAsync();
@@ -90,14 +96,23 @@ namespace GetSanger.ChatDatabase
             if (i_ChatId != null)
             {
                 user = await GetUserAsync(i_ChatId);
-            }
-            
-            if(user == null)
-            {
-                await AddUserAsync(i_ChatId, i_Message.TimeSent);
+                user.LastMessage = i_Message.TimeSent;
             }
 
-            return await m_Connection.InsertAsync(i_Message);
+            if (user == null)
+            {
+                user = await AddUserAsync(i_ChatId, i_Message.TimeSent);
+            }
+
+            int retVal = await UpdateUserAsync(user);
+            if(retVal == 1)
+            {
+                return await m_Connection.InsertAsync(i_Message);
+            }
+            else
+            {
+                throw new ArgumentException("Failed to update user after adding a message");
+            }
         }
 
         public async Task<int> DeleteMessageAsync(Message i_Message)
@@ -110,6 +125,12 @@ namespace GetSanger.ChatDatabase
                 if(messages.Count == 0)
                 {
                     await DeleteUserAsync(id);
+                }
+                else
+                {
+                    ChatUser user = await GetUserAsync(id);
+                    user.LastMessage = messages.Last().TimeSent;
+                    await UpdateUserAsync(user);
                 }
             }
 
