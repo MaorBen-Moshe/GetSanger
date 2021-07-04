@@ -50,26 +50,29 @@ namespace GetSanger.ViewModels
             Activity activity = i_Param as Activity;
             if (AppManager.Instance.CurrentMode.Equals(AppMode.Client) && activity.Status.Equals(ActivityStatus.Pending))
             {
-                bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
-                if (answer)
-                {
-                    AppManager.Instance.ConnectedUser.Activities.Remove(activity);
-                    activity.Status = ActivityStatus.Active;
-                    await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
-                    await RunTaskWhileLoading(r_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
-                    //  need to check that the list(ActivitiesSource) is updated
-                    AppManager.Instance.ConnectedUser.Activities.Add(activity);
-                    foreach(Activity current in AppManager.Instance.ConnectedUser.Activities)
-                    {
-                        if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
-                        {
-                            current.Status = ActivityStatus.Rejected;
-                            await RunTaskWhileLoading(r_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
-                        }
-                    }
+               await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No", 
+                   async (answer) =>
+                   {
+                       if (answer)
+                       {
+                           AppManager.Instance.ConnectedUser.Activities.Remove(activity);
+                           activity.Status = ActivityStatus.Active;
+                           await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
+                           await RunTaskWhileLoading(r_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
+                           //  need to check that the list(ActivitiesSource) is updated
+                           AppManager.Instance.ConnectedUser.Activities.Add(activity);
+                           foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
+                           {
+                               if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
+                               {
+                                   current.Status = ActivityStatus.Rejected;
+                                   await RunTaskWhileLoading(r_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
+                               }
+                           }
 
-                    await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
-                }
+                           await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
+                       }
+                   });
             }
         }
 
@@ -94,16 +97,19 @@ namespace GetSanger.ViewModels
 
         private async void doReject(Activity i_Activity,string i_SendToUserId, string i_Message)
         {
-            bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
-            if (answer)
-            {
-                AppManager.Instance.ConnectedUser.Activities.Remove(i_Activity);
-                i_Activity.Status = ActivityStatus.Rejected;
-                await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(i_Activity));
-                await RunTaskWhileLoading(r_PushService.SendToDevice(i_SendToUserId, i_Activity, i_Activity.GetType(), "Activity Rejected", i_Message));
-                //  need to check that the list(ActivitiesSource) is updated
-                AppManager.Instance.ConnectedUser.Activities.Add(i_Activity);
-            }
+            await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
+                async (answer) =>
+                {
+                    if (answer)
+                    {
+                        AppManager.Instance.ConnectedUser.Activities.Remove(i_Activity);
+                        i_Activity.Status = ActivityStatus.Rejected;
+                        await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(i_Activity));
+                        await RunTaskWhileLoading(r_PushService.SendToDevice(i_SendToUserId, i_Activity, i_Activity.GetType(), "Activity Rejected", i_Message));
+                        //  need to check that the list(ActivitiesSource) is updated
+                        AppManager.Instance.ConnectedUser.Activities.Add(i_Activity);
+                    }
+                });
         }
 
         protected override void refreshList()

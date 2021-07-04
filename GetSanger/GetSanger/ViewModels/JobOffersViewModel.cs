@@ -92,15 +92,21 @@ namespace GetSanger.ViewModels
         {
             if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
             {
-                bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
-                if (answer)
-                {
-                    JobOffer job = i_Param as JobOffer;
-                    AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
-                    Collection.Remove(job);
-                    IsVisibleViewList = Collection.Count > 0;
-                    await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId)); 
-                }
+                await r_PageService.DisplayAlert("Warning",
+                                                 "Are you sure?",
+                                                 "Yes",
+                                                 "No",
+                                                 async (answer) =>
+                                                 {
+                                                     if (answer)
+                                                     {
+                                                         JobOffer job = i_Param as JobOffer;
+                                                         AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
+                                                         Collection.Remove(job);
+                                                         IsVisibleViewList = Collection.Count > 0;
+                                                         await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId));
+                                                     }
+                                                 });
             }
         }
 

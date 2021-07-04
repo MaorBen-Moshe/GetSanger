@@ -22,22 +22,19 @@ namespace GetSanger.Services
         public async Task<Location> GetCurrentLocation()
         {
             SetDependencies();
-            Location location = await Geolocation.GetLastKnownLocationAsync();
-            if (location == null && (await IsLocationGranted()) == PermissionStatus.Granted)
+            Location location = null;
+            bool locationGranted = await IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+            if (locationGranted)
             {
                 GeolocationRequest geoReq = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
                 Cts = new CancellationTokenSource();
                 location = await Geolocation.GetLocationAsync(geoReq, Cts.Token);
             }
-            else
-            {
-                location = null;
-            }
 
             return location;
         }
 
-        public async Task<PermissionStatus> IsLocationGranted()
+        public async Task<PermissionStatus> IsLocationGrantedAndAskFor()
         {
             SetDependencies();
             var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
@@ -60,6 +57,12 @@ namespace GetSanger.Services
 
             return await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
         }
+
+
+        public async Task<bool> IsLocationGranted()
+        {
+            return await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>() == PermissionStatus.Granted;
+        } 
 
         public async Task<Placemark> PickedLocation(Location i_Location)
         {

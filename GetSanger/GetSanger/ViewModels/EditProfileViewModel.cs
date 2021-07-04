@@ -146,14 +146,20 @@ namespace GetSanger.ViewModels
 
         private async void deleteAccount()
         {
-            bool answer = await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No");
-            if (answer)
-            {
-                await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
-                //do delete
-                await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
-                Application.Current.MainPage = new AuthShell();
-            }
+            await r_PageService.DisplayAlert("Warning",
+                                             "Are you sure?",
+                                             "Yes",
+                                             "No",
+                                             async (answer) =>
+                                             {
+                                                 if (answer)
+                                                 {
+                                                     await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
+                                                     //do delete
+                                                     await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
+                                                     Application.Current.MainPage = new AuthShell();
+                                                 }
+                                             });
         }
 
         #endregion
