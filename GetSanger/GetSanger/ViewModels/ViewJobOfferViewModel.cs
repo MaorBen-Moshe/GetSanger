@@ -103,7 +103,7 @@ namespace GetSanger.ViewModels
 
         private async Task initData()
         {
-            //r_LoadingService.ShowPopup();
+            r_LoadingService.ShowPopup();
             ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
 
             if (Job.Location != null)
@@ -119,7 +119,7 @@ namespace GetSanger.ViewModels
             }
 
             IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
-            //r_LoadingService.HidePopup();
+            r_LoadingService.HidePopup();
         }
 
         private async void moveProfile(object i_Param)

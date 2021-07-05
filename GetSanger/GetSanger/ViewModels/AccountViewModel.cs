@@ -125,7 +125,7 @@ namespace GetSanger.ViewModels
         private void changeMode(object i_Param)
         {
             string labelText = i_Param as string;
-            bool isValidMode = Enum.TryParse(labelText, out AppMode mode);
+            bool isValidMode = Enum.TryParse(labelText, out eAppMode mode);
             if (isValidMode)
             {
                 Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);

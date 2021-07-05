@@ -85,6 +85,7 @@ namespace GetSanger.ViewModels.chat
         public ICommand DeleteMessageCommand { get; set; }
         public ICommand SendWhatsappCommand { get; set; }
         public ICommand CallCommand { get; set; }
+        public ICommand RefreshMessagesCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -123,6 +124,13 @@ namespace GetSanger.ViewModels.chat
             DeleteMessageCommand = new Command(deleteMessage);
             SendWhatsappCommand = new Command(sendWhatsapp);
             CallCommand = new Command(call);
+            RefreshMessagesCommand = new Command(refreshMessages);
+        }
+
+        private async void refreshMessages(object i_Param)
+        {
+            List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
+            MessagesSource = new ObservableCollection<Message>(messages.OrderByDescending(item => item.MessageId));
         }
 
         private async void sendMessage(object i_Param)

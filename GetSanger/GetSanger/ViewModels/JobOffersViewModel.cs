@@ -74,15 +74,15 @@ namespace GetSanger.ViewModels
 
             AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
             await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
-            await PopupNavigation.Instance.PopAsync();
             setJobOffers();
             CurrentConfirmedJobOffer = null;
+            await PopupNavigation.Instance.PopAsync();
         }
 
         private async void confirmJobOffer(object i_Param)
         {
             CurrentConfirmedJobOffer = i_Param as JobOffer;
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
+            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {
                 await PopupNavigation.Instance.PushAsync(new SangerNotesView(this));
             }
@@ -90,7 +90,7 @@ namespace GetSanger.ViewModels
 
         private async void deleteMyJobOfferCommand(object i_Param)
         {
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
             {
                 await r_PageService.DisplayAlert("Warning",
                                                  "Are you sure?",
@@ -128,10 +128,10 @@ namespace GetSanger.ViewModels
             ObservableCollection<JobOffer> currentList = null;
             switch (AppManager.Instance.CurrentMode)
             {
-                case AppMode.Client:
+                case eAppMode.Client:
                     currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId())));
                     break;
-                case AppMode.Sanger:
+                case eAppMode.Sanger:
                     List<JobOffer> temp = await RunTaskWhileLoading(getSangerJobOffers());
                     currentList = new ObservableCollection<JobOffer>(temp);
                     break;

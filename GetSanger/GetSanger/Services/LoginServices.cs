@@ -22,6 +22,7 @@ namespace GetSanger.Services
         private NavigationService m_NavigationService;
         private RunTasksService m_RunTasks;
         private LocationService m_Location;
+        private PushServices m_PushServices;
 
         public LoginServices()
         {
@@ -38,34 +39,26 @@ namespace GetSanger.Services
                 {
                     AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
                     AppManager.Instance.ConnectedUser.UserLocation ??= await m_Location.GetCurrentLocation();
-                    PushServices pushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
 
-                    bool isRegistrationTokenChanged = await pushService.IsRegistrationTokenChanged();
+                    bool isRegistrationTokenChanged = await m_PushServices.IsRegistrationTokenChanged();
                     if (isRegistrationTokenChanged)
                     {
-                        AppManager.Instance.ConnectedUser.RegistrationToken = await pushService.GetRegistrationToken();
+                        AppManager.Instance.ConnectedUser.RegistrationToken = await m_PushServices.GetRegistrationToken();
                     }
 
                     await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-
-                    if (PushServices.BackgroundPushData.Count > 0)
+                    eAppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
+                    if (mode == null)
                     {
-                        await PushServices.handleMessageReceived(null, null, PushServices.BackgroundPushData);
+                        await Task.Delay(1500);
+                        Application.Current.MainPage = new AuthShell();
+                        await PopupNavigation.Instance.PushAsync(new ModePage());
                     }
                     else
                     {
-                        AppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
-                        if (mode == null)
-                        {
-                            await Task.Delay(1500);
-                            Application.Current.MainPage = new AuthShell();
-                            await PopupNavigation.Instance.PushAsync(new ModePage());
-                        }
-                        else
-                        {
-                            AppManager.Instance.CurrentMode = (AppMode) mode;
-                            Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
-                        }
+                        AppManager.Instance.CurrentMode = (eAppMode) mode;
+                        Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
+                        await PushServices.handleMessageReceived(null, null, PushServices.BackgroundPushData);
                     }
                 }
                 else
@@ -84,7 +77,7 @@ namespace GetSanger.Services
             }
         }
 
-        public async Task<bool> LoginUser(AppMode? i_Mode = null, bool socialLogin = false)
+        public async Task<bool> LoginUser(eAppMode? i_Mode = null, bool socialLogin = false)
         {
             SetDependencies();
 
@@ -98,23 +91,21 @@ namespace GetSanger.Services
                     verified = await AuthHelper.IsVerifiedEmail();
                     AppManager.Instance.ConnectedUser = user;
                     AppManager.Instance.ConnectedUser.UserLocation ??= await m_Location.GetCurrentLocation();
-                    PushServices pushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
-
-                    bool isRegistrationTokenChanged = await pushService.IsRegistrationTokenChanged();
+                    bool isRegistrationTokenChanged = await m_PushServices.IsRegistrationTokenChanged();
                     if (isRegistrationTokenChanged)
                     {
-                        AppManager.Instance.ConnectedUser.RegistrationToken = await pushService.GetRegistrationToken();
+                        AppManager.Instance.ConnectedUser.RegistrationToken = await m_PushServices.GetRegistrationToken();
                     }
 
                     await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
 
                     if (verified)
                     {
-                        pushService.SubscribeUser(AppManager.Instance.ConnectedUser.UserId);
+                        m_PushServices.SubscribeUser(AppManager.Instance.ConnectedUser.UserId);
 
                         if (i_Mode != null) // we are here from mode page or from auto login
                         {
-                            SetMode((AppMode) i_Mode);
+                            SetMode((eAppMode) i_Mode);
                         }
                         else // we are here from login page
                         {
@@ -144,7 +135,7 @@ namespace GetSanger.Services
             }
         }
 
-        public void SetMode(AppMode? i_Mode = null)
+        public void SetMode(eAppMode? i_Mode = null)
         {
             Application.Current.MainPage = AppManager.Instance.GetCurrentShell(i_Mode);
         }
@@ -154,6 +145,7 @@ namespace GetSanger.Services
             m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             m_RunTasks ??= AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
             m_Location ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            m_PushServices ??= AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
         }
     }
 }

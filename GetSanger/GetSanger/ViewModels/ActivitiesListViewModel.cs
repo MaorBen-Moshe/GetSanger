@@ -48,7 +48,7 @@ namespace GetSanger.ViewModels
         private async void confirmActivity(object i_Param)
         {
             Activity activity = i_Param as Activity;
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client) && activity.Status.Equals(ActivityStatus.Pending))
+            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && activity.Status.Equals(ActivityStatus.Pending))
             {
                await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No", 
                    async (answer) =>
@@ -83,10 +83,10 @@ namespace GetSanger.ViewModels
             {
                 switch (AppManager.Instance.CurrentMode)
                 {
-                    case AppMode.Client: 
+                    case eAppMode.Client: 
                         doReject(activity, activity.SangerID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :(");
                         break;
-                    case AppMode.Sanger: 
+                    case eAppMode.Sanger: 
                         doReject(activity, activity.ClientID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} decided to cancel the job offer he already accepted. for more information please contact him :(");
                         break;
                 }
@@ -127,7 +127,7 @@ namespace GetSanger.ViewModels
         private async void setActivities()
         {
             List<Activity> activities = await RunTaskWhileLoading(FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId()));
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
             {
                 // client should not see pending activities because it is like job offers
                 activities = activities.Where(activity => activity.Status.Equals(ActivityStatus.Pending) == false).ToList();

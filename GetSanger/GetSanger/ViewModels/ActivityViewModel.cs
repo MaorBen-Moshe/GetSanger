@@ -115,10 +115,10 @@ namespace GetSanger.ViewModels
             ProfileName = setProfileName();
             IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
             IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
-                                   AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
+                                   AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger) &&
                                    ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
             IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
-                                   AppManager.Instance.CurrentMode.Equals(AppMode.Client);
+                                   AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
             MessagingCenter.Subscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage, (sender, args) =>
             {
                 IsActivatedLocationButton = args;
@@ -156,11 +156,11 @@ namespace GetSanger.ViewModels
         {
             Location = await getLocationString(ConnectedActivity.JobDetails.Location);
             JobLocation = await getLocationString(ConnectedActivity.JobDetails.JobLocation);
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
             {
                 ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask the sanger to active")} Location");
             }
-            else if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
+            else if (AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {
                 ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger == false ? "Enable" : "Disable")} Location");
             }
@@ -169,13 +169,13 @@ namespace GetSanger.ViewModels
 
         private void locationCommandHelper()
         {
-            AppMode mode = AppManager.Instance.CurrentMode;
+            eAppMode mode = AppManager.Instance.CurrentMode;
             switch (mode)
             {
-                case AppMode.Sanger:
+                case eAppMode.Sanger:
                     doSanger();
                     break;
-                case AppMode.Client:
+                case eAppMode.Client:
                     doUser();
                     break;
                 default:

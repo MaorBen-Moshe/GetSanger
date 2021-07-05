@@ -23,7 +23,7 @@ namespace GetSanger.Droid
 
         public TaskCompletionSource<Stream> PickImageTaskCompletionSource { set; get; }
 
-        protected override async void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
@@ -37,7 +37,7 @@ namespace GetSanger.Droid
             //TEMPORARY
             FirebaseMessaging.Instance.SubscribeToTopic("Test");
             base.OnCreate(savedInstanceState);
-            await m_PushService.PushHelper(Intent, this);
+            m_PushService.PushHelper(Intent, this);
             LoadApplication(new App());
         }
 
@@ -102,10 +102,10 @@ namespace GetSanger.Droid
             }
         }
 
-        protected override async void OnNewIntent(Intent intent)
+        protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
-            await m_PushService.PushHelper(intent, Instance);
+            m_PushService.PushHelper(intent, Instance);
         }
     }
 }

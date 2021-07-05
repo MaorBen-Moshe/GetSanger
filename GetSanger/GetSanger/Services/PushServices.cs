@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 using GetSanger.Exceptions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using GetSanger.Views.chat;
+using GetSanger.ViewModels.chat;
+using GetSanger.ViewModels;
+using GetSanger.Views;
 
 namespace GetSanger.Services
 {
@@ -110,55 +114,61 @@ namespace GetSanger.Services
 
         public static async Task handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
         {
-            if (i_Message != null && i_Message.ContainsKey("Type"))
+            if(i_Message.Count > 0)
             {
-                string type = i_Message["Type"];
-                string json = i_Message.ContainsKey("Json") ? i_Message["Json"] : null;
-                string mode = i_Message.ContainsKey("Mode") ? i_Message["Mode"] : null;
-                i_Message.Clear();
+                if (i_Message != null && i_Message.ContainsKey("Type"))
+                    {
+                    string type = i_Message["Type"];
+                    string json = i_Message.ContainsKey("Json") ? i_Message["Json"] : null;
+                    i_Message.Clear();
 
-                switch (type)
-                {
-                    case nameof(JobOffer):
-                        await handleJobOffer(i_Title, i_Body, json);
-                        break;
-                    case nameof(Activity):
-                        await handleActivity(i_Title, i_Body, json, mode);
-                        break;
-                    case nameof(Message):
-                        await handleMessage(json);
-                        break;
-                    case nameof(Rating):
-                        await handleRating(i_Title, i_Body, json);
-                        break;
-                    case "MessageInfo":
-                        await handleMessageInfo(i_Title, i_Body, json);
-                        break;
-                    default:
-                        throw new ArgumentException("Type of object received is not allowed");
+                    switch (type)
+                    {
+                        case nameof(JobOffer):
+                            await handleJobOffer(i_Title, i_Body, json);
+                            break;
+                        case nameof(Activity):
+                            await handleActivity(i_Title, i_Body, json);
+                            break;
+                        case nameof(Message):
+                            await handleMessage(json);
+                            break;
+                        case nameof(Rating):
+                            await handleRating(i_Title, i_Body, json);
+                            break;
+                        case "MessageInfo":
+                            await handleMessageInfo(i_Title, i_Body, json);
+                            break;
+                        default:
+                            throw new ArgumentException("Type of object received is not allowed");
+                    }
                 }
+
             }
+            
         }
 
         private static async Task handleRating(string i_Title, string i_Body, string i_Json)
         {
             bool choice = true;
             string message = i_Body + "\nGo to profile page to view your ratings?";
-            //Rating rating = ObjectJsonSerializer.DeserializeForServer<Rating>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            // string ratingJson = ObjectJsonSerializer.SerializeForPage(rating);
-
-            AppManager.Instance.CurrentMode = AppManager.Instance.ConnectedUser.LastUserMode.GetValueOrDefault(AppMode.Client);
-            Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
-
-            if (i_Title != null)
+            var vm = Shell.Current.CurrentPage.BindingContext as RatingsViewModel;
+            if(Shell.Current.CurrentPage.GetType().Equals(typeof(RatingsPage)) && vm.IsMyRatings)
             {
-                choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+                vm.RefreshingCommand.Execute(null);
             }
-
-            if (choice)
+            else
             {
-                await navigation.NavigateTo($"{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
+                if (i_Title != null)
+                {
+                    choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+                }
+
+                if (choice)
+                {
+                    await navigation.NavigateTo($"//account/{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
+                }
             }
         }
 
@@ -168,24 +178,38 @@ namespace GetSanger.Services
             string txt = i_Body + "\nMove to chat page?";
 
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
+            string senderId = message.FromId;
+            User sender = await FireStoreHelper.GetUser(senderId);
 
-            User connectedUser = AppManager.Instance.ConnectedUser;
-
-            AppManager.Instance.CurrentMode = connectedUser.LastUserMode.GetValueOrDefault(AppMode.Client);
-            Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
-
-            if (i_Title != null)
+            var vm = Shell.Current.CurrentPage.BindingContext as ChatPageViewModel;
+            if (Shell.Current.CurrentPage.GetType().Equals(typeof(ChatView)) && vm.UserToChat.UserId == senderId)
             {
-                choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
+                vm.RefreshMessagesCommand.Execute(null);
             }
-
-            if (choice)
+            else if (Shell.Current.CurrentPage.GetType().Equals(typeof(ChatView)) && vm.UserToChat.UserId != senderId)
             {
-                Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
-                string senderId = message.FromId;
-                User sender = await FireStoreHelper.GetUser(senderId);
+                if (i_Title != null)
+                {
+                    choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
+                }
 
-                await navigation.NavigateTo(ShellRoutes.ChatView + $"?user={ObjectJsonSerializer.SerializeForPage(sender)}");
+                if (choice)
+                {
+                    await navigation.NavigateTo($"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}");
+                }
+            }
+            else
+            {
+                if (i_Title != null)
+                {
+                    choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
+                }
+
+                if (choice)
+                {
+                    await navigation.NavigateTo($"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}");
+                }
             }
         }
 
@@ -197,18 +221,12 @@ namespace GetSanger.Services
             await db.AddMessageAsync(message, message.FromId);
         }
 
-        private static async Task handleActivity(string i_Title, string i_Body, string i_Json, string i_Mode)
+        private static async Task handleActivity(string i_Title, string i_Body, string i_Json)
         {
             bool choice = true;
-            AppMode mode = i_Mode != null ? Enum.Parse<AppMode>(i_Mode) : AppManager.Instance.CurrentMode;
             string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-
-            AppManager.Instance.CurrentMode = mode;
-            AppManager.Instance.ConnectedUser.LastUserMode = mode;
-            await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-            Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
 
             if (i_Title != null)
             {
@@ -217,7 +235,14 @@ namespace GetSanger.Services
 
             if (choice)
             {
-                await navigation.NavigateTo(ShellRoutes.Activity + $"?activity={ObjectJsonSerializer.SerializeForPage(activity)}");
+                eAppMode mode = activity.SangerID.Equals(AppManager.Instance.ConnectedUser.UserId) ? eAppMode.Sanger : eAppMode.Client;
+                if(AppManager.Instance.CurrentMode.Equals(mode) == false)
+                {
+                    Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
+                }
+
+                string json = ObjectJsonSerializer.SerializeForPage(activity);
+                await navigation.NavigateTo($"//activities/{ShellRoutes.Activity}?activity={json}");
             }
         }
 
@@ -229,11 +254,6 @@ namespace GetSanger.Services
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             string jobJson = ObjectJsonSerializer.SerializeForPage(job);
 
-            AppManager.Instance.CurrentMode = AppMode.Sanger;
-            AppManager.Instance.ConnectedUser.LastUserMode = AppMode.Sanger;
-            await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-            Application.Current.MainPage = AppManager.Instance.GetCurrentShell(AppMode.Sanger);
-
             if (i_Title != null)
             {
                 choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
@@ -241,7 +261,8 @@ namespace GetSanger.Services
 
             if (choice)
             {
-                await navigation.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={jobJson}");
+                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(eAppMode.Sanger);
+                await navigation.NavigateTo($"//jobOffers/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}");
             }
         }
 
@@ -266,7 +287,7 @@ namespace GetSanger.Services
                 string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
                 string idToken = await AuthHelper.GetIdTokenAsync();
 
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             }
             else
             {
@@ -305,7 +326,7 @@ namespace GetSanger.Services
                 string json = ObjectJsonSerializer.SerializeForServer(i_Message);
                 string idToken = await AuthHelper.GetIdTokenAsync();
 
-                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
+                await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             }
             else
             {
