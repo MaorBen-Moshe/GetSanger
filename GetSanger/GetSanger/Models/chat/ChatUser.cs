@@ -8,6 +8,7 @@ namespace GetSanger.Models.chat
     {
         #region Fields
         private string m_UserId;
+        private string m_UserCreatedById;
         private DateTime m_LastMessage;
         private User m_User;
         private int m_Id = 0;
@@ -26,6 +27,12 @@ namespace GetSanger.Models.chat
         {
             get => m_UserId;
             set => SetClassProperty(ref m_UserId, value);
+        }
+
+        public string UserCreatedById
+        {
+            get => m_UserCreatedById;
+            set => SetClassProperty(ref m_UserCreatedById, value);
         }
 
         [Ignore]

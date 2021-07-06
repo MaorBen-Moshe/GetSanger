@@ -218,7 +218,7 @@ namespace GetSanger.Services
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             message.MessageSent = true;
             ChatDatabase.ChatDatabase db = await ChatDatabase.ChatDatabase.Instance;
-            await db.AddMessageAsync(message, message.FromId);
+            await db.AddMessageAsync(message, message.FromId, message.ToId);
         }
 
         private static async Task handleActivity(string i_Title, string i_Body, string i_Json)

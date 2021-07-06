@@ -14,15 +14,17 @@ namespace GetSanger.ChatDatabase
     {
         #region Fields
         private static SQLiteAsyncConnection m_Connection;
+        private static string Id;
         #endregion
 
         #region Instance
-        public static readonly AsyncLazy<ChatDatabase> Instance = new AsyncLazy<ChatDatabase>(async () => {
-            ChatDatabase db = new ChatDatabase();
-            await db.CreateTablesAsnyc();
-            await m_Connection.EnableWriteAheadLoggingAsync();
-            return db;
-        });
+        public static readonly AsyncLazy<ChatDatabase> Instance = new AsyncLazy<ChatDatabase>(
+                                                                                  async () => {
+                                                                                                ChatDatabase db = new ChatDatabase();
+                                                                                                await db.CreateTablesAsnyc();
+                                                                                                await m_Connection.EnableWriteAheadLoggingAsync();
+                                                                                                return db;
+                                                                                  });
         #endregion
 
         #region Constructor
@@ -40,12 +42,13 @@ namespace GetSanger.ChatDatabase
         }
 
         #region UsersTable
-        public async Task<ChatUser> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null)
+        public async Task<ChatUser> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null, string i_CreatedById = null)
         {
             ChatUser newUser = new ChatUser
             {
                 UserId = i_UserId,
-                LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now 
+                LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now,
+                UserCreatedById = i_CreatedById ?? AuthHelper.GetLoggedInUserId()
             };
 
             return (await m_Connection.InsertAsync(newUser) == 1) ? newUser : null;
@@ -90,7 +93,7 @@ namespace GetSanger.ChatDatabase
                                                                || (item.ToId.Equals(i_UserToChatId) && item.FromId.Equals(i_MyId))).ToListAsync();
         }
 
-        public async Task<int> AddMessageAsync(Message i_Message, string i_ChatId) // chat id is most of the time the userTo id
+        public async Task<int> AddMessageAsync(Message i_Message, string i_ChatId, string i_CreatedById = null) // chat id is most of the time the userTo id
         {
             ChatUser user = null;
             if (i_ChatId != null)
@@ -105,7 +108,7 @@ namespace GetSanger.ChatDatabase
 
             if (user == null)
             {
-                user = await AddUserAsync(i_ChatId, i_Message.TimeSent);
+                user = await AddUserAsync(i_ChatId, i_Message.TimeSent, i_CreatedById ?? AuthHelper.GetLoggedInUserId());
             }
 
             int retVal = await UpdateUserAsync(user);
