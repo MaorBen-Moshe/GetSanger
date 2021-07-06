@@ -77,9 +77,10 @@ namespace GetSanger.ChatDatabase
             return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id)).FirstOrDefaultAsync();
         }
 
-        public Task<List<ChatUser>> GetAllUsersAsync()
+        public async Task<List<ChatUser>> GetAllUsersAsync()
         {
-            return m_Connection.Table<ChatUser>().ToListAsync();
+            List<ChatUser> users = await m_Connection.Table<ChatUser>().ToListAsync();
+            return users.Where(user => user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
         }
 
         #endregion
