@@ -14,7 +14,6 @@ namespace GetSanger.ChatDatabase
     {
         #region Fields
         private static SQLiteAsyncConnection m_Connection;
-        private static string Id;
         #endregion
 
         #region Instance
@@ -56,7 +55,7 @@ namespace GetSanger.ChatDatabase
 
         public async Task<int> DeleteUserAsync(string i_UserId)
         {
-            ChatUser toDelete = await m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_UserId)).FirstAsync();
+            ChatUser toDelete = await m_Connection.Table<ChatUser>()?.Where(user => user.UserId.Equals(i_UserId)).FirstAsync();
             if(toDelete != null)
             {
                 return await m_Connection.DeleteAsync(toDelete);
@@ -80,7 +79,7 @@ namespace GetSanger.ChatDatabase
         public async Task<List<ChatUser>> GetAllUsersAsync()
         {
             List<ChatUser> users = await m_Connection.Table<ChatUser>().ToListAsync();
-            return users.Where(user => user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
+            return users?.Where(user => user != null && user.UserCreatedById != null && user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
         }
 
         #endregion
@@ -90,7 +89,7 @@ namespace GetSanger.ChatDatabase
         public Task<List<Message>> GetMessagesAsync(string i_UserToChatId)
         {
             string i_MyId = AppManager.Instance.ConnectedUser.UserId;
-            return m_Connection.Table<Message>().Where(item => (item.ToId.Equals(i_MyId) && item.FromId.Equals(i_UserToChatId)) 
+            return m_Connection.Table<Message>()?.Where(item => (item.ToId.Equals(i_MyId) && item.FromId.Equals(i_UserToChatId)) 
                                                                || (item.ToId.Equals(i_UserToChatId) && item.FromId.Equals(i_MyId))).ToListAsync();
         }
 
