@@ -76,15 +76,18 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                if (IsMyRatings)
+                if (IsMyRatings && i_Param is Rating rating)
                 {
-                    Rating current = i_Param as Rating;
-                    await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={current.RatingWriterId}");
+                    await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={rating.RatingWriterId}");
                 }
             }
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:selectedRating", "Error", e.Message);
+            }
+            finally
+            {
+                SelectedItem = null;
             }
         }
 

@@ -4,13 +4,14 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public abstract class ListBaseViewModel<T> : BaseViewModel
+    public abstract class ListBaseViewModel<T> : BaseViewModel where T : class
     {
         #region Fields
         private bool m_IsListRefreshing;
         private bool m_IsVisibleEmptyListLabel;
         private ObservableCollection<T> m_Collection;
         private ObservableCollection<T> m_SearchCollection;
+        private T m_SelectedItem;
         #endregion
 
         #region Properties
@@ -37,6 +38,12 @@ namespace GetSanger.ViewModels
             get => m_SearchCollection;
             set => SetClassProperty(ref m_SearchCollection, value);
         }
+
+        public T SelectedItem
+        {
+            get => m_SelectedItem;
+            set => SetClassProperty(ref m_SelectedItem, value);
+        }
         #endregion
 
         #region Commands
@@ -47,6 +54,7 @@ namespace GetSanger.ViewModels
         public ListBaseViewModel()
         {
             RefreshingCommand = new Command(refreshList);
+            SelectedItem = null;
         }
         #endregion
 

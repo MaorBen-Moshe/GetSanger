@@ -65,12 +65,19 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                string json = ObjectJsonSerializer.SerializeForPage((i_Param as ChatUser).User);
-                await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
+                if(i_Param is ChatUser chatUser)
+                {
+                    string json = ObjectJsonSerializer.SerializeForPage(chatUser.User);
+                    await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
+                }
             }
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ChatListViewModel)}:userSelected", "Error", e.Message);
+            }
+            finally
+            {
+                SelectedItem = null;
             }
         }
 

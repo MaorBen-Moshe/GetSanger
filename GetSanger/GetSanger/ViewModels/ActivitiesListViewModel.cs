@@ -152,12 +152,19 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                string json = ObjectJsonSerializer.SerializeForPage(i_Param as Activity);
-                await r_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
+                if(i_Param is Activity activity)
+                {
+                    string json = ObjectJsonSerializer.SerializeForPage(activity);
+                    await r_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
+                }
             }
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:selectedActivity", "Error", e.Message);
+            }
+            finally
+            {
+                SelectedItem = null;
             }
         }
 

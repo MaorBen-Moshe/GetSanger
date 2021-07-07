@@ -47,6 +47,7 @@
                 
                 <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding Collection}"
+                          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                           IsRefreshing="{Binding IsListRefreshing}"
                           IsPullToRefreshEnabled="True" 
                           IsVisible="{Binding IsVisibleViewList}"

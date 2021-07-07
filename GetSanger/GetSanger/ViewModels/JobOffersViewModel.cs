@@ -141,13 +141,19 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                JobOffer current = i_Param as JobOffer;
-                string json = ObjectJsonSerializer.SerializeForPage(current);
-                await r_NavigationService.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={json}");
+                if(i_Param is JobOffer current)
+                {
+                    string json = ObjectJsonSerializer.SerializeForPage(current);
+                    await r_NavigationService.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={json}");
+                }
             }
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:selectedJobOffer", "Error", e.Message);
+            }
+            finally
+            {
+                SelectedItem = null;
             }
         }
 
