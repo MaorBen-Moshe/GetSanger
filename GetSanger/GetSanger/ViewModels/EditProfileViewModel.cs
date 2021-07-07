@@ -1,6 +1,4 @@
 ﻿using GetSanger.AppShell;
-using GetSanger.Constants;
-using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
@@ -8,11 +6,10 @@ using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels
 {
@@ -100,66 +97,102 @@ namespace GetSanger.ViewModels
             DeleteAccountCommand = new Command(deleteAccount);
         }
 
-        private void initialData()
+        private async void initialData()
         {
-            string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
-            ConnectedUser = ObjectJsonSerializer.DeserializeForPage<User>(json);
-            ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
-            MaxDate = DateTime.Now.AddYears(-18);
+            try
+            {
+                string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
+                ConnectedUser = ObjectJsonSerializer.DeserializeForPage<User>(json);
+                ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
+                MaxDate = DateTime.Now.AddYears(-18);
+
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(EditProfileViewModel)}:initialData", "Error", e.Message);
+            }
         }
 
         private async void backButtonBehavior(object i_Param)
         {
-            // if data has not changed do not call update user
-            if (string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) ||
-                !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
-                (DateTime.Now.AddYears(-ConnectedUser.PersonalDetails.Birthday.Year).Year < 18)
-            )
+            try
             {
-                await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
-            }
-            else
-            {
-                // if the data has changed we update in the server, else we do nothing
-                if (ConnectedUser.PersonalDetails.Equals(AppManager.Instance.ConnectedUser.PersonalDetails) == false)
+                // if data has not changed do not call update user
+                if (string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) ||
+                    !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
+                    (DateTime.Now.AddYears(-ConnectedUser.PersonalDetails.Birthday.Year).Year < 18)
+                )
                 {
-                    AppManager.Instance.ConnectedUser = ConnectedUser;
-                    await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser), "Saving...");
+                    await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
                 }
-            }
+                else
+                {
+                    // if the data has changed we update in the server, else we do nothing
+                    if (ConnectedUser.PersonalDetails.Equals(AppManager.Instance.ConnectedUser.PersonalDetails) == false)
+                    {
+                        AppManager.Instance.ConnectedUser = ConnectedUser;
+                        await RunTaskWhileLoading(FireStoreHelper.UpdateUser(ConnectedUser), "Saving...");
+                    }
+                }
 
-            await GoBack();
+                await GoBack();
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(EditProfileViewModel)}:backButtonBehavior", "Error", e.Message);
+            }
         }
 
         private async void imageChanged(object i_Param)
         {
-            await r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser);
-            await FireStoreHelper.UpdateUser(ConnectedUser);
-            ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
+            try
+            {
+                await r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser);
+                await FireStoreHelper.UpdateUser(ConnectedUser);
+                ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(EditProfileViewModel)}:imageChanged", "Error", e.Message);
+            }
         }
 
         private async void changePassword(object i_Param)
         {
-            var page = new ChangePasswordPage();
-            await PopupNavigation.Instance.PushAsync(page);
+            try
+            {
+                var page = new ChangePasswordPage();
+                await PopupNavigation.Instance.PushAsync(page);
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(EditProfileViewModel)}:changePassword", "Error", e.Message);
+            }
         }
 
         private async void deleteAccount()
         {
-            await r_PageService.DisplayAlert("Warning",
-                                             "Are you sure?",
-                                             "Yes",
-                                             "No",
-                                             async (answer) =>
-                                             {
-                                                 if (answer)
+            try
+            {
+                await r_PageService.DisplayAlert("Warning",
+                                                 "Are you sure?",
+                                                 "Yes",
+                                                 "No",
+                                                 async (answer) =>
                                                  {
-                                                     await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
+                                                     if (answer)
+                                                     {
+                                                         await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
                                                      //do delete
                                                      await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
-                                                     Application.Current.MainPage = new AuthShell();
-                                                 }
-                                             });
+                                                         Application.Current.MainPage = new AuthShell();
+                                                     }
+                                                 });
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(EditProfileViewModel)}:deleteAccount", "Error", e.Message);
+            }
         }
 
         #endregion

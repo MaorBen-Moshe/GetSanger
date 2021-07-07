@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Views.popups;
@@ -143,8 +142,15 @@ namespace GetSanger.ViewModels
 
         private async void sendMessageToUser(object i_Param)
         {
-            string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
-            await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
+            try
+            {
+                string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
+                await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ProfileViewModel)}:sendMessageToUser", "Error", e.Message);
+            }
         }
 
         private async void reportUser(object i_Param)
@@ -168,6 +174,10 @@ namespace GetSanger.ViewModels
                         await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
                         await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
                     }
+                    else
+                    {
+                        await r_PageService.DisplayAlert("Note", "Please add details to send this report!", "OK");
+                    }
                 }
                 catch (Exception e)
                 {
@@ -178,14 +188,28 @@ namespace GetSanger.ViewModels
 
         private async void addRating(object i_Param)
         {
-            var ratingsPopup = new AddRatingPage(CurrentUser.UserId);
-            (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += async () => AverageRating = getAverage(await FireStoreHelper.GetRatings(CurrentUser.UserId));
-            await PopupNavigation.Instance.PushAsync(ratingsPopup);
+            try
+            {
+                var ratingsPopup = new AddRatingPage(CurrentUser.UserId);
+                (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += async () => AverageRating = getAverage(await FireStoreHelper.GetRatings(CurrentUser.UserId));
+                await PopupNavigation.Instance.PushAsync(ratingsPopup);
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ProfileViewModel)}:addRating", "Error", e.Message);
+            }
         }
 
         private async void viewRatings(object i_Param)
         {
-            await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?id={CurrentUser.UserId}&isMyRatings={false}");
+            try
+            {
+                await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?id={CurrentUser.UserId}&isMyRatings={false}");
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ProfileViewModel)}:viewRatings", "Error", e.Message);
+            }
         }
 
         #endregion

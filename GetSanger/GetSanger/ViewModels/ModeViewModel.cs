@@ -2,7 +2,6 @@
 using GetSanger.Services;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 

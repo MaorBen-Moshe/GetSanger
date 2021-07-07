@@ -1,6 +1,8 @@
 ﻿using GetSanger.Constants;
+using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -32,10 +34,17 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public override void Appearing()
+        public async override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ActivitiesListViewModel));
-            setActivities();
+            try
+            {
+                r_CrashlyticsService.LogPageEntrance(nameof(ActivitiesListViewModel));
+                setActivities();
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:Appearing", "Error", e.Message);
+            }
         }
 
         private void setCommands()
@@ -47,51 +56,65 @@ namespace GetSanger.ViewModels
 
         private async void confirmActivity(object i_Param)
         {
-            Activity activity = i_Param as Activity;
-            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && activity.Status.Equals(ActivityStatus.Pending))
+            try
             {
-               await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No", 
-                   async (answer) =>
-                   {
-                       if (answer)
-                       {
-                           AppManager.Instance.ConnectedUser.Activities.Remove(activity);
-                           activity.Status = ActivityStatus.Active;
-                           await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
-                           await RunTaskWhileLoading(r_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
-                           //  need to check that the list(ActivitiesSource) is updated
-                           AppManager.Instance.ConnectedUser.Activities.Add(activity);
-                           foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
-                           {
-                               if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
-                               {
-                                   current.Status = ActivityStatus.Rejected;
-                                   await RunTaskWhileLoading(r_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
-                               }
-                           }
+                Activity activity = i_Param as Activity;
+                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && activity.Status.Equals(ActivityStatus.Pending))
+                {
+                    await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
+                        async (answer) =>
+                        {
+                            if (answer)
+                            {
+                                AppManager.Instance.ConnectedUser.Activities.Remove(activity);
+                                activity.Status = ActivityStatus.Active;
+                                await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
+                                await RunTaskWhileLoading(r_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
+                                //  need to check that the list(ActivitiesSource) is updated
+                                AppManager.Instance.ConnectedUser.Activities.Add(activity);
+                                foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
+                                {
+                                    if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
+                                    {
+                                        current.Status = ActivityStatus.Rejected;
+                                        await RunTaskWhileLoading(r_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
+                                    }
+                                }
 
-                           await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
-                       }
-                   });
+                                await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
+                            }
+                        });
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:confirmActivity", "Error", e.Message);
             }
         }
 
-        private void rejectActivity(object i_Param)
+        private async void rejectActivity(object i_Param)
         {
-            Activity activity = i_Param as Activity;
-            if (activity.Status.Equals(ActivityStatus.Pending) || activity.Status.Equals(ActivityStatus.Active))
+            try
             {
-                switch (AppManager.Instance.CurrentMode)
+                Activity activity = i_Param as Activity;
+                if (activity.Status.Equals(ActivityStatus.Pending) || activity.Status.Equals(ActivityStatus.Active))
                 {
-                    case eAppMode.Client: 
-                        doReject(activity, activity.SangerID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :(");
-                        break;
-                    case eAppMode.Sanger: 
-                        doReject(activity, activity.ClientID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} decided to cancel the job offer he already accepted. for more information please contact him :(");
-                        break;
-                }
+                    switch (AppManager.Instance.CurrentMode)
+                    {
+                        case eAppMode.Client:
+                            doReject(activity, activity.SangerID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :(");
+                            break;
+                        case eAppMode.Sanger:
+                            doReject(activity, activity.ClientID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} decided to cancel the job offer he already accepted. for more information please contact him :(");
+                            break;
+                    }
 
-                IsVisibleViewList = Collection.Count > 0;
+                    IsVisibleViewList = Collection.Count > 0;
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:rejectActivity", "Error", e.Message);
             }
         }
 
@@ -112,16 +135,30 @@ namespace GetSanger.ViewModels
                 });
         }
 
-        protected override void refreshList()
+        protected async override void refreshList()
         {
-            setActivities();
-            IsListRefreshing = false;
+            try
+            {
+                setActivities();
+                IsListRefreshing = false;
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:refreshList", "Error", e.Message);
+            }
         }
 
         private async void selectedActivity(object i_Param)
         {
-            string json = ObjectJsonSerializer.SerializeForPage(i_Param as Activity);
-            await r_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
+            try
+            {
+                string json = ObjectJsonSerializer.SerializeForPage(i_Param as Activity);
+                await r_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:selectedActivity", "Error", e.Message);
+            }
         }
 
         private async void setActivities()

@@ -96,19 +96,26 @@ namespace GetSanger.ViewModels.chat
         #endregion
 
         #region Methods
-        public override async void Appearing()
+        public async override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ChatPageViewModel));
-            UserPicture = r_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
-            DB = await ChatDatabase.ChatDatabase.Instance;
-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-            List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
-            MessagesSource = new ObservableCollection<Message>(messages.OrderByDescending(item => item.MessageId));
-            sendUnsentMessages();
-            ShowScrollTap = false;
-            DelayedMessages = new Queue<Message>();
-            PendingMessageCount = 0;
-            LastMessageVisible = true;
+            try
+            {
+                r_CrashlyticsService.LogPageEntrance(nameof(ChatPageViewModel));
+                UserPicture = r_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
+                DB = await ChatDatabase.ChatDatabase.Instance;
+                Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+                setMessages();
+                sendUnsentMessages();
+                ShowScrollTap = false;
+                DelayedMessages = new Queue<Message>();
+                PendingMessageCount = 0;
+                LastMessageVisible = true;
+            }
+            catch(Exception e)
+            {
+                await GoBack();
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:Appearing", "Error", e.Message);
+            }
         }
 
         public void Disappearing()
@@ -128,6 +135,19 @@ namespace GetSanger.ViewModels.chat
         }
 
         private async void refreshMessages(object i_Param)
+        {
+            try
+            {
+                setMessages();
+            }
+            catch (Exception e)
+            {
+                await GoBack();
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:refreshMessages", "Error", e.Message);
+            }
+        }
+
+        private async void setMessages()
         {
             List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>(messages.OrderByDescending(item => item.MessageId));
@@ -152,11 +172,12 @@ namespace GetSanger.ViewModels.chat
                     MessagesSource.Insert(0, msg);
                     r_PushService.SendChatMessage(msg);
                     // adding the message to the local DB
-                    msg.MessageSent = true; // removing the '!' in the UI does not work
+                    msg.MessageSent = true;
                     await DB.AddMessageAsync(msg, msg.ToId);
                 }
                 catch(Exception e)
                 {
+                    msg.MessageSent = false;
                     await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:sendMessage", "Error", e.Message);
                 }
             }
@@ -169,17 +190,24 @@ namespace GetSanger.ViewModels.chat
 
         private async void sendUnsentMessages()
         {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet) // there is an internet and there are messages not sent
+            try
             {
-                foreach (Message msg in MessagesSource.Reverse())
+                if (Connectivity.NetworkAccess == NetworkAccess.Internet) // there is an internet and there are messages not sent
                 {
-                    if (msg.MessageSent == false)
+                    foreach (Message msg in MessagesSource.Reverse())
                     {
-                        r_PushService.SendChatMessage(msg);
-                        await DB.UpdateMessageAsync(msg);
-                        msg.MessageSent = true;
+                        if (msg.MessageSent == false)
+                        {
+                            r_PushService.SendChatMessage(msg);
+                            await DB.UpdateMessageAsync(msg);
+                            msg.MessageSent = true;
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:sendUnsentMessages", "Error", e.Message);
             }
         }
 
@@ -207,68 +235,96 @@ namespace GetSanger.ViewModels.chat
             }
         }
 
-        private void messageAppearing(object i_Param)
+        private async void messageAppearing(object i_Param)
         {
-            Message message = i_Param as Message;
-            var idx = MessagesSource.IndexOf(message);
-            if (idx <= 1)
+            try
             {
-                Device.BeginInvokeOnMainThread(() =>
+                Message message = i_Param as Message;
+                var idx = MessagesSource.IndexOf(message);
+                if (idx <= 1)
                 {
-                    while (DelayedMessages.Count > 0)
+                    Device.BeginInvokeOnMainThread(() =>
                     {
-                        MessagesSource.Insert(0, DelayedMessages.Dequeue());
-                    }
+                        while (DelayedMessages.Count > 0)
+                        {
+                            MessagesSource.Insert(0, DelayedMessages.Dequeue());
+                        }
 
-                    ShowScrollTap = false;
-                    LastMessageVisible = true;
-                    PendingMessageCount = 0;
-                });
+                        ShowScrollTap = false;
+                        LastMessageVisible = true;
+                        PendingMessageCount = 0;
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:messageAppearing", "Error", e.Message);
             }
         }
 
-        private void messageDisappearing(object i_Param)
+        private async void messageDisappearing(object i_Param)
         {
-            Message message = i_Param as Message;
-            var idx = MessagesSource.IndexOf(message);
-            if (idx >= 1)
+            try
             {
-                Device.BeginInvokeOnMainThread(() =>
+                Message message = i_Param as Message;
+                var idx = MessagesSource.IndexOf(message);
+                if (idx >= 1)
                 {
-                    ShowScrollTap = true;
-                    LastMessageVisible = false;
-                });
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        ShowScrollTap = true;
+                        LastMessageVisible = false;
+                    });
 
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:messageDisappearing", "Error", e.Message);
             }
         }
 
         private async void sendWhatsapp(object i_Param)
         {
-            if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
+            try
             {
-                r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
-                bool succeeded = await r_DialService.SendWhatsapp();
-                if (!succeeded)
+                if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
                 {
-                    await r_DialService.SendDefAppMsg();
+                    r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
+                    bool succeeded = await r_DialService.SendWhatsapp();
+                    if (!succeeded)
+                    {
+                        await r_DialService.SendDefAppMsg();
+                    }
+
+                    return;
                 }
 
-                return;
+                await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
             }
-            
-            await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:sendWhatsapp", "Error", e.Message);
+            }
         }
 
         private async void call(object i_Param)
         {
-            if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
+            try
             {
-                r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
-                r_DialService.Call();
-                return;
-            }
+                if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
+                {
+                    r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
+                    r_DialService.Call();
+                    return;
+                }
 
-            await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+                await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:call", "Error", e.Message);
+            }
         }
         #endregion
     }

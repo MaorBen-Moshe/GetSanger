@@ -3,9 +3,6 @@ using GetSanger.Models;
 using GetSanger.Services;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -60,14 +57,28 @@ namespace GetSanger.ViewModels
 
         private async void addRating(object i_Param)
         {
-            NewRating.RatingWriterId = AppManager.Instance.ConnectedUser.UserId;
-            NewRating.RatingWriterName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
-            NewRating.RatingOwnerId = RatedUserId;
-            NewRating.TimeAdded = DateTime.Now;
-            await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
-            await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
-            RatingAddedEvent?.Invoke();
-            await PopupNavigation.Instance.PopAsync();
+            try
+            {
+                if(NewRating.Description.Length == 0)
+                {
+                    await r_PageService.DisplayAlert("Note", "Please write a description!", "OK");
+                }
+                else
+                {
+                    NewRating.RatingWriterId = AppManager.Instance.ConnectedUser.UserId;
+                    NewRating.RatingWriterName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
+                    NewRating.RatingOwnerId = RatedUserId;
+                    NewRating.TimeAdded = DateTime.Now;
+                    await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
+                    await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
+                    RatingAddedEvent?.Invoke();
+                    await PopupNavigation.Instance.PopAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(AddRatingViewModel)}:addRating", "Error", e.Message);
+            }
         }
 
         #endregion

@@ -1,7 +1,8 @@
 ﻿using GetSanger.Constants;
-using GetSanger.Models;
+using GetSanger.Extensions;
 using GetSanger.Models.chat;
 using GetSanger.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -48,16 +49,29 @@ namespace GetSanger.ViewModels.chat
             UserSelectedCommand = new Command(userSelected);
         }
 
-        protected override void refreshList()
+        protected async override void refreshList()
         {
-            setUsers();
-            IsListRefreshing = false;
+            try
+            {
+                setUsers();
+                IsListRefreshing = false;
+            }catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ChatListViewModel)}:refreshList", "Error", e.Message);
+            }
         }
 
         private async void userSelected(object i_Param)
         {
-            string json = ObjectJsonSerializer.SerializeForPage((i_Param as ChatUser).User);
-            await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
+            try
+            {
+                string json = ObjectJsonSerializer.SerializeForPage((i_Param as ChatUser).User);
+                await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ChatListViewModel)}:userSelected", "Error", e.Message);
+            }
         }
 
         private async void setUsers()

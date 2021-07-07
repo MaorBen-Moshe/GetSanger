@@ -1,9 +1,9 @@
-﻿using GetSanger.Interfaces;
+﻿using GetSanger.Extensions;
+using GetSanger.Interfaces;
 using GetSanger.Services;
 using GetSanger.Views;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
@@ -78,7 +78,14 @@ namespace GetSanger.ViewModels
         #region Methods
         protected virtual async Task GoBack()
         {
-            await Shell.Current.GoToAsync(m_DefaultBackUri);
+            try
+            {
+                await Shell.Current.GoToAsync(m_DefaultBackUri);
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(BaseViewModel)}:GoBack", "Error", e.Message);
+            }
         }
 
         public Task RunTaskWhileLoading(Task i_InnerTask, string i_OptionalLoadingText = "Loading...")

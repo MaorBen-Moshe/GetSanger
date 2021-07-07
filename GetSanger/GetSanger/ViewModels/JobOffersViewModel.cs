@@ -2,9 +2,9 @@
 using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
-using GetSanger.Views;
 using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -61,52 +61,73 @@ namespace GetSanger.ViewModels
 
         private async void sendNotes()
         {
-            CurrentConfirmedJobOffer.SangerNotes = Notes;
-            Activity activity = new Activity
+            try
             {
-                JobDetails = CurrentConfirmedJobOffer,
-                SangerID = AuthHelper.GetLoggedInUserId(),
-                SangerName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName,
-                ClientID = CurrentConfirmedJobOffer.ClientID,
-                Status = ActivityStatus.Pending,
-                LocationActivatedBySanger = false
-            };
+                CurrentConfirmedJobOffer.SangerNotes = Notes;
+                Activity activity = new Activity
+                {
+                    JobDetails = CurrentConfirmedJobOffer,
+                    SangerID = AuthHelper.GetLoggedInUserId(),
+                    SangerName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName,
+                    ClientID = CurrentConfirmedJobOffer.ClientID,
+                    Status = ActivityStatus.Pending,
+                    LocationActivatedBySanger = false
+                };
 
-            AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
-            await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
-            setJobOffers();
-            CurrentConfirmedJobOffer = null;
-            await PopupNavigation.Instance.PopAsync();
+                AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
+                await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
+                setJobOffers();
+                CurrentConfirmedJobOffer = null;
+                await PopupNavigation.Instance.PopAsync();
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:sendNotes", "Error", e.Message);
+            }
         }
 
         private async void confirmJobOffer(object i_Param)
         {
-            CurrentConfirmedJobOffer = i_Param as JobOffer;
-            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
+            try
             {
-                await PopupNavigation.Instance.PushAsync(new SangerNotesView(this));
+                CurrentConfirmedJobOffer = i_Param as JobOffer;
+                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
+                {
+                    await PopupNavigation.Instance.PushAsync(new SangerNotesView(this));
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:confirmJobOffer", "Error", e.Message);
             }
         }
 
         private async void deleteMyJobOfferCommand(object i_Param)
         {
-            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
+            try
             {
-                await r_PageService.DisplayAlert("Warning",
-                                                 "Are you sure?",
-                                                 "Yes",
-                                                 "No",
-                                                 async (answer) =>
-                                                 {
-                                                     if (answer)
+                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
+                {
+                    await r_PageService.DisplayAlert("Warning",
+                                                     "Are you sure?",
+                                                     "Yes",
+                                                     "No",
+                                                     async (answer) =>
                                                      {
-                                                         JobOffer job = i_Param as JobOffer;
-                                                         AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
-                                                         Collection.Remove(job);
-                                                         IsVisibleViewList = Collection.Count > 0;
-                                                         await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId));
-                                                     }
-                                                 });
+                                                         if (answer)
+                                                         {
+                                                             JobOffer job = i_Param as JobOffer;
+                                                             AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
+                                                             Collection.Remove(job);
+                                                             IsVisibleViewList = Collection.Count > 0;
+                                                             await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId));
+                                                         }
+                                                     });
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:deleteMyJobOfferCommand", "Error", e.Message);
             }
         }
 
@@ -118,28 +139,42 @@ namespace GetSanger.ViewModels
 
         private async void selectedJobOffer(object i_Param)
         {
-            JobOffer current = i_Param as JobOffer;
-            string json = ObjectJsonSerializer.SerializeForPage(current);
-            await r_NavigationService.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={json}");
+            try
+            {
+                JobOffer current = i_Param as JobOffer;
+                string json = ObjectJsonSerializer.SerializeForPage(current);
+                await r_NavigationService.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={json}");
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:selectedJobOffer", "Error", e.Message);
+            }
         }
 
         private async void setJobOffers()
         {
-            ObservableCollection<JobOffer> currentList = null;
-            switch (AppManager.Instance.CurrentMode)
+            try
             {
-                case eAppMode.Client:
-                    currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId())));
-                    break;
-                case eAppMode.Sanger:
-                    List<JobOffer> temp = await RunTaskWhileLoading(getSangerJobOffers());
-                    currentList = new ObservableCollection<JobOffer>(temp);
-                    break;
-            }
+                ObservableCollection<JobOffer> currentList = null;
+                switch (AppManager.Instance.CurrentMode)
+                {
+                    case eAppMode.Client:
+                        currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId())));
+                        break;
+                    case eAppMode.Sanger:
+                        List<JobOffer> temp = await RunTaskWhileLoading(getSangerJobOffers());
+                        currentList = new ObservableCollection<JobOffer>(temp);
+                        break;
+                }
 
-            Collection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
-            SearchCollection = new ObservableCollection<JobOffer>(Collection);
-            IsVisibleViewList = Collection.Count > 0;
+                Collection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
+                SearchCollection = new ObservableCollection<JobOffer>(Collection);
+                IsVisibleViewList = Collection.Count > 0;
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:setJobOffers", "Error", e.Message);
+            }
         }
 
         private async Task<List<JobOffer>> getSangerJobOffers()

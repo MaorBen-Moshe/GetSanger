@@ -55,5 +55,10 @@ namespace GetSanger.Models
         {
             return base.GetHashCode();
         }
+
+        public static bool IsValidName(string name)
+        {
+            return string.IsNullOrWhiteSpace(name) == false && name.Length >= 4 && name.Length <= 20;
+        }
     }
 }

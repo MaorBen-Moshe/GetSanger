@@ -1,18 +1,11 @@
 ﻿using GetSanger.Constants;
-using GetSanger.Exceptions;
 using GetSanger.Extensions;
-using GetSanger.Interfaces;
-using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
-using GetSanger.Views.Registration;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
@@ -87,29 +80,46 @@ namespace GetSanger.ViewModels
 
             try
             {
-                await RunTaskWhileLoading(AuthHelper.LoginViaEmail(Email, Password));
-                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser());
+                r_LoadingService.ShowPopup();
+                await AuthHelper.LoginViaEmail(Email, Password);
+                bool verified = await r_LoginServices.LoginUser();
                 if (!verified)
                 {
                     await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
                 }
+
+                r_LoadingService.HidePopup();
             }
             catch (Exception e)
             {
+                r_LoadingService.HidePopup();
                 await e.LogAndDisplayError($"{nameof(LoginViewModel)}:LoginClicked", "Error", e.Message);
             }
         }
 
         protected async void SignUpClicked()
         {
-            await r_NavigationService.NavigateTo(ShellRoutes.SignupEmail);
+            try
+            {
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupEmail);
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(LoginViewModel)}:SignUpClicked", "Error", e.Message);
+            }
         }
 
         private async void ForgotPasswordClicked(object obj)
         {
-            var page = new ForgotPasswordPage();
-            await PopupNavigation.Instance.PushAsync(page);
-            //await r_NavigationService.NavigateTo(ShellRoutes.ForgotPassword);
+            try
+            {
+                var page = new ForgotPasswordPage();
+                await PopupNavigation.Instance.PushAsync(page);
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(LoginViewModel)}:ForgotPasswordClicked", "Error", e.Message);
+            }
         }
 
         private async void socialClicked(object i_Param)

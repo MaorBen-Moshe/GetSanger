@@ -1,9 +1,8 @@
 ﻿using GetSanger.Constants;
+using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -103,34 +102,48 @@ namespace GetSanger.ViewModels
 
         private async Task initData()
         {
-            r_LoadingService.ShowPopup();
-            ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
-
-            if (Job.Location != null)
+            try
             {
-                Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
-                MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
-            }
+                r_LoadingService.ShowPopup();
+                ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
 
-            if (Job.JobLocation != null)
+                if (Job.Location != null)
+                {
+                    Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
+                    MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
+                }
+
+                if (Job.JobLocation != null)
+                {
+                    Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
+                    WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
+                }
+
+                IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
+                r_LoadingService.HidePopup();
+            }
+            catch(Exception e)
             {
-                Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
-                WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
+                await e.LogAndDisplayError($"{nameof(ViewJobOfferViewModel)}:initData", "Error", e.Message);
             }
-
-            IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
-            r_LoadingService.HidePopup();
         }
 
         private async void moveProfile(object i_Param)
         {
-            if (Job.ClientID != null)
+            try
             {
-                await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={Job.ClientID}");
+                if (Job.ClientID != null)
+                {
+                    await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={Job.ClientID}");
+                }
+                else
+                {
+                    await r_PageService.DisplayAlert("Error", "User is not available. please contact us!", "THANKS");
+                }
             }
-            else
+            catch (Exception e)
             {
-                await r_PageService.DisplayAlert("Error", "User is not available. please contact us!", "THANKS");
+                await e.LogAndDisplayError($"{nameof(ViewJobOfferViewModel)}:moveProfile", "Error", e.Message);
             }
         }
 

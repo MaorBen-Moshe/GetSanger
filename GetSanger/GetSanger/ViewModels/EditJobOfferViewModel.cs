@@ -155,61 +155,97 @@ namespace GetSanger.ViewModels
 
         private void setLocation(Placemark i_PlaceMark)
         {
+            if(i_PlaceMark == null)
+            {
+                throw new ArgumentNullException("i_PlaceMark is null");
+            }
+
             _ = m_IsMyLocation == true ? MyPlaceMark = i_PlaceMark : JobPlaceMark = i_PlaceMark;
         }
 
         private async void getCurrentLocation()
         {
-            m_IsMyLocation = true;
-            await r_PageService.DisplayAlert("Note",
-                                             $"Are you sure {MyLocation} is not your location?",
-                                             "Yes",
-                                             "No",
-                                              async (answer) =>
-                                              {
-                                                  if (answer)
+            try
+            {
+                m_IsMyLocation = true;
+                await r_PageService.DisplayAlert("Note",
+                                                 $"Are you sure {MyLocation} is not your location?",
+                                                 "Yes",
+                                                 "No",
+                                                  async (answer) =>
                                                   {
-                                                      bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
-                                                      if (locationGranted)
+                                                      if (answer)
                                                       {
-                                                          await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+                                                          bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+                                                          if (locationGranted)
+                                                          {
+                                                              await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+                                                          }
+                                                          else
+                                                          {
+                                                              await r_PageService.DisplayAlert("Note", "Please allow location!", "OK");
+                                                          }
                                                       }
-                                                      else
-                                                      {
-                                                          await r_PageService.DisplayAlert("Note", "Please allow location!", "OK");
-                                                      }
-                                                  }
-                                              });
+                                                  });
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(EditJobOfferViewModel)}:getCurrentLocation", "Error", e.Message);
+            }
         }
 
         private async void getJobLocation()
         {
-            m_IsMyLocation = false;
-            bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
-            if (locationGranted)
+            try
             {
-                await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+                m_IsMyLocation = false;
+                bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+                if (locationGranted)
+                {
+                    await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+                }
+                else
+                {
+                    await r_PageService.DisplayAlert("Note", "Please allow location!", "OK");
+                }
             }
-            else
+            catch (Exception e)
             {
-                await r_PageService.DisplayAlert("Note", "Please allow location!", "OK");
+                await e.LogAndDisplayError($"{nameof(EditJobOfferViewModel)}:getJobLocation", "Error", e.Message);
             }
         }
 
         private async void sendJob()
         {
-            // check validation of fields!
-            NewJobOffer.ClientID ??= AppManager.Instance.ConnectedUser.UserId;
-            NewJobOffer.ClientName ??= AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
-            NewJobOffer.Location = MyPlaceMark?.Location;
-            NewJobOffer.JobLocation = JobPlaceMark?.Location;
-            NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
-            List<JobOffer> job = await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer));
-            AppManager.Instance.ConnectedUser.JobOffers.Append<ObservableCollection<JobOffer>, JobOffer>(new ObservableCollection<JobOffer>(job));
-            await r_PageService.DisplayAlert("Success", "Job sent!", "Thanks");
-            string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
-            await GoBack();
-            await RunTaskWhileLoading(r_NavigationService.NavigateTo($"////{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
+            try
+            {
+                if (MyPlaceMark != null &&
+                    JobPlaceMark != null &&
+                    NewJobOffer.Title != null &&
+                    NewJobOffer.Description != null)
+                {
+                    NewJobOffer.ClientID ??= AppManager.Instance.ConnectedUser.UserId;
+                    NewJobOffer.ClientName ??= AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
+                    NewJobOffer.Location = MyPlaceMark?.Location;
+                    NewJobOffer.JobLocation = JobPlaceMark?.Location;
+                    NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
+                    List<JobOffer> job = await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer));
+                    AppManager.Instance.ConnectedUser.JobOffers.Append<ObservableCollection<JobOffer>, JobOffer>(new ObservableCollection<JobOffer>(job));
+                    await r_PageService.DisplayAlert("Success", "Job sent!", "Thanks");
+                    string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
+                    await GoBack();
+                    await RunTaskWhileLoading(r_NavigationService.NavigateTo($"////{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
+                }
+                else
+                {
+                    await r_PageService.DisplayAlert("Error", "Please fill all the fields of the form", "OK");
+                }
+
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(EditJobOfferViewModel)}:sendJob", "Error", e.Message);
+            }
         }
 
         private string placemarkValidation(Placemark i_Placemark)

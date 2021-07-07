@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
+using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels
 {
@@ -59,11 +60,18 @@ namespace GetSanger.ViewModels
 
         private async void categorySelected()
         {
-            if (SelectedItem != null)
+            try
             {
-                var category = SelectedItem.Category;
-                await r_NavigationService.NavigateTo($"{ShellRoutes.EditJobOffer }?category={category}&isCreate={true}");
-                SelectedItem = null;
+                if (SelectedItem != null)
+                {
+                    var category = SelectedItem.Category;
+                    await r_NavigationService.NavigateTo($"{ShellRoutes.EditJobOffer }?category={category}&isCreate={true}");
+                    SelectedItem = null;
+                }
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(CategoriesViewModel)}:categorySelected", "Error", e.Message);
             }
         }
         #endregion

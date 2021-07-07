@@ -1,6 +1,5 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Extensions;
-using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
@@ -8,10 +7,8 @@ using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -167,42 +164,49 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior(object i_Param) // when move from email page back to registration page
         {
-            if (IsFacebookGmail == false && InPersonalPage == true)
+            try
             {
-                await GoBack();
-            }
-            else
-            {
-                PropertyInfo[] properties = GetType()
-                    .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-                foreach (var property in properties)
+                if (IsFacebookGmail == false && InPersonalPage == true)
                 {
-                    if (property.PropertyType.Equals(typeof(ICommand))
-                        || property.Name.Equals(nameof(GenderItems))
-                        || property.Name.Equals(nameof(MaxDatePicker)))
+                    await GoBack();
+                }
+                else
+                {
+                    PropertyInfo[] properties = GetType()
+                        .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+                    foreach (var property in properties)
                     {
-                        continue;
-                    }
-                    else if (IsFacebookGmail && (property.Name.Equals(nameof(Email)) ||
-                                                 property.Name.Equals(nameof(Password)) ||
-                                                 property.Name.Equals(nameof(ConfirmPassword))))
-                    {
-                        continue;
-                    }
-                    else if (property.Name.Equals(nameof(CategoriesItems)))
-                    {
-                        foreach (var cell in CategoriesItems)
+                        if (property.PropertyType.Equals(typeof(ICommand))
+                            || property.Name.Equals(nameof(GenderItems))
+                            || property.Name.Equals(nameof(MaxDatePicker)))
                         {
-                            cell.Checked = false;
+                            continue;
+                        }
+                        else if (IsFacebookGmail && (property.Name.Equals(nameof(Email)) ||
+                                                     property.Name.Equals(nameof(Password)) ||
+                                                     property.Name.Equals(nameof(ConfirmPassword))))
+                        {
+                            continue;
+                        }
+                        else if (property.Name.Equals(nameof(CategoriesItems)))
+                        {
+                            foreach (var cell in CategoriesItems)
+                            {
+                                cell.Checked = false;
+                            }
+
+                            continue;
                         }
 
-                        continue;
+                        property.SetValue(this, null);
                     }
 
-                    property.SetValue(this, null);
+                    await GoBack();
                 }
-
-                await GoBack();
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(SignUpPageViewModel)}:backButtonBehavior", "Error", e.Message);
             }
         }
 
@@ -241,9 +245,20 @@ namespace GetSanger.ViewModels
 
         private async void personalDetailPartClicked()
         {
-            CreatedUser.PersonalDetails.Gender = (GenderType) Enum.Parse(typeof(GenderType), PickedGender);
-            // need to check validation of personal details in user
-            await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
+            try
+            {
+                if (!PersonalDetails.IsValidName(CreatedUser.PersonalDetails.NickName) || !r_DialService.IsValidPhone(CreatedUser.PersonalDetails.Phone))
+                {
+                    await r_PageService.DisplayAlert("Note", "Please fill all the fields in the form!", "OK");
+                }
+
+                CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
+                await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(SignUpPageViewModel)}:personalDetailPartClicked", "Error", e.Message);
+            }
         }
 
         private async void categoriesPartClicked()
