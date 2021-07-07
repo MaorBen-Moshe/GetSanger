@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using GetSanger.Exceptions;
+using GetSanger.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using GetSanger.Views.chat;
@@ -114,47 +115,44 @@ namespace GetSanger.Services
 
         public static async Task handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
         {
-            if(i_Message.Count > 0)
+            if (i_Message != null && i_Message.ContainsKey("Type"))
             {
-                if (i_Message != null && i_Message.ContainsKey("Type"))
-                    {
-                    string type = i_Message["Type"];
-                    string json = i_Message.ContainsKey("Json") ? i_Message["Json"] : null;
-                    i_Message.Clear();
+                string type = i_Message["Type"];
+                string json = i_Message.ContainsKey("Json") ? i_Message["Json"] : null;
+                i_Message.Clear();
 
-                    switch (type)
-                    {
-                        case nameof(JobOffer):
-                            await handleJobOffer(i_Title, i_Body, json);
-                            break;
-                        case nameof(Activity):
-                            await handleActivity(i_Title, i_Body, json);
-                            break;
-                        case nameof(Message):
-                            await handleMessage(json);
-                            break;
-                        case nameof(Rating):
-                            await handleRating(i_Title, i_Body, json);
-                            break;
-                        case "MessageInfo":
-                            await handleMessageInfo(i_Title, i_Body, json);
-                            break;
-                        default:
-                            throw new ArgumentException("Type of object received is not allowed");
-                    }
+                switch (type)
+                {
+                    case nameof(JobOffer):
+                        await handleJobOffer(i_Title, i_Body, json);
+                        break;
+                    case nameof(Activity):
+                        await handleActivity(i_Title, i_Body, json);
+                        break;
+                    case nameof(Message):
+                        await handleMessage(json);
+                        break;
+                    case nameof(Rating):
+                        await handleRating(i_Title, i_Body, json);
+                        break;
+                    case "MessageInfo":
+                        await handleMessageInfo(i_Title, i_Body, json);
+                        break;
+                    default:
+                        throw new ArgumentException("Type of object received is not allowed");
                 }
-
             }
-            
         }
 
         private static async Task handleRating(string i_Title, string i_Body, string i_Json)
         {
+            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             bool choice = true;
             string message = i_Body + "\nGo to profile page to view your ratings?";
-            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            var vm = Shell.Current.CurrentPage.BindingContext as RatingsViewModel;
-            if(Shell.Current.CurrentPage.GetType().Equals(typeof(RatingsPage)) && vm.IsMyRatings)
+
+            Page currentPage = Shell.Current.CurrentPage;
+
+            if (currentPage is {BindingContext: RatingsViewModel {IsMyRatings: true} vm})
             {
                 vm.RefreshingCommand.Execute(null);
             }
@@ -167,7 +165,8 @@ namespace GetSanger.Services
 
                 if (choice)
                 {
-                    await navigation.NavigateTo($"//account/{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
+                    await navigation.NavigateTo(
+                        $"//account/{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
                 }
             }
         }
@@ -182,21 +181,24 @@ namespace GetSanger.Services
             string senderId = message.FromId;
             User sender = await FireStoreHelper.GetUser(senderId);
 
-            var vm = Shell.Current.CurrentPage.BindingContext as ChatPageViewModel;
-            if (Shell.Current.CurrentPage.GetType().Equals(typeof(ChatView)) && vm.UserToChat.UserId == senderId)
+            Page currentPage = Shell.Current.CurrentPage;
+            if (currentPage is {BindingContext: ChatPageViewModel vm})
             {
-                vm.RefreshMessagesCommand.Execute(null);
-            }
-            else if (Shell.Current.CurrentPage.GetType().Equals(typeof(ChatView)) && vm.UserToChat.UserId != senderId)
-            {
-                if (i_Title != null)
+                if (vm.UserToChat.UserId == senderId)
                 {
-                    choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
+                    vm.RefreshMessagesCommand.Execute(null);
                 }
-
-                if (choice)
+                else
                 {
-                    await navigation.NavigateTo($"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}");
+                    if (i_Title != null)
+                    {
+                        choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
+                    }
+
+                    if (choice)
+                    {
+                        await navigation.NavigateTo($"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}");
+                    }
                 }
             }
             else
@@ -228,21 +230,26 @@ namespace GetSanger.Services
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
 
-            if (i_Title != null)
+            Page currentPage = Shell.Current.CurrentPage;
+            if (currentPage is {BindingContext: ActivityViewModel vm} && vm.ConnectedActivity.ActivityId == activity.ActivityId)
             {
-                choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
+                // execute vm refresh command
             }
-
-            if (choice)
+            else
             {
-                eAppMode mode = activity.SangerID.Equals(AppManager.Instance.ConnectedUser.UserId) ? eAppMode.Sanger : eAppMode.Client;
-                if(AppManager.Instance.CurrentMode.Equals(mode) == false)
+                if (i_Title != null)
                 {
-                    Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
+                    choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
                 }
 
-                string json = ObjectJsonSerializer.SerializeForPage(activity);
-                await navigation.NavigateTo($"//activities/{ShellRoutes.Activity}?activity={json}");
+                if (choice)
+                {
+                    eAppMode modeToSet = activity.ClientID == AppManager.Instance.ConnectedUser.UserId ? eAppMode.Client : eAppMode.Sanger;
+                    Application.Current.MainPage = AppManager.Instance.GetCurrentShell(modeToSet);
+
+                    string activityJson = ObjectJsonSerializer.SerializeForPage(activity);
+                    await navigation.NavigateTo($"//activities/{ShellRoutes.Activity}?activity={activityJson}");
+                }
             }
         }
 
@@ -252,7 +259,6 @@ namespace GetSanger.Services
             string message = i_Body + "\nDo you want to navigate the the job offer page?";
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            string jobJson = ObjectJsonSerializer.SerializeForPage(job);
 
             if (i_Title != null)
             {
@@ -262,6 +268,7 @@ namespace GetSanger.Services
             if (choice)
             {
                 Application.Current.MainPage = AppManager.Instance.GetCurrentShell(eAppMode.Sanger);
+                string jobJson = ObjectJsonSerializer.SerializeForPage(job);
                 await navigation.NavigateTo($"//jobOffers/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}");
             }
         }
