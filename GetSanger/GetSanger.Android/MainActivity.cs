@@ -4,10 +4,9 @@ using Android.OS;
 using System.Threading.Tasks;
 using System.IO;
 using Android.Content;
-
-//TEMPORARY
-using Firebase.Messaging;
 using GetSanger.Droid.Services;
+using GetSanger.Services;
+using Plugin.CurrentActivity;
 
 namespace GetSanger.Droid
 {
@@ -17,13 +16,13 @@ namespace GetSanger.Droid
         internal static readonly string CHANNEL_ID = "notification_channel";
         internal static readonly int NOTIFICATION_ID = 100;
         internal static MainActivity Instance { get; private set; }
-        internal PushService m_PushService = new PushService();
         public static readonly int PickImageId = 1000;
 
         public TaskCompletionSource<Stream> PickImageTaskCompletionSource { set; get; }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Firebase.Crashlytics.FirebaseCrashlytics.Instance.Log("Entered OnCreate");
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
             Instance = this;
@@ -32,9 +31,10 @@ namespace GetSanger.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
-            //TEMPORARY
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             base.OnCreate(savedInstanceState);
-            m_PushService.PushHelper(Intent, this);
+            PushService.InitializePushService(this);
+            PushService.PushHelper(Intent);
             LoadApplication(new App());
         }
 
@@ -99,10 +99,12 @@ namespace GetSanger.Droid
             }
         }
 
-        protected override void OnNewIntent(Intent intent)
+        protected override async void OnNewIntent(Intent intent)
         {
+            Firebase.Crashlytics.FirebaseCrashlytics.Instance.Log("Entered OnNewIntent");
             base.OnNewIntent(intent);
-            m_PushService.PushHelper(intent, Instance);
+            PushService.PushHelper(intent);
+            await PushServices.handleMessageReceived(null, null, PushServices.BackgroundPushData);
         }
     }
 }
