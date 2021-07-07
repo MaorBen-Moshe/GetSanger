@@ -7,12 +7,11 @@ using Android.Content;
 
 //TEMPORARY
 using Firebase.Messaging;
-using Plugin.CurrentActivity;
 using GetSanger.Droid.Services;
 
 namespace GetSanger.Droid
 {
-    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true)]
+    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         internal static readonly string CHANNEL_ID = "notification_channel";
@@ -33,9 +32,7 @@ namespace GetSanger.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             //TEMPORARY
-            FirebaseMessaging.Instance.SubscribeToTopic("Test");
             base.OnCreate(savedInstanceState);
             m_PushService.PushHelper(Intent, this);
             LoadApplication(new App());
