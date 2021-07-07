@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using System.Linq;
 using Xamarin.Essentials;
 using GetSanger.Extensions;
+using GetSanger.Constants;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -86,6 +87,7 @@ namespace GetSanger.ViewModels.chat
         public ICommand SendWhatsappCommand { get; set; }
         public ICommand CallCommand { get; set; }
         public ICommand RefreshMessagesCommand { get; set; }
+        public ICommand ClickProfileBarCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -132,6 +134,7 @@ namespace GetSanger.ViewModels.chat
             SendWhatsappCommand = new Command(sendWhatsapp);
             CallCommand = new Command(call);
             RefreshMessagesCommand = new Command(refreshMessages);
+            ClickProfileBarCommand = new Command(clickProfileBar);
         }
 
         private async void refreshMessages(object i_Param)
@@ -324,6 +327,18 @@ namespace GetSanger.ViewModels.chat
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:call", "Error", e.Message);
+            }
+        }
+
+        private async void clickProfileBar(object i_Param)
+        {
+            try
+            {
+                await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={UserToChat.UserId}");
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:clickProfileBar", "Error", e.Message);
             }
         }
         #endregion

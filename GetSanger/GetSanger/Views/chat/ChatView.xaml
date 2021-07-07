@@ -22,15 +22,21 @@
 
     <Shell.TitleView>
         <StackLayout Orientation="Horizontal">
-            <controls:RoundedImage ImageSource="{Binding UserPicture}" 
+            <StackLayout Orientation="Horizontal">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ClickProfileBarCommand}"/>
+                </StackLayout.GestureRecognizers>
+                <controls:RoundedImage ImageSource="{Binding UserPicture}" 
                                    Radius="40"
                                    Margin="5,10"
                                    HorizontalOptions="StartAndExpand"/>
-            <Label Text="{Binding UserToChat.PersonalDetails.NickName}" 
+
+                <Label Text="{Binding UserToChat.PersonalDetails.NickName}" 
                    BackgroundColor="Transparent"
                    TextColor="WhiteSmoke"
                    HorizontalOptions="StartAndExpand" 
                    Margin="5,10,0,10"/>
+            </StackLayout>
             <ImageButton Source="whatsapp.png"
                          BackgroundColor="Transparent" 
                          HorizontalOptions="EndAndExpand"
