@@ -42,8 +42,11 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
             </Style>
 
-            <Color x:Key="ClientThemeColor">#6388f7</Color>
-            <Color x:Key="SangerThemeColor">#A0FFFFFF</Color>
+            <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
+            <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
+            <Color x:Key="ClientButtonColor">#91abfa</Color>
+            <Color x:Key="SangerButtonColor">#7bcc54</Color>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

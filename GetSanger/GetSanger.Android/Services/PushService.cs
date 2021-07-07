@@ -26,7 +26,7 @@ namespace GetSanger.Droid.Services
             return token;
         }
 
-        internal void PushHelper(Intent intent, MainActivity invoker)
+        internal async void PushHelper(Intent intent, MainActivity invoker)
         {
             if (intent.Extras != null)
             {
@@ -50,6 +50,8 @@ namespace GetSanger.Droid.Services
                         backgroundPushData["Mode"] = value;
                     }
                 }
+
+                await PushServices.handleMessageReceived(null, null, backgroundPushData);
             }
 
             if (!IsPlayServicesAvailable(invoker))
