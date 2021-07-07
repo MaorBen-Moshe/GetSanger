@@ -1,6 +1,8 @@
 ﻿using GetSanger.Constants;
+using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -72,25 +74,42 @@ namespace GetSanger.ViewModels
 
         private async void selectedRating(object i_Param)
         {
-            if (IsMyRatings)
+            try
             {
-                Rating current = i_Param as Rating;
-                await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={current.RatingWriterId}");
+                if (IsMyRatings && i_Param is Rating rating)
+                {
+                    await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={rating.RatingWriterId}");
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:selectedRating", "Error", e.Message);
+            }
+            finally
+            {
+                SelectedItem = null;
             }
         }
 
         private async void setRatings()
         {
-            List<Rating> ratingLst = await RunTaskWhileLoading(FireStoreHelper.GetRatings(Id));
-            ratingLst.OrderBy(rating => rating.TimeAdded);
-            Collection = new ObservableCollection<Rating>(ratingLst);
-            SearchCollection = new ObservableCollection<Rating>(Collection);
-            if (IsMyRatings)
+            try
             {
-                AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst);
+                List<Rating> ratingLst = await RunTaskWhileLoading(FireStoreHelper.GetRatings(Id));
+                ratingLst.OrderBy(rating => rating.TimeAdded);
+                Collection = new ObservableCollection<Rating>(ratingLst);
+                SearchCollection = new ObservableCollection<Rating>(Collection);
+                if (IsMyRatings)
+                {
+                    AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst);
+                }
+
+                IsVisibleViewList = Collection.Count > 0;
             }
-            
-            IsVisibleViewList = Collection.Count > 0;
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:setRatings", "Error", e.Message);
+            }
         }
 
         #endregion

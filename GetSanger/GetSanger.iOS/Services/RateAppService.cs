@@ -18,7 +18,7 @@ namespace GetSanger.iOS.Services
                 SKStoreReviewController.RequestReview();
             else
             {
-                var storeUrl = "itms-apps://itunes.apple.com/app/YourAppId";
+                var storeUrl = "itms-apps://itunes.apple.com/app/UF7B6CCLDH";
                 var url = storeUrl + "?action=write-review";
 
                 try

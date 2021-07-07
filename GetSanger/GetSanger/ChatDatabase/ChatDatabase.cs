@@ -17,12 +17,13 @@ namespace GetSanger.ChatDatabase
         #endregion
 
         #region Instance
-        public static readonly AsyncLazy<ChatDatabase> Instance = new AsyncLazy<ChatDatabase>(async () => {
-            ChatDatabase db = new ChatDatabase();
-            await db.CreateTablesAsnyc();
-            await m_Connection.EnableWriteAheadLoggingAsync();
-            return db;
-        });
+        public static readonly AsyncLazy<ChatDatabase> Instance = new AsyncLazy<ChatDatabase>(
+                                                                                  async () => {
+                                                                                                ChatDatabase db = new ChatDatabase();
+                                                                                                await db.CreateTablesAsnyc();
+                                                                                                await m_Connection.EnableWriteAheadLoggingAsync();
+                                                                                                return db;
+                                                                                  });
         #endregion
 
         #region Constructor
@@ -40,12 +41,13 @@ namespace GetSanger.ChatDatabase
         }
 
         #region UsersTable
-        public async Task<ChatUser> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null)
+        public async Task<ChatUser> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null, string i_CreatedById = null)
         {
             ChatUser newUser = new ChatUser
             {
                 UserId = i_UserId,
-                LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now 
+                LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now,
+                UserCreatedById = i_CreatedById ?? AuthHelper.GetLoggedInUserId()
             };
 
             return (await m_Connection.InsertAsync(newUser) == 1) ? newUser : null;
@@ -53,7 +55,7 @@ namespace GetSanger.ChatDatabase
 
         public async Task<int> DeleteUserAsync(string i_UserId)
         {
-            ChatUser toDelete = await m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_UserId)).FirstAsync();
+            ChatUser toDelete = await m_Connection.Table<ChatUser>()?.Where(user => user.UserId.Equals(i_UserId)).FirstAsync();
             if(toDelete != null)
             {
                 return await m_Connection.DeleteAsync(toDelete);
@@ -69,14 +71,20 @@ namespace GetSanger.ChatDatabase
             return m_Connection.UpdateAsync(i_ToUpdate);
         }
 
-        public Task<ChatUser> GetUserAsync(string i_Id)
+        public Task<ChatUser> GetUserAsync(string i_Id, string i_CreatedById = null)
         {
-            return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id)).FirstOrDefaultAsync();
+            string currentId = i_CreatedById ?? AuthHelper.GetLoggedInUserId();
+            return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id) &&
+                                                                user.UserCreatedById != null &&
+                                                                user.UserCreatedById.Equals(currentId)).FirstOrDefaultAsync();
         }
 
-        public Task<List<ChatUser>> GetAllUsersAsync()
+        public async Task<List<ChatUser>> GetAllUsersAsync()
         {
-            return m_Connection.Table<ChatUser>().ToListAsync();
+            List<ChatUser> users = await m_Connection.Table<ChatUser>().ToListAsync();
+            return users?.Where(user => user != null &&
+                                        user.UserCreatedById != null &&
+                                        user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
         }
 
         #endregion
@@ -86,29 +94,32 @@ namespace GetSanger.ChatDatabase
         public Task<List<Message>> GetMessagesAsync(string i_UserToChatId)
         {
             string i_MyId = AppManager.Instance.ConnectedUser.UserId;
-            return m_Connection.Table<Message>().Where(item => (item.ToId.Equals(i_MyId) && item.FromId.Equals(i_UserToChatId)) 
-                                                               || (item.ToId.Equals(i_UserToChatId) && item.FromId.Equals(i_MyId))).ToListAsync();
+            return m_Connection.Table<Message>()?.Where(item => (item.ToId.Equals(i_MyId) && item.FromId.Equals(i_UserToChatId)) ||
+                                                                (item.ToId.Equals(i_UserToChatId) && item.FromId.Equals(i_MyId))).ToListAsync();
         }
 
-        public async Task<int> AddMessageAsync(Message i_Message, string i_ChatId) // chat id is most of the time the userTo id
+        public async Task<int> AddMessageAsync(Message i_Message, string i_ChatId, string i_CreatedById = null) // chat id is most of the time the userTo id
         {
             ChatUser user = null;
+            int retVal = 0;
             if (i_ChatId != null)
             {
-                user = await GetUserAsync(i_ChatId);
-                user.LastMessage = i_Message.TimeSent;
+                user = await GetUserAsync(i_ChatId, i_CreatedById);
+                if (user == null)
+                {
+                    user = await AddUserAsync(i_ChatId, i_Message.TimeSent, i_CreatedById ?? AuthHelper.GetLoggedInUserId());
+                }
+                else
+                {
+                    user.LastMessage = i_Message.TimeSent;
+                    retVal = await UpdateUserAsync(user);
+                }
             }
             else
             {
                 throw new ArgumentNullException("You must provide chat id!");
             }
 
-            if (user == null)
-            {
-                user = await AddUserAsync(i_ChatId, i_Message.TimeSent);
-            }
-
-            int retVal = await UpdateUserAsync(user);
             if(retVal == 1)
             {
                 return await m_Connection.InsertAsync(i_Message);

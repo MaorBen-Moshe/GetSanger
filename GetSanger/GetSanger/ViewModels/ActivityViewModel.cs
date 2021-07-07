@@ -1,4 +1,5 @@
 ﻿using GetSanger.Constants;
+using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
@@ -108,21 +109,28 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public override void Appearing()
+        public async override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
-            setLocationsLabels();
-            ProfileName = setProfileName();
-            IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
-            IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
-                                   AppManager.Instance.CurrentMode.Equals(AppMode.Sanger) &&
-                                   ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
-            IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
-                                   AppManager.Instance.CurrentMode.Equals(AppMode.Client);
-            MessagingCenter.Subscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage, (sender, args) =>
+            try
             {
-                IsActivatedLocationButton = args;
-            });
+                r_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
+                setLocationsLabels();
+                ProfileName = setProfileName();
+                IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
+                IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
+                                       AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger) &&
+                                       ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
+                IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
+                                       AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
+                MessagingCenter.Subscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage, (sender, args) =>
+                {
+                    IsActivatedLocationButton = args;
+                });
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivityViewModel)}:Appearing", "Error", e.Message);
+            }
         }
 
         public void Disappearing()
@@ -156,30 +164,37 @@ namespace GetSanger.ViewModels
         {
             Location = await getLocationString(ConnectedActivity.JobDetails.Location);
             JobLocation = await getLocationString(ConnectedActivity.JobDetails.JobLocation);
-            if (AppManager.Instance.CurrentMode.Equals(AppMode.Client))
+            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
             {
                 ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask the sanger to active")} Location");
             }
-            else if (AppManager.Instance.CurrentMode.Equals(AppMode.Sanger))
+            else if (AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {
                 ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger == false ? "Enable" : "Disable")} Location");
             }
 
         }
 
-        private void locationCommandHelper()
+        private async void locationCommandHelper()
         {
-            AppMode mode = AppManager.Instance.CurrentMode;
-            switch (mode)
+            try
             {
-                case AppMode.Sanger:
-                    doSanger();
-                    break;
-                case AppMode.Client:
-                    doUser();
-                    break;
-                default:
-                    throw new ArgumentException("Could not find the mode of the client!");
+                eAppMode mode = AppManager.Instance.CurrentMode;
+                switch (mode)
+                {
+                    case eAppMode.Sanger:
+                        doSanger();
+                        break;
+                    case eAppMode.Client:
+                        doUser();
+                        break;
+                    default:
+                        throw new ArgumentException("Could not find the mode of the client!");
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivityViewModel)}:locationCommandHelper", "Error", e.Message);
             }
         }
 
@@ -291,29 +306,43 @@ namespace GetSanger.ViewModels
 
         private async void profilePage()
         {
-            string user = ConnectedActivity.ClientID.Equals(AppManager.Instance.ConnectedUser.UserId) ?
-                        ConnectedActivity.SangerID :
-                       ConnectedActivity.ClientID;
+            try
+            {
+                string user = ConnectedActivity.ClientID.Equals(AppManager.Instance.ConnectedUser.UserId) ?
+                            ConnectedActivity.SangerID :
+                           ConnectedActivity.ClientID;
 
-            await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={user}");
+                await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={user}");
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivityViewModel)}:profilePage", "Error", e.Message);
+            }
         }
 
         private async void showNotes(object i_Param)
         {
-            string error = "Fail showing description in activity page";
-            bool succeeded = byte.TryParse((i_Param as string), out byte result);
-            if (succeeded)
+            try
             {
-                switch (result)
+                string error = "Fail showing description in activity page";
+                bool succeeded = byte.TryParse((i_Param as string), out byte result);
+                if (succeeded)
                 {
-                    case 0: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.JobDetails.Description, "Job Description")); break;
-                    case 1: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.JobDetails.SangerNotes, "Sanger Notes")); break;
-                    default: throw new ArgumentException(error);
+                    switch (result)
+                    {
+                        case 0: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.JobDetails.Description, "Job Description")); break;
+                        case 1: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.JobDetails.SangerNotes, "Sanger Notes")); break;
+                        default: throw new ArgumentException(error);
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException(error);
                 }
             }
-            else
+            catch (Exception e)
             {
-                throw new ArgumentException(error);
+                await e.LogAndDisplayError($"{nameof(ActivityViewModel)}:showNotes", "Error", e.Message);
             }
         }
 

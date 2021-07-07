@@ -22,7 +22,7 @@ namespace GetSanger.Views
         protected override void OnAppearing()
         {
             (BindingContext as BaseViewModel).Appearing();
-            Label label = AppManager.Instance.CurrentMode.Equals(AppMode.Client) ? ClientLabel : SangerLabel;
+            Label label = AppManager.Instance.CurrentMode.Equals(eAppMode.Client) ? ClientLabel : SangerLabel;
             label.BackgroundColor = Color.Red;
             base.OnAppearing();
         }

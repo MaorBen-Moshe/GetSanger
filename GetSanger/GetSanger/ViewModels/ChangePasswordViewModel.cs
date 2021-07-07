@@ -1,6 +1,5 @@
 ﻿using GetSanger.Extensions;
 using GetSanger.Services;
-using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Windows.Input;
@@ -81,7 +80,7 @@ namespace GetSanger.ViewModels
                     }
                     catch(Exception e)
                     {
-                        await e.LogAndDisplayError($"{nameof(ChangePasswordViewModel)}:changePassword", "Note", "Please check if you wrote the write confirm password");
+                        await e.LogAndDisplayError($"{nameof(ChangePasswordViewModel)}:changePassword", "Note", "Please check if you wrote the details correct");
                     }
                 }
                 else

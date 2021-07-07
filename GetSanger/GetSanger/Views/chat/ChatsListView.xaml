@@ -49,6 +49,7 @@
                           RowHeight="55"
                           IsVisible="{Binding IsVisibleViewList}"
                           ItemsSource="{Binding Collection}"
+                          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                           IsPullToRefreshEnabled="True"
                           IsRefreshing="{Binding IsListRefreshing}"
                           RefreshCommand = "{Binding RefreshingCommand}"

@@ -1,15 +1,9 @@
-﻿using System;
-using GetSanger.Extensions;
+﻿using GetSanger.Extensions;
 using Android.Content;
 using Android.Content.PM;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using GetSanger.Interfaces;
 using GetSanger.Droid.Services;
 using Xamarin.Forms;
-using Android.Net;
 
 [assembly: Dependency(typeof(RateAppService))]
 namespace GetSanger.Droid.Services

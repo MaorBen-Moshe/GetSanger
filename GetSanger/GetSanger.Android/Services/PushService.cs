@@ -26,7 +26,7 @@ namespace GetSanger.Droid.Services
             return token;
         }
 
-        internal async Task PushHelper(Intent intent, MainActivity invoker)
+        internal void PushHelper(Intent intent, MainActivity invoker)
         {
             if (intent.Extras != null)
             {

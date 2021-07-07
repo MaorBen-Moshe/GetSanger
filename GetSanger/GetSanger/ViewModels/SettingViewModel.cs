@@ -1,4 +1,5 @@
-﻿using GetSanger.Models;
+﻿using GetSanger.Extensions;
+using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views;
 using System;
@@ -82,60 +83,77 @@ namespace GetSanger.ViewModels
 
         private async void backButtonBehavior()
         {
-            bool isChanged = false;
-            if(m_NewCategoriesSubscribed?.Count > 0)
+            try
             {
-                isChanged = true;
-                await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray()), "Saving...");
-            }
-            if(m_NewCategoriesUnsubscribed?.Count > 0)
-            {
-                isChanged = true;
-                await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray()), "Saving...");
-            }
-            if(IsGenericNotificatons != AppManager.Instance.ConnectedUser.IsGenericNotifications)
-            {
-                isChanged = true;
-                AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
-                genericUpdateHelper();
-            }
+                bool isChanged = false;
+                r_LoadingService.ShowPopup(new LoadingPage("Saving..."));
+                if (m_NewCategoriesSubscribed?.Count > 0)
+                {
+                    isChanged = true;
+                    await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray());
+                }
+                if (m_NewCategoriesUnsubscribed?.Count > 0)
+                {
+                    isChanged = true;
+                    await r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray());
+                }
+                if (IsGenericNotificatons != AppManager.Instance.ConnectedUser.IsGenericNotifications)
+                {
+                    isChanged = true;
+                    AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
+                    genericUpdateHelper();
+                }
 
-            if (isChanged)
-            {
-                await RunTaskWhileLoading(FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser), "Saving...");
-            }
+                if (isChanged)
+                {
+                    await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                }
 
-            m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;
-            await GoBack();
+                m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;
+                r_LoadingService.HidePopup();
+                await GoBack();
+            }
+            catch(Exception e)
+            {
+                r_LoadingService.HidePopup();
+                await e.LogAndDisplayError($"{nameof(SettingViewModel)}:backButtonBehavior", "Error", e.Message);
+            }
         }
 
-        private void toggled(object i_Param)
+        private async void toggled(object i_Param)
         {
-            m_NewCategoriesSubscribed ??= new List<string>();
-            m_NewCategoriesUnsubscribed ??= new List<string>();
-            if (i_Param is CategoryCell)
+            try
             {
-                CategoryCell current = i_Param as CategoryCell;
-                if (current.Checked)
+                m_NewCategoriesSubscribed ??= new List<string>();
+                m_NewCategoriesUnsubscribed ??= new List<string>();
+                if (i_Param is CategoryCell)
                 {
-                    AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
-                    string categoryNumber = ((int)current.Category).ToString();
-                    m_NewCategoriesUnsubscribed.Remove(categoryNumber);
-                    if (m_NewCategoriesSubscribed.Contains(categoryNumber) == false)
+                    CategoryCell current = i_Param as CategoryCell;
+                    if (current.Checked)
                     {
-                        m_NewCategoriesSubscribed.Add(((int)current.Category).ToString());
+                        AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
+                        string categoryNumber = ((int)current.Category).ToString();
+                        m_NewCategoriesUnsubscribed.Remove(categoryNumber);
+                        if (m_NewCategoriesSubscribed.Contains(categoryNumber) == false)
+                        {
+                            m_NewCategoriesSubscribed.Add(((int)current.Category).ToString());
+                        }
+                    }
+                    else
+                    {
+                        AppManager.Instance.ConnectedUser.Categories.Remove(current.Category);
+                        string categoryNumber = ((int)current.Category).ToString();
+                        m_NewCategoriesSubscribed.Remove(categoryNumber);
+                        if (m_NewCategoriesUnsubscribed.Contains(categoryNumber) == false)
+                        {
+                            m_NewCategoriesUnsubscribed.Add(((int)current.Category).ToString());
+                        }
                     }
                 }
-                else
-                {
-                    AppManager.Instance.ConnectedUser.Categories.Remove(current.Category);
-                    string categoryNumber = ((int)current.Category).ToString();
-                    m_NewCategoriesSubscribed.Remove(categoryNumber);
-                    if (m_NewCategoriesUnsubscribed.Contains(categoryNumber) == false)
-                    {
-                        m_NewCategoriesUnsubscribed.Add(((int)current.Category).ToString());
-                    }
-                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(SettingViewModel)}:toggled", "Error", e.Message);
             }
         }
 
@@ -143,11 +161,11 @@ namespace GetSanger.ViewModels
         {
             if (IsGenericNotificatons)
             {
-                await RunTaskWhileLoading(r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic), "Saving...");
+                await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic);
             }
             else
             {
-                await RunTaskWhileLoading(r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic), "Saving...");
+                await r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic);
             }
         }
 

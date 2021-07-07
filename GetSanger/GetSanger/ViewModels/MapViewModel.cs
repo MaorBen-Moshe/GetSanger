@@ -158,14 +158,16 @@ namespace GetSanger.ViewModels
 
         private async void searchCom(object i_Search)
         {
-            if(i_Search is string)
+            try
             {
-                Position position;
-                List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(i_Search as string));
-                if (positionList.Count != 0)
+                if (i_Search is string)
                 {
-                    position = positionList.FirstOrDefault<Position>();
-                    Pins = new ObservableCollection<Pin>{
+                    Position position;
+                    List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(i_Search as string));
+                    if (positionList.Count != 0)
+                    {
+                        position = positionList.FirstOrDefault<Position>();
+                        Pins = new ObservableCollection<Pin>{
                         Pins[0],
                         new Pin
                         {
@@ -175,8 +177,13 @@ namespace GetSanger.ViewModels
                         }
                     };
 
-                    Span = new MapSpan(position, 0.01, 0.01);
+                        Span = new MapSpan(position, 0.01, 0.01);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(MapViewModel)}:searchCom", "Error", e.Message);
             }
         }
 
@@ -193,47 +200,61 @@ namespace GetSanger.ViewModels
         // handler to handle the client asking for location from sanger
         private async void handleTrip(object sender, System.Timers.ElapsedEventArgs e)
         {
-            User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(SangerTripId));
-            Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
-            Span = new MapSpan(position, 0.01, 0.01);
-            Pins.Clear();
-            Pins.Add(new Pin
+            try
             {
-                Type = PinType.Generic,
-                Position = Span.Center,
-                Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg")
-            });
-
-            // when sanger is near to us we want to stop asking for location, 0.3 kilometers
-            Location location = await r_LocationServices.GetCurrentLocation();
-            if(location != null)
-            {
-                if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
+                User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(SangerTripId));
+                Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
+                Span = new MapSpan(position, 0.01, 0.01);
+                Pins.Clear();
+                Pins.Add(new Pin
                 {
-                    await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
-                    r_LocationServices.LeaveTripThread(handleTrip);
-                    MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
-                    await GoBack();
+                    Type = PinType.Generic,
+                    Position = Span.Center,
+                    Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg")
+                });
+
+                // when sanger is near to us we want to stop asking for location, 0.3 kilometers
+                Location location = await r_LocationServices.GetCurrentLocation();
+                if (location != null)
+                {
+                    if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
+                    {
+                        await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
+                        r_LocationServices.LeaveTripThread(handleTrip);
+                        MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
+                        await GoBack();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                await ex.LogAndDisplayError($"{nameof(MapViewModel)}:handleTrip", "Error", ex.Message);
             }
         }
 
         private async void locationPicked(Position i_Position)
         {
-            Placemark placemark = await r_LocationServices.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
-            string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
-            await r_PageService.DisplayAlert("Location Chosen",
-                                             location,
-                                             "Yes",
-                                             "No",
-                                             async (answer) =>
-                                             {
-                                                 if (answer)
+            try
+            {
+                Placemark placemark = await r_LocationServices.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
+                string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
+                await r_PageService.DisplayAlert("Location Chosen",
+                                                 location,
+                                                 "Yes",
+                                                 "No",
+                                                 async (answer) =>
                                                  {
-                                                     MessagingCenter.Send(this, Constants.Constants.LocationMessage, placemark);
-                                                     await GoBack();
-                                                 }
-                                             });
+                                                     if (answer)
+                                                     {
+                                                         MessagingCenter.Send(this, Constants.Constants.LocationMessage, placemark);
+                                                         await GoBack();
+                                                     }
+                                                 });
+            }
+            catch (Exception ex)
+            {
+                await ex.LogAndDisplayError($"{nameof(MapViewModel)}:locationPicked", "Error", ex.Message);
+            }
         }
 
         private async void createMapSpan()
@@ -261,6 +282,10 @@ namespace GetSanger.ViewModels
             catch (PermissionException e)
             {
                 await e.LogAndDisplayError($"{nameof(MapViewModel)}:createMapSpan", "Error", "Please allow location services");
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(MapViewModel)}:createMapSpan", "Error", e.Message);
             }
         }
         #endregion

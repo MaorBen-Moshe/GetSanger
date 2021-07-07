@@ -2,7 +2,6 @@
 using GetSanger.Services;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -49,7 +48,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser(AppMode.Client));
+                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser(eAppMode.Client));
                 if (!verified)
                 {
                     await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
@@ -69,7 +68,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser(AppMode.Sanger));
+                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser(eAppMode.Sanger));
                 if (!verified)
                 {
                     await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");

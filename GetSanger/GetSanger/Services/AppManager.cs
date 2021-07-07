@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public enum AppMode { Client, Sanger };
+    public enum eAppMode { Client, Sanger };
 
     public sealed class AppManager
     {
@@ -21,7 +21,7 @@ namespace GetSanger.Services
 
         public static AppManager Instance { get => Singleton<AppManager>.Instance; }
 
-        public AppMode CurrentMode { get; set; }
+        public eAppMode CurrentMode { get; set; }
 
         public User ConnectedUser
         {
@@ -39,7 +39,7 @@ namespace GetSanger.Services
                     m_User = value;
                     if (m_User?.LastUserMode != null)
                     {
-                        CurrentMode = (AppMode)m_User.LastUserMode;
+                        CurrentMode = (eAppMode)m_User.LastUserMode;
                     }
                 }
             }
@@ -66,25 +66,25 @@ namespace GetSanger.Services
             Refresh_Event?.Invoke();
         }
 
-        public Shell GetCurrentShell(AppMode? i_Mode = null)
+        public Shell GetCurrentShell(eAppMode? i_Mode = null)
         {
-            AppMode mode = i_Mode != null ? (AppMode)i_Mode : CurrentMode;
+            eAppMode mode = i_Mode != null ? (eAppMode)i_Mode : CurrentMode;
             updateMode(i_Mode);
             Shell toRet = mode switch
             {
-                AppMode.Client => m_UserShell,
-                AppMode.Sanger => m_SangerShell,
+                eAppMode.Client => m_UserShell,
+                eAppMode.Sanger => m_SangerShell,
                 _ => null,
             };
 
             return toRet;
         }
 
-        private async void updateMode(AppMode? i_Mode)
+        private async void updateMode(eAppMode? i_Mode)
         {
             if(i_Mode != null)
             {
-                AppMode mode = (AppMode)i_Mode;
+                eAppMode mode = (eAppMode)i_Mode;
                 CurrentMode = mode;
                 ConnectedUser.LastUserMode = mode;
                 await FireStoreHelper.UpdateUser(ConnectedUser);

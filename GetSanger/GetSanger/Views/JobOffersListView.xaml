@@ -45,13 +45,14 @@
         <ScrollView>
             <StackLayout>
                 <ListView x:Name="m_ListView" 
-                      ItemsSource="{Binding Collection}"
-                      IsRefreshing="{Binding IsListRefreshing}"
-                      IsPullToRefreshEnabled="True" 
-                      IsVisible="{Binding IsVisibleViewList}"
-                      RefreshCommand="{Binding RefreshingCommand}"
-                      SeparatorVisibility="None"
-                      HasUnevenRows="true">
+                          ItemsSource="{Binding Collection}"
+                          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                          IsRefreshing="{Binding IsListRefreshing}"
+                          IsPullToRefreshEnabled="True" 
+                          IsVisible="{Binding IsVisibleViewList}"
+                          RefreshCommand="{Binding RefreshingCommand}"
+                          SeparatorVisibility="None"
+                          HasUnevenRows="true">
                     <ListView.Behaviors>
                         <behaviors:EventToCommandBehavior Command="{Binding SelectedJobOfferCommand}" 
                                                           EventName="ItemSelected"
