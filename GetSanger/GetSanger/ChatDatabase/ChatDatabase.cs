@@ -96,22 +96,25 @@ namespace GetSanger.ChatDatabase
         public async Task<int> AddMessageAsync(Message i_Message, string i_ChatId, string i_CreatedById = null) // chat id is most of the time the userTo id
         {
             ChatUser user = null;
+            int retVal = 0;
             if (i_ChatId != null)
             {
                 user = await GetUserAsync(i_ChatId);
-                user.LastMessage = i_Message.TimeSent;
+                if (user == null)
+                {
+                    user = await AddUserAsync(i_ChatId, i_Message.TimeSent, i_CreatedById ?? AuthHelper.GetLoggedInUserId());
+                }
+                else
+                {
+                    user.LastMessage = i_Message.TimeSent;
+                    retVal = await UpdateUserAsync(user);
+                }
             }
             else
             {
                 throw new ArgumentNullException("You must provide chat id!");
             }
 
-            if (user == null)
-            {
-                user = await AddUserAsync(i_ChatId, i_Message.TimeSent, i_CreatedById ?? AuthHelper.GetLoggedInUserId());
-            }
-
-            int retVal = await UpdateUserAsync(user);
             if(retVal == 1)
             {
                 return await m_Connection.InsertAsync(i_Message);
