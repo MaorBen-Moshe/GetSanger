@@ -71,15 +71,20 @@ namespace GetSanger.ChatDatabase
             return m_Connection.UpdateAsync(i_ToUpdate);
         }
 
-        public Task<ChatUser> GetUserAsync(string i_Id)
+        public Task<ChatUser> GetUserAsync(string i_Id, string i_CreatedById = null)
         {
-            return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id)).FirstOrDefaultAsync();
+            string currentId = i_CreatedById ?? AuthHelper.GetLoggedInUserId();
+            return m_Connection.Table<ChatUser>().Where(user => user.UserId.Equals(i_Id) &&
+                                                                user.UserCreatedById != null &&
+                                                                user.UserCreatedById.Equals(currentId)).FirstOrDefaultAsync();
         }
 
         public async Task<List<ChatUser>> GetAllUsersAsync()
         {
             List<ChatUser> users = await m_Connection.Table<ChatUser>().ToListAsync();
-            return users?.Where(user => user != null && user.UserCreatedById != null && user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
+            return users?.Where(user => user != null &&
+                                        user.UserCreatedById != null &&
+                                        user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
         }
 
         #endregion
@@ -89,8 +94,8 @@ namespace GetSanger.ChatDatabase
         public Task<List<Message>> GetMessagesAsync(string i_UserToChatId)
         {
             string i_MyId = AppManager.Instance.ConnectedUser.UserId;
-            return m_Connection.Table<Message>()?.Where(item => (item.ToId.Equals(i_MyId) && item.FromId.Equals(i_UserToChatId)) 
-                                                               || (item.ToId.Equals(i_UserToChatId) && item.FromId.Equals(i_MyId))).ToListAsync();
+            return m_Connection.Table<Message>()?.Where(item => (item.ToId.Equals(i_MyId) && item.FromId.Equals(i_UserToChatId)) ||
+                                                                (item.ToId.Equals(i_UserToChatId) && item.FromId.Equals(i_MyId))).ToListAsync();
         }
 
         public async Task<int> AddMessageAsync(Message i_Message, string i_ChatId, string i_CreatedById = null) // chat id is most of the time the userTo id
@@ -99,7 +104,7 @@ namespace GetSanger.ChatDatabase
             int retVal = 0;
             if (i_ChatId != null)
             {
-                user = await GetUserAsync(i_ChatId);
+                user = await GetUserAsync(i_ChatId, i_CreatedById);
                 if (user == null)
                 {
                     user = await AddUserAsync(i_ChatId, i_Message.TimeSent, i_CreatedById ?? AuthHelper.GetLoggedInUserId());
