@@ -186,7 +186,7 @@ namespace GetSanger.Services
             {
                 if (vm.UserToChat.UserId == senderId)
                 {
-                    vm.RefreshMessagesCommand.Execute(null);
+                    vm.HandleMessageReceivedCommand.Execute(message);
                 }
                 else
                 {

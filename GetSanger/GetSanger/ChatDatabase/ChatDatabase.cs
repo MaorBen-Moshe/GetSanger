@@ -108,6 +108,10 @@ namespace GetSanger.ChatDatabase
                 if (user == null)
                 {
                     user = await AddUserAsync(i_ChatId, i_Message.TimeSent, i_CreatedById ?? AuthHelper.GetLoggedInUserId());
+                    if (user != null)
+                    {
+                        retVal = 1;
+                    }
                 }
                 else
                 {

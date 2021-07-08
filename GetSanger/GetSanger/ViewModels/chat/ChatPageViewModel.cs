@@ -21,6 +21,8 @@ namespace GetSanger.ViewModels.chat
         private User m_UserToChat;
         private bool m_ShowScrollTap;
         private bool m_LastMessageVisible;
+        private int m_PendingMessageCount;
+        private Queue<Message> m_DelayedMessages;
         private ObservableCollection<Message> m_MessagesSource;
         private ImageSource m_UserPicture;
         #endregion
@@ -64,19 +66,27 @@ namespace GetSanger.ViewModels.chat
             set => SetStructProperty(ref m_LastMessageVisible, value);
         }
 
-        public ChatDatabase.ChatDatabase DB { get; set; }
-
         public ObservableCollection<Message> MessagesSource
         {
             get => m_MessagesSource;
             set => SetClassProperty(ref m_MessagesSource, value);
         }
 
-        public int PendingMessageCount { get; set; }
+        public int PendingMessageCount
+        {
+            get => m_PendingMessageCount;
+            set => SetStructProperty(ref m_PendingMessageCount, value);
+        }
 
         public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
 
-        public Queue<Message> DelayedMessages { get; set; }
+        public Queue<Message> DelayedMessages
+        {
+            get => m_DelayedMessages;
+            set => SetClassProperty(ref m_DelayedMessages, value);
+        }
+
+        private ChatDatabase.ChatDatabase DB { get; set; }
         #endregion
 
         #region Commands
@@ -86,7 +96,7 @@ namespace GetSanger.ViewModels.chat
         public ICommand DeleteMessageCommand { get; set; }
         public ICommand SendWhatsappCommand { get; set; }
         public ICommand CallCommand { get; set; }
-        public ICommand RefreshMessagesCommand { get; set; }
+        public ICommand HandleMessageReceivedCommand { get; set; }
         public ICommand ClickProfileBarCommand { get; set; }
         #endregion
 
@@ -107,7 +117,6 @@ namespace GetSanger.ViewModels.chat
                 DB = await ChatDatabase.ChatDatabase.Instance;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 setMessages();
-                sendUnsentMessages();
                 ShowScrollTap = false;
                 DelayedMessages = new Queue<Message>();
                 PendingMessageCount = 0;
@@ -133,20 +142,31 @@ namespace GetSanger.ViewModels.chat
             DeleteMessageCommand = new Command(deleteMessage);
             SendWhatsappCommand = new Command(sendWhatsapp);
             CallCommand = new Command(call);
-            RefreshMessagesCommand = new Command(refreshMessages);
+            HandleMessageReceivedCommand = new Command(handleMessageReceived);
             ClickProfileBarCommand = new Command(clickProfileBar);
         }
 
-        private async void refreshMessages(object i_Param)
+        private async void handleMessageReceived(object i_Param)
         {
             try
             {
-                setMessages();
+                if(i_Param is Message message)
+                {
+                    if (LastMessageVisible)
+                    {
+                        MessagesSource.Insert(0, message);
+                    }
+                    else
+                    {
+                        DelayedMessages.Enqueue(message);
+                        PendingMessageCount++;
+                    }
+                }
             }
             catch (Exception e)
             {
                 await GoBack();
-                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:refreshMessages", "Error", e.Message);
+                await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:handleMessageReceived", "Error", e.Message);
             }
         }
 
@@ -154,6 +174,7 @@ namespace GetSanger.ViewModels.chat
         {
             List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>(messages.OrderByDescending(item => item.MessageId));
+            sendUnsentMessages();
         }
 
         private async void sendMessage(object i_Param)
@@ -197,13 +218,16 @@ namespace GetSanger.ViewModels.chat
             {
                 if (Connectivity.NetworkAccess == NetworkAccess.Internet) // there is an internet and there are messages not sent
                 {
-                    foreach (Message msg in MessagesSource.Reverse())
+                    if(MessagesSource != null)
                     {
-                        if (msg.MessageSent == false)
+                        foreach (Message msg in MessagesSource)
                         {
-                            r_PushService.SendChatMessage(msg);
-                            await DB.UpdateMessageAsync(msg);
-                            msg.MessageSent = true;
+                            if (msg.MessageSent == false)
+                            {
+                                r_PushService.SendChatMessage(msg);
+                                await DB.UpdateMessageAsync(msg);
+                                msg.MessageSent = true;
+                            }
                         }
                     }
                 }
@@ -244,7 +268,7 @@ namespace GetSanger.ViewModels.chat
             {
                 Message message = i_Param as Message;
                 var idx = MessagesSource.IndexOf(message);
-                if (idx <= 1)
+                if (idx <= 6)
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -271,7 +295,7 @@ namespace GetSanger.ViewModels.chat
             {
                 Message message = i_Param as Message;
                 var idx = MessagesSource.IndexOf(message);
-                if (idx >= 1)
+                if (idx >= 6)
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {

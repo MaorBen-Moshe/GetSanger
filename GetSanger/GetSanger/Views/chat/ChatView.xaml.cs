@@ -38,6 +38,7 @@ namespace GetSanger.Views.chat
                         {
                             vm.MessagesSource.Insert(0, vm.DelayedMessages.Dequeue());
                         }
+
                         vm.ShowScrollTap = false;
                         vm.LastMessageVisible = true;
                         vm.PendingMessageCount = 0;
