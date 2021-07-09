@@ -91,20 +91,28 @@ namespace GetSanger.ViewModels
 
         private async void initialPage()
         {
-            CurrentUser = null;
-            if (AppManager.Instance.ConnectedUser == null)
+            try
             {
-                try
+                CurrentUser = null;
+                if (AppManager.Instance.ConnectedUser == null)
                 {
-                    AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
-                    CurrentUser = AppManager.Instance.ConnectedUser;
-                    UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
+                    try
+                    {
+                        AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
+                    }
+                    catch (Exception e)
+                    {
+                        await e.LogAndDisplayError($"{nameof(AccountViewModel)}:initialPage", "Error", "Something went wrong.\nPlease contact us!");
+                        Application.Current.MainPage = new AuthShell();
+                    }
                 }
-                catch(Exception e)
-                {
-                    await e.LogAndDisplayError($"{nameof(AccountViewModel)}:initialPage", "Error", "Something went wrong.\nPlease contact us!");
-                    Application.Current.MainPage = new AuthShell();
-                }
+
+                CurrentUser = AppManager.Instance.ConnectedUser;
+                UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser?.ProfilePictureUri);
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(AccountViewModel)}:initialPage", "Error", e.Message);
             }
         }
 
@@ -116,6 +124,7 @@ namespace GetSanger.ViewModels
                 // do logout
                 r_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
                 AuthHelper.SignOut();
+                AppManager.Instance.RefreshAppManager();
                 Application.Current.MainPage = new AuthShell();
             }
             catch(Exception e)

@@ -15,7 +15,7 @@ namespace GetSanger.Services
         private UserShell m_UserShell;
         private SangerShell m_SangerShell;
         private User m_User;
-        private object m_UserLock = new object();
+        private readonly object m_UserLock = new object();
 
         public event Action Refresh_Event;
 
