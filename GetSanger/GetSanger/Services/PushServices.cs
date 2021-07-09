@@ -133,7 +133,7 @@ namespace GetSanger.Services
                         await handleMessage(json);
                         break;
                     case nameof(Rating):
-                        await handleRating(i_Title, i_Body, json);
+                        handleRating(i_Title, i_Body, json);
                         break;
                     case "MessageInfo":
                         await handleMessageInfo(i_Title, i_Body, json);
@@ -144,10 +144,9 @@ namespace GetSanger.Services
             }
         }
 
-        private static async Task handleRating(string i_Title, string i_Body, string i_Json)
+        private static void handleRating(string i_Title, string i_Body, string i_Json)
         {
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            bool choice = true;
             string message = i_Body + "\nGo to profile page to view your ratings?";
 
             Page currentPage = Shell.Current.CurrentPage;
@@ -158,16 +157,8 @@ namespace GetSanger.Services
             }
             else
             {
-                if (i_Title != null)
-                {
-                    choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
-                }
-
-                if (choice)
-                {
-                    await navigation.NavigateTo(
-                        $"//account/{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
-                }
+                string route = $"//account/{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}";
+                movePageHelper(route, i_Title, message);
             }
         }
 
@@ -191,22 +182,22 @@ namespace GetSanger.Services
                 else
                 {
                     string route = $"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
-                    messageHelperInfo(route, i_Title, txt);
+                    movePageHelper(route, i_Title, txt);
                 }
             }
             else if(currentPage is { BindingContext: ChatListViewModel clVm })
             {
                 string route = $"{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
-                messageHelperInfo(route, i_Title, txt);
+                movePageHelper(route, i_Title, txt);
             }
             else
             {
                 string route = $"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
-                messageHelperInfo(route, i_Title, txt);
+                movePageHelper(route, i_Title, txt);
             }
         }
 
-        private async static void messageHelperInfo(string route, string title, string txt)
+        private async static void movePageHelper(string route, string title, string txt)
         {
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             PageServices pageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
@@ -236,7 +227,6 @@ namespace GetSanger.Services
 
         private static async Task handleActivity(string i_Title, string i_Body, string i_Json)
         {
-            bool choice = true;
             string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
@@ -248,39 +238,60 @@ namespace GetSanger.Services
             }
             else
             {
-                if (i_Title != null)
-                {
-                    choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
-                }
-
-                if (choice)
+                Action action = new Action(async () =>
                 {
                     eAppMode modeToSet = activity.ClientID == AppManager.Instance.ConnectedUser.UserId ? eAppMode.Client : eAppMode.Sanger;
                     Application.Current.MainPage = AppManager.Instance.GetCurrentShell(modeToSet);
 
                     string activityJson = ObjectJsonSerializer.SerializeForPage(activity);
                     await navigation.NavigateTo($"//activities/{ShellRoutes.Activity}?activity={activityJson}");
+                });
+
+                if (i_Title != null)
+                {
+                    PageServices pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+                    await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) => 
+                    {
+                        if (choice)
+                        {
+                            action.Invoke();
+                        }
+                    });
+                }
+                else
+                {
+                    action.Invoke();
                 }
             }
         }
 
         private static async Task handleJobOffer(string i_Title, string i_Body, string i_Json)
         {
-            bool choice = true;
             string message = i_Body + "\nDo you want to navigate the the job offer page?";
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
 
-            if (i_Title != null)
-            {
-                choice = await Application.Current.MainPage.DisplayAlert(i_Title, message, "Yes", "No");
-            }
-
-            if (choice)
+            Action action = new Action(async () =>
             {
                 Application.Current.MainPage = AppManager.Instance.GetCurrentShell(eAppMode.Sanger);
                 string jobJson = ObjectJsonSerializer.SerializeForPage(job);
                 await navigation.NavigateTo($"//jobOffers/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}");
+            });
+
+            if (i_Title != null)
+            {
+                PageServices pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+                await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) => 
+                {
+                    if (choice)
+                    {
+                        action.Invoke();
+                    }
+                });
+            }
+            else
+            {
+                action.Invoke();
             }
         }
 
