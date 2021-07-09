@@ -88,7 +88,7 @@
                                  BackgroundColor="White"   
                                  IsVisible="{Binding ShowScrollTap,Mode=TwoWay}">
                 <StackLayout Spacing="3">
-                    <Label Text="{Binding PendingMessageCount}"
+                    <Label Text="{Binding PendingMessageCount, Mode=TwoWay}"
                               HorizontalOptions="CenterAndExpand"
                               IsVisible="{Binding PendingMessageCountVisible}"
                               VerticalTextAlignment="Center"
@@ -103,17 +103,10 @@
                     <TapGestureRecognizer Tapped="ScrollTap"/>
                 </Frame.GestureRecognizers>
             </Frame>
-
-            <Frame Grid.Row="1"
-                   IsClippedToBounds="True"
-                   Margin="10,0,10,10"
-                   Padding="10"
-                   CornerRadius="30"
-                   BackgroundColor="WhiteSmoke"
-                   BorderColor="Black">
-                <chat:ChatInputBarView x:Name="chatInput"/>    
-            </Frame>
             
+            <chat:ChatInputBarView Grid.Row="1"
+                                   Margin="0,0,10,0"
+                                   x:Name="chatInput"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

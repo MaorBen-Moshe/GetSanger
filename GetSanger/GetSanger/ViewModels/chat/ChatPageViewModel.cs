@@ -21,6 +21,7 @@ namespace GetSanger.ViewModels.chat
         private User m_UserToChat;
         private bool m_ShowScrollTap;
         private bool m_LastMessageVisible;
+        private bool m_PendingMessageCountVisible;
         private int m_PendingMessageCount;
         private Queue<Message> m_DelayedMessages;
         private ObservableCollection<Message> m_MessagesSource;
@@ -78,7 +79,11 @@ namespace GetSanger.ViewModels.chat
             set => SetStructProperty(ref m_PendingMessageCount, value);
         }
 
-        public bool PendingMessageCountVisible { get { return PendingMessageCount > 0; } }
+        public bool PendingMessageCountVisible
+        {
+            get => m_PendingMessageCountVisible;
+            set => SetStructProperty(ref m_PendingMessageCountVisible, value);
+        }
 
         public Queue<Message> DelayedMessages
         {
@@ -120,6 +125,7 @@ namespace GetSanger.ViewModels.chat
                 ShowScrollTap = false;
                 DelayedMessages = new Queue<Message>();
                 PendingMessageCount = 0;
+                PendingMessageCountVisible = false;
                 LastMessageVisible = true;
             }
             catch(Exception e)
@@ -160,6 +166,7 @@ namespace GetSanger.ViewModels.chat
                     {
                         DelayedMessages.Enqueue(message);
                         PendingMessageCount++;
+                        PendingMessageCountVisible = true;
                     }
                 }
             }
@@ -280,6 +287,7 @@ namespace GetSanger.ViewModels.chat
                         ShowScrollTap = false;
                         LastMessageVisible = true;
                         PendingMessageCount = 0;
+                        PendingMessageCountVisible = false;
                     });
                 }
             }

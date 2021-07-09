@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.chat.ChatInputBarView">
-  <ContentView.Content>
+    <ContentView.Content>
         <Grid RowSpacing="0" 
-           ColumnSpacing="0">
+              ColumnSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -13,29 +13,39 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <controls:ExtendedEditorControl x:Name="chatTextInput" 
-                 Text="{Binding TextToSend}" 
-                 Margin="1"  
-                 TextColor="Black" 
-                 Keyboard="Chat"  
-                 HorizontalOptions="FillAndExpand" 
-                 PlaceholderColor="LightGray"
-                 Placeholder="Type your message here..."
-                 Grid.Row="0" 
-                 Grid.Column="0"
-                 IsExpandable="True"
-                 Completed="Handle_Completed"/>
+            <Frame Grid.Row="0" 
+                   Grid.Column="0"
+                   IsClippedToBounds="True"
+                   Margin="10,0,10,10"
+                   Padding="10,5"
+                   CornerRadius="30"
+                   BackgroundColor="WhiteSmoke"
+                   BorderColor="Black">
+                <controls:ExtendedEditorControl x:Name="chatTextInput" 
+                          Text="{Binding TextToSend}" 
+                          Margin="1"  
+                          TextColor="Black" 
+                          Keyboard="Chat"  
+                          HorizontalOptions="FillAndExpand" 
+                          PlaceholderColor="LightGray"
+                          Placeholder="Type your message here..."
+                          Grid.Row="0" 
+                          Grid.Column="0"
+                          IsExpandable="True"
+                          Completed="Handle_Completed"/>
+            </Frame>
             <Label Text="Send"
-               Grid.Row="0"
-               Grid.Column="1"
-               BackgroundColor="Transparent"
-               VerticalTextAlignment="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer
-                      Command="{Binding SendMessageCommand}"
-                      Tapped="Handle_Completed"/>
-                </Label.GestureRecognizers>
-            </Label>
+                   Grid.Row="0"
+                   Grid.Column="1"
+                   BackgroundColor="Transparent"
+                   VerticalTextAlignment="Center">
+                  <Label.GestureRecognizers>
+                      <TapGestureRecognizer
+                                            Command="{Binding SendMessageCommand}"
+                                            Tapped="Handle_Completed"/>
+                  </Label.GestureRecognizers>
+            </Label> 
+            
         </Grid>
     </ContentView.Content>
 </ContentView>

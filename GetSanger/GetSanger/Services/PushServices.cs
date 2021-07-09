@@ -173,11 +173,11 @@ namespace GetSanger.Services
 
         private static async Task handleMessageInfo(string i_Title, string i_Body, string i_Json)
         {
-            bool choice = true;
             string txt = i_Body + "\nMove to chat page?";
 
             NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
+            message.MessageSent = true;
             string senderId = message.FromId;
             User sender = await FireStoreHelper.GetUser(senderId);
 
@@ -190,28 +190,39 @@ namespace GetSanger.Services
                 }
                 else
                 {
-                    if (i_Title != null)
-                    {
-                        choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
-                    }
-
-                    if (choice)
-                    {
-                        await navigation.NavigateTo($"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}");
-                    }
+                    string route = $"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
+                    messageHelperInfo(route, i_Title, txt);
                 }
+            }
+            else if(currentPage is { BindingContext: ChatListViewModel clVm })
+            {
+                string route = $"{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
+                messageHelperInfo(route, i_Title, txt);
             }
             else
             {
-                if (i_Title != null)
-                {
-                    choice = await Application.Current.MainPage.DisplayAlert(i_Title, txt, "Yes", "No");
-                }
+                string route = $"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
+                messageHelperInfo(route, i_Title, txt);
+            }
+        }
 
-                if (choice)
+        private async static void messageHelperInfo(string route, string title, string txt)
+        {
+            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            PageServices pageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+            if (title != null)
+            {
+                await pageService.DisplayAlert(title, txt, "Yes", "No", async (choice) =>
                 {
-                    await navigation.NavigateTo($"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}");
-                }
+                    if (choice)
+                    {
+                        await navigation.NavigateTo(route);
+                    }
+                });
+            }
+            else
+            {
+                await navigation.NavigateTo(route);
             }
         }
 
