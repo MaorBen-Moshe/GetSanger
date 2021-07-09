@@ -232,8 +232,8 @@ namespace GetSanger.ViewModels.chat
                             if (msg.MessageSent == false)
                             {
                                 r_PushService.SendChatMessage(msg);
-                                await DB.UpdateMessageAsync(msg);
                                 msg.MessageSent = true;
+                                await DB.UpdateMessageAsync(msg);
                             }
                         }
                     }

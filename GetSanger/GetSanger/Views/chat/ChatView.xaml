@@ -90,12 +90,13 @@
                 <StackLayout Spacing="3">
                     <Label Text="{Binding PendingMessageCount, Mode=TwoWay}"
                               HorizontalOptions="CenterAndExpand"
+                           FontSize="10"
                               IsVisible="{Binding PendingMessageCountVisible}"
                               VerticalTextAlignment="Center"
                               TextColor="Red"/>
                     <Image Source="ic_scrolldown"
-                               WidthRequest="30"
-                               HeightRequest="30"
+                               WidthRequest="25"
+                               HeightRequest="25"
                                VerticalOptions="CenterAndExpand"/>
 
                 </StackLayout>
