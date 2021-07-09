@@ -96,7 +96,7 @@ namespace GetSanger.ViewModels
             try
             {
                 List<Rating> ratingLst = await RunTaskWhileLoading(FireStoreHelper.GetRatings(Id));
-                Collection = new ObservableCollection<Rating>(ratingLst.OrderBy(rating => rating.TimeAdded));
+                Collection = new ObservableCollection<Rating>(ratingLst.OrderByDescending(rating => rating.TimeAdded));
                 SearchCollection = new ObservableCollection<Rating>(Collection);
                 if (IsMyRatings)
                 {
