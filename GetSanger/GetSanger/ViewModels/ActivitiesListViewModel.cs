@@ -14,9 +14,23 @@ namespace GetSanger.ViewModels
     public class ActivitiesListViewModel : ListBaseViewModel<Activity>
     {
         #region Fields
+        private List<string> m_StatusFilterList;
+        private int m_SelectedStatusFilterIndex;
+        private const string k_All = "All";
         #endregion
 
         #region Properties
+        public List<string> StatusFilterList
+        {
+            get => m_StatusFilterList;
+            set => SetClassProperty(ref m_StatusFilterList, value);
+        }
+
+        public int SelectedStatusFilterIndex
+        {
+            get => m_SelectedStatusFilterIndex;
+            set => SetStructProperty(ref m_SelectedStatusFilterIndex, value);
+        }
         #endregion
 
         #region Commands
@@ -29,6 +43,8 @@ namespace GetSanger.ViewModels
         public ActivitiesListViewModel()
         {
             setCommands();
+            StatusFilterList = typeof(eActivityStatus).GetListOfEnumNames().ToList();
+            StatusFilterList.Insert(0, k_All);
         }
         #endregion
 
@@ -39,6 +55,9 @@ namespace GetSanger.ViewModels
             try
             {
                 r_CrashlyticsService.LogPageEntrance(nameof(ActivitiesListViewModel));
+                SelectedStatusFilterIndex = 0;
+                SelectedCategoryFilterIndex = 0;
+                SelectedTimeFilterIndex = 0;
                 setActivities();
             }
             catch (Exception e)
@@ -54,12 +73,68 @@ namespace GetSanger.ViewModels
             SelectedActivityCommand = new Command(selectedActivity);
         }
 
+        protected async override void filterSelected(object i_Param)
+        {
+            try
+            {
+                eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
+                if(SelectedStatusFilterIndex == 0) // all status
+                {
+                    if (category.Equals(eCategory.All))
+                    {
+                        FilteredCollection = new ObservableCollection<Activity>(AllCollection);
+                    }
+                    else
+                    {
+                        FilteredCollection = new ObservableCollection<Activity>(
+                            from activity in AllCollection
+                            where activity.JobDetails.Category.Equals(category)
+                            select activity
+                            );
+                    }
+                }
+                else
+                {
+                    eActivityStatus status = (eActivityStatus)Enum.Parse(typeof(eActivityStatus), StatusFilterList[SelectedStatusFilterIndex]);
+                    if (category.Equals(eCategory.All))
+                    {
+                        FilteredCollection = new ObservableCollection<Activity>(
+                            from activity in AllCollection
+                            where activity.Status.Equals(status)
+                            select activity
+                            );
+                    }
+                    else
+                    {
+                        FilteredCollection = new ObservableCollection<Activity>(
+                            from activity in AllCollection
+                            where activity.JobDetails.Category.Equals(category) && activity.Status.Equals(status)
+                            select activity
+                            );
+                    }
+                }
+
+                if (TimeFilterList[SelectedTimeFilterIndex].Equals(k_Newest))
+                {
+                    FilteredCollection = new ObservableCollection<Activity>(FilteredCollection.OrderByDescending(activity => activity.JobDetails.Date));
+                }
+                else
+                {
+                    FilteredCollection = new ObservableCollection<Activity>(FilteredCollection.OrderByDescending(activity => activity.JobDetails.Date));
+                }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:filterSelected", "Error", e.Message);
+            }
+        }
+
         private async void confirmActivity(object i_Param)
         {
             try
             {
                 Activity activity = i_Param as Activity;
-                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && activity.Status.Equals(ActivityStatus.Pending))
+                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && activity.Status.Equals(eActivityStatus.Pending))
                 {
                     await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
                         async (answer) =>
@@ -67,7 +142,7 @@ namespace GetSanger.ViewModels
                             if (answer)
                             {
                                 AppManager.Instance.ConnectedUser.Activities.Remove(activity);
-                                activity.Status = ActivityStatus.Active;
+                                activity.Status = eActivityStatus.Active;
                                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
                                 await RunTaskWhileLoading(r_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
                                 //  need to check that the list(ActivitiesSource) is updated
@@ -76,7 +151,7 @@ namespace GetSanger.ViewModels
                                 {
                                     if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
                                     {
-                                        current.Status = ActivityStatus.Rejected;
+                                        current.Status = eActivityStatus.Rejected;
                                         await RunTaskWhileLoading(r_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
                                     }
                                 }
@@ -97,7 +172,7 @@ namespace GetSanger.ViewModels
             try
             {
                 Activity activity = i_Param as Activity;
-                if (activity.Status.Equals(ActivityStatus.Pending) || activity.Status.Equals(ActivityStatus.Active))
+                if (activity.Status.Equals(eActivityStatus.Pending) || activity.Status.Equals(eActivityStatus.Active))
                 {
                     switch (AppManager.Instance.CurrentMode)
                     {
@@ -126,7 +201,7 @@ namespace GetSanger.ViewModels
                     if (answer)
                     {
                         AppManager.Instance.ConnectedUser.Activities.Remove(i_Activity);
-                        i_Activity.Status = ActivityStatus.Rejected;
+                        i_Activity.Status = eActivityStatus.Rejected;
                         await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(i_Activity));
                         await RunTaskWhileLoading(r_PushService.SendToDevice(i_SendToUserId, i_Activity, i_Activity.GetType(), "Activity Rejected", i_Message));
                         //  need to check that the list(ActivitiesSource) is updated
@@ -174,7 +249,7 @@ namespace GetSanger.ViewModels
             if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
             {
                 // client should not see pending activities because it is like job offers
-                activities = activities.Where(activity => activity.Status.Equals(ActivityStatus.Pending) == false).ToList();
+                activities = activities.Where(activity => activity.Status.Equals(eActivityStatus.Pending) == false).ToList();
             }
 
             AllCollection = new ObservableCollection<Activity>(activities);

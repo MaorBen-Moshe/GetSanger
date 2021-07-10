@@ -116,10 +116,10 @@ namespace GetSanger.ViewModels
                 r_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
                 setLocationsLabels();
                 ProfileName = setProfileName();
-                IsActivatedLocationButton = ConnectedActivity.Status.Equals(ActivityStatus.Active);
+                IsActivatedLocationButton = ConnectedActivity.Status.Equals(eActivityStatus.Active);
                 IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
                                        AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger) &&
-                                       ConnectedActivity.Status.Equals(ActivityStatus.Active) == true;
+                                       ConnectedActivity.Status.Equals(eActivityStatus.Active) == true;
                 IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
                                        AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
                 MessagingCenter.Subscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage, (sender, args) =>
@@ -292,7 +292,7 @@ namespace GetSanger.ViewModels
                                                  IsActivatedLocationButton = !notActivated;
                                                  if (IsActivatedLocationButton == false)
                                                  {
-                                                     ConnectedActivity.Status = ActivityStatus.Completed;
+                                                     ConnectedActivity.Status = eActivityStatus.Completed;
                                                      ConnectedActivity.LocationActivatedBySanger = false;
                                                      r_LocationServices.LeaveTripThread(); // sanger stop sharing location
                                                      await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));

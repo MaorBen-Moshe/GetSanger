@@ -18,8 +18,6 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private string m_Notes;
-        private List<string> m_FilterList;
-        private int m_SelectedFilterIndex;
         #endregion
 
         #region Properties
@@ -29,18 +27,7 @@ namespace GetSanger.ViewModels
             get => m_Notes;
             set => SetClassProperty(ref m_Notes, value);
         }
-
-        public List<string> FilterList
-        {
-            get => m_FilterList;
-            set => SetClassProperty(ref m_FilterList, value);
-        }
-
-        public int SelectedFilterIndex
-        {
-            get => m_SelectedFilterIndex;
-            set => SetStructProperty(ref m_SelectedFilterIndex, value);
-        }
+        
         #endregion
 
         #region Commands
@@ -48,7 +35,6 @@ namespace GetSanger.ViewModels
         public ICommand SelectedJobOfferCommand { get; set; }
         public ICommand DeleteMyJobOfferCommand { get; set; }
         public ICommand SendNotesCommand { get; set; }
-        public ICommand FilterSelectedCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -63,8 +49,8 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             r_CrashlyticsService.LogPageEntrance(nameof(JobOffersViewModel));
-            FilterList = typeof(eCategory).GetListOfEnumNames().Select(category => category.ToString()).ToList();
-            SelectedFilterIndex = 0;
+            SelectedCategoryFilterIndex = 0;
+            SelectedTimeFilterIndex = 0;
             setJobOffers();
         }
 
@@ -88,7 +74,7 @@ namespace GetSanger.ViewModels
                     SangerID = AuthHelper.GetLoggedInUserId(),
                     SangerName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName,
                     ClientID = CurrentConfirmedJobOffer.ClientID,
-                    Status = ActivityStatus.Pending,
+                    Status = eActivityStatus.Pending,
                     LocationActivatedBySanger = false
                 };
 
@@ -104,11 +90,11 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private async void filterSelected(object i_Param)
+        protected async override void filterSelected(object i_Param)
         {
             try
             {
-                eCategory category = (eCategory)Enum.Parse(typeof(eCategory), FilterList[SelectedFilterIndex]);
+                eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
                 if (category.Equals(eCategory.All))
                 {
                     FilteredCollection = new ObservableCollection<JobOffer>(AllCollection);
@@ -120,6 +106,15 @@ namespace GetSanger.ViewModels
                         where job.Category.Equals(category)
                         select job
                         );
+                }
+
+                if (TimeFilterList[SelectedTimeFilterIndex].Equals(k_Newest))
+                {
+                    FilteredCollection = new ObservableCollection<JobOffer>(FilteredCollection.OrderByDescending(job => job.Date));
+                }
+                else
+                {
+                    FilteredCollection = new ObservableCollection<JobOffer>(FilteredCollection.OrderBy(job => job.Date));
                 }
             }
             catch(Exception e)

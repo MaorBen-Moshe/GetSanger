@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using GetSanger.Extensions;
+using GetSanger.Models;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -13,6 +17,13 @@ namespace GetSanger.ViewModels
         private ObservableCollection<T> m_FilteredCollection;
         private ObservableCollection<T> m_SearchCollection;
         private T m_SelectedItem;
+        private List<string> m_TimeFilterList;
+        private int m_SelectedTimeFilterIndex;
+        private List<string> m_CategoriesFilterList;
+        private int m_SelectedCategoryFilterIndex;
+
+        protected const string k_Newest = "Newest";
+        protected const string k_Oldest = "Oldest";
         #endregion
 
         #region Properties
@@ -51,22 +62,58 @@ namespace GetSanger.ViewModels
             get => m_SelectedItem;
             set => SetClassProperty(ref m_SelectedItem, value);
         }
+
+        public List<string> TimeFilterList
+        {
+            get => m_TimeFilterList;
+            set => SetClassProperty(ref m_TimeFilterList, value);
+        }
+
+        public int SelectedTimeFilterIndex
+        {
+            get => m_SelectedTimeFilterIndex;
+            set => SetStructProperty(ref m_SelectedTimeFilterIndex, value);
+        }
+
+
+        public List<string> CategoriesFilterList
+        {
+            get => m_CategoriesFilterList;
+            set => SetClassProperty(ref m_CategoriesFilterList, value);
+        }
+
+        public int SelectedCategoryFilterIndex
+        {
+            get => m_SelectedCategoryFilterIndex;
+            set => SetStructProperty(ref m_SelectedCategoryFilterIndex, value);
+        }
         #endregion
 
         #region Commands
         public ICommand RefreshingCommand { get; set; }
+        public ICommand FilterSelectedCommand { get; set; }
         #endregion
 
         #region Constructor
         public ListBaseViewModel()
         {
             RefreshingCommand = new Command(refreshList);
+            FilterSelectedCommand = new Command(filterSelected);
             SelectedItem = null;
+            CategoriesFilterList = typeof(eCategory).GetListOfEnumNames().ToList();
+            TimeFilterList = new List<string>
+            {
+                k_Newest,
+                k_Oldest
+            };
         }
         #endregion
 
         #region Methods
         protected abstract void refreshList();
+        protected virtual void filterSelected(object i_Param)
+        {
+        }
         #endregion
     }
 }

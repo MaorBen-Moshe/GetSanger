@@ -12,13 +12,13 @@ namespace GetSanger.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Brush brush = Brush.Transparent;
-            ActivityStatus status = (ActivityStatus)value;
+            eActivityStatus status = (eActivityStatus)value;
             switch (status)
             {
-                case ActivityStatus.Rejected: brush = Brush.Red; break;
-                case ActivityStatus.Pending: brush = Brush.Yellow; break;
-                case ActivityStatus.Active: brush = Brush.Green; break;
-                case ActivityStatus.Completed: brush = Brush.DarkGray; break;
+                case eActivityStatus.Rejected: brush = Brush.Red; break;
+                case eActivityStatus.Pending: brush = Brush.Yellow; break;
+                case eActivityStatus.Active: brush = Brush.Green; break;
+                case eActivityStatus.Completed: brush = Brush.DarkGray; break;
                 default:break;
             }
 
@@ -28,23 +28,23 @@ namespace GetSanger.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var brush = value as Brush;
-            ActivityStatus status;
+            eActivityStatus status;
 
             if(brush == Brush.Red)
             {
-                status = ActivityStatus.Rejected;
+                status = eActivityStatus.Rejected;
             }
             else if(brush == Brush.Yellow)
             {
-                status = ActivityStatus.Pending;
+                status = eActivityStatus.Pending;
             }
             else if (brush == Brush.Green)
             {
-                status = ActivityStatus.Active;
+                status = eActivityStatus.Active;
             }
             else if(brush == Brush.DarkGray)
             {
-                status = ActivityStatus.Completed;
+                status = eActivityStatus.Completed;
             }
             else
             {

@@ -54,8 +54,18 @@
                         <Label Text="Filter by:" VerticalOptions="CenterAndExpand"/>
                         <Picker HorizontalOptions="FillAndExpand"
                                 HorizontalTextAlignment="Center"
-                                SelectedIndex="{Binding SelectedFilterIndex, Mode=TwoWay}"
-                                ItemsSource="{Binding FilterList}" 
+                                SelectedIndex="{Binding SelectedTimeFilterIndex, Mode=TwoWay}"
+                                ItemsSource="{Binding TimeFilterList}" 
+                                Margin="10, 5">
+                            <Picker.Behaviors>
+                                <behaviors:EventToCommandBehavior Command="{Binding FilterSelectedCommand}"
+                                                          EventName="SelectedIndexChanged"/>
+                            </Picker.Behaviors>
+                        </Picker>
+                        <Picker HorizontalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Center"
+                                SelectedIndex="{Binding SelectedCategoryFilterIndex, Mode=TwoWay}"
+                                ItemsSource="{Binding CategoriesFilterList}" 
                                 Margin="10, 5">
                             <Picker.Behaviors>
                                 <behaviors:EventToCommandBehavior Command="{Binding FilterSelectedCommand}"

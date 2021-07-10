@@ -6,14 +6,14 @@ using Xamarin.Essentials;
 
 namespace GetSanger.Models
 {
-    public enum ActivityStatus { Pending, Active, Rejected, Completed };
+    public enum eActivityStatus { Pending, Active, Rejected, Completed };
 
     public class Activity : PropertySetter
     {
         #region Fields
         private string m_ClientId;
         private string m_SangertId;
-        private ActivityStatus m_Status;
+        private eActivityStatus m_Status;
         private JobOffer m_JobDetails;
         private bool m_LocationActivatedBySanger;
         private string m_SangerName;
@@ -40,7 +40,7 @@ namespace GetSanger.Models
             get => m_JobDetails;
             set => SetClassProperty(ref m_JobDetails, value);
         }
-        public ActivityStatus Status
+        public eActivityStatus Status
         {
             get => m_Status;
             set => SetStructProperty(ref m_Status, value);
