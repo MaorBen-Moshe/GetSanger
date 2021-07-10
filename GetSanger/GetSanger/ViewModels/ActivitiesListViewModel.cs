@@ -253,6 +253,7 @@ namespace GetSanger.ViewModels
             }
 
             AllCollection = new ObservableCollection<Activity>(activities);
+            FilteredCollection = new ObservableCollection<Activity>(AllCollection);
             SearchCollection = new ObservableCollection<Activity>(AllCollection);
             IsVisibleViewList = AllCollection.Count > 0;
         }
