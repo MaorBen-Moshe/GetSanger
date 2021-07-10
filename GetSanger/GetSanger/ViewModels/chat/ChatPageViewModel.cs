@@ -14,6 +14,7 @@ using GetSanger.Constants;
 namespace GetSanger.ViewModels.chat
 {
     [QueryProperty(nameof(UserJson), "user")]
+    [QueryProperty(nameof(PrevPage), "prev")]
     public class ChatPageViewModel : BaseViewModel
     {
         #region Fields
@@ -48,6 +49,8 @@ namespace GetSanger.ViewModels.chat
                 UserToChat = ObjectJsonSerializer.DeserializeForPage<User>(value);
             }
         }
+
+        public string PrevPage { get; set; }
 
         public ImageSource UserPicture
         {
@@ -366,7 +369,14 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={UserToChat.UserId}");
+                if (PrevPage.Equals(ShellRoutes.Profile))
+                {
+                    await GoBack();
+                }
+                else
+                {
+                    await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={UserToChat.UserId}");
+                }
             }
             catch(Exception e)
             {

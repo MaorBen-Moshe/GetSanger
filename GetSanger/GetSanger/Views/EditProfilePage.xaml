@@ -5,7 +5,8 @@
              xmlns:Converters="clr-namespace:GetSanger.Converters"
              xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
-             x:Class="GetSanger.Views.EditProfilePage">
+             x:Class="GetSanger.Views.EditProfilePage"
+             Shell.TabBarIsVisible="False">
 
     <ContentPage.BindingContext>
         <vm:EditProfileViewModel />

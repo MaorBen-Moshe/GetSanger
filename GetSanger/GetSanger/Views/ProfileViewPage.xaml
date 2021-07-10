@@ -4,7 +4,8 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:controls ="clr-namespace:GetSanger.Controls"
              xmlns:converters="clr-namespace:GetSanger.Converters"
-             x:Class="GetSanger.Views.ProfileViewPage">
+             x:Class="GetSanger.Views.ProfileViewPage"
+             Shell.TabBarIsVisible="False">
     
     <ContentPage.BindingContext>
         <vm:ProfileViewModel />

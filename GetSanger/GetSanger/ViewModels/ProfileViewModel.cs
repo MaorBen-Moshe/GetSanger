@@ -145,7 +145,7 @@ namespace GetSanger.ViewModels
             try
             {
                 string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
-                await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
+                await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.Profile}");
             }
             catch(Exception e)
             {

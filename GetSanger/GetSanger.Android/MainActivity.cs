@@ -7,10 +7,11 @@ using Android.Content;
 using GetSanger.Droid.Services;
 using GetSanger.Services;
 using Plugin.CurrentActivity;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace GetSanger.Droid
 {
-    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleTask, WindowSoftInputMode = Android.Views.SoftInput.AdjustResize)]
+    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleTask)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         internal static readonly string CHANNEL_ID = "notification_channel";
@@ -36,6 +37,7 @@ namespace GetSanger.Droid
             PushService.InitializePushService(this);
             PushService.PushHelper(Intent);
             LoadApplication(new App());
+            Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
         }
 
         protected override void OnStart()

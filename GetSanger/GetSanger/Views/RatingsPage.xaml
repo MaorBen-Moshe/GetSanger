@@ -5,7 +5,8 @@
              xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converters="clr-namespace:GetSanger.Converters"
-             x:Class="GetSanger.Views.RatingsPage">
+             x:Class="GetSanger.Views.RatingsPage"
+             Shell.TabBarIsVisible="False">
 
     <ContentPage.BindingContext>
         <vm:RatingsViewModel />

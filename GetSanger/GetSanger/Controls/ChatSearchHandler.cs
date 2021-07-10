@@ -51,7 +51,7 @@ namespace GetSanger.Controls
             ShellNavigationState state = (App.Current.MainPage as Shell).CurrentState;
             // The following route works because route names are unique in this application.
             string json = ObjectJsonSerializer.SerializeForPage(await FireStoreHelper.GetUser(((ChatUser)item).UserId));
-            await Shell.Current.GoToAsync(ShellRoutes.ChatView + $"?user={json}");
+            await Shell.Current.GoToAsync(ShellRoutes.ChatView + $"?user={json}&prev={ShellRoutes.ChatsList}");
         }
 
         #endregion

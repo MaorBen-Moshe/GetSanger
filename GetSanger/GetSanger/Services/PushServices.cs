@@ -181,18 +181,27 @@ namespace GetSanger.Services
                 }
                 else
                 {
-                    string route = $"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
+                    string route;
+                    if (vm.PrevPage.Equals(ShellRoutes.ChatsList))
+                    {
+                        route = $"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={vm.PrevPage}";
+                    }
+                    else
+                    {
+                        route = $"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={ShellRoutes.ChatsList}";
+                    }
+                    
                     movePageHelper(route, i_Title, txt);
                 }
             }
             else if(currentPage is { BindingContext: ChatListViewModel clVm })
             {
-                string route = $"{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
+                string route = $"{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={ShellRoutes.ChatsList}";
                 movePageHelper(route, i_Title, txt);
             }
             else
             {
-                string route = $"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}";
+                string route = $"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={ShellRoutes.ChatsList}";
                 movePageHelper(route, i_Title, txt);
             }
         }

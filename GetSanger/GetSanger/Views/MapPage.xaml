@@ -5,7 +5,8 @@
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converter="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.MapPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
 
     <ContentPage.Resources>
         <ResourceDictionary>

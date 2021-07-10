@@ -5,7 +5,8 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.ViewJobOfferPage"             
-             Title="{Binding Job.Title}">
+             Title="{Binding Job.Title}"
+             Shell.TabBarIsVisible="False">
 
     <ContentPage.BindingContext>
         <vm:ViewJobOfferViewModel />

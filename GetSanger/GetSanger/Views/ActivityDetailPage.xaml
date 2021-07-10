@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm ="clr-namespace:GetSanger.ViewModels"
              xmlns:converters="clr-namespace:GetSanger.Converters"
-             x:Class="GetSanger.Views.ActivityDetailPage">
+             x:Class="GetSanger.Views.ActivityDetailPage"
+             Shell.TabBarIsVisible="False">
 
     <ContentPage.BindingContext>
         <vm:ActivityViewModel />

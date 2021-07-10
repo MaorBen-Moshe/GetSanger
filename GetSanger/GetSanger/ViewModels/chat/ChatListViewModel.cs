@@ -68,7 +68,7 @@ namespace GetSanger.ViewModels.chat
                 if(i_Param is ChatUser chatUser)
                 {
                     string json = ObjectJsonSerializer.SerializeForPage(chatUser.User);
-                    await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}");
+                    await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.ChatsList}");
                 }
             }
             catch (Exception e)
