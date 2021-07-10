@@ -10,6 +10,7 @@ using System.Linq;
 using Xamarin.Essentials;
 using GetSanger.Extensions;
 using GetSanger.Constants;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -130,6 +131,10 @@ namespace GetSanger.ViewModels.chat
                 PendingMessageCount = 0;
                 PendingMessageCountVisible = false;
                 LastMessageVisible = true;
+                if (Device.RuntimePlatform.Equals(Device.Android))
+                {
+                    Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
+                }
             }
             catch(Exception e)
             {
@@ -141,6 +146,10 @@ namespace GetSanger.ViewModels.chat
         public void Disappearing()
         {
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+            if (Device.RuntimePlatform.Equals(Device.Android))
+            {
+                Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Pan);
+            }
         }
 
         private void setCommands()

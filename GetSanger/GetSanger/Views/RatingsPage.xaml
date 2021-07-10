@@ -63,21 +63,25 @@
                                     <StackLayout Orientation="Horizontal"
                                                  Padding="20"
                                                  VerticalOptions="StartAndExpand">
-                                        <StackLayout HorizontalOptions="Start"
+                                        <StackLayout HorizontalOptions="StartAndExpand"
                                                      Spacing="5">
                                             <Label Text="{Binding RatingWriterName}" 
                                                FontAttributes="Bold" 
                                                BackgroundColor="Transparent" 
+                                               
                                                HorizontalOptions="Start"/>
                                             <Label Text="{Binding Description}" />
                                         </StackLayout>
-                                      
-                                        <controls:RatingStars Rating="{Binding Score}" 
+                                        <StackLayout HorizontalOptions="EndAndExpand"
+                                                     Spacing="5">
+                                            <controls:RatingStars Rating="{Binding Score}" 
                                                               Review=""
                                                               BackgroundColor="Transparent" 
-                                                              HorizontalOptions="EndAndExpand"
                                                               VerticalOptions="Start"
                                                               Margin="5"/>
+                                            <Label Text="{Binding TimeAdded, StringFormat='{0:dd/MM/yyyy hh:mm}'}"
+                                                   VerticalOptions="End"/>
+                                        </StackLayout>
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>

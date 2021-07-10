@@ -74,24 +74,14 @@
                    BorderColor="Black"
                    Margin="50,20,50,0">
                 <TableView VerticalOptions="Center"
+                           
                            HeightRequest="136">
                     <TableRoot TextColor="Black">
                         <TableSection Title="Details" TextColor="Black">
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal"
-                                         Margin="10,0">
-                                    <Label Text="Gender: "/>
-                                    <Label Text="{Binding  CurrentUser.PersonalDetails.Gender}"/>
-                                </StackLayout>
-                            </ViewCell>
-
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal"
-                                         Margin="10,0">
-                                    <Label Text="Birthday: "/>
-                                    <Label Text="{Binding  CurrentUser.PersonalDetails.Birthday, StringFormat='{0:dd/MM/yyyy}'}"/>
-                                </StackLayout>
-                            </ViewCell>
+                            <TextCell Text="{Binding CurrentUser.PersonalDetails.Gender, StringFormat='Gender: {0}'}"
+                                      TextColor="Black"/>
+                            <TextCell Text="{Binding  CurrentUser.PersonalDetails.Birthday, StringFormat='Birthday: {0:dd/MM/yyyy}'}"
+                                      TextColor="Black"/>
                         </TableSection>
                     </TableRoot>
                 </TableView>
