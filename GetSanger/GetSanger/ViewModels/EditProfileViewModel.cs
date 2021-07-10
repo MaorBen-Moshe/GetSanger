@@ -74,7 +74,7 @@ namespace GetSanger.ViewModels
         public EditProfileViewModel()
         {
             setCommands();
-            GenderItems = new ObservableCollection<GenderType>(AppManager.Instance.GetListOfEnumNames(typeof(GenderType))
+            GenderItems = new ObservableCollection<GenderType>(typeof(GenderType).GetListOfEnumNames()
                 .Select(name => (GenderType) Enum.Parse(typeof(GenderType), name)).ToList());
             MaxDate = DateTime.Now.AddYears(-18);
         }

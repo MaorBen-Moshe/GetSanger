@@ -96,14 +96,14 @@ namespace GetSanger.ViewModels
             try
             {
                 List<Rating> ratingLst = await RunTaskWhileLoading(FireStoreHelper.GetRatings(Id));
-                Collection = new ObservableCollection<Rating>(ratingLst.OrderByDescending(rating => rating.TimeAdded));
-                SearchCollection = new ObservableCollection<Rating>(Collection);
+                AllCollection = new ObservableCollection<Rating>(ratingLst.OrderByDescending(rating => rating.TimeAdded));
+                SearchCollection = new ObservableCollection<Rating>(AllCollection);
                 if (IsMyRatings)
                 {
                     AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst);
                 }
 
-                IsVisibleViewList = Collection.Count > 0;
+                IsVisibleViewList = AllCollection.Count > 0;
             }
             catch (Exception e)
             {

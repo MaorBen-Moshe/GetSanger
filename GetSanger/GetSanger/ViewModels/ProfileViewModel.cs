@@ -155,7 +155,7 @@ namespace GetSanger.ViewModels
 
         private async void reportUser(object i_Param)
         {   
-            string response = await r_PageService.DisplayActionSheet("Please choose the reason:", "Cancel", null, AppManager.Instance.GetListOfEnumNames(typeof(ReportOption)).ToArray());
+            string response = await r_PageService.DisplayActionSheet("Please choose the reason:", "Cancel", null, typeof(ReportOption).GetListOfEnumNames().ToArray());
             if(Enum.TryParse(response, out ReportOption option))
             {
                 try

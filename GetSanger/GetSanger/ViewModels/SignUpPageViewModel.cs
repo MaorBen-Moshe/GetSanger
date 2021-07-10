@@ -47,10 +47,10 @@ namespace GetSanger.ViewModels
         public SignUpPageViewModel()
         {
             setCommands();
-            GenderItems = AppManager.Instance.GetListOfEnumNames(typeof(GenderType));
-            CategoriesItems = new ObservableCollection<CategoryCell>(AppManager.Instance
-                .GetListOfEnumNames(typeof(eCategory)).Select(name => new CategoryCell
-                    {Category = (eCategory) Enum.Parse(typeof(eCategory), name)}).ToList());
+            GenderItems = typeof(GenderType).GetListOfEnumNames();
+            CategoriesItems = new ObservableCollection<CategoryCell>(typeof(eCategory).GetListOfEnumNames()
+                .Select(name => new CategoryCell
+                                                {Category = (eCategory) Enum.Parse(typeof(eCategory), name)}).ToList());
             m_TempCategories = CategoriesItems;
             MaxDatePicker = DateTime.Now.AddYears(-18);
         }

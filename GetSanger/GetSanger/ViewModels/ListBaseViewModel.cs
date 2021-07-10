@@ -9,7 +9,8 @@ namespace GetSanger.ViewModels
         #region Fields
         private bool m_IsListRefreshing;
         private bool m_IsVisibleEmptyListLabel;
-        private ObservableCollection<T> m_Collection;
+        private ObservableCollection<T> m_AllCollection;
+        private ObservableCollection<T> m_FilteredCollection;
         private ObservableCollection<T> m_SearchCollection;
         private T m_SelectedItem;
         #endregion
@@ -27,10 +28,16 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsVisibleEmptyListLabel, value);
         }
 
-        public ObservableCollection<T> Collection
+        public ObservableCollection<T> AllCollection
         {
-            get => m_Collection;
-            set => SetClassProperty(ref m_Collection, value);
+            get => m_AllCollection;
+            set => SetClassProperty(ref m_AllCollection, value);
+        }
+
+        public ObservableCollection<T> FilteredCollection
+        {
+            get => m_FilteredCollection;
+            set => SetClassProperty(ref m_FilteredCollection, value);
         }
 
         public ObservableCollection<T> SearchCollection

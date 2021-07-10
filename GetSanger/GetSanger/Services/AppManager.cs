@@ -54,11 +54,6 @@ namespace GetSanger.Services
             setAppManager();
         }
 
-        public IList<string> GetListOfEnumNames(Type i_EnumType)
-        {
-            return (from name in i_EnumType.GetEnumNames() select name).ToList();
-        }
-
         public void RefreshAppManager()
         {
             setAppManager();

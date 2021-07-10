@@ -54,7 +54,7 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(SettingViewModel));
             CategoriesItems = new ObservableCollection<CategoryCell>(
             (from
-                category in AppManager.Instance.GetListOfEnumNames(typeof(eCategory))
+                category in typeof(eCategory).GetListOfEnumNames()
              where
                 !category.Equals(eCategory.All.ToString())
              select

@@ -42,7 +42,7 @@ namespace GetSanger.ViewModels
         public CategoriesViewModel()
         {
             setCommands();
-            CategoriesItems = AppManager.Instance.GetListOfEnumNames(typeof(eCategory)).Select(name => new CategoryCell { Category = (eCategory)Enum.Parse(typeof(eCategory), name) }).ToList();
+            CategoriesItems = typeof(eCategory).GetListOfEnumNames().Select(name => new CategoryCell { Category = (eCategory)Enum.Parse(typeof(eCategory), name) }).ToList();
             CategoriesItems = CategoriesItems.Where(categoryCell => categoryCell.Category.Equals(eCategory.All) == false).ToList();
         }
         #endregion

@@ -46,7 +46,7 @@
             <StackLayout>
                 
                 <ListView x:Name="m_ListView" 
-                          ItemsSource="{Binding Collection}"
+                          ItemsSource="{Binding FilteredCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                           IsRefreshing="{Binding IsListRefreshing}"
                           IsPullToRefreshEnabled="True" 

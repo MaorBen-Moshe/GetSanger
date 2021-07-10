@@ -48,7 +48,7 @@
                           Margin="0"
                           RowHeight="55"
                           IsVisible="{Binding IsVisibleViewList}"
-                          ItemsSource="{Binding Collection}"
+                          ItemsSource="{Binding AllCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                           IsPullToRefreshEnabled="True"
                           IsRefreshing="{Binding IsListRefreshing}"

@@ -109,7 +109,7 @@ namespace GetSanger.ViewModels
                             break;
                     }
 
-                    IsVisibleViewList = Collection.Count > 0;
+                    IsVisibleViewList = AllCollection.Count > 0;
                 }
             }
             catch (Exception e)
@@ -177,9 +177,9 @@ namespace GetSanger.ViewModels
                 activities = activities.Where(activity => activity.Status.Equals(ActivityStatus.Pending) == false).ToList();
             }
 
-            Collection = new ObservableCollection<Activity>(activities);
-            SearchCollection = new ObservableCollection<Activity>(Collection);
-            IsVisibleViewList = Collection.Count > 0;
+            AllCollection = new ObservableCollection<Activity>(activities);
+            SearchCollection = new ObservableCollection<Activity>(AllCollection);
+            IsVisibleViewList = AllCollection.Count > 0;
         }
         #endregion
     }

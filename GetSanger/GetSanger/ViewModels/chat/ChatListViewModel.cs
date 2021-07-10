@@ -91,9 +91,9 @@ namespace GetSanger.ViewModels.chat
                 user.User = await FireStoreHelper.GetUser(user.UserId);
             }
 
-            Collection = new ObservableCollection<ChatUser>(users.OrderByDescending(user => user.LastMessage));
-            SearchCollection = new ObservableCollection<ChatUser>(Collection);
-            IsVisibleViewList = Collection.Count > 0;
+            AllCollection = new ObservableCollection<ChatUser>(users.OrderByDescending(user => user.LastMessage));
+            SearchCollection = new ObservableCollection<ChatUser>(AllCollection);
+            IsVisibleViewList = AllCollection.Count > 0;
             r_LoadingService.HidePopup();
         }
 

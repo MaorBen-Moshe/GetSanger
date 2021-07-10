@@ -44,8 +44,29 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
+                <Frame HorizontalOptions="FillAndExpand"
+                       IsVisible="{Binding IsVisibleViewList}"
+                       VerticalOptions="Start"
+                       BorderColor="Red"
+                       Padding="10"
+                       Margin="10">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Filter by:" VerticalOptions="CenterAndExpand"/>
+                        <Picker HorizontalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Center"
+                                SelectedIndex="{Binding SelectedFilterIndex, Mode=TwoWay}"
+                                ItemsSource="{Binding FilterList}" 
+                                Margin="10, 5">
+                            <Picker.Behaviors>
+                                <behaviors:EventToCommandBehavior Command="{Binding FilterSelectedCommand}"
+                                                          EventName="SelectedIndexChanged"/>
+                            </Picker.Behaviors>
+                        </Picker>
+                    </StackLayout>
+                </Frame>
+
                 <ListView x:Name="m_ListView" 
-                          ItemsSource="{Binding Collection}"
+                          ItemsSource="{Binding FilteredCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                           IsRefreshing="{Binding IsListRefreshing}"
                           IsPullToRefreshEnabled="True" 
@@ -61,7 +82,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame BorderColor="WhiteSmoke" 
+                                <Frame BorderColor="Gray" 
                                        Padding="0"
                                        Margin="10">
                                     <StackLayout Padding="20">

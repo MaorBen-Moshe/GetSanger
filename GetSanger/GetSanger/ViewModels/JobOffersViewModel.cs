@@ -18,6 +18,8 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private string m_Notes;
+        private List<string> m_FilterList;
+        private int m_SelectedFilterIndex;
         #endregion
 
         #region Properties
@@ -27,6 +29,18 @@ namespace GetSanger.ViewModels
             get => m_Notes;
             set => SetClassProperty(ref m_Notes, value);
         }
+
+        public List<string> FilterList
+        {
+            get => m_FilterList;
+            set => SetClassProperty(ref m_FilterList, value);
+        }
+
+        public int SelectedFilterIndex
+        {
+            get => m_SelectedFilterIndex;
+            set => SetStructProperty(ref m_SelectedFilterIndex, value);
+        }
         #endregion
 
         #region Commands
@@ -34,6 +48,7 @@ namespace GetSanger.ViewModels
         public ICommand SelectedJobOfferCommand { get; set; }
         public ICommand DeleteMyJobOfferCommand { get; set; }
         public ICommand SendNotesCommand { get; set; }
+        public ICommand FilterSelectedCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -48,6 +63,8 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             r_CrashlyticsService.LogPageEntrance(nameof(JobOffersViewModel));
+            FilterList = typeof(eCategory).GetListOfEnumNames().Select(category => category.ToString()).ToList();
+            SelectedFilterIndex = 0;
             setJobOffers();
         }
 
@@ -57,6 +74,7 @@ namespace GetSanger.ViewModels
             SelectedJobOfferCommand = new Command(selectedJobOffer);
             DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
             SendNotesCommand = new Command(sendNotes);
+            FilterSelectedCommand = new Command(filterSelected);
         }
 
         private async void sendNotes()
@@ -83,6 +101,30 @@ namespace GetSanger.ViewModels
             catch(Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:sendNotes", "Error", e.Message);
+            }
+        }
+
+        private async void filterSelected(object i_Param)
+        {
+            try
+            {
+                eCategory category = (eCategory)Enum.Parse(typeof(eCategory), FilterList[SelectedFilterIndex]);
+                if (category.Equals(eCategory.All))
+                {
+                    FilteredCollection = new ObservableCollection<JobOffer>(AllCollection);
+                }
+                else
+                {
+                    FilteredCollection = new ObservableCollection<JobOffer>(
+                        from job in AllCollection
+                        where job.Category.Equals(category)
+                        select job
+                        );
+                }
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:filterSelected", "Error", e.Message);
             }
         }
 
@@ -118,8 +160,8 @@ namespace GetSanger.ViewModels
                                                          {
                                                              JobOffer job = i_Param as JobOffer;
                                                              AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
-                                                             Collection.Remove(job);
-                                                             IsVisibleViewList = Collection.Count > 0;
+                                                             AllCollection.Remove(job);
+                                                             IsVisibleViewList = AllCollection.Count > 0;
                                                              await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId));
                                                          }
                                                      });
@@ -173,9 +215,10 @@ namespace GetSanger.ViewModels
                         break;
                 }
 
-                Collection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
-                SearchCollection = new ObservableCollection<JobOffer>(Collection);
-                IsVisibleViewList = Collection.Count > 0;
+                AllCollection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
+                FilteredCollection = new ObservableCollection<JobOffer>(AllCollection);
+                SearchCollection = new ObservableCollection<JobOffer>(AllCollection);
+                IsVisibleViewList = AllCollection.Count > 0;
             }
             catch (Exception e)
             {
