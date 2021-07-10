@@ -120,7 +120,7 @@ namespace GetSanger.ViewModels
                 }
                 else
                 {
-                    FilteredCollection = new ObservableCollection<Activity>(FilteredCollection.OrderByDescending(activity => activity.JobDetails.Date));
+                    FilteredCollection = new ObservableCollection<Activity>(FilteredCollection.OrderBy(activity => activity.JobDetails.Date));
                 }
             }
             catch (Exception e)
