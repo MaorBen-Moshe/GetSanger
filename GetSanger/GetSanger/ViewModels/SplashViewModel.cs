@@ -41,6 +41,10 @@ namespace GetSanger.ViewModels
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
+        protected override void setCommands()
+        {
+        }
+
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             if (m_ConnectivtyChanged == false && e.NetworkAccess.Equals(NetworkAccess.Internet) == true)

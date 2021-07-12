@@ -54,8 +54,9 @@ namespace GetSanger.ViewModels
             setJobOffers();
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
+            base.setCommands();
             ConfirmJobOfferCommand = new Command(confirmJobOffer);
             SelectedJobOfferCommand = new Command(selectedJobOffer);
             DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);

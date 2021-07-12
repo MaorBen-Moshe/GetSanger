@@ -109,7 +109,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             SearchCommand = new Command(searchCom);
             MapClicked = new Command(mapClickedHelper);

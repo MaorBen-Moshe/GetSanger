@@ -85,7 +85,7 @@ namespace GetSanger.ViewModels
             CurrentUser = null;
         }
 
-        private void setCommands()
+        protected override void setCommands()
         { 
             AddRatingCommand = new Command(addRating);
             ReportUserCommand = new Command(reportUser);

@@ -146,7 +146,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             CurrentLocation = new Command(getCurrentLocation);
             JobLocation = new Command(getJobLocation);

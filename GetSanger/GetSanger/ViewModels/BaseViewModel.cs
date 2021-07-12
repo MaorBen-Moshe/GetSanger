@@ -103,6 +103,7 @@ namespace GetSanger.ViewModels
         }
 
         public abstract void Appearing();
+        protected abstract void setCommands();
         #endregion
     }
 }

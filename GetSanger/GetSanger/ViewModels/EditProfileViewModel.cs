@@ -89,7 +89,7 @@ namespace GetSanger.ViewModels
             initialData();
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             ImageChosenCommand = new Command(imageChanged);
             BackButtonCommand = new Command(backButtonBehavior);

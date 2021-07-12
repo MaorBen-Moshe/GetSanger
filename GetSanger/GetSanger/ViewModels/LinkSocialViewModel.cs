@@ -56,43 +56,39 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(LinkSocialViewModel));
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             LinkSocialCommand = new Command(linkSocial);
         }
 
-        private void linkSocial(object i_Param)
+        private async void linkSocial(object i_Param)
         {
             if(i_Param is SocialProviderCell provider)
             {
-                providerSelected(provider.SocialProvider);
-            }
-        }
-
-        private async void providerSelected(eSocialProvider i_CurrentProvider)
-        {
-            try
-            {
-                if (i_CurrentProvider.Equals(eSocialProvider.Email))
+                try
                 {
-                    var page = new LinkEmailPage();
-                    await PopupNavigation.Instance.PushAsync(page);
+                    eSocialProvider current = provider.SocialProvider;
+                    if (current.Equals(eSocialProvider.Email))
+                    {
+                        var page = new LinkEmailPage();
+                        await PopupNavigation.Instance.PushAsync(page);
+                    }
+                    else
+                    {
+                        await RunTaskWhileLoading(r_SocialService.SocialLink(current));
+                        await r_PageService.DisplayAlert("Note", $"Your account linked with: {current}", "Thanks");
+                        await PopupNavigation.Instance.PopAsync();
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    await RunTaskWhileLoading(r_SocialService.SocialLink(i_CurrentProvider));
-                    await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
-                    await PopupNavigation.Instance.PopAsync();
+                    r_LoadingService.HideLoadingPage();
+                    await e.LogAndDisplayError($"{nameof(LinkSocialViewModel)}:providerSelected", "Error", e.Message);
                 }
-            }
-            catch (Exception e)
-            {
-                r_LoadingService.HideLoadingPage();
-                await e.LogAndDisplayError($"{nameof(LinkSocialViewModel)}:providerSelected", "Error", e.Message);
-            }
-            finally
-            {
-                SelectedItem = null;
+                finally
+                {
+                    SelectedItem = null;
+                }
             }
         }
 

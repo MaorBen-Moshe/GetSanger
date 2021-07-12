@@ -136,7 +136,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             ProfileCommand = new Command(profilePage);
             EndActivityCommand = new Command(endActivity);

@@ -38,7 +38,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             UserCommand = new Command(userCommandHelper);
             SangerCommand = new Command(sangerCommandHelper);

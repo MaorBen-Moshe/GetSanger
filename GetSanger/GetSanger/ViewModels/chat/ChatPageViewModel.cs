@@ -152,7 +152,7 @@ namespace GetSanger.ViewModels.chat
             }
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             SendMessageCommand = new Command(sendMessage);
             MessageAppearingCommand = new Command(messageAppearing);

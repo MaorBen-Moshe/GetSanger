@@ -152,8 +152,9 @@ namespace GetSanger.ViewModels
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
+            base.setCommands();
             EmailPartCommand = new Command(emailPartClicked);
             PersonalDetailPartCommand = new Command(personalDetailPartClicked);
             CategoriesPartCommand = new Command(categoriesPartClicked);

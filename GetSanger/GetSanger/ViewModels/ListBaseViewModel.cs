@@ -97,8 +97,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ListBaseViewModel()
         {
-            RefreshingCommand = new Command(refreshList);
-            FilterSelectedCommand = new Command(filterSelected);
+            setCommands();
             SelectedItem = null;
             CategoriesFilterList = typeof(eCategory).GetListOfEnumNames().ToList();
             TimeFilterList = new List<string>
@@ -106,12 +105,19 @@ namespace GetSanger.ViewModels
                 k_Newest,
                 k_Oldest
             };
+            SelectedCategoryFilterIndex = 0;
+            SelectedTimeFilterIndex = 0;
         }
         #endregion
 
         #region Methods
         protected abstract void refreshList();
         protected abstract void filterSelected(object i_Param);
+        protected override void setCommands()
+        {
+            RefreshingCommand = new Command(refreshList);
+            FilterSelectedCommand = new Command(filterSelected);
+        }
         #endregion
     }
 }

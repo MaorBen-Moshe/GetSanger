@@ -62,7 +62,7 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(LoginViewModel));
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             this.LoginCommand = new Command(this.LoginClicked);
             this.SignUpCommand = new Command(this.SignUpClicked);

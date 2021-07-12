@@ -60,7 +60,7 @@ namespace GetSanger.ViewModels
             Email = Password = null;
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             LinkCommand = new Command(link);
         }

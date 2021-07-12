@@ -53,7 +53,7 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(CategoriesViewModel));
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             CategorySelectedCommand = new Command(categorySelected);
         }

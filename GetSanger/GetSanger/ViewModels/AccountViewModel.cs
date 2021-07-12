@@ -76,7 +76,7 @@ namespace GetSanger.ViewModels
             initialPage();
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             EditProfileCommand = new Command(editProfile);
             SettingCommand = new Command(setting);

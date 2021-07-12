@@ -44,8 +44,9 @@ namespace GetSanger.ViewModels.chat
             setUsers();
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
+            base.setCommands();
             UserSelectedCommand = new Command(userSelected);
         }
 

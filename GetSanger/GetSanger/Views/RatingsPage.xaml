@@ -39,6 +39,26 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
+                <Frame HorizontalOptions="FillAndExpand"
+                       IsVisible="{Binding IsVisibleViewList}"
+                       VerticalOptions="Start"
+                       BorderColor="Red"
+                       Padding="10"
+                       Margin="10">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Filter by:" VerticalOptions="CenterAndExpand"/>
+                        <Picker HorizontalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Center"
+                                SelectedIndex="{Binding SelectedTimeFilterIndex, Mode=TwoWay}"
+                                ItemsSource="{Binding TimeFilterList}" 
+                                Margin="10, 5">
+                            <Picker.Behaviors>
+                                <behaviors:EventToCommandBehavior Command="{Binding FilterSelectedCommand}"
+                                                          EventName="SelectedIndexChanged"/>
+                            </Picker.Behaviors>
+                        </Picker>
+                    </StackLayout>
+                </Frame>
                 <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding AllCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"

@@ -66,8 +66,9 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
+            base.setCommands();
             ConfirmActivityCommand = new Command(confirmActivity);
             RejectActivityCommand = new Command(rejectActivity);
             SelectedActivityCommand = new Command(selectedActivity);

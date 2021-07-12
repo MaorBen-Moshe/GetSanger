@@ -75,7 +75,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             ToggledCommand = new Command(toggled);
             BackButtonCommand = new Command(backButtonBehavior);

@@ -50,7 +50,7 @@ namespace GetSanger.ViewModels
             };
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
             AddRatingCommand = new Command(addRating);
         }

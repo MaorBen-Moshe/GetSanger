@@ -67,8 +67,9 @@ namespace GetSanger.ViewModels
             IsListRefreshing = false;
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
+            base.setCommands();
             SelectedRatingCommand = new Command(selectedRating);
         }
 

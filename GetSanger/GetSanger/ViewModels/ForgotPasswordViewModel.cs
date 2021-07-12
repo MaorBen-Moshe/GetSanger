@@ -46,10 +46,10 @@ namespace GetSanger.ViewModels
             base.Appearing();
         }
 
-        private void setCommands()
+        protected override void setCommands()
         {
+            base.setCommands();
             SendCommand = new Command(this.SendClicked);
-           
         }
 
         private async void SendClicked()
