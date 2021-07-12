@@ -3,10 +3,7 @@ using GetSanger.Interfaces;
 using GetSanger.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
@@ -18,12 +15,11 @@ namespace GetSanger.Services
         Email
     } // email is for the link only
 
-    public class SocialAdapterService : Service
+    public class SocialAdapterService : Service, ISocialAdapter
     {
-        private LoginServices m_LoginService;
-        private NavigationService m_NavigationService;
-        private StorageHelper m_StorageHelper;
-        private IPhotoDisplay m_PhotoHelper;
+        private ILogin m_LoginService;
+        private Interfaces.INavigation m_NavigationService;
+        private IPhotoDisplay m_PhotoDisplay;
 
         public async Task<bool> SocialLogin(eSocialProvider i_Provider)
         {
@@ -43,6 +39,13 @@ namespace GetSanger.Services
             }
 
             return succeeded;
+        }
+
+        public async Task SocialLink(eSocialProvider i_Provider) // except eSocialProvider.Email
+        {
+            Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_Provider);
+            string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
+            await m_PhotoDisplay.TryGetPictureFromUri(photoUrl, AppManager.Instance.ConnectedUser);
         }
 
         private User getDetails(Dictionary<string, object> i_Details)
@@ -73,8 +76,7 @@ namespace GetSanger.Services
         {
             m_LoginService ??= AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
             m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            m_StorageHelper ??= AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
-            m_PhotoHelper ??= AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
+            m_PhotoDisplay ??= AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
         }
     }
 }

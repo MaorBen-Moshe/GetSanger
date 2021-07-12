@@ -80,7 +80,7 @@ namespace GetSanger.ViewModels
 
             try
             {
-                r_LoadingService.ShowPopup();
+                r_LoadingService.ShowLoadingPage();
                 await AuthHelper.LoginViaEmail(Email, Password);
                 bool verified = await r_LoginServices.LoginUser();
                 if (!verified)
@@ -88,11 +88,11 @@ namespace GetSanger.ViewModels
                     await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
                 }
 
-                r_LoadingService.HidePopup();
+                r_LoadingService.HideLoadingPage();
             }
             catch (Exception e)
             {
-                r_LoadingService.HidePopup();
+                r_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(LoginViewModel)}:LoginClicked", "Error", e.Message);
             }
         }

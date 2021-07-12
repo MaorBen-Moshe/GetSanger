@@ -1,8 +1,5 @@
 ﻿using GetSanger.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Essentials;
 
 namespace GetSanger.Models
 {
@@ -37,28 +34,24 @@ namespace GetSanger.Models
             set => SetStructProperty(ref m_Birthday, value);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is PersonalDetails))
-            {
-                return false;
-            }
-
-            PersonalDetails other = obj as PersonalDetails;
-            return Birthday.Equals(other.Birthday) &&
-                   Phone.Equals(other.Phone) &&
-                   Gender.Equals(other.Gender) &&
-                   NickName.Equals(other.NickName);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
 
         public static bool IsValidName(string name)
         {
             return string.IsNullOrWhiteSpace(name) == false && name.Length >= 4 && name.Length <= 20;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PersonalDetails details &&
+                   NickName == details.NickName &&
+                   Gender == details.Gender &&
+                   Phone == details.Phone &&
+                   Birthday == details.Birthday;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(NickName, Gender, Phone, Birthday);
         }
     }
 }

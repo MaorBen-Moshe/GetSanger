@@ -1,25 +1,26 @@
-﻿using System;
+﻿using GetSanger.Interfaces;
+using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public class RunTasksService : Service
+    public class RunTasksService : Service, IRunTasks
     {
-        private LoadingService m_PopupService;
+        private ILoadingDisplay m_PopupService;
 
         public async Task RunTaskWhileLoading(Task i_InnerTask, ContentPage i_OptionalLoading = null)
         {
             SetDependencies();
             try
             {
-                m_PopupService.ShowPopup(i_OptionalLoading);
+                m_PopupService.ShowLoadingPage(i_OptionalLoading);
                 await i_InnerTask;
-                m_PopupService.HidePopup();
+                m_PopupService.HideLoadingPage();
             }
             catch (Exception ex)
             {
-                m_PopupService.HidePopup();
+                m_PopupService.HideLoadingPage();
                 throw ex;
             }
         }
@@ -29,14 +30,14 @@ namespace GetSanger.Services
             SetDependencies();
             try
             {
-                m_PopupService.ShowPopup(i_OptionalLoading);
+                m_PopupService.ShowLoadingPage(i_OptionalLoading);
                 T result = await i_InnerTask;
-                m_PopupService.HidePopup();
+                m_PopupService.HideLoadingPage();
                 return result;
             }
             catch (Exception ex)
             {
-                m_PopupService.HidePopup();
+                m_PopupService.HideLoadingPage();
                 throw ex;
             }
         }

@@ -8,7 +8,7 @@ using Xamarin.Essentials;
 
 namespace GetSanger.Services
 {
-    public class LocationService : Service
+    public class LocationService : Service, ILocation, ITrip
     {
         private System.Timers.Timer m_Timer;
         private IPageService m_PageService;
@@ -17,7 +17,7 @@ namespace GetSanger.Services
         {
         }
 
-        public CancellationTokenSource Cts { get; private set; }
+        public CancellationTokenSource Cts { get; set; }
 
         public async Task<Location> GetCurrentLocation()
         {
@@ -64,7 +64,7 @@ namespace GetSanger.Services
             return await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>() == PermissionStatus.Granted;
         } 
 
-        public async Task<Placemark> PickedLocation(Location i_Location)
+        public async Task<Placemark> GetPickedLocation(Location i_Location)
         {
             Placemark placemark = null;
             if(i_Location != null)

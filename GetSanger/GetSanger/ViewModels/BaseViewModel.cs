@@ -15,18 +15,19 @@ namespace GetSanger.ViewModels
         private bool m_IsNotLoading;
         private bool m_IsEnabledSendBtn;
         private string m_DefaultBackUri = "..";
-        private readonly RunTasksService r_RunTasks;
+        private readonly IRunTasks r_RunTasks;
         protected readonly IPageService r_PageService;
         protected readonly IDialService r_DialService;
         protected readonly IPhotoDisplay r_PhotoDisplay;
-        protected readonly PushServices r_PushService;
-        protected readonly NavigationService r_NavigationService;
-        protected readonly StorageHelper r_StorageHelper;
-        protected readonly LoginServices r_LoginServices;
-        protected readonly LocationService r_LocationServices;
-        protected readonly SocialAdapterService r_SocialService;
-        protected readonly LoadingService r_LoadingService;
-        protected readonly CrashlyticsService r_CrashlyticsService;
+        protected readonly IUiPush r_PushService;
+        protected readonly Interfaces.INavigation r_NavigationService;
+        protected readonly IStorageHelper r_StorageHelper;
+        protected readonly ILogin r_LoginServices;
+        protected readonly ILocation r_LocationService;
+        protected readonly ISocialAdapter r_SocialService;
+        protected readonly ILoadingDisplay r_LoadingService;
+        protected readonly ICrashlyticsDisplay r_CrashlyticsService;
+        protected readonly ITrip r_TripHelper;
         #endregion
 
         #region Properties
@@ -60,7 +61,8 @@ namespace GetSanger.ViewModels
         {
             r_PageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             r_DialService = AppManager.Instance.Services.GetService(typeof(DialServices)) as DialServices;
-            r_LocationServices = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            r_LocationService = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            r_TripHelper = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             r_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
             r_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             r_StorageHelper = AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;

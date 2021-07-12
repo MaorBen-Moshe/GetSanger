@@ -133,10 +133,10 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Location location = await r_LocationServices.GetCurrentLocation();
+                Location location = await r_LocationService.GetCurrentLocation();
                 if(location != null)
                 {
-                    MyPlaceMark ??= await r_LocationServices.PickedLocation(location);
+                    MyPlaceMark ??= await r_LocationService.GetPickedLocation(location);
                     JobPlaceMark ??= MyPlaceMark;
                 }
             }
@@ -176,7 +176,7 @@ namespace GetSanger.ViewModels
                                                   {
                                                       if (answer)
                                                       {
-                                                          bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+                                                          bool locationGranted = await r_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
                                                           if (locationGranted)
                                                           {
                                                               await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
@@ -199,7 +199,7 @@ namespace GetSanger.ViewModels
             try
             {
                 m_IsMyLocation = false;
-                bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+                bool locationGranted = await r_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
                 if (locationGranted)
                 {
                     await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");

@@ -1,5 +1,6 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Extensions;
+using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
@@ -100,9 +101,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ActivityViewModel()
         {
-            CrashlyticsService crashlyticsService = (CrashlyticsService) AppManager.Instance.Services.GetService(typeof(CrashlyticsService));
-            crashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
-
+            r_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
             setCommands();
         }
         #endregion
@@ -217,7 +216,7 @@ namespace GetSanger.ViewModels
                                                          ConnectedActivity.LocationActivatedBySanger = false;
                                                          await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
                                                          await RunTaskWhileLoading(FireStoreHelper.UpdateUser(user));
-                                                         r_LocationServices.LeaveTripThread();
+                                                         r_TripHelper.LeaveTripThread();
                                                          await RunTaskWhileLoading(r_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!"));
                                                          ActivatedButtonText = "Enable Location";
                                                      }
@@ -240,7 +239,7 @@ namespace GetSanger.ViewModels
                                                          await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
                                                          await RunTaskWhileLoading(FireStoreHelper.UpdateUser(user));
                                                          await RunTaskWhileLoading(r_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!"));
-                                                         r_LocationServices.StartTripThread();
+                                                         r_TripHelper.StartTripThread();
                                                          ActivatedButtonText = "Disable Location";
                                                      }
                                                  });
@@ -253,7 +252,7 @@ namespace GetSanger.ViewModels
             bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
             if (sangerInUser && activated)
             {
-                bool locationGranted = await r_LocationServices.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+                bool locationGranted = await r_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
                 if (locationGranted)
                 {
                     await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isTrip={true}&isSearch={false}&sangerId={ConnectedActivity.SangerID}");
@@ -272,7 +271,7 @@ namespace GetSanger.ViewModels
 
         private async Task<string> getLocationString(Location i_Location)
         {
-            Placemark placemark = await r_LocationServices.PickedLocation(i_Location);
+            Placemark placemark = await r_LocationService.GetPickedLocation(i_Location);
             if (placemark == null)
             {
                 return "No Location was given";
@@ -294,7 +293,7 @@ namespace GetSanger.ViewModels
                                                  {
                                                      ConnectedActivity.Status = eActivityStatus.Completed;
                                                      ConnectedActivity.LocationActivatedBySanger = false;
-                                                     r_LocationServices.LeaveTripThread(); // sanger stop sharing location
+                                                     r_TripHelper.LeaveTripThread(); // sanger stop sharing location
                                                      await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
                                                      string message = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} completed your job :)";
                                                      await RunTaskWhileLoading(r_PushService.SendToDevice(ConnectedActivity.ClientID, ConnectedActivity, ConnectedActivity.GetType(), "Job has ended", message));

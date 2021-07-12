@@ -80,18 +80,14 @@ namespace GetSanger.ViewModels
                 }
                 else
                 {
-                    r_LoadingService.ShowPopup();
-                    Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_CurrentProvider);
-                    string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
-                    await r_PhotoDisplay.TryGetPictureFromUri(photoUrl, AppManager.Instance.ConnectedUser);
+                    await RunTaskWhileLoading(r_SocialService.SocialLink(i_CurrentProvider));
                     await r_PageService.DisplayAlert("Note", $"Your account linked with: {i_CurrentProvider}", "Thanks");
-                    r_LoadingService.HidePopup();
                     await PopupNavigation.Instance.PopAsync();
                 }
             }
             catch (Exception e)
             {
-                r_LoadingService.HidePopup();
+                r_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(LinkSocialViewModel)}:providerSelected", "Error", e.Message);
             }
             finally

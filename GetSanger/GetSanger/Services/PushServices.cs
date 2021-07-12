@@ -5,20 +5,17 @@ using GetSanger.Models.chat;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using GetSanger.Exceptions;
-using GetSanger.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using GetSanger.Views.chat;
 using GetSanger.ViewModels.chat;
 using GetSanger.ViewModels;
-using GetSanger.Views;
+
 
 namespace GetSanger.Services
 {
-    public class PushServices : Service
+    public class PushServices : Service, IUiPush
     {
         private static readonly IPushService sr_Push = DependencyService.Get<IPushService>();
 
@@ -113,7 +110,7 @@ namespace GetSanger.Services
             return token;
         }
 
-        public static async Task handleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
+        public static async Task HandleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
         {
             if (i_Message != null && i_Message.ContainsKey("Type"))
             {
@@ -146,7 +143,6 @@ namespace GetSanger.Services
 
         private static void handleRating(string i_Title, string i_Body, string i_Json)
         {
-            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             string message = i_Body + "\nGo to profile page to view your ratings?";
 
             Page currentPage = Shell.Current.CurrentPage;
@@ -165,8 +161,6 @@ namespace GetSanger.Services
         private static async Task handleMessageInfo(string i_Title, string i_Body, string i_Json)
         {
             string txt = i_Body + "\nMove to chat page?";
-
-            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             message.MessageSent = true;
             string senderId = message.FromId;
@@ -208,8 +202,8 @@ namespace GetSanger.Services
 
         private async static void movePageHelper(string route, string title, string txt)
         {
-            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            PageServices pageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+            Interfaces.INavigation navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            IPageService pageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             if (title != null)
             {
                 await pageService.DisplayAlert(title, txt, "Yes", "No", async (choice) =>
@@ -238,7 +232,7 @@ namespace GetSanger.Services
         {
             string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
-            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            Interfaces.INavigation navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
 
             Page currentPage = Shell.Current.CurrentPage;
             if (currentPage is {BindingContext: ActivityViewModel vm} && vm.ConnectedActivity.ActivityId == activity.ActivityId)
@@ -258,7 +252,7 @@ namespace GetSanger.Services
 
                 if (i_Title != null)
                 {
-                    PageServices pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+                    IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
                     await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) => 
                     {
                         if (choice)
@@ -278,7 +272,7 @@ namespace GetSanger.Services
         {
             string message = i_Body + "\nDo you want to navigate the the job offer page?";
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
-            NavigationService navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            Interfaces.INavigation navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
 
             Action action = new Action(async () =>
             {
@@ -289,7 +283,7 @@ namespace GetSanger.Services
 
             if (i_Title != null)
             {
-                PageServices pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+                IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
                 await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) => 
                 {
                     if (choice)
@@ -311,7 +305,7 @@ namespace GetSanger.Services
             return await GetRegistrationToken() != connectedUser.RegistrationToken;
         }
 
-        public async void UnsubscribeUser(string i_UserId)
+        public async Task UnsubscribeUser(string i_UserId)
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -333,7 +327,7 @@ namespace GetSanger.Services
             }
         }
 
-        public async void SubscribeUser(string i_UserId)
+        public async Task SubscribeUser(string i_UserId)
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {

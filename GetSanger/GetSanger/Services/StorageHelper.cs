@@ -5,10 +5,11 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using GetSanger.Interfaces;
 
 namespace GetSanger.Services
 {
-    public class StorageHelper : Service
+    public class StorageHelper : Service, IStorageHelper
     {
         public StorageHelper()
         {

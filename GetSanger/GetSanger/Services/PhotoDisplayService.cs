@@ -10,7 +10,7 @@ namespace GetSanger.Services
 {
     public class PhotoDisplayService : Service, IPhotoDisplay
     {
-        private StorageHelper m_StorageHelper;
+        private IStorageHelper m_StorageHelper;
 
         public ImageSource DisplayPicture(Uri i_Uri = null)
         {

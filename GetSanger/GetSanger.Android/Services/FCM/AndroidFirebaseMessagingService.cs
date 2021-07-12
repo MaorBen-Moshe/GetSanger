@@ -78,7 +78,7 @@ namespace GetSanger.Droid.Services.FCM
             string body = i_Message.GetNotification() != null ? i_Message.GetNotification().Body : null;
             IDictionary<string, string> messageData = i_Message.Data;
 
-            MainThread.BeginInvokeOnMainThread(async () => await PushServices.handleMessageReceived(title, body, messageData));
+            MainThread.BeginInvokeOnMainThread(async () => await PushServices.HandleMessageReceived(title, body, messageData));
         }
     }
 }

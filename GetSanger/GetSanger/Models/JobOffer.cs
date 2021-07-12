@@ -94,18 +94,14 @@ namespace GetSanger.Models
 
         public override bool Equals(object obj)
         {
-            if (!(obj is JobOffer))
-            {
-                return false;
-            }
-
-            JobOffer other = obj as JobOffer;
-            return JobId == other.JobId;
+            return obj is JobOffer offer &&
+                   JobId == offer.JobId &&
+                   ClientID == offer.ClientID;
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(JobId, ClientID);
         }
     }
 }

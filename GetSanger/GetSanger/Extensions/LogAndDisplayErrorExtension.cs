@@ -4,13 +4,14 @@ using System.Text;
 using System.Threading.Tasks;
 using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
+using GetSanger.Interfaces;
 
 namespace GetSanger.Extensions
 {
     public static class LogAndDisplayErrorExtension
     {
         private const string SeparationLine = "-------------------------------------------------------------------------------------------";
-        private static readonly CrashlyticsService sr_CrashesService;
+        private static readonly ICrashlyticsDisplay sr_CrashesService;
 
         static LogAndDisplayErrorExtension()
         {

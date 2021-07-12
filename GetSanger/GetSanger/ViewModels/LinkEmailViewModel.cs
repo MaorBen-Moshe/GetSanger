@@ -69,12 +69,12 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                r_LoadingService.ShowPopup();
+                r_LoadingService.ShowLoadingPage();
                 if (Email != null && Password != null && ConfirmPassword.Equals(Password) && Password.IsValidPassword())
                 {
                     await AuthHelper.LinkWithEmailAndPassword(Email, Password);
                     await r_PageService.DisplayAlert("Success", $"Your account has linked with {Email}", "Thanks");
-                    r_LoadingService.HidePopup();
+                    r_LoadingService.HideLoadingPage();
                     await GoBack();
                 }
                 else
@@ -84,7 +84,7 @@ namespace GetSanger.ViewModels
             }
             catch(Exception e)
             {
-                r_LoadingService.HidePopup();
+                r_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(LinkEmailViewModel)}:link", "Error", e.Message);
             }
         }

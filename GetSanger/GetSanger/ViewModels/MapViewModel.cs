@@ -92,7 +92,7 @@ namespace GetSanger.ViewModels
 
             if (IsTrip) // we already checked if sanger gave permission to client to see location
             {
-                r_LocationServices.StartTripThread(handleTrip, 350000);
+                r_TripHelper.StartTripThread(handleTrip, 350000);
             }
         }
 
@@ -100,7 +100,7 @@ namespace GetSanger.ViewModels
         {
             if (IsTrip)
             {
-                r_LocationServices.LeaveTripThread(handleTrip);
+                r_TripHelper.LeaveTripThread(handleTrip);
             }
 
             if (IsSearch)
@@ -194,7 +194,7 @@ namespace GetSanger.ViewModels
 
         private void cancelation()
         {
-            r_LocationServices.Cancelation();
+            r_LocationService.Cancelation();
         }
 
         // handler to handle the client asking for location from sanger
@@ -214,13 +214,13 @@ namespace GetSanger.ViewModels
                 });
 
                 // when sanger is near to us we want to stop asking for location, 0.3 kilometers
-                Location location = await r_LocationServices.GetCurrentLocation();
+                Location location = await r_LocationService.GetCurrentLocation();
                 if (location != null)
                 {
                     if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
                     {
                         await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
-                        r_LocationServices.LeaveTripThread(handleTrip);
+                        r_TripHelper.LeaveTripThread(handleTrip);
                         MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
                         await GoBack();
                     }
@@ -236,7 +236,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Placemark placemark = await r_LocationServices.PickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
+                Placemark placemark = await r_LocationService.GetPickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
                 string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
                 await r_PageService.DisplayAlert("Location Chosen",
                                                  location,
@@ -261,7 +261,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Location location = await r_LocationServices.GetCurrentLocation();
+                Location location = await r_LocationService.GetCurrentLocation();
                 if(location == null)
                 {
                     return;

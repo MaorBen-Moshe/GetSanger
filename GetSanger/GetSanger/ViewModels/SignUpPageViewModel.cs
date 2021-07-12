@@ -271,7 +271,7 @@ namespace GetSanger.ViewModels
                 CreatedUser.Categories = new ObservableCollection<eCategory>(m_CheckedItems);
                 CreatedUser.RegistrationToken = await r_PushService.GetRegistrationToken();
                 CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
-                CreatedUser.UserLocation = await r_LocationServices.GetCurrentLocation();
+                CreatedUser.UserLocation = await r_LocationService.GetCurrentLocation();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
                 await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserId,
                     (m_CheckedItems.Select(category => ((int) category).ToString())).ToArray()));

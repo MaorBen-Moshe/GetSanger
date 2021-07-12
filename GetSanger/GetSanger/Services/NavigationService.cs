@@ -3,14 +3,9 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public class NavigationService : Service
+    public class NavigationService : Service, Interfaces.INavigation
     {
         public NavigationService()
-        {
-
-        }
-
-        public void OpenMainPage()
         {
 
         }

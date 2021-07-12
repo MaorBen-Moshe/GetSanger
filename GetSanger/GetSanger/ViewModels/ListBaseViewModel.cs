@@ -111,9 +111,7 @@ namespace GetSanger.ViewModels
 
         #region Methods
         protected abstract void refreshList();
-        protected virtual void filterSelected(object i_Param)
-        {
-        }
+        protected abstract void filterSelected(object i_Param);
         #endregion
     }
 }

@@ -57,18 +57,15 @@ namespace GetSanger.Models
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Rating))
-            {
-                return false;
-            }
-
-            Rating other = obj as Rating;
-            return RatingOwnerId.Equals(other.RatingOwnerId);
+            return obj is Rating rating &&
+                   RatingId == rating.RatingId &&
+                   RatingOwnerId == rating.RatingOwnerId &&
+                   RatingWriterId == rating.RatingWriterId;
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(RatingId, RatingOwnerId, RatingWriterId);
         }
     }
 }

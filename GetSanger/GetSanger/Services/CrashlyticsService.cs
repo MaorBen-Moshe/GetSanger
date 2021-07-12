@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public class CrashlyticsService : Service
+    public class CrashlyticsService : Service, ICrashlyticsDisplay
     {
         private static readonly ICrashlytics sr_Crashlytics = DependencyService.Get<ICrashlytics>();
 

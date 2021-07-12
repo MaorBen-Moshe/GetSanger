@@ -97,7 +97,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                r_LoadingService.ShowPopup();
+                r_LoadingService.ShowLoadingPage();
                 if (string.IsNullOrEmpty(UserId))
                 {
                     throw new ArgumentException("User details aren't available.");
@@ -110,7 +110,7 @@ namespace GetSanger.ViewModels
 
                 List<Rating> ratings = new List<Rating>(CurrentUser.Ratings);
                 UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
-                Placemark placemark = await r_LocationServices.PickedLocation(CurrentUser.UserLocation);
+                Placemark placemark = await r_LocationService.GetPickedLocation(CurrentUser.UserLocation);
                 UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
                 AverageRating = getAverage(ratings);
             }
@@ -120,7 +120,7 @@ namespace GetSanger.ViewModels
             }
             finally
             {
-                r_LoadingService.HidePopup();
+                r_LoadingService.HideLoadingPage();
             }
         }
 

@@ -86,7 +86,7 @@ namespace GetSanger.ViewModels
             try
             {
                 bool isChanged = false;
-                r_LoadingService.ShowPopup(new LoadingPage("Saving..."));
+                r_LoadingService.ShowLoadingPage(new LoadingPage("Saving..."));
                 if (m_NewCategoriesSubscribed?.Count > 0)
                 {
                     isChanged = true;
@@ -110,12 +110,12 @@ namespace GetSanger.ViewModels
                 }
 
                 m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;
-                r_LoadingService.HidePopup();
+                r_LoadingService.HideLoadingPage();
                 await GoBack();
             }
             catch(Exception e)
             {
-                r_LoadingService.HidePopup();
+                r_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(SettingViewModel)}:backButtonBehavior", "Error", e.Message);
             }
         }

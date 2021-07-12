@@ -122,7 +122,7 @@ namespace GetSanger.ViewModels
             try
             {
                 // do logout
-                r_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
+                await r_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
                 AuthHelper.SignOut();
                 AppManager.Instance.RefreshAppManager();
                 Application.Current.MainPage = new AuthShell();

@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
-    public class LoadingService : Service
+    public class LoadingService : Service, ILoadingDisplay
     {
         private ILoadingService m_LoadingService;
 
@@ -12,7 +12,7 @@ namespace GetSanger.Services
             SetDependencies();
         }
 
-        public void ShowPopup(ContentPage i_Page = null)
+        public void ShowLoadingPage(ContentPage i_Page = null)
         {
             if(i_Page != null && !m_LoadingService.IsLoading)
             {
@@ -25,7 +25,7 @@ namespace GetSanger.Services
             }
         }
 
-        public void HidePopup()
+        public void HideLoadingPage()
         {
             m_LoadingService.HideLoadingPage();
         }

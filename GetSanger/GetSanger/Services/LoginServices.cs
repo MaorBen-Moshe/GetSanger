@@ -2,27 +2,20 @@
 using GetSanger.Constants;
 using GetSanger.Models;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
-using GetSanger.ViewModels;
-using GetSanger.Exceptions;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Threading;
-using Xamarin.Essentials;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Views.popups;
+using GetSanger.Interfaces;
 
 namespace GetSanger.Services
 {
-    public class LoginServices : Service
+    public class LoginServices : Service, ILogin
     {
-        private NavigationService m_NavigationService;
-        private RunTasksService m_RunTasks;
-        private LocationService m_Location;
-        private PushServices m_PushServices;
+        private Interfaces.INavigation m_NavigationService;
+        private IRunTasks m_RunTasks;
+        private ILocation m_Location;
+        private IUiPush m_PushServices;
 
         public LoginServices()
         {
@@ -58,7 +51,7 @@ namespace GetSanger.Services
                     {
                         AppManager.Instance.CurrentMode = (eAppMode) mode;
                         Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
-                        await PushServices.handleMessageReceived(null, null, PushServices.BackgroundPushData);
+                        await PushServices.HandleMessageReceived(null, null, PushServices.BackgroundPushData);
                     }
                 }
                 else
@@ -101,11 +94,11 @@ namespace GetSanger.Services
 
                     if (verified)
                     {
-                        m_PushServices.SubscribeUser(AppManager.Instance.ConnectedUser.UserId);
+                        await m_PushServices.SubscribeUser(AppManager.Instance.ConnectedUser.UserId);
 
                         if (i_Mode != null) // we are here from mode page or from auto login
                         {
-                            SetMode((eAppMode) i_Mode);
+                            setMode((eAppMode) i_Mode);
                         }
                         else // we are here from login page
                         {
@@ -116,7 +109,7 @@ namespace GetSanger.Services
                             }
                             else
                             {
-                                SetMode();
+                                setMode();
                             }
                         }
                     }
@@ -135,7 +128,7 @@ namespace GetSanger.Services
             }
         }
 
-        public void SetMode(eAppMode? i_Mode = null)
+        private void setMode(eAppMode? i_Mode = null)
         {
             Application.Current.MainPage = AppManager.Instance.GetCurrentShell(i_Mode);
         }

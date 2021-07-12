@@ -106,7 +106,7 @@ namespace GetSanger.Droid
             Firebase.Crashlytics.FirebaseCrashlytics.Instance.Log("Entered OnNewIntent");
             base.OnNewIntent(intent);
             PushService.PushHelper(intent);
-            await PushServices.handleMessageReceived(null, null, PushServices.BackgroundPushData);
+            await PushServices.HandleMessageReceived(null, null, PushServices.BackgroundPushData);
         }
     }
 }

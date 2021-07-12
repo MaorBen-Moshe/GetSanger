@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GetSanger.Models
+﻿namespace GetSanger.Models
 {
     public enum ReportOption { Abuse, Harassment, Unprofessional, Ads, Other }; 
 

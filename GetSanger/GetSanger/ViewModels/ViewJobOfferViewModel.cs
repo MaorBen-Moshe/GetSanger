@@ -104,23 +104,23 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                r_LoadingService.ShowPopup();
+                r_LoadingService.ShowLoadingPage();
                 ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
 
                 if (Job.Location != null)
                 {
-                    Placemark myPlace = await r_LocationServices.PickedLocation(Job.Location);
+                    Placemark myPlace = await r_LocationService.GetPickedLocation(Job.Location);
                     MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
                 }
 
                 if (Job.JobLocation != null)
                 {
-                    Placemark jobPlacemark = await r_LocationServices.PickedLocation(Job.JobLocation);
+                    Placemark jobPlacemark = await r_LocationService.GetPickedLocation(Job.JobLocation);
                     WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
                 }
 
                 IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
-                r_LoadingService.HidePopup();
+                r_LoadingService.HideLoadingPage();
             }
             catch(Exception e)
             {

@@ -71,18 +71,13 @@ namespace GetSanger.Models
 
         public override bool Equals(object obj)
         {
-            if(!(obj is User))
-            {
-                return false;
-            }
-
-            User other = obj as User;
-            return UserId == other.UserId;
+            return obj is User user &&
+                   UserId == user.UserId;
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(UserId);
         }
     }
 }

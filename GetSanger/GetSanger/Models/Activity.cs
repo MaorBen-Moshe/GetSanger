@@ -1,8 +1,5 @@
 ﻿using GetSanger.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Essentials;
 
 namespace GetSanger.Models
 {
@@ -53,18 +50,15 @@ namespace GetSanger.Models
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Activity))
-            {
-                return false;
-            }
-
-            Activity other = obj as Activity;
-            return ActivityId == other.ActivityId;
+            return obj is Activity activity &&
+                   ActivityId == activity.ActivityId &&
+                   ClientID == activity.ClientID &&
+                   SangerID == activity.SangerID;
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(ActivityId, ClientID, SangerID);
         }
     }
 }

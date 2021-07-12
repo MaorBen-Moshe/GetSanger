@@ -111,6 +111,11 @@ namespace GetSanger.ViewModels
             }
         }
 
+        protected override void filterSelected(object i_Param)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
