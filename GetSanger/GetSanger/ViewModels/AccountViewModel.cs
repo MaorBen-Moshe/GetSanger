@@ -76,6 +76,10 @@ namespace GetSanger.ViewModels
             initialPage();
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             EditProfileCommand = new Command(editProfile);

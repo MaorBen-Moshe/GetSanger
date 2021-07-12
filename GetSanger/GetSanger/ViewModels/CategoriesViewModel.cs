@@ -53,6 +53,10 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(CategoriesViewModel));
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             CategorySelectedCommand = new Command(categorySelected);

@@ -30,6 +30,10 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(ModeViewModel));
         }
 
+        public override void Disappearing()
+        {
+        }
+
         public void SetBackBehavior()
         {
             if (AuthHelper.IsLoggedIn())

@@ -62,6 +62,10 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(LoginViewModel));
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             this.LoginCommand = new Command(this.LoginClicked);

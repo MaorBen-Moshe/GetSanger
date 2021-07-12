@@ -52,6 +52,10 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(ChangePasswordViewModel));
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             ChangePasswordCommand = new Command(changePassword);

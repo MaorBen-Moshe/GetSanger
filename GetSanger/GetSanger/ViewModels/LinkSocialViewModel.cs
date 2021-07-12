@@ -56,6 +56,10 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(LinkSocialViewModel));
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             LinkSocialCommand = new Command(linkSocial);

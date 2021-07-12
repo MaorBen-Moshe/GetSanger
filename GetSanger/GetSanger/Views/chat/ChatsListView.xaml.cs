@@ -23,5 +23,11 @@ namespace GetSanger.Views.chat
             (BindingContext as ChatListViewModel).Appearing();
             base.OnAppearing();
         }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as ChatListViewModel).Disappearing();
+            base.OnDisappearing();
+        }
     }
 }

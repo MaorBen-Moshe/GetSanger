@@ -46,6 +46,10 @@ namespace GetSanger.ViewModels
             base.Appearing();
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             base.setCommands();

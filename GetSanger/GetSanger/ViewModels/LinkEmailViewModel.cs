@@ -55,7 +55,7 @@ namespace GetSanger.ViewModels
             r_CrashlyticsService.LogPageEntrance(nameof(LinkEmailViewModel));
         }
 
-        public void Disappearing()
+        public override void Disappearing()
         {
             Email = Password = null;
         }

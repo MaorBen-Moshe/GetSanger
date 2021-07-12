@@ -20,7 +20,7 @@ namespace GetSanger.Views.popups
 
         protected override void OnDisappearing()
         {
-            (BindingContext as LinkEmailViewModel).Disappearing();
+            (BindingContext as BaseViewModel).Disappearing();
             base.OnDisappearing();
         }
     }

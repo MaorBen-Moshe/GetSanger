@@ -143,7 +143,7 @@ namespace GetSanger.ViewModels.chat
             }
         }
 
-        public void Disappearing()
+        public override void Disappearing()
         {
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
             if (Device.RuntimePlatform.Equals(Device.Android))

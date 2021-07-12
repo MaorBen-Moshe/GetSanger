@@ -21,7 +21,7 @@ namespace GetSanger.Views
 
         protected override void OnDisappearing()
         {
-            (BindingContext as MapViewModel).Disappearing();
+            (BindingContext as BaseViewModel).Disappearing();
             base.OnDisappearing();
         }
     }

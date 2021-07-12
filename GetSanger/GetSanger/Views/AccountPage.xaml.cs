@@ -26,5 +26,11 @@ namespace GetSanger.Views
             label.BackgroundColor = Color.Red;
             base.OnAppearing();
         }
+
+        protected override void OnDisappearing()
+        {
+            (BindingContext as BaseViewModel).Disappearing();
+            base.OnDisappearing();
+        }
     }
 }

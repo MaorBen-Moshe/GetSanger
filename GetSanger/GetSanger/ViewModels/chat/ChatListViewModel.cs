@@ -44,6 +44,10 @@ namespace GetSanger.ViewModels.chat
             setUsers();
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             base.setCommands();

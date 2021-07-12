@@ -152,6 +152,10 @@ namespace GetSanger.ViewModels
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             base.setCommands();

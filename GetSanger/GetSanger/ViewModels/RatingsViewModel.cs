@@ -57,7 +57,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        public void Disappearing()
+        public override void Disappearing()
         {
         }
 

@@ -80,7 +80,7 @@ namespace GetSanger.ViewModels
             setUser();
         }
 
-        public void Disappearing()
+        public override void Disappearing()
         {
             CurrentUser = null;
         }

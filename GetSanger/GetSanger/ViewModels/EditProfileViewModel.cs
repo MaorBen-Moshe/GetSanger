@@ -89,6 +89,10 @@ namespace GetSanger.ViewModels
             initialData();
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             ImageChosenCommand = new Command(imageChanged);

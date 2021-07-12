@@ -91,7 +91,7 @@ namespace GetSanger.ViewModels
             await initData();
         }
 
-        public void Disappearing()
+        public override void Disappearing()
         {
         }
 

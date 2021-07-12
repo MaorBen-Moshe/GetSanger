@@ -54,6 +54,10 @@ namespace GetSanger.ViewModels
             setJobOffers();
         }
 
+        public override void Disappearing()
+        {
+        }
+
         protected override void setCommands()
         {
             base.setCommands();

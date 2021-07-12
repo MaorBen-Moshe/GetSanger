@@ -67,7 +67,7 @@ namespace GetSanger.ViewModels
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
         }
 
-        public void Disappearing()
+        public override void Disappearing()
         {
             if(m_NewCategoriesSubscribed != null && m_NewCategoriesUnsubscribed != null)
             {

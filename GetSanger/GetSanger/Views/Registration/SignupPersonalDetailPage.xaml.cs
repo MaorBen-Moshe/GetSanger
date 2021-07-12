@@ -38,6 +38,7 @@ namespace GetSanger.Views.Registration
 
         protected override void OnDisappearing()
         {
+            (BindingContext as SignUpPageViewModel).Disappearing();
             (BindingContext as SignUpPageViewModel).InPersonalPage = false;
             base.OnDisappearing();
         }

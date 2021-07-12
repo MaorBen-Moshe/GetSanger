@@ -21,7 +21,7 @@ namespace GetSanger.Views
 
         protected override void OnDisappearing()
         {
-            (BindingContext as EditJobOfferViewModel).Disappearing();
+            (BindingContext as BaseViewModel).Disappearing();
             base.OnDisappearing();
         }
     }
