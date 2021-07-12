@@ -22,7 +22,7 @@ namespace GetSanger.ViewModels
 
         public LoginViewModel()
         {
-            setCommands();
+            SetCommands();
         }
 
         #endregion
@@ -66,7 +66,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             this.LoginCommand = new Command(this.LoginClicked);
             this.SignUpCommand = new Command(this.SignUpClicked);

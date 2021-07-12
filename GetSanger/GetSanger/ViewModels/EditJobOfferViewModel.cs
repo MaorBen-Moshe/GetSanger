@@ -101,7 +101,7 @@ namespace GetSanger.ViewModels
 
         public EditJobOfferViewModel()
         {
-            setCommands();
+            SetCommands();
             NewJobOffer = new JobOffer
             {
                 Date = DateTime.Now,
@@ -146,7 +146,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             CurrentLocation = new Command(getCurrentLocation);
             JobLocation = new Command(getJobLocation);

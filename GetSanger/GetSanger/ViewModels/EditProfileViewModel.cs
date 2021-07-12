@@ -73,7 +73,7 @@ namespace GetSanger.ViewModels
 
         public EditProfileViewModel()
         {
-            setCommands();
+            SetCommands();
             GenderItems = new ObservableCollection<GenderType>(typeof(GenderType).GetListOfEnumNames()
                 .Select(name => (GenderType) Enum.Parse(typeof(GenderType), name)).ToList());
             MaxDate = DateTime.Now.AddYears(-18);
@@ -93,7 +93,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             ImageChosenCommand = new Command(imageChanged);
             BackButtonCommand = new Command(backButtonBehavior);

@@ -63,7 +63,7 @@ namespace GetSanger.ViewModels
 
         public AccountViewModel()
         {
-            setCommands();
+            SetCommands();
         }
 
         #endregion
@@ -80,7 +80,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             EditProfileCommand = new Command(editProfile);
             SettingCommand = new Command(setting);

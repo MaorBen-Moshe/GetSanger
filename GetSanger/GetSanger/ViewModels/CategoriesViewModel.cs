@@ -41,7 +41,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public CategoriesViewModel()
         {
-            setCommands();
+            SetCommands();
             CategoriesItems = typeof(eCategory).GetListOfEnumNames().Select(name => new CategoryCell { Category = (eCategory)Enum.Parse(typeof(eCategory), name) }).ToList();
             CategoriesItems = CategoriesItems.Where(categoryCell => categoryCell.Category.Equals(eCategory.All) == false).ToList();
         }
@@ -57,7 +57,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             CategorySelectedCommand = new Command(categorySelected);
         }

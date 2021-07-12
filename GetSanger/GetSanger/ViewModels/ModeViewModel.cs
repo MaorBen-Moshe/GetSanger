@@ -19,7 +19,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ModeViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -42,7 +42,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             UserCommand = new Command(userCommandHelper);
             SangerCommand = new Command(sangerCommandHelper);

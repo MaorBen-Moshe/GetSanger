@@ -112,7 +112,7 @@ namespace GetSanger.ViewModels.chat
         #region Constructor
         public ChatPageViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -152,7 +152,7 @@ namespace GetSanger.ViewModels.chat
             }
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             SendMessageCommand = new Command(sendMessage);
             MessageAppearingCommand = new Command(messageAppearing);

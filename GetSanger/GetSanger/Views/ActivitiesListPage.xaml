@@ -55,6 +55,7 @@
                         <Picker HorizontalOptions="FillAndExpand"
                                 HorizontalTextAlignment="Center"
                                 SelectedIndex="{Binding SelectedTimeFilterIndex, Mode=TwoWay}"
+                                Title="Time"
                                 ItemsSource="{Binding TimeFilterList}" 
                                 Margin="10, 5">
                             <Picker.Behaviors>
@@ -65,6 +66,7 @@
                         <Picker HorizontalOptions="FillAndExpand"
                                 HorizontalTextAlignment="Center"
                                 SelectedIndex="{Binding SelectedCategoryFilterIndex, Mode=TwoWay}"
+                                Title="Category"
                                 ItemsSource="{Binding CategoriesFilterList}" 
                                 Margin="10, 5">
                             <Picker.Behaviors>
@@ -75,6 +77,7 @@
                         <Picker HorizontalOptions="FillAndExpand"
                                 HorizontalTextAlignment="Center"
                                 SelectedIndex="{Binding SelectedStatusFilterIndex, Mode=TwoWay}"
+                                Title="Status"
                                 ItemsSource="{Binding StatusFilterList}" 
                                 Margin="10, 5">
                             <Picker.Behaviors>

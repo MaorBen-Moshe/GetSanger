@@ -78,7 +78,7 @@ namespace GetSanger.ViewModels
 
         public ViewJobOfferViewModel()
         {
-            setCommands();
+            SetCommands();
         }
 
         #endregion
@@ -95,7 +95,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             ProfileCommand = new Command(moveProfile);
         }

@@ -42,7 +42,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ActivitiesListViewModel()
         {
-            setCommands();
+            SetCommands();
             StatusFilterList = typeof(eActivityStatus).GetListOfEnumNames().ToList();
             StatusFilterList.Insert(0, k_All);
         }
@@ -55,9 +55,6 @@ namespace GetSanger.ViewModels
             try
             {
                 r_CrashlyticsService.LogPageEntrance(nameof(ActivitiesListViewModel));
-                SelectedStatusFilterIndex = 0;
-                SelectedCategoryFilterIndex = 0;
-                SelectedTimeFilterIndex = 0;
                 setActivities();
             }
             catch (Exception e)
@@ -68,14 +65,21 @@ namespace GetSanger.ViewModels
 
         public override void Disappearing()
         {
+            setFilterIndices();
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
-            base.setCommands();
+            base.SetCommands();
             ConfirmActivityCommand = new Command(confirmActivity);
             RejectActivityCommand = new Command(rejectActivity);
             SelectedActivityCommand = new Command(selectedActivity);
+        }
+
+        protected override void setFilterIndices()
+        {
+            base.setFilterIndices();
+            SelectedStatusFilterIndex = 0;
         }
 
         protected async override void filterSelected(object i_Param)
@@ -85,48 +89,29 @@ namespace GetSanger.ViewModels
                 eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
                 if(SelectedStatusFilterIndex == 0) // all status
                 {
-                    if (category.Equals(eCategory.All))
-                    {
-                        FilteredCollection = new ObservableCollection<Activity>(AllCollection);
-                    }
-                    else
-                    {
-                        FilteredCollection = new ObservableCollection<Activity>(
-                            from activity in AllCollection
-                            where activity.JobDetails.Category.Equals(category)
-                            select activity
-                            );
-                    }
+                    filterByCategory(activity => activity.JobDetails.Category.Equals(category));
                 }
                 else
                 {
                     eActivityStatus status = (eActivityStatus)Enum.Parse(typeof(eActivityStatus), StatusFilterList[SelectedStatusFilterIndex]);
+                    Func<Activity, bool> predicate;
                     if (category.Equals(eCategory.All))
                     {
-                        FilteredCollection = new ObservableCollection<Activity>(
-                            from activity in AllCollection
-                            where activity.Status.Equals(status)
-                            select activity
-                            );
+                        predicate = activity => activity.Status.Equals(status);
                     }
                     else
                     {
-                        FilteredCollection = new ObservableCollection<Activity>(
+                        predicate = activity => activity.JobDetails.Category.Equals(category) && activity.Status.Equals(status);
+                    }
+
+                    FilteredCollection = new ObservableCollection<Activity>(
                             from activity in AllCollection
-                            where activity.JobDetails.Category.Equals(category) && activity.Status.Equals(status)
+                            where predicate.Invoke(activity)
                             select activity
                             );
-                    }
                 }
 
-                if (TimeFilterList[SelectedTimeFilterIndex].Equals(k_Newest))
-                {
-                    FilteredCollection = new ObservableCollection<Activity>(FilteredCollection.OrderByDescending(activity => activity.JobDetails.Date));
-                }
-                else
-                {
-                    FilteredCollection = new ObservableCollection<Activity>(FilteredCollection.OrderBy(activity => activity.JobDetails.Date));
-                }
+                filterByTIme(activity => activity.JobDetails.Date);
             }
             catch (Exception e)
             {
@@ -257,10 +242,11 @@ namespace GetSanger.ViewModels
                 activities = activities.Where(activity => activity.Status.Equals(eActivityStatus.Pending) == false).ToList();
             }
 
-            AllCollection = new ObservableCollection<Activity>(activities);
+            AllCollection = new ObservableCollection<Activity>(activities.OrderByDescending(activity => activity.JobDetails.Date));
             FilteredCollection = new ObservableCollection<Activity>(AllCollection);
             SearchCollection = new ObservableCollection<Activity>(AllCollection);
             IsVisibleViewList = AllCollection.Count > 0;
+            setFilterIndices();
         }
         #endregion
     }

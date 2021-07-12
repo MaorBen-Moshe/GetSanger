@@ -75,7 +75,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public MapViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -109,7 +109,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             SearchCommand = new Command(searchCom);
             MapClicked = new Command(mapClickedHelper);

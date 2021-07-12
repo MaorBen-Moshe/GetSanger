@@ -40,7 +40,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public JobOffersViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -49,18 +49,17 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             r_CrashlyticsService.LogPageEntrance(nameof(JobOffersViewModel));
-            SelectedCategoryFilterIndex = 0;
-            SelectedTimeFilterIndex = 0;
             setJobOffers();
         }
 
         public override void Disappearing()
         {
+            setFilterIndices();
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
-            base.setCommands();
+            base.SetCommands();
             ConfirmJobOfferCommand = new Command(confirmJobOffer);
             SelectedJobOfferCommand = new Command(selectedJobOffer);
             DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
@@ -100,27 +99,8 @@ namespace GetSanger.ViewModels
             try
             {
                 eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
-                if (category.Equals(eCategory.All))
-                {
-                    FilteredCollection = new ObservableCollection<JobOffer>(AllCollection);
-                }
-                else
-                {
-                    FilteredCollection = new ObservableCollection<JobOffer>(
-                        from job in AllCollection
-                        where job.Category.Equals(category)
-                        select job
-                        );
-                }
-
-                if (TimeFilterList[SelectedTimeFilterIndex].Equals(k_Newest))
-                {
-                    FilteredCollection = new ObservableCollection<JobOffer>(FilteredCollection.OrderByDescending(job => job.Date));
-                }
-                else
-                {
-                    FilteredCollection = new ObservableCollection<JobOffer>(FilteredCollection.OrderBy(job => job.Date));
-                }
+                filterByCategory(job => job.Category.Equals(category));
+                filterByTIme(job => job.Date);
             }
             catch(Exception e)
             {
@@ -219,6 +199,7 @@ namespace GetSanger.ViewModels
                 FilteredCollection = new ObservableCollection<JobOffer>(AllCollection);
                 SearchCollection = new ObservableCollection<JobOffer>(AllCollection);
                 IsVisibleViewList = AllCollection.Count > 0;
+                setFilterIndices();
             }
             catch (Exception e)
             {

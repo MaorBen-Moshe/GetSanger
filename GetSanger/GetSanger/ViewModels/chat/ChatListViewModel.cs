@@ -31,7 +31,7 @@ namespace GetSanger.ViewModels.chat
 
         public ChatListViewModel()
         {
-            setCommands();
+            SetCommands();
         }
 
         #endregion
@@ -48,9 +48,9 @@ namespace GetSanger.ViewModels.chat
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
-            base.setCommands();
+            base.SetCommands();
             UserSelectedCommand = new Command(userSelected);
         }
 

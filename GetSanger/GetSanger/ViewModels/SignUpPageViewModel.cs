@@ -46,7 +46,7 @@ namespace GetSanger.ViewModels
 
         public SignUpPageViewModel()
         {
-            setCommands();
+            SetCommands();
             GenderItems = typeof(GenderType).GetListOfEnumNames();
             CategoriesItems = new ObservableCollection<CategoryCell>(typeof(eCategory).GetListOfEnumNames()
                 .Select(name => new CategoryCell
@@ -156,9 +156,9 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
-            base.setCommands();
+            base.SetCommands();
             EmailPartCommand = new Command(emailPartClicked);
             PersonalDetailPartCommand = new Command(personalDetailPartClicked);
             CategoriesPartCommand = new Command(categoriesPartClicked);

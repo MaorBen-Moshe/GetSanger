@@ -44,7 +44,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public SettingViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -75,7 +75,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             ToggledCommand = new Command(toggled);
             BackButtonCommand = new Command(backButtonBehavior);

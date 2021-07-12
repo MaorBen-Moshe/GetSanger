@@ -40,7 +40,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public LinkSocialViewModel()
         {
-            setCommands();
+            SetCommands();
             eSocialProvider[] providers = (eSocialProvider[])Enum.GetValues(typeof(eSocialProvider));
             Socials = providers.Select(provider => new SocialProviderCell
             {
@@ -60,7 +60,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             LinkSocialCommand = new Command(linkSocial);
         }

@@ -68,7 +68,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ProfileViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -85,7 +85,7 @@ namespace GetSanger.ViewModels
             CurrentUser = null;
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         { 
             AddRatingCommand = new Command(addRating);
             ReportUserCommand = new Command(reportUser);
@@ -164,7 +164,8 @@ namespace GetSanger.ViewModels
                     {
                         ReporterId = AppManager.Instance.ConnectedUser.UserId,
                         ReportedId = CurrentUser.UserId,
-                        Reason = option
+                        Reason = option,
+                        TimeReportCreated = DateTime.Now
                     };
 
                     string answer = await r_PageService.DisplayPrompt("Write your details:", "please add info to contact with you", "text here..."); 

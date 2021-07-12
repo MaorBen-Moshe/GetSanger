@@ -41,7 +41,7 @@ namespace GetSanger.ViewModels
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
         }
 

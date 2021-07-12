@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System;
 
 namespace GetSanger.ViewModels
 {
@@ -97,7 +98,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ListBaseViewModel()
         {
-            setCommands();
+            SetCommands();
             SelectedItem = null;
             CategoriesFilterList = typeof(eCategory).GetListOfEnumNames().ToList();
             TimeFilterList = new List<string>
@@ -105,18 +106,55 @@ namespace GetSanger.ViewModels
                 k_Newest,
                 k_Oldest
             };
-            SelectedCategoryFilterIndex = 0;
-            SelectedTimeFilterIndex = 0;
+
+            setFilterIndices();
         }
         #endregion
 
         #region Methods
         protected abstract void refreshList();
+
         protected abstract void filterSelected(object i_Param);
-        protected override void setCommands()
+
+        protected override void SetCommands()
         {
             RefreshingCommand = new Command(refreshList);
             FilterSelectedCommand = new Command(filterSelected);
+        }
+
+        protected virtual void setFilterIndices()
+        {
+            SelectedCategoryFilterIndex = 0;
+            SelectedTimeFilterIndex = 0;
+        }
+
+        protected void filterByTIme(Func<T, DateTime> lambda)
+        {
+            if (TimeFilterList[SelectedTimeFilterIndex].Equals(k_Newest))
+            {
+                FilteredCollection = new ObservableCollection<T>(FilteredCollection.OrderByDescending(lambda));
+            }
+            else
+            {
+                FilteredCollection = new ObservableCollection<T>(FilteredCollection.OrderBy(lambda));
+            }
+        }
+
+        protected void filterByCategory(Func<T, bool> predicate)
+        {
+            eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
+            if (category.Equals(eCategory.All))
+            {
+                FilteredCollection = new ObservableCollection<T>(AllCollection);
+            }
+            else
+            {
+                FilteredCollection = new ObservableCollection<T>(
+                    from current in AllCollection
+                    where predicate.Invoke(current)
+                    select current
+                    );
+            }
         }
         #endregion
     }

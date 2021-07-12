@@ -102,7 +102,7 @@ namespace GetSanger.ViewModels
         public ActivityViewModel()
         {
             r_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -136,7 +136,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             ProfileCommand = new Command(profilePage);
             EndActivityCommand = new Command(endActivity);

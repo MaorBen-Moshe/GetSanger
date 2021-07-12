@@ -42,7 +42,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ChangePasswordViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -56,7 +56,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             ChangePasswordCommand = new Command(changePassword);
         }

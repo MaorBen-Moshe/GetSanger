@@ -17,5 +17,7 @@
         public string ReportMessage { get; set; }
 
         public Status Status { get; set; }
+
+        public System.DateTime TimeReportCreated { get; set; }
     }
 }

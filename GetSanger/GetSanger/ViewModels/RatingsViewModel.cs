@@ -41,7 +41,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public RatingsViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -59,6 +59,7 @@ namespace GetSanger.ViewModels
 
         public override void Disappearing()
         {
+            setFilterIndices();
         }
 
         protected override void refreshList()
@@ -67,10 +68,15 @@ namespace GetSanger.ViewModels
             IsListRefreshing = false;
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
-            base.setCommands();
+            base.SetCommands();
             SelectedRatingCommand = new Command(selectedRating);
+        }
+
+        protected override void filterSelected(object i_Param)
+        {
+            filterByTIme(rating => rating.TimeAdded);
         }
 
         private async void selectedRating(object i_Param)
@@ -98,6 +104,7 @@ namespace GetSanger.ViewModels
             {
                 List<Rating> ratingLst = await RunTaskWhileLoading(FireStoreHelper.GetRatings(Id));
                 AllCollection = new ObservableCollection<Rating>(ratingLst.OrderByDescending(rating => rating.TimeAdded));
+                FilteredCollection = new ObservableCollection<Rating>(AllCollection);
                 SearchCollection = new ObservableCollection<Rating>(AllCollection);
                 if (IsMyRatings)
                 {
@@ -105,16 +112,12 @@ namespace GetSanger.ViewModels
                 }
 
                 IsVisibleViewList = AllCollection.Count > 0;
+                setFilterIndices();
             }
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:setRatings", "Error", e.Message);
             }
-        }
-
-        protected override void filterSelected(object i_Param)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

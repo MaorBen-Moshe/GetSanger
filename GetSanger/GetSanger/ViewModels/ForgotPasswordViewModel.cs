@@ -18,7 +18,7 @@ namespace GetSanger.ViewModels
 
         public ForgotPasswordViewModel()
         {
-            setCommands();
+            SetCommands();
         }
 
         #endregion
@@ -50,9 +50,9 @@ namespace GetSanger.ViewModels
         {
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
-            base.setCommands();
+            base.SetCommands();
             SendCommand = new Command(this.SendClicked);
         }
 

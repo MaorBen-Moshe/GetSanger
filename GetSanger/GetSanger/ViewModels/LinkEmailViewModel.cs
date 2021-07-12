@@ -45,7 +45,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         public LinkEmailViewModel()
         {
-            setCommands();
+            SetCommands();
         }
         #endregion
 
@@ -60,7 +60,7 @@ namespace GetSanger.ViewModels
             Email = Password = null;
         }
 
-        protected override void setCommands()
+        protected override void SetCommands()
         {
             LinkCommand = new Command(link);
         }

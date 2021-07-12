@@ -104,7 +104,7 @@ namespace GetSanger.ViewModels
 
         public abstract void Appearing();
         public abstract void Disappearing();
-        protected abstract void setCommands();
+        protected abstract void SetCommands();
         #endregion
     }
 }
