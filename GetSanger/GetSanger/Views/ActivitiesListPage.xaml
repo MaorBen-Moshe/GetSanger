@@ -44,49 +44,22 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Frame HorizontalOptions="FillAndExpand"
-                       IsVisible="{Binding IsVisibleViewList}"
-                       VerticalOptions="Start"
-                       BorderColor="Red"
-                       Padding="10"
-                       Margin="10">
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="Filter by:" VerticalOptions="CenterAndExpand"/>
-                        <Picker HorizontalOptions="FillAndExpand"
-                                HorizontalTextAlignment="Center"
-                                SelectedIndex="{Binding SelectedTimeFilterIndex, Mode=TwoWay}"
-                                Title="Time"
-                                ItemsSource="{Binding TimeFilterList}" 
-                                Margin="10, 5">
-                            <Picker.Behaviors>
-                                <behaviors:EventToCommandBehavior Command="{Binding FilterSelectedCommand}"
-                                                          EventName="SelectedIndexChanged"/>
-                            </Picker.Behaviors>
-                        </Picker>
-                        <Picker HorizontalOptions="FillAndExpand"
-                                HorizontalTextAlignment="Center"
-                                SelectedIndex="{Binding SelectedCategoryFilterIndex, Mode=TwoWay}"
-                                Title="Category"
-                                ItemsSource="{Binding CategoriesFilterList}" 
-                                Margin="10, 5">
-                            <Picker.Behaviors>
-                                <behaviors:EventToCommandBehavior Command="{Binding FilterSelectedCommand}"
-                                                          EventName="SelectedIndexChanged"/>
-                            </Picker.Behaviors>
-                        </Picker>
-                        <Picker HorizontalOptions="FillAndExpand"
-                                HorizontalTextAlignment="Center"
-                                SelectedIndex="{Binding SelectedStatusFilterIndex, Mode=TwoWay}"
-                                Title="Status"
-                                ItemsSource="{Binding StatusFilterList}" 
-                                Margin="10, 5">
-                            <Picker.Behaviors>
-                                <behaviors:EventToCommandBehavior Command="{Binding FilterSelectedCommand}"
-                                                          EventName="SelectedIndexChanged"/>
-                            </Picker.Behaviors>
-                        </Picker>
-                    </StackLayout>
-                </Frame>
+                <controls:FilterControl HorizontalOptions="FillAndExpand"
+                                        IsVisible="{Binding IsVisibleViewList}"
+                                        VerticalOptions="Start"
+                                        Margin="10"
+                                        TimeSelectedIndex="{Binding SelectedTimeFilterIndex, Mode=TwoWay}"
+                                        TimeFilterSource="{Binding TimeFilterList}" 
+                                        TimeFilterCommand="{Binding FilterSelectedCommand}"
+                                        IsCategoryFilterEnabled="True"
+                                        CategorySelectedIndex="{Binding SelectedCategoryFilterIndex, Mode=TwoWay}"
+                                        CategoryFilterSource="{Binding CategoriesFilterList}" 
+                                        CategoryFilterCommand="{Binding FilterSelectedCommand}" 
+                                        IsStatusFilterEnabled="True"
+                                        StatusSelectedIndex="{Binding SelectedStatusFilterIndex, Mode=TwoWay}"
+                                        StatusFilterSource="{Binding StatusFilterList}"
+                                        StatusFilterCommand="{Binding FilterSelectedCommand}"/>
+                
                 <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding FilteredCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
