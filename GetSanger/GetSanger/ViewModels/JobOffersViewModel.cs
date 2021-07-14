@@ -49,6 +49,7 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(JobOffersViewModel));
+            Notes = null;
             setJobOffers();
         }
 
@@ -85,8 +86,6 @@ namespace GetSanger.ViewModels
                 AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
                 await sr_PageService.DisplayAlert("Note", "Your request has been sent!");
                 setJobOffers();
-                CurrentConfirmedJobOffer = null;
-                Notes = null;
                 await PopupNavigation.Instance.PopAsync();
             }
             catch(Exception e)

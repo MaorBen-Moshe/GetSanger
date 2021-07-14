@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Interfaces;
+using Rg.Plugins.Popup.Pages;
 
 namespace GetSanger.Extensions
 {
@@ -20,15 +21,24 @@ namespace GetSanger.Extensions
 
 
         public static async Task LogAndDisplayError(this Exception i_Exception, string i_NameOfClassCrashes = null, string i_Header = null,
-            string i_CustomMessage = null)
+            string i_CustomMessage = null, bool i_IsAcceptDisplay = true)
         {
             sr_CrashesService.SetUserId(AppManager.Instance.ConnectedUser != null ? AppManager.Instance.ConnectedUser.UserId : "0");
             sr_CrashesService.AddCustomLogMessage($"Crashed in class: {i_NameOfClassCrashes}");
             sr_CrashesService.RecordException(i_Exception);
             sr_CrashesService.SetCustomKey("ClassName", i_NameOfClassCrashes);
             sr_CrashesService.SetCustomKey("eAppMode", AppManager.Instance.CurrentMode.ToString());
+            PopupPage page;
+            if (i_IsAcceptDisplay)
+            {
+                page = new DisplayAlertPage(i_Header, i_CustomMessage);
+            }
+            else
+            {
+                page = new DisplayAlertPage(i_Header, i_CustomMessage, null);
+            }
 
-            await PopupNavigation.Instance.PushAsync(new DisplayAlertPage(i_Header, i_CustomMessage));
+            await PopupNavigation.Instance.PushAsync(page);
         }
 
         private static string GetErrorLogString(Exception i_Exception)

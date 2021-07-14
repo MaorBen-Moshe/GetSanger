@@ -238,7 +238,7 @@ namespace GetSanger.Services
             Page currentPage = Shell.Current.CurrentPage;
             if (currentPage is {BindingContext: ActivityViewModel vm} && vm.ConnectedActivity.ActivityId == activity.ActivityId)
             {
-                // execute vm refresh command
+                vm.ConnectedActivity = activity;
             }
             else if (currentPage is { BindingContext: ActivitiesListViewModel acVm })
             {
@@ -286,20 +286,29 @@ namespace GetSanger.Services
                 await navigation.NavigateTo($"//jobOffers/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}");
             });
 
-            if (i_Title != null)
+            IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+            Page currentPage = Shell.Current.CurrentPage;
+            if (currentPage is { BindingContext: ViewJobOfferViewModel vm } && vm.Job.JobId == job.JobId)
             {
-                IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
-                await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) => 
-                {
-                    if (choice)
-                    {
-                        action.Invoke();
-                    }
-                });
+                vm.Job = job;
+            }
+            else if (currentPage is { BindingContext: JobOffersViewModel jobVm } && AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
+            {
+                await pageServices.DisplayAlert("Note", "New Job added to the top of the list");
+                jobVm.RefreshingCommand.Execute(null);
             }
             else
             {
-                action.Invoke();
+                if (i_Title != null)
+                {
+                    await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) =>
+                    {
+                        if (choice)
+                        {
+                            action.Invoke();
+                        }
+                    });
+                }
             }
         }
 
