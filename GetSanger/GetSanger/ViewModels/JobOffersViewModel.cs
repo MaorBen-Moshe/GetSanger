@@ -48,7 +48,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(JobOffersViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(JobOffersViewModel));
             setJobOffers();
         }
 
@@ -83,7 +83,7 @@ namespace GetSanger.ViewModels
                 };
 
                 AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
-                await r_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
+                await sr_PageService.DisplayAlert("Note", "Your request has been sent!", "Thanks");
                 setJobOffers();
                 CurrentConfirmedJobOffer = null;
                 await PopupNavigation.Instance.PopAsync();
@@ -130,7 +130,7 @@ namespace GetSanger.ViewModels
             {
                 if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
                 {
-                    await r_PageService.DisplayAlert("Warning",
+                    await sr_PageService.DisplayAlert("Warning",
                                                      "Are you sure?",
                                                      "Yes",
                                                      "No",
@@ -166,7 +166,7 @@ namespace GetSanger.ViewModels
                 if(i_Param is JobOffer current)
                 {
                     string json = ObjectJsonSerializer.SerializeForPage(current);
-                    await r_NavigationService.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={json}");
+                    await sr_NavigationService.NavigateTo(ShellRoutes.ViewJobOffer + $"?jobOffer={json}");
                 }
             }
             catch (Exception e)

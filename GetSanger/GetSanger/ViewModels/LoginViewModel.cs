@@ -59,7 +59,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(LoginViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(LoginViewModel));
         }
 
         public override void Disappearing()
@@ -78,25 +78,25 @@ namespace GetSanger.ViewModels
         {
             if (Email == null || Password == null)
             {
-                await r_PageService.DisplayAlert("Error", "Please enter valid values.", "OK");
+                await sr_PageService.DisplayAlert("Error", "Please enter valid values.", "OK");
                 return;
             }
 
             try
             {
-                r_LoadingService.ShowLoadingPage();
+                sr_LoadingService.ShowLoadingPage();
                 await AuthHelper.LoginViaEmail(Email, Password);
-                bool verified = await r_LoginServices.LoginUser();
+                bool verified = await sr_LoginServices.LoginUser();
                 if (!verified)
                 {
-                    await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                    await sr_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
                 }
 
-                r_LoadingService.HideLoadingPage();
+                sr_LoadingService.HideLoadingPage();
             }
             catch (Exception e)
             {
-                r_LoadingService.HideLoadingPage();
+                sr_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(LoginViewModel)}:LoginClicked", "Error", e.Message);
             }
         }
@@ -105,7 +105,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await r_NavigationService.NavigateTo(ShellRoutes.SignupEmail);
+                await sr_NavigationService.NavigateTo(ShellRoutes.SignupEmail);
             }
             catch (Exception e)
             {
@@ -138,10 +138,10 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    bool verified = await RunTaskWhileLoading(r_SocialService.SocialLogin(provider));
+                    bool verified = await RunTaskWhileLoading(sr_SocialService.SocialLogin(provider));
                     if (!verified)
                     {
-                        await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                        await sr_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
                     }
                 }
                 catch(Exception e)

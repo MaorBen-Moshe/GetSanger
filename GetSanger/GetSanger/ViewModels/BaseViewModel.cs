@@ -11,42 +11,24 @@ namespace GetSanger.ViewModels
     public abstract class BaseViewModel : PropertySetter
     {
         #region Fields
-        private bool m_IsLoading;
-        private bool m_IsNotLoading;
         private bool m_IsEnabledSendBtn;
-        private string m_DefaultBackUri = "..";
-        private readonly IRunTasks r_RunTasks;
-        protected readonly IPageService r_PageService;
-        protected readonly IDialService r_DialService;
-        protected readonly IPhotoDisplay r_PhotoDisplay;
-        protected readonly IUiPush r_PushService;
-        protected readonly Interfaces.INavigation r_NavigationService;
-        protected readonly IStorageHelper r_StorageHelper;
-        protected readonly ILogin r_LoginServices;
-        protected readonly ILocation r_LocationService;
-        protected readonly ISocialAdapter r_SocialService;
-        protected readonly ILoadingDisplay r_LoadingService;
-        protected readonly ICrashlyticsDisplay r_CrashlyticsService;
-        protected readonly ITrip r_TripHelper;
+        private const string k_DefaultBackUri = "..";
+        private static readonly IRunTasks sr_RunTasks;
+        protected static readonly IPageService sr_PageService;
+        protected static readonly IDialService sr_DialService;
+        protected static readonly IPhotoDisplay sr_PhotoDisplay;
+        protected static readonly IUiPush sr_PushService;
+        protected static readonly Interfaces.INavigation sr_NavigationService;
+        protected static readonly IStorageHelper sr_StorageHelper;
+        protected static readonly ILogin sr_LoginServices;
+        protected static readonly ILocation sr_LocationService;
+        protected static readonly ISocialAdapter sr_SocialService;
+        protected static readonly ILoadingDisplay sr_LoadingService;
+        protected static readonly ICrashlyticsDisplay sr_CrashlyticsService;
+        protected static readonly ITrip sr_TripHelper;
         #endregion
 
         #region Properties
-
-        protected bool IsLoading
-        {
-            set
-            {
-                SetStructProperty(ref m_IsLoading, value);
-                IsNotLoading = !value;
-            }
-            get => m_IsLoading;
-        }
-
-        protected bool IsNotLoading
-        {
-            set => SetStructProperty(ref m_IsNotLoading, value);
-            get => m_IsNotLoading;
-        }
 
         public bool IsEnabledsendBtn
         {
@@ -59,22 +41,26 @@ namespace GetSanger.ViewModels
         #region Constructor
         protected BaseViewModel()
         {
-            r_PageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
-            r_DialService = AppManager.Instance.Services.GetService(typeof(DialServices)) as DialServices;
-            r_LocationService = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
-            r_TripHelper = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
-            r_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
-            r_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            r_StorageHelper = AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
-            r_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
-            r_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
-            r_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
-            r_RunTasks = AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
-            r_LoadingService = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
-            r_CrashlyticsService = AppManager.Instance.Services.GetService(typeof(CrashlyticsService)) as CrashlyticsService;
-            
             IsEnabledsendBtn = false;
         }
+
+        static BaseViewModel()
+        {
+            sr_PageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+            sr_DialService = AppManager.Instance.Services.GetService(typeof(DialServices)) as DialServices;
+            sr_LocationService = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            sr_TripHelper = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            sr_PushService = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
+            sr_NavigationService = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
+            sr_StorageHelper = AppManager.Instance.Services.GetService(typeof(StorageHelper)) as StorageHelper;
+            sr_LoginServices = AppManager.Instance.Services.GetService(typeof(LoginServices)) as LoginServices;
+            sr_PhotoDisplay = AppManager.Instance.Services.GetService(typeof(PhotoDisplayService)) as PhotoDisplayService;
+            sr_SocialService = AppManager.Instance.Services.GetService(typeof(SocialAdapterService)) as SocialAdapterService;
+            sr_RunTasks = AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
+            sr_LoadingService = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
+            sr_CrashlyticsService = AppManager.Instance.Services.GetService(typeof(CrashlyticsService)) as CrashlyticsService;
+        }
+
         #endregion
 
         #region Methods
@@ -82,7 +68,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await Shell.Current.GoToAsync(m_DefaultBackUri);
+                await Shell.Current.GoToAsync(k_DefaultBackUri);
             }
             catch (Exception e)
             {
@@ -93,13 +79,13 @@ namespace GetSanger.ViewModels
         public Task RunTaskWhileLoading(Task i_InnerTask, string i_OptionalLoadingText = "Loading...")
         {
             var loading = new LoadingPage(i_OptionalLoadingText);
-            return r_RunTasks.RunTaskWhileLoading(i_InnerTask, loading);
+            return sr_RunTasks.RunTaskWhileLoading(i_InnerTask, loading);
         }
 
         public Task<T> RunTaskWhileLoading<T>(Task<T> i_InnerTask, string i_OptionalLoadingText = "Loading...")
         {
             var loading = new LoadingPage(i_OptionalLoadingText);
-            return r_RunTasks.RunTaskWhileLoading<T>(i_InnerTask, loading);
+            return sr_RunTasks.RunTaskWhileLoading<T>(i_InnerTask, loading);
         }
 
         public abstract void Appearing();

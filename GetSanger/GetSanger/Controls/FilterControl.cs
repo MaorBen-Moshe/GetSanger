@@ -1,5 +1,4 @@
 ﻿using GetSanger.Behaviors;
-using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -8,6 +7,7 @@ namespace GetSanger.Controls
 {
     public class FilterControl : Frame
     {
+        #region Fields
         private const string k_Filter = "Filter by:";
         private const string k_PickerEventName = "SelectedIndexChanged";
         private StackLayout m_Layout;
@@ -15,6 +15,7 @@ namespace GetSanger.Controls
         private Picker m_TimePicker;
         private Picker m_CategoryPicker;
         private Picker m_StatusPicker;
+        #endregion
 
         #region TimeBindings
         public List<string> TimeFilterSource
@@ -58,20 +59,13 @@ namespace GetSanger.Controls
                                                          defaultValue: null,
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
-                                                         propertyChanged: TimeFilterCommandPropertyChanged);
+                                                         propertyChanged: (bindable, oldValue, newValue) => {
+                                                             if (bindable is FilterControl filter)
+                                                             {
+                                                                 filter.setCommand(filter.m_TimePicker, filter.TimeFilterCommand);
+                                                             }
+                                                         });
 
-        private static void TimeFilterCommandPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            if(bindable is FilterControl filter)
-            {
-                filter.m_TimePicker.Behaviors.Clear();
-                filter.m_TimePicker.Behaviors.Add(new EventToCommandBehavior
-                {
-                    Command = filter.TimeFilterCommand,
-                    EventName = k_PickerEventName
-                });
-            }
-        }
         #endregion
 
         #region CategoryBindings
@@ -117,20 +111,12 @@ namespace GetSanger.Controls
                                                          defaultValue: null,
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
-                                                         propertyChanged: CategoryFilterCommandPropertyChanged);
-
-        private static void CategoryFilterCommandPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            if (bindable is FilterControl filter)
-            {
-                filter.m_CategoryPicker.Behaviors.Clear();
-                filter.m_CategoryPicker.Behaviors.Add(new EventToCommandBehavior
-                {
-                    Command = filter.CategoryFilterCommand,
-                    EventName = k_PickerEventName
-                });
-            }
-        }
+                                                         propertyChanged: (bindable, oldValue, newValue) => {
+                                                             if (bindable is FilterControl filter)
+                                                             {
+                                                                 filter.setCommand(filter.m_CategoryPicker, filter.CategoryFilterCommand);
+                                                             }
+                                                         });
 
         #endregion
 
@@ -177,24 +163,16 @@ namespace GetSanger.Controls
                                                          defaultValue: null,
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
-                                                         propertyChanged: StatusFilterCommandPropertyChanged);
-
-        private static void StatusFilterCommandPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            if (bindable is FilterControl filter)
-            {
-                filter.m_StatusPicker.Behaviors.Clear();
-                filter.m_StatusPicker.Behaviors.Add(new EventToCommandBehavior
-                {
-                    Command = filter.StatusFilterCommand,
-                    EventName = k_PickerEventName
-                });
-            }
-        }
+                                                         propertyChanged: (bindable, oldValue, newValue) => {
+                                                             if (bindable is FilterControl filter)
+                                                             {
+                                                                 filter.setCommand(filter.m_StatusPicker, filter.StatusFilterCommand);
+                                                             }
+                                                         });
 
         #endregion
 
-        #region Generic 
+        #region GenericBindings 
 
         public bool IsCategoryFilterEnabled
         {
@@ -209,13 +187,7 @@ namespace GetSanger.Controls
                                                          defaultValue: false,
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
-                                                         propertyChanged: (bindable, oldValue, newValue) => {
-                                                             if (bindable is FilterControl filterControl)
-                                                             {
-                                                                 filterControl.setLayout();
-                                                             }
-                                                         });
-
+                                                         propertyChanged: GenericPropertyChanged);
 
         public bool IsStatusFilterEnabled
         {
@@ -230,22 +202,26 @@ namespace GetSanger.Controls
                                                          defaultValue: false,
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
-                                                         propertyChanged: (bindable, oldValue, newValue) =>
-                                                         {
-                                                             if (bindable is FilterControl filterControl)
-                                                             {
-                                                                 filterControl.setLayout();
-                                                             }
-                                                         });
+                                                         propertyChanged: GenericPropertyChanged);
+
+        private static void GenericPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is FilterControl filterControl)
+            {
+                filterControl.setLayout();
+            }
+        }
 
         #endregion
 
-
+        #region Constructor
         public FilterControl()
         {
             setView(); 
         }
+        #endregion
 
+        #region Methods
         private void setView()
         {
             BorderColor = Color.Red;
@@ -266,9 +242,9 @@ namespace GetSanger.Controls
             m_CategoryPicker = createPicker("Category");
             m_StatusPicker = createPicker("Status");
 
-            setPickerBindings(ref m_TimePicker, nameof(TimeFilterSource), nameof(TimeSelectedIndex), TimeFilterCommand);
-            setPickerBindings(ref m_CategoryPicker, nameof(CategoryFilterSource), nameof(CategorySelectedIndex), CategoryFilterCommand);
-            setPickerBindings(ref m_StatusPicker, nameof(StatusFilterSource), nameof(StatusSelectedIndex), StatusFilterCommand);
+            setPickerBindings(m_TimePicker, nameof(TimeFilterSource), nameof(TimeSelectedIndex), TimeFilterCommand);
+            setPickerBindings(m_CategoryPicker, nameof(CategoryFilterSource), nameof(CategorySelectedIndex), CategoryFilterCommand);
+            setPickerBindings(m_StatusPicker, nameof(StatusFilterSource), nameof(StatusSelectedIndex), StatusFilterCommand);
 
             setLayout();
         }
@@ -284,10 +260,16 @@ namespace GetSanger.Controls
             };
         }
 
-        private void setPickerBindings(ref Picker i_Picker, string i_Source, string i_Index, ICommand i_Command)
+        private void setPickerBindings(Picker i_Picker, string i_Source, string i_Index, ICommand i_Command)
         {
             i_Picker.SetBinding(Picker.ItemsSourceProperty, new Binding(i_Source, source:this));
             i_Picker.SetBinding(Picker.SelectedIndexProperty, new Binding(i_Index, source: this));
+            setCommand(i_Picker, i_Command);
+        }
+
+        private void setCommand(Picker i_Picker, ICommand i_Command)
+        {
+            i_Picker.Behaviors.Clear();
             i_Picker.Behaviors.Add(new EventToCommandBehavior
             {
                 Command = i_Command,
@@ -313,5 +295,7 @@ namespace GetSanger.Controls
 
             Content = m_Layout;
         }
+
+        #endregion
     }
 }

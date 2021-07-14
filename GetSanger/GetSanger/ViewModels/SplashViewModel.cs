@@ -25,7 +25,7 @@ namespace GetSanger.ViewModels
                 }
                 else
                 {
-                    await r_PageService.DisplayAlert("ERROR", "No Connection.", "Try again");
+                    await sr_PageService.DisplayAlert("ERROR", "No Connection.", "Try again");
                 }
             }
             catch (Exception e)
@@ -57,7 +57,7 @@ namespace GetSanger.ViewModels
         private Task login()
         {
             AppManager.Instance.Services.SetDependencies();
-            return r_LoginServices.TryAutoLogin();
+            return sr_LoginServices.TryAutoLogin();
         }
     }
 }

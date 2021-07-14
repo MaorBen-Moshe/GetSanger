@@ -51,7 +51,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(SettingViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(SettingViewModel));
             CategoriesItems = new ObservableCollection<CategoryCell>(
             (from
                 category in typeof(eCategory).GetListOfEnumNames()
@@ -86,16 +86,16 @@ namespace GetSanger.ViewModels
             try
             {
                 bool isChanged = false;
-                r_LoadingService.ShowLoadingPage(new LoadingPage("Saving..."));
+                sr_LoadingService.ShowLoadingPage(new LoadingPage("Saving..."));
                 if (m_NewCategoriesSubscribed?.Count > 0)
                 {
                     isChanged = true;
-                    await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray());
+                    await sr_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray());
                 }
                 if (m_NewCategoriesUnsubscribed?.Count > 0)
                 {
                     isChanged = true;
-                    await r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray());
+                    await sr_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray());
                 }
                 if (IsGenericNotificatons != AppManager.Instance.ConnectedUser.IsGenericNotifications)
                 {
@@ -110,12 +110,12 @@ namespace GetSanger.ViewModels
                 }
 
                 m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;
-                r_LoadingService.HideLoadingPage();
+                sr_LoadingService.HideLoadingPage();
                 await GoBack();
             }
             catch(Exception e)
             {
-                r_LoadingService.HideLoadingPage();
+                sr_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(SettingViewModel)}:backButtonBehavior", "Error", e.Message);
             }
         }
@@ -161,11 +161,11 @@ namespace GetSanger.ViewModels
         {
             if (IsGenericNotificatons)
             {
-                await r_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic);
+                await sr_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic);
             }
             else
             {
-                await r_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic);
+                await sr_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, Constants.Constants.GenericNotificationTopic);
             }
         }
 

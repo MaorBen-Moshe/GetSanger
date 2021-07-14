@@ -72,7 +72,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(AccountViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(AccountViewModel));
             initialPage();
         }
 
@@ -112,7 +112,7 @@ namespace GetSanger.ViewModels
                 }
 
                 CurrentUser = AppManager.Instance.ConnectedUser;
-                UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser?.ProfilePictureUri);
+                UserImage = sr_PhotoDisplay.DisplayPicture(CurrentUser?.ProfilePictureUri);
             }
             catch(Exception e)
             {
@@ -126,7 +126,7 @@ namespace GetSanger.ViewModels
             try
             {
                 // do logout
-                await r_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
+                await sr_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
                 AuthHelper.SignOut();
                 AppManager.Instance.RefreshAppManager();
                 Application.Current.MainPage = new AuthShell();
@@ -158,7 +158,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await r_NavigationService.NavigateTo(ShellRoutes.Settings);
+                await sr_NavigationService.NavigateTo(ShellRoutes.Settings);
             }
             catch (Exception e)
             {
@@ -170,7 +170,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await r_NavigationService.NavigateTo(ShellRoutes.EditProfile);
+                await sr_NavigationService.NavigateTo(ShellRoutes.EditProfile);
             }
             catch (Exception e)
             {
@@ -195,7 +195,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
+                await sr_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?isMyRatings={true}&id={AppManager.Instance.ConnectedUser.UserId}");
             }
             catch (Exception e)
             {

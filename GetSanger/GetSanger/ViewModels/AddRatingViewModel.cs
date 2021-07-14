@@ -43,7 +43,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(AddRatingViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(AddRatingViewModel));
             NewRating = new Rating
             {
                 Score = 1
@@ -65,7 +65,7 @@ namespace GetSanger.ViewModels
             {
                 if(NewRating.Description.Length == 0)
                 {
-                    await r_PageService.DisplayAlert("Note", "Please write a description!", "OK");
+                    await sr_PageService.DisplayAlert("Note", "Please write a description!", "OK");
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace GetSanger.ViewModels
                     NewRating.RatingOwnerId = RatedUserId;
                     NewRating.TimeAdded = DateTime.Now;
                     await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
-                    await r_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
+                    await sr_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
                     RatingAddedEvent?.Invoke();
                     await PopupNavigation.Instance.PopAsync();
                 }

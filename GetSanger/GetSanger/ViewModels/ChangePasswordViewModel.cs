@@ -49,7 +49,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ChangePasswordViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(ChangePasswordViewModel));
         }
 
         public override void Disappearing()
@@ -73,13 +73,13 @@ namespace GetSanger.ViewModels
                         if (NewPassword.IsValidPassword())
                         {
                             await RunTaskWhileLoading(AuthHelper.ChangePassword(OldPassword, NewPassword));
-                            await r_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
+                            await sr_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
                             await PopupNavigation.Instance.PopAsync();
                             return;
                         }
                         else
                         {
-                            await r_PageService.DisplayAlert("Note", "Password of at least 6 chars must contain at list: one capital letter, one lower letter, one digit, one special character" , "OK");
+                            await sr_PageService.DisplayAlert("Note", "Password of at least 6 chars must contain at list: one capital letter, one lower letter, one digit, one special character" , "OK");
                         }
                     }
                     catch(Exception e)
@@ -89,12 +89,12 @@ namespace GetSanger.ViewModels
                 }
                 else
                 {
-                    await r_PageService.DisplayAlert("Note", "Please check if you wrote the write confirm password", "OK");
+                    await sr_PageService.DisplayAlert("Note", "Please check if you wrote the write confirm password", "OK");
                 }
             }
             else
             {
-                await r_PageService.DisplayAlert("Error", "You insert wrong current Password. \n Please try again.", "OK");
+                await sr_PageService.DisplayAlert("Error", "You insert wrong current Password. \n Please try again.", "OK");
             }
         }
         #endregion

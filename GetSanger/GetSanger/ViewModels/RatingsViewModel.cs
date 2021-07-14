@@ -49,11 +49,11 @@ namespace GetSanger.ViewModels
 
         public override async void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(RatingsViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(RatingsViewModel));
             setRatings();
             if (IsMyRatings)
             {
-                await r_PageService.DisplayAlert("Note", "Click on rating to move to the writer's profile!", "OK");
+                await sr_PageService.DisplayAlert("Note", "Click on rating to move to the writer's profile!", "OK");
             }
         }
 
@@ -85,7 +85,7 @@ namespace GetSanger.ViewModels
             {
                 if (IsMyRatings && i_Param is Rating rating)
                 {
-                    await r_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={rating.RatingWriterId}");
+                    await sr_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={rating.RatingWriterId}");
                 }
             }
             catch (Exception e)

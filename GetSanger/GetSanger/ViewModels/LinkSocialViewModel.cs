@@ -53,7 +53,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(LinkSocialViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(LinkSocialViewModel));
         }
 
         public override void Disappearing()
@@ -79,14 +79,14 @@ namespace GetSanger.ViewModels
                     }
                     else
                     {
-                        await RunTaskWhileLoading(r_SocialService.SocialLink(current));
-                        await r_PageService.DisplayAlert("Note", $"Your account linked with: {current}", "Thanks");
+                        await RunTaskWhileLoading(sr_SocialService.SocialLink(current));
+                        await sr_PageService.DisplayAlert("Note", $"Your account linked with: {current}", "Thanks");
                         await PopupNavigation.Instance.PopAsync();
                     }
                 }
                 catch (Exception e)
                 {
-                    r_LoadingService.HideLoadingPage();
+                    sr_LoadingService.HideLoadingPage();
                     await e.LogAndDisplayError($"{nameof(LinkSocialViewModel)}:providerSelected", "Error", e.Message);
                 }
                 finally

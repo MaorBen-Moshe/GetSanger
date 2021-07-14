@@ -27,7 +27,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ModeViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(ModeViewModel));
         }
 
         public override void Disappearing()
@@ -52,10 +52,10 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser(eAppMode.Client));
+                bool verified = await RunTaskWhileLoading(sr_LoginServices.LoginUser(eAppMode.Client));
                 if (!verified)
                 {
-                    await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                    await sr_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
                 }
                 else
                 {
@@ -72,10 +72,10 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                bool verified = await RunTaskWhileLoading(r_LoginServices.LoginUser(eAppMode.Sanger));
+                bool verified = await RunTaskWhileLoading(sr_LoginServices.LoginUser(eAppMode.Sanger));
                 if (!verified)
                 {
-                    await r_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
+                    await sr_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
                 }
                 else
                 {

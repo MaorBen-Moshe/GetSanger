@@ -121,8 +121,8 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                r_CrashlyticsService.LogPageEntrance(nameof(ChatPageViewModel));
-                UserPicture = r_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
+                sr_CrashlyticsService.LogPageEntrance(nameof(ChatPageViewModel));
+                UserPicture = sr_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
                 DB = await ChatDatabase.ChatDatabase.Instance;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 setMessages();
@@ -213,7 +213,7 @@ namespace GetSanger.ViewModels.chat
                 try
                 {
                     MessagesSource.Insert(0, msg);
-                    r_PushService.SendChatMessage(msg);
+                    sr_PushService.SendChatMessage(msg);
                     // adding the message to the local DB
                     msg.MessageSent = true;
                     await DB.AddMessageAsync(msg, msg.ToId);
@@ -243,7 +243,7 @@ namespace GetSanger.ViewModels.chat
                         {
                             if (msg.MessageSent == false)
                             {
-                                r_PushService.SendChatMessage(msg);
+                                sr_PushService.SendChatMessage(msg);
                                 msg.MessageSent = true;
                                 await DB.UpdateMessageAsync(msg);
                             }
@@ -261,7 +261,7 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                await r_PageService.DisplayAlert("Note",
+                await sr_PageService.DisplayAlert("Note",
                                                  "Are you sure?\nMessage will be deleted on your device only.",
                                                  "Yes",
                                                  "No",
@@ -335,19 +335,19 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
+                if (sr_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
                 {
-                    r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
-                    bool succeeded = await r_DialService.SendWhatsapp();
+                    sr_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
+                    bool succeeded = await sr_DialService.SendWhatsapp();
                     if (!succeeded)
                     {
-                        await r_DialService.SendDefAppMsg();
+                        await sr_DialService.SendDefAppMsg();
                     }
 
                     return;
                 }
 
-                await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+                await sr_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
             }
             catch (Exception e)
             {
@@ -359,14 +359,14 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                if (r_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
+                if (sr_DialService.IsValidPhone(UserToChat.PersonalDetails.Phone))
                 {
-                    r_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
-                    r_DialService.Call();
+                    sr_DialService.PhoneNumber = UserToChat.PersonalDetails.Phone;
+                    sr_DialService.Call();
                     return;
                 }
 
-                await r_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+                await sr_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
             }
             catch (Exception e)
             {
@@ -384,7 +384,7 @@ namespace GetSanger.ViewModels.chat
                 }
                 else
                 {
-                    await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={UserToChat.UserId}");
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={UserToChat.UserId}");
                 }
             }
             catch(Exception e)

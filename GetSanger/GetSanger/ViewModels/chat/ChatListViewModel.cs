@@ -40,7 +40,7 @@ namespace GetSanger.ViewModels.chat
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ChatListViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(ChatListViewModel));
             setUsers();
         }
 
@@ -73,7 +73,7 @@ namespace GetSanger.ViewModels.chat
                 if(i_Param is ChatUser chatUser)
                 {
                     string json = ObjectJsonSerializer.SerializeForPage(chatUser.User);
-                    await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.ChatsList}");
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.ChatsList}");
                 }
             }
             catch (Exception e)
@@ -88,7 +88,7 @@ namespace GetSanger.ViewModels.chat
 
         private async void setUsers()
         {
-            r_LoadingService.ShowLoadingPage();
+            sr_LoadingService.ShowLoadingPage();
             ChatDatabase.ChatDatabase database = await ChatDatabase.ChatDatabase.Instance;
             List<ChatUser> users = (await database.GetAllUsersAsync()).ToList();
             foreach(var user in users)
@@ -99,7 +99,7 @@ namespace GetSanger.ViewModels.chat
             AllCollection = new ObservableCollection<ChatUser>(users.OrderByDescending(user => user.LastMessage));
             SearchCollection = new ObservableCollection<ChatUser>(AllCollection);
             IsVisibleViewList = AllCollection.Count > 0;
-            r_LoadingService.HideLoadingPage();
+            sr_LoadingService.HideLoadingPage();
         }
 
         protected override void filterSelected(object i_Param)

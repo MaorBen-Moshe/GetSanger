@@ -42,7 +42,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ForgotPasswordViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(ForgotPasswordViewModel));
             base.Appearing();
         }
 
@@ -62,12 +62,12 @@ namespace GetSanger.ViewModels
             {
                 if (AuthHelper.IsValidEmail(Email) == false || Email.Equals(ConfirmEmail) == false)
                 {
-                    await r_PageService.DisplayAlert("Error", "Please Check your email", "OK");
+                    await sr_PageService.DisplayAlert("Error", "Please Check your email", "OK");
                     return;
                 }
 
                 await RunTaskWhileLoading(AuthHelper.ForgotPassword(Email));
-                await r_PageService.DisplayAlert("Note", "Email has been sent!", "Thanks");
+                await sr_PageService.DisplayAlert("Note", "Email has been sent!", "Thanks");
                 await PopupNavigation.Instance.PopAsync();
             }
             catch(Exception e)

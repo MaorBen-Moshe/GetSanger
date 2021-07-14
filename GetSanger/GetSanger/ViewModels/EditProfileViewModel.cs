@@ -85,7 +85,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(EditProfileViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(EditProfileViewModel));
             initialData();
         }
 
@@ -107,7 +107,7 @@ namespace GetSanger.ViewModels
             {
                 string json = ObjectJsonSerializer.SerializeForPage(AppManager.Instance.ConnectedUser);
                 ConnectedUser = ObjectJsonSerializer.DeserializeForPage<User>(json);
-                ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
+                ProfileImage = sr_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
                 MaxDate = DateTime.Now.AddYears(-18);
 
             }
@@ -123,11 +123,11 @@ namespace GetSanger.ViewModels
             {
                 // if data has not changed do not call update user
                 if (string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) ||
-                    !r_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
+                    !sr_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
                     (DateTime.Now.AddYears(-ConnectedUser.PersonalDetails.Birthday.Year).Year < 18)
                 )
                 {
-                    await r_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
+                    await sr_PageService.DisplayAlert("Note", "Not all of your data contains valid data.\n Data remain the same!", "OK");
                 }
                 else
                 {
@@ -151,9 +151,9 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await r_PhotoDisplay.TryGetPictureFromStream(ConnectedUser);
+                await sr_PhotoDisplay.TryGetPictureFromStream(ConnectedUser);
                 await FireStoreHelper.UpdateUser(ConnectedUser);
-                ProfileImage = r_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
+                ProfileImage = sr_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
             }
             catch (Exception e)
             {
@@ -178,7 +178,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await r_PageService.DisplayAlert("Warning",
+                await sr_PageService.DisplayAlert("Warning",
                                                  "Are you sure?",
                                                  "Yes",
                                                  "No",
@@ -188,7 +188,7 @@ namespace GetSanger.ViewModels
                                                      {
                                                          await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
                                                      //do delete
-                                                     await r_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
+                                                     await sr_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
                                                          Application.Current.MainPage = new AuthShell();
                                                      }
                                                  });

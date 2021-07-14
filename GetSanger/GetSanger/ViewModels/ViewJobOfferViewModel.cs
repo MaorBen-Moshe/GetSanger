@@ -87,7 +87,7 @@ namespace GetSanger.ViewModels
 
         public override async void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ViewJobOfferViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(ViewJobOfferViewModel));
             await initData();
         }
 
@@ -104,23 +104,23 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                r_LoadingService.ShowLoadingPage();
+                sr_LoadingService.ShowLoadingPage();
                 ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
 
                 if (Job.Location != null)
                 {
-                    Placemark myPlace = await r_LocationService.GetPickedLocation(Job.Location);
+                    Placemark myPlace = await sr_LocationService.GetPickedLocation(Job.Location);
                     MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
                 }
 
                 if (Job.JobLocation != null)
                 {
-                    Placemark jobPlacemark = await r_LocationService.GetPickedLocation(Job.JobLocation);
+                    Placemark jobPlacemark = await sr_LocationService.GetPickedLocation(Job.JobLocation);
                     WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
                 }
 
                 IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
-                r_LoadingService.HideLoadingPage();
+                sr_LoadingService.HideLoadingPage();
             }
             catch(Exception e)
             {
@@ -134,11 +134,11 @@ namespace GetSanger.ViewModels
             {
                 if (Job.ClientID != null)
                 {
-                    await r_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={Job.ClientID}");
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.Profile}?userid={Job.ClientID}");
                 }
                 else
                 {
-                    await r_PageService.DisplayAlert("Error", "User is not available. please contact us!", "THANKS");
+                    await sr_PageService.DisplayAlert("Error", "User is not available. please contact us!", "THANKS");
                 }
             }
             catch (Exception e)

@@ -52,7 +52,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(LinkEmailViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(LinkEmailViewModel));
         }
 
         public override void Disappearing()
@@ -69,22 +69,22 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                r_LoadingService.ShowLoadingPage();
+                sr_LoadingService.ShowLoadingPage();
                 if (Email != null && Password != null && ConfirmPassword.Equals(Password) && Password.IsValidPassword())
                 {
                     await AuthHelper.LinkWithEmailAndPassword(Email, Password);
-                    await r_PageService.DisplayAlert("Success", $"Your account has linked with {Email}", "Thanks");
-                    r_LoadingService.HideLoadingPage();
+                    await sr_PageService.DisplayAlert("Success", $"Your account has linked with {Email}", "Thanks");
+                    sr_LoadingService.HideLoadingPage();
                     await GoBack();
                 }
                 else
                 {
-                    await r_PageService.DisplayAlert("Error", "Please fill Email And Password", "OK");
+                    await sr_PageService.DisplayAlert("Error", "Please fill Email And Password", "OK");
                 }
             }
             catch(Exception e)
             {
-                r_LoadingService.HideLoadingPage();
+                sr_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(LinkEmailViewModel)}:link", "Error", e.Message);
             }
         }

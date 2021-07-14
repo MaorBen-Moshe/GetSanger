@@ -117,7 +117,7 @@ namespace GetSanger.ViewModels
 
         public override async void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(EditJobOfferViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(EditJobOfferViewModel));
             await InitialCurrentLocation();
             MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage,  (sender, args) =>
             {
@@ -133,10 +133,10 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Location location = await r_LocationService.GetCurrentLocation();
+                Location location = await sr_LocationService.GetCurrentLocation();
                 if(location != null)
                 {
-                    MyPlaceMark ??= await r_LocationService.GetPickedLocation(location);
+                    MyPlaceMark ??= await sr_LocationService.GetPickedLocation(location);
                     JobPlaceMark ??= MyPlaceMark;
                 }
             }
@@ -168,7 +168,7 @@ namespace GetSanger.ViewModels
             try
             {
                 m_IsMyLocation = true;
-                await r_PageService.DisplayAlert("Note",
+                await sr_PageService.DisplayAlert("Note",
                                                  $"Are you sure {MyLocation} is not your location?",
                                                  "Yes",
                                                  "No",
@@ -176,14 +176,14 @@ namespace GetSanger.ViewModels
                                                   {
                                                       if (answer)
                                                       {
-                                                          bool locationGranted = await r_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+                                                          bool locationGranted = await sr_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
                                                           if (locationGranted)
                                                           {
-                                                              await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+                                                              await sr_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
                                                           }
                                                           else
                                                           {
-                                                              await r_PageService.DisplayAlert("Note", "Please allow location!", "OK");
+                                                              await sr_PageService.DisplayAlert("Note", "Please allow location!", "OK");
                                                           }
                                                       }
                                                   });
@@ -199,14 +199,14 @@ namespace GetSanger.ViewModels
             try
             {
                 m_IsMyLocation = false;
-                bool locationGranted = await r_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+                bool locationGranted = await sr_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
                 if (locationGranted)
                 {
-                    await r_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
                 }
                 else
                 {
-                    await r_PageService.DisplayAlert("Note", "Please allow location!", "OK");
+                    await sr_PageService.DisplayAlert("Note", "Please allow location!", "OK");
                 }
             }
             catch (Exception e)
@@ -231,14 +231,14 @@ namespace GetSanger.ViewModels
                     NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
                     List<JobOffer> job = await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer));
                     AppManager.Instance.ConnectedUser.JobOffers.Append<ObservableCollection<JobOffer>, JobOffer>(new ObservableCollection<JobOffer>(job));
-                    await r_PageService.DisplayAlert("Success", "Job sent!", "Thanks");
+                    await sr_PageService.DisplayAlert("Success", "Job sent!", "Thanks");
                     string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
                     await GoBack();
-                    await RunTaskWhileLoading(r_NavigationService.NavigateTo($"////{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
+                    await RunTaskWhileLoading(sr_NavigationService.NavigateTo($"////{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
                 }
                 else
                 {
-                    await r_PageService.DisplayAlert("Error", "Please fill all the fields of the form", "OK");
+                    await sr_PageService.DisplayAlert("Error", "Please fill all the fields of the form", "OK");
                 }
 
             }

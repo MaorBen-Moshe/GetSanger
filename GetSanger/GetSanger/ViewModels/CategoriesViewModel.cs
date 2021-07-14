@@ -50,7 +50,7 @@ namespace GetSanger.ViewModels
         #region Methods
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(CategoriesViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(CategoriesViewModel));
         }
 
         public override void Disappearing()
@@ -69,7 +69,7 @@ namespace GetSanger.ViewModels
                 if (SelectedItem != null)
                 {
                     var category = SelectedItem.Category;
-                    await r_NavigationService.NavigateTo($"{ShellRoutes.EditJobOffer }?category={category}&isCreate={true}");
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.EditJobOffer }?category={category}&isCreate={true}");
                     SelectedItem = null;
                 }
             }

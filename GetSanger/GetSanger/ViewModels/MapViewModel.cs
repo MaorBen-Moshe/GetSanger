@@ -83,16 +83,16 @@ namespace GetSanger.ViewModels
 
         public override async void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(MapViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(MapViewModel));
             createMapSpan();
             if (IsSearch)
             {
-                await r_PageService.DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK");
+                await sr_PageService.DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK");
             }
 
             if (IsTrip) // we already checked if sanger gave permission to client to see location
             {
-                r_TripHelper.StartTripThread(handleTrip, 350000);
+                sr_TripHelper.StartTripThread(handleTrip, 350000);
             }
         }
 
@@ -100,7 +100,7 @@ namespace GetSanger.ViewModels
         {
             if (IsTrip)
             {
-                r_TripHelper.LeaveTripThread(handleTrip);
+                sr_TripHelper.LeaveTripThread(handleTrip);
             }
 
             if (IsSearch)
@@ -139,8 +139,8 @@ namespace GetSanger.ViewModels
             try
             {
                 User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(SangerTripId));
-                r_DialService.PhoneNumber = sanger.PersonalDetails.Phone; // check for null value
-                r_DialService.Call();
+                sr_DialService.PhoneNumber = sanger.PersonalDetails.Phone; // check for null value
+                sr_DialService.Call();
             }
             catch(ArgumentNullException anex)
             {
@@ -194,7 +194,7 @@ namespace GetSanger.ViewModels
 
         private void cancelation()
         {
-            r_LocationService.Cancelation();
+            sr_LocationService.Cancelation();
         }
 
         // handler to handle the client asking for location from sanger
@@ -214,13 +214,13 @@ namespace GetSanger.ViewModels
                 });
 
                 // when sanger is near to us we want to stop asking for location, 0.3 kilometers
-                Location location = await r_LocationService.GetCurrentLocation();
+                Location location = await sr_LocationService.GetCurrentLocation();
                 if (location != null)
                 {
                     if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
                     {
-                        await r_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
-                        r_TripHelper.LeaveTripThread(handleTrip);
+                        await sr_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
+                        sr_TripHelper.LeaveTripThread(handleTrip);
                         MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
                         await GoBack();
                     }
@@ -236,9 +236,9 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Placemark placemark = await r_LocationService.GetPickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
+                Placemark placemark = await sr_LocationService.GetPickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
                 string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
-                await r_PageService.DisplayAlert("Location Chosen",
+                await sr_PageService.DisplayAlert("Location Chosen",
                                                  location,
                                                  "Yes",
                                                  "No",
@@ -261,7 +261,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Location location = await r_LocationService.GetCurrentLocation();
+                Location location = await sr_LocationService.GetCurrentLocation();
                 if(location == null)
                 {
                     return;

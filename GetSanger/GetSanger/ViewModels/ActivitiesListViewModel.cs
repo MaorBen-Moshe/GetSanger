@@ -54,7 +54,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                r_CrashlyticsService.LogPageEntrance(nameof(ActivitiesListViewModel));
+                sr_CrashlyticsService.LogPageEntrance(nameof(ActivitiesListViewModel));
                 setActivities();
             }
             catch (Exception e)
@@ -126,27 +126,25 @@ namespace GetSanger.ViewModels
                 Activity activity = i_Param as Activity;
                 if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && activity.Status.Equals(eActivityStatus.Pending))
                 {
-                    await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
+                    await sr_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
                         async (answer) =>
                         {
                             if (answer)
                             {
-                                AppManager.Instance.ConnectedUser.Activities.Remove(activity);
                                 activity.Status = eActivityStatus.Active;
                                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
-                                await RunTaskWhileLoading(r_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
+                                await RunTaskWhileLoading(sr_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
                                 //  need to check that the list(ActivitiesSource) is updated
-                                AppManager.Instance.ConnectedUser.Activities.Add(activity);
                                 foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
                                 {
                                     if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
                                     {
                                         current.Status = eActivityStatus.Rejected;
-                                        await RunTaskWhileLoading(r_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
+                                        await RunTaskWhileLoading(sr_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
                                     }
                                 }
 
-                                await r_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
+                                await sr_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
                             }
                         });
                 }
@@ -185,17 +183,15 @@ namespace GetSanger.ViewModels
 
         private async void doReject(Activity i_Activity,string i_SendToUserId, string i_Message)
         {
-            await r_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
+            await sr_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
                 async (answer) =>
                 {
                     if (answer)
                     {
-                        AppManager.Instance.ConnectedUser.Activities.Remove(i_Activity);
                         i_Activity.Status = eActivityStatus.Rejected;
                         await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(i_Activity));
-                        await RunTaskWhileLoading(r_PushService.SendToDevice(i_SendToUserId, i_Activity, i_Activity.GetType(), "Activity Rejected", i_Message));
+                        await RunTaskWhileLoading(sr_PushService.SendToDevice(i_SendToUserId, i_Activity, i_Activity.GetType(), "Activity Rejected", i_Message));
                         //  need to check that the list(ActivitiesSource) is updated
-                        AppManager.Instance.ConnectedUser.Activities.Add(i_Activity);
                     }
                 });
         }
@@ -220,7 +216,7 @@ namespace GetSanger.ViewModels
                 if(i_Param is Activity activity)
                 {
                     string json = ObjectJsonSerializer.SerializeForPage(activity);
-                    await r_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
                 }
             }
             catch (Exception e)
@@ -239,7 +235,11 @@ namespace GetSanger.ViewModels
             if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
             {
                 // client should not see pending activities because it is like job offers
-                activities = activities.Where(activity => activity.Status.Equals(eActivityStatus.Pending) == false).ToList();
+                activities = activities.Where(activity => activity.ClientID.Equals(AuthHelper.GetLoggedInUserId())).ToList();
+            }
+            else // sanger mode
+            {
+                activities = activities.Where(activity => activity.SangerID.Equals(AuthHelper.GetLoggedInUserId())).ToList();
             }
 
             AllCollection = new ObservableCollection<Activity>(activities.OrderByDescending(activity => activity.JobDetails.Date));

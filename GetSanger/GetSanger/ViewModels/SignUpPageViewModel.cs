@@ -146,9 +146,9 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(SignUpPageViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(SignUpPageViewModel));
             CreatedUser ??= new User();
-            PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+            PersonalImage = sr_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             CreatedUser.PersonalDetails.Birthday = DateTime.Now.AddYears(-18);
         }
 
@@ -219,7 +219,7 @@ namespace GetSanger.ViewModels
         {
             if (AuthHelper.IsValidEmail(CreatedUser.Email) == false)
             {
-                await r_PageService.DisplayAlert("Notice", "Please enter a valid email address!", "OK");
+                await sr_PageService.DisplayAlert("Notice", "Please enter a valid email address!", "OK");
                 return;
             }
 
@@ -230,11 +230,11 @@ namespace GetSanger.ViewModels
                     if (Password.IsValidPassword())
                     {
                         await RunTaskWhileLoading(AuthHelper.RegisterViaEmail(CreatedUser.Email, Password));
-                        await r_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
+                        await sr_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}");
                     }
                     else
                     {
-                        await r_PageService.DisplayAlert("Note", "Password of at least 6 chars must contain at list: one capital letter, one lower letter, one digit, one special character", "OK");
+                        await sr_PageService.DisplayAlert("Note", "Password of at least 6 chars must contain at list: one capital letter, one lower letter, one digit, one special character", "OK");
                     }
                 }
                 catch (Exception e)
@@ -244,7 +244,7 @@ namespace GetSanger.ViewModels
             }
             else
             {
-                await r_PageService.DisplayAlert("Notice", "Please check the password is correct", "OK");
+                await sr_PageService.DisplayAlert("Notice", "Please check the password is correct", "OK");
             }
         }
 
@@ -252,13 +252,13 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                if (!PersonalDetails.IsValidName(CreatedUser.PersonalDetails.NickName) || !r_DialService.IsValidPhone(CreatedUser.PersonalDetails.Phone))
+                if (!PersonalDetails.IsValidName(CreatedUser.PersonalDetails.NickName) || !sr_DialService.IsValidPhone(CreatedUser.PersonalDetails.Phone))
                 {
-                    await r_PageService.DisplayAlert("Note", "Please fill all the fields in the form!", "OK");
+                    await sr_PageService.DisplayAlert("Note", "Please fill all the fields in the form!", "OK");
                 }
 
                 CreatedUser.PersonalDetails.Gender = (GenderType)Enum.Parse(typeof(GenderType), PickedGender);
-                await r_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
+                await sr_NavigationService.NavigateTo(ShellRoutes.SignupCategories);
             }
             catch (Exception e)
             {
@@ -274,14 +274,14 @@ namespace GetSanger.ViewModels
                 where category.Checked == true && category.Category.Equals(eCategory.All) == false
                 select category.Category).ToList();
                 CreatedUser.Categories = new ObservableCollection<eCategory>(m_CheckedItems);
-                CreatedUser.RegistrationToken = await r_PushService.GetRegistrationToken();
+                CreatedUser.RegistrationToken = await sr_PushService.GetRegistrationToken();
                 CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
-                CreatedUser.UserLocation = await r_LocationService.GetCurrentLocation();
+                CreatedUser.UserLocation = await sr_LocationService.GetCurrentLocation();
                 await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
-                await RunTaskWhileLoading(r_PushService.RegisterTopics(CreatedUser.UserId,
+                await RunTaskWhileLoading(sr_PushService.RegisterTopics(CreatedUser.UserId,
                     (m_CheckedItems.Select(category => ((int) category).ToString())).ToArray()));
                 await PopupNavigation.Instance.PushAsync(new ModePage());
-                await r_NavigationService.NavigateTo("../../..");
+                await sr_NavigationService.NavigateTo("../../..");
             }
             catch (Exception e)
             {
@@ -294,8 +294,8 @@ namespace GetSanger.ViewModels
             try
             {
                 CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
-                await r_PhotoDisplay.TryGetPictureFromStream(CreatedUser);
-                PersonalImage = r_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
+                await sr_PhotoDisplay.TryGetPictureFromStream(CreatedUser);
+                PersonalImage = sr_PhotoDisplay.DisplayPicture(CreatedUser.ProfilePictureUri);
             }
             catch(Exception e)
             {

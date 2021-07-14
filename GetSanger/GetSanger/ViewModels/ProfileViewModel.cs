@@ -76,7 +76,7 @@ namespace GetSanger.ViewModels
 
         public override void Appearing()
         {
-            r_CrashlyticsService.LogPageEntrance(nameof(ProfileViewModel));
+            sr_CrashlyticsService.LogPageEntrance(nameof(ProfileViewModel));
             setUser();
         }
 
@@ -97,7 +97,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                r_LoadingService.ShowLoadingPage();
+                sr_LoadingService.ShowLoadingPage();
                 if (string.IsNullOrEmpty(UserId))
                 {
                     throw new ArgumentException("User details aren't available.");
@@ -109,8 +109,8 @@ namespace GetSanger.ViewModels
                 }
 
                 List<Rating> ratings = new List<Rating>(CurrentUser.Ratings);
-                UserImage = r_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
-                Placemark placemark = await r_LocationService.GetPickedLocation(CurrentUser.UserLocation);
+                UserImage = sr_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
+                Placemark placemark = await sr_LocationService.GetPickedLocation(CurrentUser.UserLocation);
                 UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
                 AverageRating = getAverage(ratings);
             }
@@ -120,7 +120,7 @@ namespace GetSanger.ViewModels
             }
             finally
             {
-                r_LoadingService.HideLoadingPage();
+                sr_LoadingService.HideLoadingPage();
             }
         }
 
@@ -145,7 +145,7 @@ namespace GetSanger.ViewModels
             try
             {
                 string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
-                await r_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.Profile}");
+                await sr_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.Profile}");
             }
             catch(Exception e)
             {
@@ -155,7 +155,7 @@ namespace GetSanger.ViewModels
 
         private async void reportUser(object i_Param)
         {   
-            string response = await r_PageService.DisplayActionSheet("Please choose the reason:", "Cancel", null, typeof(ReportOption).GetListOfEnumNames().ToArray());
+            string response = await sr_PageService.DisplayActionSheet("Please choose the reason:", "Cancel", null, typeof(ReportOption).GetListOfEnumNames().ToArray());
             if(Enum.TryParse(response, out ReportOption option))
             {
                 try
@@ -168,16 +168,16 @@ namespace GetSanger.ViewModels
                         TimeReportCreated = DateTime.Now
                     };
 
-                    string answer = await r_PageService.DisplayPrompt("Write your details:", "please add info to contact with you", "text here..."); 
+                    string answer = await sr_PageService.DisplayPrompt("Write your details:", "please add info to contact with you", "text here..."); 
                     if(answer != null)
                     {
                         m_CurrentReport.ReportMessage = answer;
                         await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
-                        await r_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
+                        await sr_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
                     }
                     else
                     {
-                        await r_PageService.DisplayAlert("Note", "Please add details to send this report!", "OK");
+                        await sr_PageService.DisplayAlert("Note", "Please add details to send this report!", "OK");
                     }
                 }
                 catch (Exception e)
@@ -205,7 +205,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await r_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?id={CurrentUser.UserId}&isMyRatings={false}");
+                await sr_NavigationService.NavigateTo($"{ShellRoutes.Ratings}?id={CurrentUser.UserId}&isMyRatings={false}");
             }
             catch (Exception e)
             {
