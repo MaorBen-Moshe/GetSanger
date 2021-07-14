@@ -11,12 +11,22 @@ namespace GetSanger.Services
     {
         public async Task DisplayAlert(string i_Title, 
                                        string i_Message, 
-                                       string i_Accept, 
+                                       string i_Accept = null, 
                                        string i_Cancel = null, 
                                        Action<bool> UserChoseOptionAction = null)
         {
+            if(i_Accept == null && i_Cancel != null)
+            {
+                throw new ArgumentException("i_Accept param can be null only if i_Cancel param is set to null");
+            }
+
             var page = new DisplayAlertPage(i_Title, i_Message, i_Accept, i_Cancel, UserChoseOptionAction);
             await PopupNavigation.Instance.PushAsync(page);
+            if(i_Accept == null)
+            {
+                await Task.Delay(1500);
+                await PopupNavigation.Instance.PopAsync();
+            }
         }
 
         public override void SetDependencies()

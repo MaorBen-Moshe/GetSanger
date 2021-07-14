@@ -239,6 +239,10 @@ namespace GetSanger.Services
             {
                 // execute vm refresh command
             }
+            else if (currentPage is { BindingContext: ActivitiesListViewModel acVm })
+            {
+                acVm.RefreshingCommand.Execute(null);
+            }
             else
             {
                 Action action = new Action(async () =>

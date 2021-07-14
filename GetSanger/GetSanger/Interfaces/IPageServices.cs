@@ -10,7 +10,7 @@ namespace GetSanger.Interfaces
     {
         Task DisplayAlert(string i_Title,
                           string i_Message,
-                          string i_Accept,
+                          string i_Accept = null,
                           string i_Cancel = null,
                           Action<bool> UserChoseOptionAction = null);
 

@@ -22,6 +22,7 @@ namespace GetSanger.Views.popups
             CloseWhenBackgroundIsClicked = false;
             headerLabel.Text = header ?? "Error";
             textLabel.Text = message ?? "Something went wrong! :(";
+            okLabel.IsVisible = okText != null;
             okLabel.Text = okText;
             cancelLabel.Text = cancelText;
             cancelLabel.IsVisible = cancelText != null;
