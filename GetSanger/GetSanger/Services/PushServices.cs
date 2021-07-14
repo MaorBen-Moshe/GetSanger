@@ -33,7 +33,7 @@ namespace GetSanger.Services
             {
                 data = new Dictionary<string, string>
                 {
-                    ["Type"] = i_DataType?.ToString(),
+                    ["Type"] = i_DataType?.Name,
                     ["Json"] = dataJson
                 };
             }
@@ -234,6 +234,7 @@ namespace GetSanger.Services
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
             Interfaces.INavigation navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
 
+            IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             Page currentPage = Shell.Current.CurrentPage;
             if (currentPage is {BindingContext: ActivityViewModel vm} && vm.ConnectedActivity.ActivityId == activity.ActivityId)
             {
@@ -241,6 +242,7 @@ namespace GetSanger.Services
             }
             else if (currentPage is { BindingContext: ActivitiesListViewModel acVm })
             {
+                await pageServices.DisplayAlert("Note", "New Activity added to the top of the list");
                 acVm.RefreshingCommand.Execute(null);
             }
             else
@@ -256,7 +258,6 @@ namespace GetSanger.Services
 
                 if (i_Title != null)
                 {
-                    IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
                     await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) => 
                     {
                         if (choice)

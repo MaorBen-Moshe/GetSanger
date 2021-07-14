@@ -86,6 +86,7 @@ namespace GetSanger.ViewModels
                 await sr_PageService.DisplayAlert("Note", "Your request has been sent!");
                 setJobOffers();
                 CurrentConfirmedJobOffer = null;
+                Notes = null;
                 await PopupNavigation.Instance.PopAsync();
             }
             catch(Exception e)
