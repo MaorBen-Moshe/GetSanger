@@ -330,7 +330,7 @@ namespace GetSanger.ViewModels
                     switch (result)
                     {
                         case 0: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.JobDetails.Description, "Job Description")); break;
-                        case 1: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.JobDetails.SangerNotes, "Sanger Notes")); break;
+                        case 1: await PopupNavigation.Instance.PushAsync(new EditorPopup(ConnectedActivity.SangerNotes, "Sanger Notes")); break;
                         default: throw new ArgumentException(error);
                     }
                 }

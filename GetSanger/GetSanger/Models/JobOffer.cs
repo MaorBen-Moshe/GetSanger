@@ -18,7 +18,6 @@ namespace GetSanger.Models
         private DateTime m_Date;
         private TimeSpan m_Time;
         private string m_Description;
-        private string m_SangerNotes;
 
         #endregion
 
@@ -82,12 +81,6 @@ namespace GetSanger.Models
         {
             get => m_Description;
             set => SetClassProperty(ref m_Description, value);
-        }
-
-        public string SangerNotes
-        {
-            get => m_SangerNotes;
-            set => SetClassProperty(ref m_SangerNotes, value);
         }
 
         public string CategoryName { get; set; }

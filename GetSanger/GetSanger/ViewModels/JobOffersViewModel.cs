@@ -72,10 +72,10 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                CurrentConfirmedJobOffer.SangerNotes = Notes;
                 Activity activity = new Activity
                 {
                     JobDetails = CurrentConfirmedJobOffer,
+                    SangerNotes = Notes,
                     SangerID = AuthHelper.GetLoggedInUserId(),
                     SangerName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName,
                     ClientID = CurrentConfirmedJobOffer.ClientID,

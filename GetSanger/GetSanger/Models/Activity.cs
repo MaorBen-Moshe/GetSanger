@@ -14,6 +14,7 @@ namespace GetSanger.Models
         private JobOffer m_JobDetails;
         private bool m_LocationActivatedBySanger;
         private string m_SangerName;
+        private string m_SangerNotes;
         #endregion
 
         public string ActivityId { get; set; }
@@ -46,6 +47,12 @@ namespace GetSanger.Models
         {
             get => m_LocationActivatedBySanger;
             set => SetStructProperty(ref m_LocationActivatedBySanger, value);
+        }
+
+        public string SangerNotes
+        {
+            get => m_SangerNotes;
+            set => SetClassProperty(ref m_SangerNotes, value);
         }
 
         public override bool Equals(object obj)
