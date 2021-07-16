@@ -224,7 +224,7 @@ namespace GetSanger.Services
         {
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             message.MessageSent = true;
-            ChatDatabase.ChatDatabase db = await ChatDatabase.ChatDatabase.Instance;
+            IChatDb db = await ChatDatabase.ChatDatabase.Instance;
             await db.AddMessageAsync(message, message.FromId, message.ToId);
         }
 

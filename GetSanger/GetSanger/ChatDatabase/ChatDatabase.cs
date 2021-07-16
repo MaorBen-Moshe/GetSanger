@@ -10,31 +10,31 @@ using System.Linq;
 
 namespace GetSanger.ChatDatabase
 {
-    public class ChatDatabase
+    public class ChatDatabase : IChatDb
     {
         #region Fields
         private static SQLiteAsyncConnection m_Connection;
         #endregion
 
         #region Instance
-        public static readonly AsyncLazy<ChatDatabase> Instance = new AsyncLazy<ChatDatabase>(
-                                                                                  async () => {
-                                                                                                ChatDatabase db = new ChatDatabase();
-                                                                                                await db.CreateTablesAsnyc();
-                                                                                                await m_Connection.EnableWriteAheadLoggingAsync();
-                                                                                                return db;
-                                                                                  });
+        public static readonly AsyncLazy<IChatDb> Instance = new AsyncLazy<IChatDb>(async () => 
+                                                                                    {
+                                                                                       ChatDatabase db = new ChatDatabase();
+                                                                                       await db.CreateTablesAsnyc();
+                                                                                       await m_Connection.EnableWriteAheadLoggingAsync();
+                                                                                       return db;
+                                                                                    });
         #endregion
 
         #region Constructor
-        public ChatDatabase()
+        private ChatDatabase()
         {
             m_Connection = DependencyService.Get<ISQLiteDb>().GetConnection();
         }
         #endregion
 
         #region Methods
-        public async Task CreateTablesAsnyc()
+        private async Task CreateTablesAsnyc()
         {
             await m_Connection.CreateTableAsync<ChatUser>();
             await m_Connection.CreateTableAsync<Message>();
