@@ -1,8 +1,6 @@
 ﻿using GetSanger.Services;
 using SQLite;
 using System;
-using System.Windows.Input;
-using Newtonsoft.Json;
 
 namespace GetSanger.Models.chat
 {
@@ -68,7 +66,7 @@ namespace GetSanger.Models.chat
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(Text, FromId, ToId, TimeSent);
         }
     }
 }

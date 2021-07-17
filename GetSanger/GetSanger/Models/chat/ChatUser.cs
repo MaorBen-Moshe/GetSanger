@@ -48,6 +48,19 @@ namespace GetSanger.Models.chat
             set => SetStructProperty(ref m_LastMessage, value);
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is ChatUser user &&
+                   UserId == user.UserId &&
+                   UserCreatedById == user.UserCreatedById &&
+                   LastMessage == user.LastMessage;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(UserId, UserCreatedById, LastMessage);
+        }
+
         #endregion
     }
 }

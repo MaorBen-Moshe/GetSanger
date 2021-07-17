@@ -40,6 +40,37 @@ namespace GetSanger.ChatDatabase
             await m_Connection.CreateTableAsync<Message>();
         }
 
+        public async void DeleteDb(string id = null)
+        {
+            if(id == null)
+            {
+                List<ChatUser> users = await GetAllUsersAsync();
+                IUiPush push = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
+                foreach(ChatUser user in users)
+                {
+                    // send to each device that the user is deleted so he would delete all the messages inside of his db
+                    await push.SendToDevice(user.UserId, AuthHelper.GetLoggedInUserId(), null, null, null);
+                }
+
+                foreach(TableMapping map in m_Connection.TableMappings)
+                {
+                    await m_Connection.DeleteAllAsync(map);
+                }
+            }
+            else
+            {
+                List<Message> messages = await GetAllMessagesAsync();
+                await DeleteUserAsync(id);
+                foreach(Message message in messages)
+                {
+                    if(message.FromId.Equals(id) || message.ToId.Equals(id))
+                    {
+                        await DeleteMessageAsync(message);
+                    }
+                }
+            }
+        }
+
         #region UsersTable
         public async Task<ChatUser> AddUserAsync(string i_UserId, DateTime? i_LastMessage = null, string i_CreatedById = null)
         {
@@ -55,15 +86,15 @@ namespace GetSanger.ChatDatabase
 
         public async Task<int> DeleteUserAsync(string i_UserId)
         {
-            ChatUser toDelete = await m_Connection.Table<ChatUser>()?.Where(user => user.UserId.Equals(i_UserId)).FirstAsync();
+            ChatUser toDelete = await m_Connection.Table<ChatUser>()?.Where(user => user.UserId.Equals(i_UserId) 
+                                                                      && user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).FirstAsync();
+            int retVal = 0;
             if(toDelete != null)
             {
-                return await m_Connection.DeleteAsync(toDelete);
+                retVal = await m_Connection.DeleteAsync(toDelete);
             }
-            else
-            {
-                return 0;
-            }
+
+            return retVal;
         }
 
         public Task<int> UpdateUserAsync(ChatUser i_ToUpdate)
@@ -90,6 +121,10 @@ namespace GetSanger.ChatDatabase
         #endregion
 
         #region MessagesTable
+        public Task<List<Message>> GetAllMessagesAsync()
+        {
+            return m_Connection.Table<Message>().ToListAsync();                                     
+        }
 
         public Task<List<Message>> GetMessagesAsync(string i_UserToChatId)
         {
