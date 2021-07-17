@@ -18,7 +18,7 @@
     </popup:PopupPage.Animation>
 
     <popup:PopupPage.Content>
-        <Frame Margin="7,20" 
+        <Frame 
                CornerRadius="20"
                IsClippedToBounds="True"
                BackgroundColor="White"
@@ -30,14 +30,14 @@
                        BackgroundColor="Transparent"
                        HorizontalOptions="EndAndExpand" 
                        VerticalOptions="StartAndExpand"
-                       Margin="0, 0, 5, 0">
+                       >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                     </Label.GestureRecognizers>
                 </Label>
 
                 <Label VerticalOptions="StartAndExpand"
-                       Margin="0"
+                       
                        FontSize="15"
                        BackgroundColor="Transparent"
                        HorizontalTextAlignment="Center"

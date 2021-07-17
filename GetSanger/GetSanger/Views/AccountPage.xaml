@@ -12,18 +12,21 @@
 
     <ContentPage.Content>
         <AbsoluteLayout>
-            <StackLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 0.35"
+            <StackLayout AbsoluteLayout.LayoutBounds="0, -0.05, 1, 0.35"
                          AbsoluteLayout.LayoutFlags="All"
                          VerticalOptions="CenterAndExpand"
                          HorizontalOptions="CenterAndExpand"
-                         Spacing="20">
+                         >
                 <controls:RoundedImage ImageSource="{Binding UserImage}"
                                        Radius="100"/>
                 <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat='Hello, {0}'}"
                        FontSize="Title" 
-                       FontAttributes="Italic"/>
+                       FontAttributes="Italic"
+                      
+                       />
             </StackLayout>
-            <Grid AbsoluteLayout.LayoutBounds="0.5,0.3, 0.5, 0.05" 
+            <Grid AbsoluteLayout.LayoutBounds="0.5,0.30, 0.52, 0.06" 
+                  
                   AbsoluteLayout.LayoutFlags="All">
                 <Frame Padding="0"
                        Grid.Column="0"
@@ -57,9 +60,8 @@
                 </Frame>
             </Grid>
 
-            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.6, 1, 0.4"
-                  AbsoluteLayout.LayoutFlags="All"
-                  Margin="5">
+            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.70, 1 , 0.46"
+                  AbsoluteLayout.LayoutFlags="All">
                 <Button Text="Edit Profile" Command="{Binding EditProfileCommand}" Grid.Row="0"/>
                 <Button Text="My Ratings" Command="{Binding MyRatingsCommand}" Grid.Row="1"/>
                 <Button Text="Settings" Command="{Binding SettingCommand}" Grid.Row="2"/>
@@ -71,9 +73,7 @@
 
             <Button Text="Logout" 
                     FontSize="Large"
-                    Padding="10, 0, 10, 10" 
                     CornerRadius="20" 
-                    Margin="5"
                     AbsoluteLayout.LayoutBounds="0.5, 0.99, 0.99, 0.06" 
                     AbsoluteLayout.LayoutFlags="All"
                     Command="{Binding LogoutCommand}"/>   
