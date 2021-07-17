@@ -24,7 +24,7 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*"></RowDefinition>
+                <RowDefinition Height="0.01*"></RowDefinition>
                 
             </Grid.RowDefinitions>
             <Label Text="Job Offer"
@@ -73,7 +73,7 @@
                 </Entry>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="Job date:" Padding="10" Grid.Column="0"/>
                     <StackLayout Orientation="Horizontal" 
