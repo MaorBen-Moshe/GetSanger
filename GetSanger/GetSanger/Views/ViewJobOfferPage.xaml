@@ -43,11 +43,12 @@
             </Frame>
             <Entry Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" IsReadOnly="True" />
             <Entry Placeholder="My Location" 
-                           Text="{Binding MyLocation}" 
-                           IsReadOnly="True" />
+                   Text="{Binding MyLocation}" 
+                   IsEnabled="False" />
             <Entry Placeholder="Job Location" 
-                           Text="{Binding WorkLocation}"
-                           IsReadOnly="True" />
+                   Text="{Binding WorkLocation}"
+                   IsVisible="{Binding IsDeliveryCategory}"
+                   IsEnabled="False" />
             <Entry Placeholder="Phone number" 
                    Text="{Binding Job.ClientPhoneNumber}"
                    Keyboard="Telephone" 

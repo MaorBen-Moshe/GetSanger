@@ -26,12 +26,13 @@ namespace GetSanger.ViewModels
         private string m_MyLocation;
         private string m_JobLocation;
         private bool m_IsMyLocation = true;
+        private bool m_IsDeliveryCategory;
         #endregion
 
         #region Commands
 
-        public ICommand CurrentLocation { get; private set; }
-        public ICommand JobLocation { get; private set; }
+        public ICommand CurrentLocationCommand { get; private set; }
+        public ICommand JobLocationCommand { get; private set; }
         public ICommand SendJobCommand { get; private set; }
 
         #endregion
@@ -95,6 +96,12 @@ namespace GetSanger.ViewModels
                 NewJobOffer.Category = category;
             }
         }
+
+        public bool IsDeliveryCategory
+        {
+            get => m_IsDeliveryCategory;
+            set => SetStructProperty(ref m_IsDeliveryCategory, value);
+        }
         #endregion
 
         #region Constructor
@@ -118,6 +125,7 @@ namespace GetSanger.ViewModels
         public override async void Appearing()
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(EditJobOfferViewModel));
+            IsDeliveryCategory = NewJobOffer.Category.Equals(eCategory.Delivery);
             await InitialCurrentLocation();
             MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage,  (sender, args) =>
             {
@@ -148,8 +156,8 @@ namespace GetSanger.ViewModels
 
         protected override void SetCommands()
         {
-            CurrentLocation = new Command(getCurrentLocation);
-            JobLocation = new Command(getJobLocation);
+            CurrentLocationCommand = new Command(getCurrentLocation);
+            JobLocationCommand = new Command(getJobLocation);
             SendJobCommand = new Command(sendJob);
         }
 
@@ -163,42 +171,22 @@ namespace GetSanger.ViewModels
             _ = m_IsMyLocation == true ? MyPlaceMark = i_PlaceMark : JobPlaceMark = i_PlaceMark;
         }
 
-        private async void getCurrentLocation()
+        private void getCurrentLocation()
         {
-            try
-            {
-                m_IsMyLocation = true;
-                await sr_PageService.DisplayAlert("Note",
-                                                 $"Are you sure {MyLocation} is not your location?",
-                                                 "Yes",
-                                                 "No",
-                                                  async (answer) =>
-                                                  {
-                                                      if (answer)
-                                                      {
-                                                          bool locationGranted = await sr_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
-                                                          if (locationGranted)
-                                                          {
-                                                              await sr_NavigationService.NavigateTo($"{ShellRoutes.Map}?isSearch={true}&isTrip={false}");
-                                                          }
-                                                          else
-                                                          {
-                                                              await sr_PageService.DisplayAlert("Note", "Please allow location!", "OK");
-                                                          }
-                                                      }
-                                                  });
-            }
-            catch (Exception e)
-            {
-                await e.LogAndDisplayError($"{nameof(EditJobOfferViewModel)}:getCurrentLocation", "Error", e.Message);
-            }
+            m_IsMyLocation = true;
+            locationHelper();
         }
 
-        private async void getJobLocation()
+        private void getJobLocation()
+        {
+            m_IsMyLocation = false;
+            locationHelper();
+        }
+
+        private async void locationHelper()
         {
             try
             {
-                m_IsMyLocation = false;
                 bool locationGranted = await sr_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
                 if (locationGranted)
                 {
@@ -211,7 +199,7 @@ namespace GetSanger.ViewModels
             }
             catch (Exception e)
             {
-                await e.LogAndDisplayError($"{nameof(EditJobOfferViewModel)}:getJobLocation", "Error", e.Message);
+                await e.LogAndDisplayError($"{nameof(EditJobOfferViewModel)}:locationHelper", "Error", e.Message);
             }
         }
 

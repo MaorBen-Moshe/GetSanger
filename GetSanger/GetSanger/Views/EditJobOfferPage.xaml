@@ -39,30 +39,26 @@
                     <Entry Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" IsReadOnly="True" Grid.Column="0"/>
                     <Entry Text="{Binding NewJobOffer.Title}" 
                            Placeholder="Job Title" 
-                           Grid.Column="1">
-                        <Entry.Behaviors>
-                            <behaviors:EntryLengthValidator MinLength="5" MaxLength="20"/>
-                        </Entry.Behaviors>
-                    </Entry>
+                           Grid.Column="1"/>
                 </Grid>
 
                 <Grid>
                     <Entry Placeholder="My Location" 
                            Text="{Binding MyLocation, Mode=TwoWay}" 
-                           IsReadOnly="True" 
+                           IsReadOnly="True"
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" />
-                    <Button Text="Get Location" Grid.Column="2" Command="{Binding CurrentLocation}"
+                    <Button Text="Get Location" Grid.Column="2" Command="{Binding CurrentLocationCommand}"
                             FontSize="14"/>
                 </Grid>
 
-                <Grid>
+                <Grid IsVisible="{Binding IsDeliveryCategory}">
                     <Entry Placeholder="Job Location" 
                            Text="{Binding WorkLocation, Mode=TwoWay}"
                            IsReadOnly="True" 
                            Grid.Column="0" 
-                           Grid.ColumnSpan="2" />
-                    <Button Text="Get Location" Grid.Column="2" Command="{Binding JobLocation}"
+                           Grid.ColumnSpan="2"/>
+                    <Button Text="Get Location" Grid.Column="2" Command="{Binding JobLocationCommand}"
                             FontSize="14"/>
                 </Grid>
 

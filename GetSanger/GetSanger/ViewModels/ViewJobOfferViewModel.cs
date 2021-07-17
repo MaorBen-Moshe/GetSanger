@@ -20,6 +20,7 @@ namespace GetSanger.ViewModels
         private string m_MyLocation;
         private string m_JobLocation;
         private bool m_IsMyJobOffer;
+        private bool m_IsDeliveryCategory;
 
         #endregion
 
@@ -66,6 +67,12 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_JobLocation, value);
         }
 
+        public bool IsDeliveryCategory
+        {
+            get => m_IsDeliveryCategory;
+            set => SetStructProperty(ref m_IsDeliveryCategory, value);
+        }
+
         #endregion
 
         #region Commands
@@ -105,6 +112,7 @@ namespace GetSanger.ViewModels
             try
             {
                 sr_LoadingService.ShowLoadingPage();
+                IsDeliveryCategory = Job.Category.Equals(eCategory.Delivery);
                 ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
 
                 if (Job.Location != null)
