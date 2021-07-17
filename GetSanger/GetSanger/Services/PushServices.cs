@@ -135,6 +135,10 @@ namespace GetSanger.Services
                     case "MessageInfo":
                         await handleMessageInfo(i_Title, i_Body, json);
                         break;
+                    case "DeletedUser":
+                        IChatDb chat = await ChatDatabase.ChatDatabase.Instance;
+                        chat.DeleteDb(ObjectJsonSerializer.DeserializeForServer<string>(json));
+                        break;
                     default:
                         throw new ArgumentException("Type of object received is not allowed");
                 }
@@ -224,7 +228,7 @@ namespace GetSanger.Services
         {
             Message message = ObjectJsonSerializer.DeserializeForServer<Message>(i_Json);
             message.MessageSent = true;
-            ChatDatabase.ChatDatabase db = await ChatDatabase.ChatDatabase.Instance;
+            IChatDb db = await ChatDatabase.ChatDatabase.Instance;
             await db.AddMessageAsync(message, message.FromId, message.ToId);
         }
 

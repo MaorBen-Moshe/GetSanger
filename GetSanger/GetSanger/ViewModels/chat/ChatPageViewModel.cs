@@ -11,6 +11,7 @@ using Xamarin.Essentials;
 using GetSanger.Extensions;
 using GetSanger.Constants;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
+using GetSanger.Interfaces;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -95,7 +96,7 @@ namespace GetSanger.ViewModels.chat
             set => SetClassProperty(ref m_DelayedMessages, value);
         }
 
-        private ChatDatabase.ChatDatabase DB { get; set; }
+        private IChatDb DB { get; set; }
         #endregion
 
         #region Commands

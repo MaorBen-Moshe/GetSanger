@@ -1,5 +1,6 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Extensions;
+using GetSanger.Interfaces;
 using GetSanger.Models.chat;
 using GetSanger.Services;
 using System;
@@ -89,7 +90,7 @@ namespace GetSanger.ViewModels.chat
         private async void setUsers()
         {
             sr_LoadingService.ShowLoadingPage();
-            ChatDatabase.ChatDatabase database = await ChatDatabase.ChatDatabase.Instance;
+            IChatDb database = await ChatDatabase.ChatDatabase.Instance;
             List<ChatUser> users = (await database.GetAllUsersAsync()).ToList();
             foreach(var user in users)
             {

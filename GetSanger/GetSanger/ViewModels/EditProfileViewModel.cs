@@ -10,6 +10,7 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 using GetSanger.Extensions;
+using GetSanger.Interfaces;
 
 namespace GetSanger.ViewModels
 {
@@ -186,9 +187,10 @@ namespace GetSanger.ViewModels
                                                  {
                                                      if (answer)
                                                      {
+                                                         IChatDb chat = await ChatDatabase.ChatDatabase.Instance;
+                                                         chat.DeleteDb();
                                                          await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
-                                                     //do delete
-                                                     await sr_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
+                                                         await sr_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
                                                          Application.Current.MainPage = new AuthShell();
                                                      }
                                                  });
