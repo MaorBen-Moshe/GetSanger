@@ -12,14 +12,14 @@
 
     <ContentPage.Content>
         <AbsoluteLayout>
-            <StackLayout AbsoluteLayout.LayoutBounds="0, -0.05, 1, 0.35"
+            <StackLayout AbsoluteLayout.LayoutBounds="0, -0.05, 1, 0.35" 
                          AbsoluteLayout.LayoutFlags="All"
                          VerticalOptions="CenterAndExpand"
                          HorizontalOptions="CenterAndExpand"
                          >
                 <controls:RoundedImage ImageSource="{Binding UserImage}"
                                        Radius="100"/>
-                <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat='Hello, {0}'}"
+                <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat ='Hello, {0}'}"
                        FontSize="Title" 
                        FontAttributes="Italic"
                       
