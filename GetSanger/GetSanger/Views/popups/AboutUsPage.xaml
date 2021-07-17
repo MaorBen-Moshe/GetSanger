@@ -24,6 +24,8 @@
                BackgroundColor="White"
                Padding="10"
                BorderColor="Black">
+            <ScrollView>
+     
             <StackLayout HorizontalOptions="FillAndExpand"
                          VerticalOptions="FillAndExpand">
                 <Label Text="X" 
@@ -60,6 +62,7 @@ By becoming a Sanger you can use your naturally gained knowledge and skills to h
                     </Label.Text>
                 </Label>
             </StackLayout>
+            </ScrollView>
         </Frame>
           
     </popup:PopupPage.Content>
