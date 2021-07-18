@@ -296,7 +296,7 @@ namespace GetSanger.ViewModels
                                                      sr_TripHelper.LeaveTripThread(); // sanger stop sharing location
                                                      await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
                                                      string message = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} completed your job :)";
-                                                     await RunTaskWhileLoading(sr_PushService.SendToDevice(ConnectedActivity.ClientID, ConnectedActivity, ConnectedActivity.GetType(), "Job has ended", message));
+                                                     await RunTaskWhileLoading(sr_PushService.SendToDevice(ConnectedActivity.ClientID, ConnectedActivity, typeof(Activity).Name, "Job has ended", message));
                                                      IsActivatedEndButton = false;
                                                      await GoBack();
                                                  }

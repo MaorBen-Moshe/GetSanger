@@ -45,11 +45,12 @@ namespace GetSanger.ChatDatabase
             if(id == null)
             {
                 List<ChatUser> users = await GetAllUsersAsync();
+                users = users.Where(user => user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
                 IUiPush push = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
                 foreach(ChatUser user in users)
                 {
                     // send to each device that the user is deleted so he would delete all the messages inside of his db
-                    await push.SendToDevice(user.UserId, AuthHelper.GetLoggedInUserId(), null, null, null);
+                    await push.SendToDevice(user.UserId, AuthHelper.GetLoggedInUserId(), "DeletedUser", null, null);
                 }
 
                 foreach(TableMapping map in m_Connection.TableMappings)

@@ -21,7 +21,7 @@ namespace GetSanger.Services
 
         public static Dictionary<string, string> BackgroundPushData { get; } = new Dictionary<string, string>();
 
-        public async Task SendToDevice<T>(string i_UserId, T i_Data, Type i_DataType, string i_Title = "", string i_Message = null) where T : class
+        public async Task SendToDevice<T>(string i_UserId, T i_Data, string i_DataType, string i_Title = "", string i_Message = null) where T : class
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
             i_Message = user.IsGenericNotifications ? i_Message : null;
@@ -33,7 +33,7 @@ namespace GetSanger.Services
             {
                 data = new Dictionary<string, string>
                 {
-                    ["Type"] = i_DataType?.Name,
+                    ["Type"] = i_DataType ?? "",
                     ["Json"] = dataJson
                 };
             }
@@ -139,8 +139,16 @@ namespace GetSanger.Services
                         IChatDb chat = await ChatDatabase.ChatDatabase.Instance;
                         chat.DeleteDb(ObjectJsonSerializer.DeserializeForServer<string>(json));
                         break;
+                    case "":
+                        IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+                        if(!string.IsNullOrWhiteSpace(i_Title) && !string.IsNullOrWhiteSpace(i_Body))
+                        {
+                            await service.DisplayAlert(i_Title, i_Body, "OK");
+                        }
+
+                        break;
                     default:
-                        throw new ArgumentException("Type of object received is not allowed");
+                        break;
                 }
             }
         }

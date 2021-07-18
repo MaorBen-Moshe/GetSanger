@@ -133,14 +133,14 @@ namespace GetSanger.ViewModels
                             {
                                 activity.Status = eActivityStatus.Active;
                                 await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
-                                await RunTaskWhileLoading(sr_PushService.SendToDevice(activity.SangerID, activity, activity.GetType(), "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
+                                await RunTaskWhileLoading(sr_PushService.SendToDevice(activity.SangerID, activity, typeof(Activity).Name, "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
                                 //  need to check that the list(ActivitiesSource) is updated
                                 foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
                                 {
                                     if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
                                     {
                                         current.Status = eActivityStatus.Rejected;
-                                        await RunTaskWhileLoading(sr_PushService.SendToDevice(current.SangerID, activity, activity.GetType(), "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
+                                        await RunTaskWhileLoading(sr_PushService.SendToDevice(current.SangerID, activity, typeof(Activity).Name, "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
                                     }
                                 }
 
@@ -194,7 +194,7 @@ namespace GetSanger.ViewModels
                     {
                         i_Activity.Status = eActivityStatus.Rejected;
                         await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(i_Activity));
-                        await RunTaskWhileLoading(sr_PushService.SendToDevice(i_SendToUserId, i_Activity, i_Activity.GetType(), "Activity Rejected", i_Message));
+                        await RunTaskWhileLoading(sr_PushService.SendToDevice(i_SendToUserId, i_Activity, typeof(Activity).Name, "Activity Rejected", i_Message));
                         //  need to check that the list(ActivitiesSource) is updated
                     }
                 });

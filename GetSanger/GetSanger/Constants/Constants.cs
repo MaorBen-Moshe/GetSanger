@@ -12,13 +12,13 @@ namespace GetSanger.Constants
 
         public static string GenericNotificationTopic { get; } = "Generic";
 
-        public static string LocationMessage = "Location";
+        public static string LocationMessage { get; }  = "Location";
 
-        public static string ActivatedLocationMessage = "ActivatedLocation";
+        public static string ActivatedLocationMessage { get; } = "ActivatedLocation";
 
-        public static string ChatDatabaseName = "Chat.db3";
+        public static string ChatDatabaseName { get; } = "Chat.db3";
 
-        public static SQLite.SQLiteOpenFlags ChatDbFlags = 
+        public static SQLite.SQLiteOpenFlags ChatDbFlags { get; }  = 
                                                             SQLiteOpenFlags.ReadWrite | 
                                                             SQLiteOpenFlags.Create | 
                                                             SQLiteOpenFlags.SharedCache;
