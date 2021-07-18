@@ -106,6 +106,10 @@ namespace GetSanger.ViewModels
             {
                 await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:filterSelected", "Error", e.Message);
             }
+            finally
+            {
+                SearchCollection = new ObservableCollection<JobOffer>(FilteredCollection);
+            }
         }
 
         private async void confirmJobOffer(object i_Param)

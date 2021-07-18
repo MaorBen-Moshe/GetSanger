@@ -70,9 +70,21 @@ namespace GetSanger.ViewModels
             SelectedRatingCommand = new Command(selectedRating);
         }
 
-        protected override void filterSelected(object i_Param)
+        protected async override void filterSelected(object i_Param)
         {
-            filterByTIme(rating => rating.TimeAdded);
+            try
+            {
+                filterByTIme(rating => rating.TimeAdded);
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:filterSelected", "Error", e.Message);
+            }
+            finally
+            {
+
+                SearchCollection = new ObservableCollection<Rating>(FilteredCollection);
+            }
         }
 
         private async void selectedRating(object i_Param)

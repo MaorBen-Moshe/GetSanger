@@ -153,6 +153,10 @@ namespace GetSanger.ViewModels
             {
                 await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:confirmActivity", "Error", e.Message);
             }
+            finally
+            {
+                SearchCollection = new ObservableCollection<Activity>(FilteredCollection);
+            }
         }
 
         private async void rejectActivity(object i_Param)
