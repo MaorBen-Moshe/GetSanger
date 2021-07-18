@@ -42,6 +42,7 @@ namespace GetSanger.Droid.Services
             {
                 _dialog.Dismiss();
                 _isLoading = false;
+                _isInitialized = false;
             }
         }
 

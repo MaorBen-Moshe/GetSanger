@@ -1,7 +1,6 @@
 ﻿using GetSanger.Interfaces;
 using GetSanger.iOS.Services;
 using GetSanger.Views;
-using System.Collections.Generic;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -57,6 +56,7 @@ namespace GetSanger.iOS.Services
                 // Hide the page
                 _nativeView.RemoveFromSuperview();
                 _isLoading = false;
+                _isInitialized = false;
             }
         }
     }
