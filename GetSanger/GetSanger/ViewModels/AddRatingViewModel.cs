@@ -74,14 +74,15 @@ namespace GetSanger.ViewModels
                     NewRating.RatingOwnerId = RatedUserId;
                     NewRating.TimeAdded = DateTime.Now;
                     await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
-                    await sr_PageService.DisplayAlert("Note", "Rating added successfully!", "Thanks");
+                    await sr_PageService.DisplayAlert("Note", "Rating added successfully!");
                     RatingAddedEvent?.Invoke();
                     await PopupNavigation.Instance.PopAsync();
                 }
             }
             catch (Exception e)
             {
-                await e.LogAndDisplayError($"{nameof(AddRatingViewModel)}:addRating", "Error", e.Message);
+                await e.LogAndDisplayError($"{nameof(AddRatingViewModel)}:addRating", "Error", e.Message, i_IsAcceptDisplay: false);
+                await PopupNavigation.Instance.PopAsync();
             }
         }
 

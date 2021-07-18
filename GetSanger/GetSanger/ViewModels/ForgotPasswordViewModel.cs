@@ -67,12 +67,13 @@ namespace GetSanger.ViewModels
                 }
 
                 await RunTaskWhileLoading(AuthHelper.ForgotPassword(Email));
-                await sr_PageService.DisplayAlert("Note", "Email has been sent!", "Thanks");
+                await sr_PageService.DisplayAlert("Note", "Email has been sent!");
                 await PopupNavigation.Instance.PopAsync();
             }
             catch(Exception e)
             {
-                await e.LogAndDisplayError($"{nameof(ForgotPasswordViewModel)}:SendClicked", "Error", e.Message);
+                await e.LogAndDisplayError($"{nameof(ForgotPasswordViewModel)}:SendClicked", "Error", e.Message, i_IsAcceptDisplay: false);
+                await PopupNavigation.Instance.PopAsync();
             }
         }
 

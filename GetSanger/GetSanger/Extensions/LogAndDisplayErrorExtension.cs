@@ -6,6 +6,7 @@ using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Interfaces;
 using Rg.Plugins.Popup.Pages;
+using Xamarin.Forms;
 
 namespace GetSanger.Extensions
 {
@@ -28,17 +29,18 @@ namespace GetSanger.Extensions
             sr_CrashesService.RecordException(i_Exception);
             sr_CrashesService.SetCustomKey("ClassName", i_NameOfClassCrashes);
             sr_CrashesService.SetCustomKey("eAppMode", AppManager.Instance.CurrentMode.ToString());
-            PopupPage page;
+            IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             if (i_IsAcceptDisplay)
             {
-                page = new DisplayAlertPage(i_Header, i_CustomMessage);
+                await service.DisplayAlert(i_Header, i_CustomMessage, "OK");
             }
             else
             {
-                page = new DisplayAlertPage(i_Header, i_CustomMessage, null);
+                await service.DisplayAlert(i_Header, i_CustomMessage);
             }
 
-            await PopupNavigation.Instance.PushAsync(page);
+            ILoadingDisplay loading = AppManager.Instance.Services.GetService(typeof(LoadingService)) as LoadingService;
+            loading.HideLoadingPage();
         }
 
         private static string GetErrorLogString(Exception i_Exception)

@@ -47,14 +47,10 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public override async void Appearing()
+        public override void Appearing()
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(RatingsViewModel));
             setRatings();
-            if (IsMyRatings)
-            {
-                await sr_PageService.DisplayAlert("Note", "Click on rating to move to the writer's profile!", "OK");
-            }
         }
 
         public override void Disappearing()
@@ -83,7 +79,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                if (IsMyRatings && i_Param is Rating rating)
+                if (i_Param is Rating rating && !rating.RatingWriterId.Equals(AppManager.Instance.ConnectedUser.UserId))
                 {
                     await sr_NavigationService.NavigateTo(ShellRoutes.Profile + $"?userid={rating.RatingWriterId}");
                 }
@@ -108,10 +104,15 @@ namespace GetSanger.ViewModels
                 SearchCollection = new ObservableCollection<Rating>(AllCollection);
                 if (IsMyRatings)
                 {
-                    AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst);
+                    AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst); 
                 }
 
                 IsVisibleViewList = AllCollection.Count > 0;
+                if(IsVisibleViewList)
+                {
+                    await sr_PageService.DisplayAlert("Note", "Click on rating to move to the writer's profile!", "OK");
+                }
+
                 setFilterIndices();
             }
             catch (Exception e)

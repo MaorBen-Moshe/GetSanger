@@ -24,7 +24,7 @@ namespace GetSanger.Services
             await PopupNavigation.Instance.PushAsync(page);
             if(i_Accept == null)
             {
-                await Task.Delay(1500);
+                await Task.Delay(2000);
                 await PopupNavigation.Instance.PopAsync();
             }
         }
