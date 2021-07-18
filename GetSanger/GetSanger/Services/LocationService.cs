@@ -1,4 +1,5 @@
 ﻿using GetSanger.Interfaces;
+using GetSanger.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,11 +87,11 @@ namespace GetSanger.Services
             }
         }
 
-        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased = null , int i_Interval = 30000)
+        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased = null , int i_Interval = 15000)
         {
             Device.BeginInvokeOnMainThread(() => {
                 m_Timer.Enabled = true;
-                m_Timer.Interval = i_Interval; //30000
+                m_Timer.Interval = i_Interval; //15000 by default
                 m_Timer.Elapsed += i_Elpased ?? handleSangerLocation;
                 m_Timer.Start();
             });
@@ -105,9 +106,39 @@ namespace GetSanger.Services
             });
         }
 
+        public async Task<bool> TryShareSangerLoaction(bool startTrip = true)
+        {
+            bool shared = false;
+            Dictionary<string, bool> activatedMap = AppManager.Instance.ConnectedUser.ActivatedMap;
+            foreach (var item in activatedMap)
+            {
+                Activity activity = await FireStoreHelper.GetActivity(item.Key);
+                if (activity.SangerID.Equals(AuthHelper.GetLoggedInUserId())
+                    && item.Value.Equals(true)
+                    && activity.Status.Equals(eActivityStatus.Active))
+                {
+                    if (startTrip)
+                    {
+                        StartTripThread();
+                    }
+                    
+                    shared = true;
+                    break;
+                }
+            }
+
+            return shared;
+        }
+
         // we should start and end sanger location sharing every time he leaves the app or move to user mode
         private async void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
         {
+            if(await TryShareSangerLoaction(false) == false)
+            {
+                LeaveTripThread();
+                return;
+            }
+
             AppManager.Instance.ConnectedUser.UserLocation = await GetCurrentLocation();
             if(AppManager.Instance.ConnectedUser.UserLocation != null)
             {

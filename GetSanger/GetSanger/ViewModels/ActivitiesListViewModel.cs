@@ -126,26 +126,33 @@ namespace GetSanger.ViewModels
                 Activity activity = i_Param as Activity;
                 if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && activity.Status.Equals(eActivityStatus.Pending))
                 {
-                    await sr_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
+                    await sr_PageService.DisplayAlert("Note", "Are you sure?", "Yes", "No",
                         async (answer) =>
                         {
                             if (answer)
                             {
+                                sr_LoadingService.ShowLoadingPage();
                                 activity.Status = eActivityStatus.Active;
-                                await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(activity));
-                                await RunTaskWhileLoading(sr_PushService.SendToDevice(activity.SangerID, activity, typeof(Activity).Name, "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)"));
+                                AppManager.Instance.ConnectedUser.ActivatedMap.Add(activity.ActivityId, false);
+                                await FireStoreHelper.UpdateActivity(activity);
+                                await sr_PushService.SendToDevice(activity.SangerID, activity, typeof(Activity).Name, "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)");
+                                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                                User sanger = await FireStoreHelper.GetUser(activity.SangerID);
+                                sanger.ActivatedMap.Add(activity.ActivityId, false);
+                                await FireStoreHelper.UpdateUser(sanger);
                                 //  need to check that the list(ActivitiesSource) is updated
                                 foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
                                 {
                                     if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
                                     {
                                         current.Status = eActivityStatus.Rejected;
-                                        await RunTaskWhileLoading(sr_PushService.SendToDevice(current.SangerID, activity, typeof(Activity).Name, "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)"));
+                                        await sr_PushService.SendToDevice(current.SangerID, activity, typeof(Activity).Name, "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)");
                                     }
                                 }
 
                                 string json = ObjectJsonSerializer.SerializeForPage(activity);
                                 await sr_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
+                                sr_LoadingService.HideLoadingPage();
                             }
                         });
                 }

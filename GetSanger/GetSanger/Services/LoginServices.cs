@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Views.popups;
 using GetSanger.Interfaces;
+using System.Collections.Generic;
 
 namespace GetSanger.Services
 {
@@ -15,6 +16,7 @@ namespace GetSanger.Services
         private Interfaces.INavigation m_NavigationService;
         private IRunTasks m_RunTasks;
         private ILocation m_Location;
+        private ITrip m_Trip;
         private IUiPush m_PushServices;
 
         public LoginServices()
@@ -31,7 +33,7 @@ namespace GetSanger.Services
                 if (!firstTime)
                 {
                     AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
-                    AppManager.Instance.ConnectedUser.UserLocation ??= await m_Location.GetCurrentLocation();
+                    AppManager.Instance.ConnectedUser.UserLocation = await m_Location.GetCurrentLocation();
 
                     bool isRegistrationTokenChanged = await m_PushServices.IsRegistrationTokenChanged();
                     if (isRegistrationTokenChanged)
@@ -52,6 +54,7 @@ namespace GetSanger.Services
                         AppManager.Instance.CurrentMode = (eAppMode) mode;
                         Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
                         await PushServices.HandleMessageReceived(null, null, PushServices.BackgroundPushData);
+                        await m_Trip.TryShareSangerLoaction();
                     }
                 }
                 else
@@ -83,7 +86,7 @@ namespace GetSanger.Services
                     User user = await m_RunTasks.RunTaskWhileLoading(FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId()));
                     verified = await AuthHelper.IsVerifiedEmail();
                     AppManager.Instance.ConnectedUser = user;
-                    AppManager.Instance.ConnectedUser.UserLocation ??= await m_Location.GetCurrentLocation();
+                    AppManager.Instance.ConnectedUser.UserLocation = await m_Location.GetCurrentLocation();
                     bool isRegistrationTokenChanged = await m_PushServices.IsRegistrationTokenChanged();
                     if (isRegistrationTokenChanged)
                     {
@@ -99,17 +102,18 @@ namespace GetSanger.Services
                         if (i_Mode != null) // we are here from mode page or from auto login
                         {
                             setMode((eAppMode) i_Mode);
+                            await m_Trip.TryShareSangerLoaction();
                         }
                         else // we are here from login page
                         {
                             if (user.LastUserMode == null)
                             {
                                 await PopupNavigation.Instance.PushAsync(new ModePage());
-                                //await m_NavigationService.NavigateTo(ShellRoutes.ModePage);
                             }
                             else
                             {
                                 setMode();
+                                await m_Trip.TryShareSangerLoaction();
                             }
                         }
                     }
@@ -139,6 +143,7 @@ namespace GetSanger.Services
             m_RunTasks ??= AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
             m_Location ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             m_PushServices ??= AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
+            m_Trip ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
         }
     }
 }

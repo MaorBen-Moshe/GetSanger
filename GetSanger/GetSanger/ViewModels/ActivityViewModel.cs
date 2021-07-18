@@ -213,10 +213,12 @@ namespace GetSanger.ViewModels
                                                      if (agreed)
                                                      {
                                                          sr_LoadingService.ShowLoadingPage();
-                                                         user.ActivatedMap.Remove(ConnectedActivity.ActivityId);
+                                                         user.ActivatedMap[ConnectedActivity.ActivityId] = false;
+                                                         AppManager.Instance.ConnectedUser.ActivatedMap[ConnectedActivity.ActivityId] = false;
                                                          ConnectedActivity.LocationActivatedBySanger = false;
                                                          await FireStoreHelper.UpdateActivity(ConnectedActivity);
                                                          await FireStoreHelper.UpdateUser(user);
+                                                         await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                                                          sr_TripHelper.LeaveTripThread();
                                                          await sr_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!");
                                                          ActivatedButtonText = "Enable Location";
@@ -224,7 +226,7 @@ namespace GetSanger.ViewModels
                                                      }
                                                  });
             }
-            else
+            else if(activated == false)
             {
                 // sanger starts location
                 // sanger always write his location to DB - on start the application
@@ -237,10 +239,12 @@ namespace GetSanger.ViewModels
                                                      if (agreed)
                                                      {
                                                          sr_LoadingService.ShowLoadingPage();
-                                                         user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
+                                                         user.ActivatedMap[ConnectedActivity.ActivityId] = true;
+                                                         AppManager.Instance.ConnectedUser.ActivatedMap[ConnectedActivity.ActivityId] = true;
                                                          ConnectedActivity.LocationActivatedBySanger = true;
                                                          await FireStoreHelper.UpdateActivity(ConnectedActivity);
                                                          await FireStoreHelper.UpdateUser(user);
+                                                         await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                                                          await sr_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
                                                          sr_TripHelper.StartTripThread();
                                                          ActivatedButtonText = "Disable Location";
