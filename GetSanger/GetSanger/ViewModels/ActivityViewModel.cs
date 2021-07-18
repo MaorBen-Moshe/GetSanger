@@ -200,7 +200,7 @@ namespace GetSanger.ViewModels
         private async void doSanger()
         {
             User user = await RunTaskWhileLoading(FireStoreHelper.GetUser(ConnectedActivity.ClientID));
-            bool sangerInuser = user.ActivatedMap.TryGetValue(ConnectedActivity.SangerID, out bool activated);
+            bool sangerInuser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
             if (sangerInuser && activated)
             {
                 // sanger ends location
@@ -212,13 +212,15 @@ namespace GetSanger.ViewModels
                                                  {
                                                      if (agreed)
                                                      {
-                                                         user.ActivatedMap.Add(ConnectedActivity.ActivityId, false);
+                                                         sr_LoadingService.ShowLoadingPage();
+                                                         user.ActivatedMap.Remove(ConnectedActivity.ActivityId);
                                                          ConnectedActivity.LocationActivatedBySanger = false;
-                                                         await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
-                                                         await RunTaskWhileLoading(FireStoreHelper.UpdateUser(user));
+                                                         await FireStoreHelper.UpdateActivity(ConnectedActivity);
+                                                         await FireStoreHelper.UpdateUser(user);
                                                          sr_TripHelper.LeaveTripThread();
-                                                         await RunTaskWhileLoading(sr_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!"));
+                                                         await sr_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!");
                                                          ActivatedButtonText = "Enable Location";
+                                                         sr_LoadingService.HideLoadingPage();
                                                      }
                                                  });
             }
@@ -234,13 +236,15 @@ namespace GetSanger.ViewModels
                                                  {
                                                      if (agreed)
                                                      {
+                                                         sr_LoadingService.ShowLoadingPage();
                                                          user.ActivatedMap.Add(ConnectedActivity.ActivityId, true);
                                                          ConnectedActivity.LocationActivatedBySanger = true;
-                                                         await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
-                                                         await RunTaskWhileLoading(FireStoreHelper.UpdateUser(user));
-                                                         await RunTaskWhileLoading(sr_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!"));
+                                                         await FireStoreHelper.UpdateActivity(ConnectedActivity);
+                                                         await FireStoreHelper.UpdateUser(user);
+                                                         await sr_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
                                                          sr_TripHelper.StartTripThread();
                                                          ActivatedButtonText = "Disable Location";
+                                                         sr_LoadingService.HideLoadingPage();
                                                      }
                                                  });
             }

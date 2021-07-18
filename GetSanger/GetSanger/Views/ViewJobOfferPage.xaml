@@ -41,7 +41,9 @@
                 <Label Text="{Binding ProfileText}">
                 </Label>
             </Frame>
-            <Entry Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" IsReadOnly="True" />
+            <Entry Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
+                   IsEnabled="False"
+                   IsReadOnly="True" />
             <Entry Placeholder="My Location" 
                    Text="{Binding MyLocation}" 
                    IsEnabled="False" />
@@ -53,7 +55,8 @@
                    Text="{Binding Job.ClientPhoneNumber}"
                    Keyboard="Telephone" 
                    x:Name="Phone" 
-                   IsReadOnly="True">
+                   IsReadOnly="True"
+                   IsEnabled="False">
                 <Entry.Behaviors>
                     <behaviors:PhoneNumberMaskBehavior />
                     <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>

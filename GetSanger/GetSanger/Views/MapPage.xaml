@@ -57,7 +57,8 @@
 
 
             <Button Text="Call" 
-                    BackgroundColor="White"
+                    BackgroundColor="Black"
+                    TextColor="White"
                     IsVisible="{Binding IsTrip}"
                     VerticalOptions="EndAndExpand"
                     HorizontalOptions="CenterAndExpand"

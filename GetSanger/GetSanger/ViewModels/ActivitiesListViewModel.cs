@@ -144,7 +144,8 @@ namespace GetSanger.ViewModels
                                     }
                                 }
 
-                                await sr_NavigationService.NavigateTo(ShellRoutes.Activity + $"?activity={activity}");
+                                string json = ObjectJsonSerializer.SerializeForPage(activity);
+                                await sr_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
                             }
                         });
                 }

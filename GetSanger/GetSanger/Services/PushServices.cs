@@ -254,7 +254,7 @@ namespace GetSanger.Services
             }
             else if (currentPage is { BindingContext: ActivitiesListViewModel acVm })
             {
-                await pageServices.DisplayAlert("Note", "New Activity added to the top of the list");
+                await pageServices.DisplayAlert(i_Title, i_Body);
                 acVm.RefreshingCommand.Execute(null);
             }
             else
@@ -306,7 +306,7 @@ namespace GetSanger.Services
             }
             else if (currentPage is { BindingContext: JobOffersViewModel jobVm } && AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {
-                await pageServices.DisplayAlert("Note", "New Job added to the top of the list");
+                await pageServices.DisplayAlert(i_Title, i_Body);
                 jobVm.RefreshingCommand.Execute(null);
             }
             else
