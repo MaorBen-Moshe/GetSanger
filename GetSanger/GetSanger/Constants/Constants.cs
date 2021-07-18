@@ -14,7 +14,7 @@ namespace GetSanger.Constants
 
         public static string LocationMessage { get; }  = "Location";
 
-        public static string ActivatedLocationMessage { get; } = "ActivatedLocation";
+        public static string EndActivity { get; } = "ActivatedLocation";
 
         public static string ChatDatabaseName { get; } = "Chat.db3";
 

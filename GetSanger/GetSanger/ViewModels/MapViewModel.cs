@@ -229,8 +229,8 @@ namespace GetSanger.ViewModels
                     if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.05)
                     {
                         await sr_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
-                        sr_TripHelper.LeaveTripThread(handleTrip);
-                        MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
+                        sr_TripHelper.LeaveTripThread(handleTrip); 
+                        MessagingCenter.Send(this, Constants.Constants.EndActivity, sanger);
                         await GoBack();
                     }
                 }

@@ -121,9 +121,15 @@ namespace GetSanger.ViewModels
                                        ConnectedActivity.Status.Equals(eActivityStatus.Active) == true;
                 IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
                                        AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
-                MessagingCenter.Subscribe<MapViewModel, bool>(this, Constants.Constants.ActivatedLocationMessage, (sender, args) =>
+                MessagingCenter.Subscribe<MapViewModel, User>(this, Constants.Constants.EndActivity, async (sender, args) =>
                 {
-                    IsActivatedLocationButton = args;
+                    User sanger = args;
+                    IsActivatedLocationButton = false;
+                    sanger.ActivatedMap.Remove(ConnectedActivity.ActivityId);
+                    ConnectedActivity.LocationActivatedBySanger = false;
+                    ConnectedActivity.Status = eActivityStatus.Completed;
+                    await FireStoreHelper.UpdateActivity(ConnectedActivity);
+                    await FireStoreHelper.UpdateUser(sanger);
                 });
             }
             catch (Exception e)
@@ -171,7 +177,6 @@ namespace GetSanger.ViewModels
             {
                 ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger == false ? "Enable" : "Disable")} Location");
             }
-
         }
 
         private async void locationCommandHelper()
@@ -199,13 +204,12 @@ namespace GetSanger.ViewModels
 
         private async void doSanger()
         {
-            User user = await RunTaskWhileLoading(FireStoreHelper.GetUser(ConnectedActivity.ClientID));
-            bool sangerInuser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
+            bool sangerInuser = AppManager.Instance.ConnectedUser.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
             if (sangerInuser && activated)
             {
                 // sanger ends location
                 await sr_PageService.DisplayAlert("Note", 
-                                                 $"Do you want to stop sharing your location with {user.PersonalDetails.NickName}?",
+                                                 $"Do you want to stop sharing your location with {ConnectedActivity.JobDetails.ClientName}?",
                                                  "OK",
                                                  "cancel",
                                                  async (agreed) =>
@@ -213,14 +217,12 @@ namespace GetSanger.ViewModels
                                                      if (agreed)
                                                      {
                                                          sr_LoadingService.ShowLoadingPage();
-                                                         user.ActivatedMap[ConnectedActivity.ActivityId] = false;
                                                          AppManager.Instance.ConnectedUser.ActivatedMap[ConnectedActivity.ActivityId] = false;
                                                          ConnectedActivity.LocationActivatedBySanger = false;
                                                          await FireStoreHelper.UpdateActivity(ConnectedActivity);
-                                                         await FireStoreHelper.UpdateUser(user);
                                                          await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                                                          sr_TripHelper.LeaveTripThread();
-                                                         await sr_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!");
+                                                         await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "Location sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!");
                                                          ActivatedButtonText = "Enable Location";
                                                          sr_LoadingService.HideLoadingPage();
                                                      }
@@ -231,7 +233,7 @@ namespace GetSanger.ViewModels
                 // sanger starts location
                 // sanger always write his location to DB - on start the application
                 await sr_PageService.DisplayAlert("Note",
-                                                 $"Do you want to share your location with {user.PersonalDetails.NickName}?",
+                                                 $"Do you want to share your location with {ConnectedActivity.JobDetails.ClientName}?",
                                                  "OK",
                                                  "cancel",
                                                  async (agreed) =>
@@ -239,13 +241,11 @@ namespace GetSanger.ViewModels
                                                      if (agreed)
                                                      {
                                                          sr_LoadingService.ShowLoadingPage();
-                                                         user.ActivatedMap[ConnectedActivity.ActivityId] = true;
                                                          AppManager.Instance.ConnectedUser.ActivatedMap[ConnectedActivity.ActivityId] = true;
                                                          ConnectedActivity.LocationActivatedBySanger = true;
                                                          await FireStoreHelper.UpdateActivity(ConnectedActivity);
-                                                         await FireStoreHelper.UpdateUser(user);
                                                          await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                                                         await sr_PushService.SendToDevice<string>(user.UserId, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
+                                                         await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
                                                          sr_TripHelper.StartTripThread();
                                                          ActivatedButtonText = "Disable Location";
                                                          sr_LoadingService.HideLoadingPage();
@@ -256,9 +256,7 @@ namespace GetSanger.ViewModels
 
         private async void doUser()
         {
-            User user = await RunTaskWhileLoading(FireStoreHelper.GetUser(ConnectedActivity.ClientID));
-            bool sangerInUser = user.ActivatedMap.TryGetValue(ConnectedActivity.ActivityId, out bool activated);
-            if (sangerInUser && activated)
+            if (ConnectedActivity.LocationActivatedBySanger)
             {
                 bool locationGranted = await sr_LocationService.IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
                 if (locationGranted)
@@ -272,8 +270,7 @@ namespace GetSanger.ViewModels
             }
             else
             {
-                User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(ConnectedActivity.SangerID));
-                await sr_PageService.DisplayAlert("Note", $"{sanger.PersonalDetails.NickName} did not share with you location, please contact him to share with you the location!", "OK");
+                await sr_PageService.DisplayAlert("Note", $"{ConnectedActivity.SangerName} did not share with you location, please contact him to share with you the location!", "OK");
             }
         }
 
@@ -300,6 +297,7 @@ namespace GetSanger.ViewModels
                                                  if (IsActivatedLocationButton == false)
                                                  {
                                                      ConnectedActivity.Status = eActivityStatus.Completed;
+                                                     AppManager.Instance.ConnectedUser.ActivatedMap.Remove(ConnectedActivity.ActivityId);
                                                      ConnectedActivity.LocationActivatedBySanger = false;
                                                      sr_TripHelper.LeaveTripThread(); // sanger stop sharing location
                                                      await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
