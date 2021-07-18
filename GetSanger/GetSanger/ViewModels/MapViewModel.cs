@@ -67,7 +67,7 @@ namespace GetSanger.ViewModels
         public ICommand PinClicked { get; private set; }
 
         public ICommand CallTripCommand { get; private set; }
-
+        public ICommand FocusMyLocationCommand { get; private set; }
         public ICommand ExitCommand { get; set; }
 
         #endregion
@@ -92,7 +92,6 @@ namespace GetSanger.ViewModels
 
             if (IsTrip) // we already checked if sanger gave permission to client to see location
             {
-                handleTripHelper();
                 sr_TripHelper.StartTripThread(handleTrip, 20000);
             }
         }
@@ -116,6 +115,7 @@ namespace GetSanger.ViewModels
             MapClicked = new Command(mapClickedHelper);
             PinClicked = new Command(pinClickedHelper);
             CallTripCommand = new Command(callTripHelper);
+            FocusMyLocationCommand = new Command(focusLocation);
             ExitCommand = new Command(exit);
         }
 
@@ -267,18 +267,23 @@ namespace GetSanger.ViewModels
             }
         }
 
+        private async void focusLocation(object i_param)
+        {
+            Location location = await sr_LocationService.GetCurrentLocation();
+            if (location == null)
+            {
+                return;
+            }
+
+            Position position = new Position(location.Latitude, location.Longitude);
+            Span = new MapSpan(position, 0.01, 0.01);
+        }
+
         private async void createMapSpan()
         {
             try
             {
-                Location location = await sr_LocationService.GetCurrentLocation();
-                if(location == null)
-                {
-                    return;
-                }
-
-                Position position = new Position(location.Latitude, location.Longitude);
-                Span = new MapSpan(position, 0.01, 0.01);
+                focusLocation(null);
                 Pins = new ObservableCollection<Pin>
                 {
                     new Pin

@@ -133,7 +133,8 @@ namespace GetSanger.Services
         // we should start and end sanger location sharing every time he leaves the app or move to user mode
         private async void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if(await TryShareSangerLoaction(false) == false)
+            bool sharedEnabled = await TryShareSangerLoaction(false);
+            if (sharedEnabled == false)
             {
                 LeaveTripThread();
                 return;

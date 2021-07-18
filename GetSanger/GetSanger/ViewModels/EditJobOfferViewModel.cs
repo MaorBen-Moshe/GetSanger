@@ -216,7 +216,7 @@ namespace GetSanger.ViewModels
                     NewJobOffer.ClientName ??= AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
                     NewJobOffer.Location = MyPlaceMark?.Location;
                     NewJobOffer.JobLocation = JobPlaceMark?.Location;
-                    if (NewJobOffer.Category.Equals(eCategory.Delivery))
+                    if (NewJobOffer.Category.Equals(eCategory.Delivery) == false)
                     {
                         NewJobOffer.JobLocation = NewJobOffer.Location;
                     }
