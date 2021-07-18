@@ -10,11 +10,12 @@ namespace GetSanger.Services
 {
     public class LocationService : Service, ILocation, ITrip
     {
-        private System.Timers.Timer m_Timer;
+        private readonly System.Timers.Timer m_Timer;
         private IPageService m_PageService;
 
         public LocationService()
         {
+            m_Timer = new System.Timers.Timer();
         }
 
         public CancellationTokenSource Cts { get; set; }
@@ -86,18 +87,16 @@ namespace GetSanger.Services
 
         public void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased = null , int i_Interval = 300000)
         {
-           m_Timer = new System.Timers.Timer
-           {
-                Interval = i_Interval //300000
-           };
-
+            m_Timer.Interval = i_Interval; //300000
             m_Timer.Elapsed += i_Elpased ?? handleSangerLocation;
+            m_Timer.Enabled = true;
             m_Timer.Start();
         }
 
         public void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elpased = null)
         {
             m_Timer.Elapsed -= i_Elpased ?? handleSangerLocation;
+            m_Timer.Enabled = false;
             m_Timer.Stop();
         }
 
