@@ -92,7 +92,7 @@ namespace GetSanger.ViewModels
 
             if (IsTrip) // we already checked if sanger gave permission to client to see location
             {
-                sr_TripHelper.StartTripThread(handleTrip, 350000);
+                sr_TripHelper.StartTripThread(handleTrip, 35000);
             }
         }
 
@@ -198,38 +198,41 @@ namespace GetSanger.ViewModels
         }
 
         // handler to handle the client asking for location from sanger
-        private async void handleTrip(object sender, System.Timers.ElapsedEventArgs e)
+        private void handleTrip(object sender, System.Timers.ElapsedEventArgs e)
         {
-            try
+            Device.BeginInvokeOnMainThread(async () =>
             {
-                User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(SangerTripId));
-                Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
-                Span = new MapSpan(position, 0.01, 0.01);
-                Pins.Clear();
-                Pins.Add(new Pin
+                try
                 {
-                    Type = PinType.Generic,
-                    Position = Span.Center,
-                    Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg")
-                });
-
-                // when sanger is near to us we want to stop asking for location, 0.3 kilometers
-                Location location = await sr_LocationService.GetCurrentLocation();
-                if (location != null)
-                {
-                    if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
+                    User sanger = await FireStoreHelper.GetUser(SangerTripId);
+                    Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
+                    Span = new MapSpan(position, 0.01, 0.01);
+                    Pins.Clear();
+                    Pins.Add(new Pin
                     {
-                        await sr_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
-                        sr_TripHelper.LeaveTripThread(handleTrip);
-                        MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
-                        await GoBack();
+                        Type = PinType.Generic,
+                        Position = Span.Center,
+                        Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg")
+                    });
+
+                    // when sanger is near to us we want to stop asking for location, 0.3 kilometers
+                    Location location = await sr_LocationService.GetCurrentLocation();
+                    if (location != null)
+                    {
+                        if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.3)
+                        {
+                            await sr_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
+                            sr_TripHelper.LeaveTripThread(handleTrip);
+                            MessagingCenter.Send(this, Constants.Constants.ActivatedLocationMessage, false);
+                            await GoBack();
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                await ex.LogAndDisplayError($"{nameof(MapViewModel)}:handleTrip", "Error", ex.Message);
-            }
+                catch (Exception ex)
+                {
+                    await ex.LogAndDisplayError($"{nameof(MapViewModel)}:handleTrip", "Error", ex.Message);
+                }
+            });
         }
 
         private async void locationPicked(Position i_Position)

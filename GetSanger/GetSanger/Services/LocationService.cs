@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace GetSanger.Services
 {
@@ -85,19 +86,23 @@ namespace GetSanger.Services
             }
         }
 
-        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased = null , int i_Interval = 300000)
+        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased = null , int i_Interval = 30000)
         {
-            m_Timer.Interval = i_Interval; //300000
-            m_Timer.Elapsed += i_Elpased ?? handleSangerLocation;
-            m_Timer.Enabled = true;
-            m_Timer.Start();
+            Device.BeginInvokeOnMainThread(() => {
+                m_Timer.Enabled = true;
+                m_Timer.Interval = i_Interval; //30000
+                m_Timer.Elapsed += i_Elpased ?? handleSangerLocation;
+                m_Timer.Start();
+            });
         }
 
         public void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elpased = null)
         {
-            m_Timer.Elapsed -= i_Elpased ?? handleSangerLocation;
-            m_Timer.Enabled = false;
-            m_Timer.Stop();
+            Device.BeginInvokeOnMainThread(() => {
+                m_Timer.Elapsed -= i_Elpased ?? handleSangerLocation;
+                m_Timer.Enabled = false;
+                m_Timer.Stop();
+            });
         }
 
         // we should start and end sanger location sharing every time he leaves the app or move to user mode
