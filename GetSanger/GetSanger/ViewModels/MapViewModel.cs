@@ -212,16 +212,17 @@ namespace GetSanger.ViewModels
                 Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
                 Span = new MapSpan(position, 0.01, 0.01);
                 Pins = new ObservableCollection<Pin>
-                    {
-                        Pins[0],
-                        new Pin
-                        {
-                            Type = PinType.Generic,
-                            Position = Span.Center,
-                            //Icon = BitmapDescriptorFactory.From("PinIcon.jpeg"),
-                            Label = "Sanger Location"
-                        }
-                    };
+                {
+                     Pins[0],
+                     new Pin
+                     {
+                         Type = PinType.Generic,
+                         Position = Span.Center,
+                         //Icon = BitmapDescriptorFactory.From("PinIcon.jpeg"),
+                         Label = "Sanger Location"
+                     }
+                };
+                // need to change for job location
                 // when sanger is near to us we want to stop asking for location, 0.3 kilometers
                 Location location = await sr_LocationService.GetCurrentLocation();
                 if (location != null)

@@ -1,10 +1,8 @@
-﻿using GetSanger.Models.chat;
-using GetSanger.Services;
+﻿using GetSanger.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using Xamarin.Essentials;
 
 namespace GetSanger.Models

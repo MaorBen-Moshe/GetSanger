@@ -216,6 +216,11 @@ namespace GetSanger.ViewModels
                     NewJobOffer.ClientName ??= AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
                     NewJobOffer.Location = MyPlaceMark?.Location;
                     NewJobOffer.JobLocation = JobPlaceMark?.Location;
+                    if (NewJobOffer.Category.Equals(eCategory.Delivery))
+                    {
+                        NewJobOffer.JobLocation = NewJobOffer.Location;
+                    }
+
                     NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
                     List<JobOffer> job = await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer));
                     AppManager.Instance.ConnectedUser.JobOffers.Append<ObservableCollection<JobOffer>, JobOffer>(new ObservableCollection<JobOffer>(job));
