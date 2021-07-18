@@ -18,16 +18,23 @@
     </popup:PopupPage.Animation>
 
     <popup:PopupPage.Content>
-        <StackLayout>
+        <StackLayout Margin="20"
+                     BackgroundColor="WhiteSmoke">
             <Label Text="X" 
                    BackgroundColor="Transparent"
                    HorizontalOptions="EndAndExpand" 
-                   VerticalOptions="StartAndExpand"
+                   VerticalOptions="Start"
                    Margin="5">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                 </Label.GestureRecognizers>
             </Label>
+            <Label Text="Empty !"
+                   FontSize="20"
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Center"/>
         </StackLayout>
     </popup:PopupPage.Content>
 </popup:PopupPage>
