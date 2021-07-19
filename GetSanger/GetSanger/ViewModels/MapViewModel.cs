@@ -94,6 +94,7 @@ namespace GetSanger.ViewModels
 
             if (IsTrip) // we already checked if sanger gave permission to client to see location
             {
+                handleTripHelper();
                 sr_TripHelper.StartTripThread(handleTrip, 20000);
             }
         }
