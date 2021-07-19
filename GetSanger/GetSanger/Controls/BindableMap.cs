@@ -6,7 +6,7 @@ using Xamarin.Forms.GoogleMaps;
 
 namespace GetSanger.Controls
 {
-    public class BindableMap : Xamarin.Forms.GoogleMaps.Map
+    public class BindableMap : Map
     {
         public ObservableCollection<Pin> PinsSource
         {
@@ -73,7 +73,7 @@ namespace GetSanger.Controls
             UpdatePinsSource(this, sender as IEnumerable<Pin>);
         }
 
-        private static void UpdatePinsSource(Xamarin.Forms.GoogleMaps.Map bindableMap, IEnumerable<Pin> newSource)
+        private static void UpdatePinsSource(Map bindableMap, IEnumerable<Pin> newSource)
         {
             bindableMap.Pins.Clear();
             foreach (var pin in newSource)

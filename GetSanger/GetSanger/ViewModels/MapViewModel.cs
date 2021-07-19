@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -171,7 +172,7 @@ namespace GetSanger.ViewModels
                     List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(i_Search as string));
                     if (positionList.Count != 0)
                     {
-                        position = positionList.FirstOrDefault<Position>();
+                        position = positionList.FirstOrDefault();
                         Pins = new ObservableCollection<Pin>{
                         Pins[0],
                         new Pin
@@ -215,6 +216,7 @@ namespace GetSanger.ViewModels
                 User sanger = await FireStoreHelper.GetUser(SangerTripId);
                 Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
                 Span = new MapSpan(position, 0.01, 0.01);
+
                 Pins = new ObservableCollection<Pin>
                 {
                      Pins[0],
@@ -222,7 +224,8 @@ namespace GetSanger.ViewModels
                      {
                          Type = PinType.Generic,
                          Position = Span.Center,
-                         //Icon = BitmapDescriptorFactory.From("PinIcon.jpeg"),
+                         //Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg"),
+                         Icon = BitmapDescriptorFactory.DefaultMarker(Color.SeaGreen),
                          Label = "Sanger Location"
                      }
                 };

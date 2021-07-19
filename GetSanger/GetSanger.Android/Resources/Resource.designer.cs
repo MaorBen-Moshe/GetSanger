@@ -20920,37 +20920,34 @@ namespace GetSanger.Droid
 			public const int phone = 2131165371;
 			
 			// aapt resource value: 0x7F0700BC
-			public const int PinIcon = 2131165372;
+			public const int profile = 2131165372;
 			
 			// aapt resource value: 0x7F0700BD
-			public const int profile = 2131165373;
+			public const int ratingStarOff = 2131165373;
 			
 			// aapt resource value: 0x7F0700BE
-			public const int ratingStarOff = 2131165374;
+			public const int ratingStarOff2x = 2131165374;
 			
 			// aapt resource value: 0x7F0700BF
-			public const int ratingStarOff2x = 2131165375;
+			public const int ratingStarOn = 2131165375;
 			
 			// aapt resource value: 0x7F0700C0
-			public const int ratingStarOn = 2131165376;
+			public const int ratingStarOn2x = 2131165376;
 			
 			// aapt resource value: 0x7F0700C1
-			public const int ratingStarOn2x = 2131165377;
+			public const int rolling = 2131165377;
 			
 			// aapt resource value: 0x7F0700C2
-			public const int rolling = 2131165378;
+			public const int test_custom_background = 2131165378;
 			
 			// aapt resource value: 0x7F0700C3
-			public const int test_custom_background = 2131165379;
+			public const int tooltip_frame_dark = 2131165379;
 			
 			// aapt resource value: 0x7F0700C4
-			public const int tooltip_frame_dark = 2131165380;
+			public const int tooltip_frame_light = 2131165380;
 			
 			// aapt resource value: 0x7F0700C5
-			public const int tooltip_frame_light = 2131165381;
-			
-			// aapt resource value: 0x7F0700C6
-			public const int whatsapp = 2131165382;
+			public const int whatsapp = 2131165381;
 			
 			static Drawable()
 			{

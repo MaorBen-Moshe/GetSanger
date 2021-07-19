@@ -219,7 +219,7 @@
     <AndroidResource Include="Resources\Drawable\profile.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\PinIcon.jpeg" />
+    <AndroidAsset Include="Resources\Drawable\PinIcon.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\ic_scrolldown.jpeg" />
