@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GetSanger.Extensions;
 using GetSanger.Models;
@@ -115,7 +116,10 @@ namespace GetSanger.ViewModels
             MapClicked = new Command(mapClickedHelper);
             PinClicked = new Command(pinClickedHelper);
             CallTripCommand = new Command(callTripHelper);
-            FocusMyLocationCommand = new Command(focusLocation);
+            FocusMyLocationCommand = new Command(async (i_Object) => {
+                await focusLocation(i_Object);
+            });
+
             ExitCommand = new Command(exit);
         }
 
@@ -267,7 +271,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private async void focusLocation(object i_param)
+        private async Task focusLocation(object i_param)
         {
             Location location = await sr_LocationService.GetCurrentLocation();
             if (location == null)
@@ -283,7 +287,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                focusLocation(null);
+                await focusLocation(null);
                 Pins = new ObservableCollection<Pin>
                 {
                     new Pin
