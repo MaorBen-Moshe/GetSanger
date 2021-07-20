@@ -251,6 +251,7 @@ namespace GetSanger.Services
             if (currentPage is {BindingContext: ActivityViewModel vm} && vm.ConnectedActivity.ActivityId == activity.ActivityId)
             {
                 vm.ConnectedActivity = activity;
+                vm.Appearing();
             }
             else if (currentPage is { BindingContext: ActivitiesListViewModel acVm })
             {
@@ -303,6 +304,7 @@ namespace GetSanger.Services
             if (currentPage is { BindingContext: ViewJobOfferViewModel vm } && vm.Job.JobId == job.JobId)
             {
                 vm.Job = job;
+                vm.Appearing();
             }
             else if (currentPage is { BindingContext: JobOffersViewModel jobVm } && AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {

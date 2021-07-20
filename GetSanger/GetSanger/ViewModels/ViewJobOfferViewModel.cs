@@ -2,6 +2,7 @@
 using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Utils;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -21,7 +22,7 @@ namespace GetSanger.ViewModels
         private string m_JobLocation;
         private bool m_IsMyJobOffer;
         private bool m_IsDeliveryCategory;
-
+        private bool m_IsSangerMode;
         #endregion
 
         #region Properties
@@ -73,11 +74,21 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsDeliveryCategory, value);
         }
 
+        public bool IsSangerMode
+        {
+            get => m_IsSangerMode;
+            set => SetStructProperty(ref m_IsSangerMode, value);
+        }
+
         #endregion
 
         #region Commands
 
         public ICommand ProfileCommand { get; private set; }
+
+        public ICommand ConfirmJobOfferCommand { get; private set; }
+
+        public ICommand DeleteMyJobOfferCommand { get; private set; }
 
         #endregion
 
@@ -105,6 +116,8 @@ namespace GetSanger.ViewModels
         protected override void SetCommands()
         {
             ProfileCommand = new Command(moveProfile);
+            ConfirmJobOfferCommand = new Command(confirmJobOffer);
+            DeleteMyJobOfferCommand = new Command(deleteJobOffer);
         }
 
         private async Task initData()
@@ -128,11 +141,60 @@ namespace GetSanger.ViewModels
                 }
 
                 IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
+                IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
                 sr_LoadingService.HideLoadingPage();
             }
             catch(Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ViewJobOfferViewModel)}:initData", "Error", e.Message);
+            }
+        }
+
+        private async void confirmJobOffer(object i_Param)
+        {
+            try
+            {
+                await sr_PageService.DisplayAlert("Note", "Are you sure?", "Yes", "No", async (answer) =>
+                {
+                    if (answer)
+                    {
+                        await JobOffersConfirmationHelper.ConfirmJobOffer(Job);
+                        await GoBack();
+                    }
+                });
+            }
+            catch(Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ViewJobOfferViewModel)}:confirmJobOffer", "Error", e.Message);
+            }
+        }
+
+        private async void deleteJobOffer(object i_Param)
+        {
+            try
+            {
+                JobOffersConfirmationHelper.DeleteMyJobOfferCommand(action: async () =>
+                {
+                    await sr_PageService.DisplayAlert("Warning",
+                                                     "Are you sure?",
+                                                     "Yes",
+                                                     "No",
+                                                     async (answer) =>
+                                                     {
+                                                         if (answer)
+                                                         {
+                                                             sr_LoadingService.ShowLoadingPage();
+                                                             await FireStoreHelper.DeleteJobOffer(Job.JobId);
+                                                             AppManager.Instance.ConnectedUser.JobOffers.Remove(Job);
+                                                             sr_LoadingService.HideLoadingPage();
+                                                             await GoBack();
+                                                         }
+                                                     });
+                });
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:deleteMyJobOfferCommand", "Error", e.Message);
             }
         }
 

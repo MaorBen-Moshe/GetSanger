@@ -2,6 +2,7 @@
 using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Utils;
 using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -17,15 +18,15 @@ namespace GetSanger.ViewModels
     public class JobOffersViewModel : ListBaseViewModel<JobOffer>
     {
         #region Fields
-        private string m_Notes;
+        private bool m_IsSangerMode;
         #endregion
 
         #region Properties
-        public JobOffer CurrentConfirmedJobOffer { get; set; }
-        public string Notes
+        
+        public bool IsSangerMode
         {
-            get => m_Notes;
-            set => SetClassProperty(ref m_Notes, value);
+            get => m_IsSangerMode;
+            set => SetStructProperty(ref m_IsSangerMode, value);
         }
         
         #endregion
@@ -34,7 +35,6 @@ namespace GetSanger.ViewModels
         public ICommand ConfirmJobOfferCommand { get; set; }
         public ICommand SelectedJobOfferCommand { get; set; }
         public ICommand DeleteMyJobOfferCommand { get; set; }
-        public ICommand SendNotesCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -49,13 +49,17 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(JobOffersViewModel));
-            Notes = null;
             setJobOffers();
+            MessagingCenter.Subscribe<SangerNotesViewModel>(this, Constants.Constants.SangerNotesSent, (sender) =>
+            {
+                setJobOffers();
+            });
         }
 
         public override void Disappearing()
         {
             setFilterIndices();
+            MessagingCenter.Unsubscribe<SangerNotesViewModel>(this, Constants.Constants.SangerNotesSent);
         }
 
         protected override void SetCommands()
@@ -64,34 +68,7 @@ namespace GetSanger.ViewModels
             ConfirmJobOfferCommand = new Command(confirmJobOffer);
             SelectedJobOfferCommand = new Command(selectedJobOffer);
             DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
-            SendNotesCommand = new Command(sendNotes);
             FilterSelectedCommand = new Command(filterSelected);
-        }
-
-        private async void sendNotes()
-        {
-            try
-            {
-                Activity activity = new Activity
-                {
-                    JobDetails = CurrentConfirmedJobOffer,
-                    SangerNotes = Notes,
-                    SangerID = AuthHelper.GetLoggedInUserId(),
-                    SangerName = AppManager.Instance.ConnectedUser.PersonalDetails.NickName,
-                    ClientID = CurrentConfirmedJobOffer.ClientID,
-                    Status = eActivityStatus.Pending,
-                    LocationActivatedBySanger = false
-                };
-
-                AppManager.Instance.ConnectedUser.Activities.Append<ObservableCollection<Activity>, Activity>(new ObservableCollection<Activity>(await RunTaskWhileLoading(FireStoreHelper.AddActivity(activity))));
-                await sr_PageService.DisplayAlert("Note", "Your request has been sent!");
-                setJobOffers();
-                await PopupNavigation.Instance.PopAsync();
-            }
-            catch(Exception e)
-            {
-                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:sendNotes", "Error", e.Message);
-            }
         }
 
         protected async override void filterSelected(object i_Param)
@@ -116,11 +93,11 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                CurrentConfirmedJobOffer = i_Param as JobOffer;
-                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
+                if(i_Param is JobOffer job)
                 {
-                    await PopupNavigation.Instance.PushAsync(new SangerNotesView(this));
+                    await JobOffersConfirmationHelper.ConfirmJobOffer(job);
                 }
+                
             }
             catch (Exception e)
             {
@@ -132,23 +109,28 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
+                if (i_Param is JobOffer job)
                 {
-                    await sr_PageService.DisplayAlert("Warning",
-                                                     "Are you sure?",
-                                                     "Yes",
-                                                     "No",
-                                                     async (answer) =>
-                                                     {
-                                                         if (answer)
+                    JobOffersConfirmationHelper.DeleteMyJobOfferCommand(action: async () =>
+                    {
+                        await sr_PageService.DisplayAlert("Warning",
+                                                         "Are you sure?",
+                                                         "Yes",
+                                                         "No",
+                                                         async (answer) =>
                                                          {
-                                                             JobOffer job = i_Param as JobOffer;
-                                                             AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
-                                                             AllCollection.Remove(job);
-                                                             IsVisibleViewList = AllCollection.Count > 0;
-                                                             await RunTaskWhileLoading(FireStoreHelper.DeleteJobOffer(job.JobId));
-                                                         }
-                                                     });
+                                                             if (answer)
+                                                             {
+                                                                 sr_LoadingService.ShowLoadingPage();
+                                                                 AllCollection.Remove(job);
+                                                                 FilteredCollection.Remove(job);
+                                                                 IsVisibleViewList = AllCollection.Count > 0;
+                                                                 await FireStoreHelper.DeleteJobOffer(job.JobId);
+                                                                 AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
+                                                                 sr_LoadingService.HideLoadingPage();
+                                                             }
+                                                         });
+                    });
                 }
             }
             catch (Exception e)
@@ -203,6 +185,7 @@ namespace GetSanger.ViewModels
                 FilteredCollection = new ObservableCollection<JobOffer>(AllCollection);
                 SearchCollection = new ObservableCollection<JobOffer>(AllCollection);
                 IsVisibleViewList = AllCollection.Count > 0;
+                IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
                 setFilterIndices();
             }
             catch (Exception e)

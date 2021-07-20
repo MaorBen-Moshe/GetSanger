@@ -87,6 +87,23 @@
                 </Editor>
             </Frame>
 
+            <Button Text="Confirm"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        IsVisible="{Binding IsSangerMode}"
+                        BackgroundColor="Transparent"
+                        Command="{Binding ConfirmJobOfferCommand}" 
+                        BorderColor="Transparent"
+                        HorizontalOptions="CenterAndExpand"/>
+            <Button Text="Delete"
+                        TextColor="Red"
+                        BorderColor="Transparent"
+                        IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}"
+                        FontSize="12"
+                        BackgroundColor="Transparent"
+                        Command="{Binding DeleteMyJobOfferCommand}"
+                        HorizontalOptions="CenterAndExpand"/>
+
         </StackLayout>
 
     </ContentPage.Content>

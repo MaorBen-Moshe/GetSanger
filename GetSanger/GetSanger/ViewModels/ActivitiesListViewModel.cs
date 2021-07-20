@@ -16,6 +16,7 @@ namespace GetSanger.ViewModels
         #region Fields
         private List<string> m_StatusFilterList;
         private int m_SelectedStatusFilterIndex;
+        private bool m_IsClientMode;
         private const string k_All = "All";
         #endregion
 
@@ -30,6 +31,12 @@ namespace GetSanger.ViewModels
         {
             get => m_SelectedStatusFilterIndex;
             set => SetStructProperty(ref m_SelectedStatusFilterIndex, value);
+        }
+
+        public bool IsClientMode
+        {
+            get => m_IsClientMode;
+            set => SetStructProperty(ref m_IsClientMode, value);
         }
         #endregion
 
@@ -272,6 +279,7 @@ namespace GetSanger.ViewModels
             SearchCollection = new ObservableCollection<Activity>(AllCollection);
             IsVisibleViewList = AllCollection.Count > 0;
             setFilterIndices();
+            IsClientMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
         }
         #endregion
     }

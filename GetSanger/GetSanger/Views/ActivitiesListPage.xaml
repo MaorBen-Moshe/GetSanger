@@ -5,7 +5,8 @@
              xmlns:behaviors ="clr-namespace:GetSanger.Behaviors"
              xmlns:converters="clr-namespace:GetSanger.Converters"
              xmlns:controls="clr-namespace:GetSanger.Controls"
-             x:Class="GetSanger.Views.ActivitiesListPage">
+             x:Class="GetSanger.Views.ActivitiesListPage"
+             x:Name="parent">
     
     <ContentPage.BindingContext>
         <vm:ActivitiesListViewModel />
@@ -16,6 +17,7 @@
             <converters:SelectedItemConverter x:Key="SelectedItemConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
+            <converters:CategoryToStringConverter x:Key="CategoryToStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -32,8 +34,9 @@
                                HeightRequest="40"
                                WidthRequest="40" />-->
                         <Label Grid.Column="1"
-                               Text="{Binding JobOffer.Title}"
+                               Text="{Binding JobDetails.Title}"
                                FontAttributes="Bold"
+                               BackgroundColor="Transparent"
                                VerticalOptions="Center" />
                     </Grid>
                 </DataTemplate>
@@ -82,16 +85,25 @@
                                        Margin="10">
                                     <StackLayout Padding="20">
                                         <StackLayout Orientation="Horizontal"
-                                                     HorizontalOptions="StartAndExpand"
+                                                     HorizontalOptions="FillAndExpand"
                                                      VerticalOptions="StartAndExpand" >
                                             <Ellipse Fill="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                                         WidthRequest="22"
+                                                         HeightRequest="22"
+                                                         HorizontalOptions="Start"
+                                                         Margin="5"/>
+
+                                            <Label Text="{Binding Status}"></Label>
+                                            
+                                            <Ellipse Fill="Gray"
                                                      WidthRequest="22"
                                                      HeightRequest="22"
+                                                     HorizontalOptions="EndAndExpand"
                                                      Margin="5"/>
 
-                                            <Label Text="{Binding Status}" />
+                                            <Label Text="{Binding JobDetails.Category, Converter={StaticResource CategoryToStringConverter}}"></Label>
                                         </StackLayout>
-                                        
+
                                         <Label Text="{Binding JobDetails.Title}" 
                                                FontAttributes="Bold" 
                                                HorizontalOptions="CenterAndExpand"
@@ -100,6 +112,16 @@
                                         <Label Text="{Binding JobDetails.Description}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
+                                               VerticalOptions="Start"/>
+                                        <Label Text="{Binding SangerName, StringFormat='Sanger Name: {0}'}"
+                                               BackgroundColor="Transparent" 
+                                               HorizontalOptions="CenterAndExpand"
+                                               IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Path=IsClientMode}"
+                                               VerticalOptions="Start"/>
+                                        <Label Text="{Binding JobDetails.ClientName, StringFormat='Client Name: {0}'}"
+                                               BackgroundColor="Transparent" 
+                                               HorizontalOptions="CenterAndExpand"
+                                               IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Path=IsClientMode, Converter={StaticResource InverseBoolConverter}}"
                                                VerticalOptions="Start"/>
 
                                         <StackLayout Orientation="Horizontal">

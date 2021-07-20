@@ -95,25 +95,30 @@
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
                                                VerticalOptions="Start"/>
-                                        
-                                        <StackLayout Orientation="Horizontal">
-                                            <Button Text="Confirm"
+                                        <Label Text="{Binding ClientName, StringFormat='Client Name: {0}'}"
+                                               BackgroundColor="Transparent" 
+                                               HorizontalOptions="CenterAndExpand"
+                                               IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}, Path=IsSangerMode}"
+                                               VerticalOptions="Start"/>
+
+                                        <Button Text="Confirm"
                                                     FontSize="12"
                                                     FontAttributes="Bold"
                                                     BackgroundColor="Transparent"
+                                                    IsVisible ="{Binding IsSangerMode, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}}" 
                                                     Command="{Binding ConfirmJobOfferCommand, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}}" 
                                                     CommandParameter="{Binding .}"
                                                     BorderColor="Transparent"
                                                     HorizontalOptions="CenterAndExpand"/>
-                                            <Button Text="Delete"
+                                        <Button Text="Delete"
                                                     TextColor="Red"
                                                     BorderColor="Transparent"
                                                     FontSize="12"
                                                     BackgroundColor="Transparent"
+                                                    IsVisible ="{Binding IsSangerMode, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}, Converter={StaticResource InverseBoolConverter}}" 
                                                     Command="{Binding DeleteMyJobOfferCommand, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}}" 
                                                     CommandParameter="{Binding .}"
                                                     HorizontalOptions="CenterAndExpand"/>
-                                        </StackLayout>
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>

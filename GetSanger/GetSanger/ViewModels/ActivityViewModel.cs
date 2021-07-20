@@ -25,6 +25,7 @@ namespace GetSanger.ViewModels
         private bool m_IsActivatedEndButton;
         private string m_ProfileName;
         private bool m_IsSangerNotesVisible;
+        private bool m_IsJobLocationVisible;
         #endregion
 
         #region Properties
@@ -84,6 +85,12 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsSangerNotesVisible, value);
         }
 
+        public bool IsJobLocationVisible
+        {
+            get => m_IsJobLocationVisible;
+            set => SetStructProperty(ref m_IsJobLocationVisible, value);
+        }
+
         #endregion
 
         #region Commands
@@ -121,6 +128,7 @@ namespace GetSanger.ViewModels
                                        ConnectedActivity.Status.Equals(eActivityStatus.Active) == true;
                 IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
                                        AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
+                IsJobLocationVisible = ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery);
                 MessagingCenter.Subscribe<MapViewModel, User>(this, Constants.Constants.EndActivity, async (sender, args) =>
                 {
                     User sanger = args;

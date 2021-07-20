@@ -16,6 +16,8 @@ namespace GetSanger.Constants
 
         public static string EndActivity { get; } = "ActivatedLocation";
 
+        public static string SangerNotesSent { get; } = "SangerNotesSent";
+
         public static string ChatDatabaseName { get; } = "Chat.db3";
 
         public static SQLite.SQLiteOpenFlags ChatDbFlags { get; }  = 

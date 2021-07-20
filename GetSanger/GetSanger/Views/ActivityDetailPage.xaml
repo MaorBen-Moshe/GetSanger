@@ -69,6 +69,7 @@
                            BackgroundColor="Transparent"/>
                     <Label Text="{Binding JobLocation, StringFormat=' Job Location:&#x0a; {0}'}"
                            Margin="5"
+                           IsVisible="{Binding IsJobLocationVisible}"
                            BackgroundColor="Transparent"/>
                     <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"

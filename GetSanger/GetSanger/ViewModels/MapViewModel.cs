@@ -277,6 +277,7 @@ namespace GetSanger.ViewModels
 
         private async Task focusLocation(object i_param)
         {
+            sr_LoadingService.ShowLoadingPage();
             Location location = await sr_LocationService.GetCurrentLocation();
             if (location == null)
             {
@@ -285,6 +286,7 @@ namespace GetSanger.ViewModels
 
             Position position = new Position(location.Latitude, location.Longitude);
             Span = new MapSpan(position, 0.01, 0.01);
+            sr_LoadingService.HideLoadingPage();
         }
 
         private async void createMapSpan()
