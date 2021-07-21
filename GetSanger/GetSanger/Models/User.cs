@@ -14,6 +14,7 @@ namespace GetSanger.Models
         private Uri m_ProfilePictureUre;
         private bool m_IsGenericNotifications;
         private Location m_UserLocation;
+        private double m_DistanceLimit;
         #endregion
 
         public string UserId { get; set; }
@@ -40,7 +41,12 @@ namespace GetSanger.Models
             get => m_UserLocation;
             set => SetClassProperty(ref m_UserLocation, value);
         }
-        
+        public double DistanceLimit // should be a number between 1 - 400 if -1 than infinity
+        {
+            get => m_DistanceLimit;
+            set => SetStructProperty(ref m_DistanceLimit, value);
+        }
+
         [JsonIgnore]
         public ObservableCollection<Activity> Activities { get; set; } // sanger and user activities each mode shows its own activities
         [JsonIgnore]

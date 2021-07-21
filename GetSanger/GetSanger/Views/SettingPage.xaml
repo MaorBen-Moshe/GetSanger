@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:controls="clr-namespace:GetSanger.Controls"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.SettingPage"
              x:Name="SettingsPage"
              Shell.TabBarIsVisible="False">
@@ -15,6 +17,12 @@
         <BackButtonBehavior Command="{Binding BackButtonCommand}"/>
     </Shell.BackButtonBehavior>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <StackLayout>
             <controls:CategoriesTableView Source="{Binding CategoriesItems}" 
@@ -22,6 +30,24 @@
                                     ToggledCommand="{Binding ToggledCommand}"
                                     HasUnevenRows="True"
                                     VerticalOptions="Start" />
+            <StackLayout Margin="20">
+                <Label Text="{Binding DistanceLimit, StringFormat='Jobs distance: {0}'}" HorizontalOptions="CenterAndExpand"/>
+                <StackLayout Orientation="Horizontal">
+                    <Slider Value="{Binding DistanceLimit}"
+                            Minimum="10"
+                            Maximum="400"
+                            HorizontalOptions="FillAndExpand"
+                            IsEnabled="{Binding InfinityChecked}"
+                            DragCompletedCommand="{Binding DistanceChangedCommand}" 
+                            ValueChanged="Slider_ValueChanged"/>
+                    <CheckBox IsChecked="{Binding InfinityChecked, Mode=TwoWay, Converter={StaticResource InverseBoolConverter}}">
+                        <CheckBox.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="CheckedChanged"
+                                                              Command="{Binding InfinityCheckedCommand}"/>
+                        </CheckBox.Behaviors>
+                    </CheckBox>
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

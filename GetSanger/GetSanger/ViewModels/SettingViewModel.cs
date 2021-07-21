@@ -18,6 +18,9 @@ namespace GetSanger.ViewModels
         private bool m_IsGenericNotificatons;
         private List<string> m_NewCategoriesSubscribed;
         private List<string> m_NewCategoriesUnsubscribed;
+        private double m_DistanceLimit;
+        private bool m_IsSangerMode;
+        private bool m_InfinityChecked;
         #endregion
 
         #region Properties
@@ -32,12 +35,34 @@ namespace GetSanger.ViewModels
             get => m_IsGenericNotificatons;
             set => SetStructProperty(ref m_IsGenericNotificatons, value);
         }
+
+        public double DistanceLimit
+        {
+            get => m_DistanceLimit;
+            set => SetStructProperty(ref m_DistanceLimit, value);
+        }
+
+        public bool IsSangerMode
+        {
+            get => m_IsSangerMode;
+            set => SetStructProperty(ref m_IsSangerMode, value);
+        }
+
+        public bool InfinityChecked
+        {
+            get => m_InfinityChecked;
+            set => SetStructProperty(ref m_InfinityChecked, value);
+        }
         #endregion
 
         #region Commands
         public ICommand ToggledCommand { get; set; }
 
         public ICommand BackButtonCommand { get; set; }
+
+        public ICommand DistanceChangedCommand { get; set; }
+
+        public ICommand InfinityCheckedCommand { get; set; }
 
         #endregion
 
@@ -65,6 +90,9 @@ namespace GetSanger.ViewModels
                 }
             ).ToList());
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
+            IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
+            DistanceLimit = 10;
+            InfinityChecked = false;
         }
 
         public override void Disappearing()
@@ -79,6 +107,8 @@ namespace GetSanger.ViewModels
         {
             ToggledCommand = new Command(toggled);
             BackButtonCommand = new Command(backButtonBehavior);
+            DistanceChangedCommand = new Command(distanceChanged);
+            InfinityCheckedCommand = new Command(infinityChecked);
         }
 
         private async void backButtonBehavior()
@@ -117,6 +147,24 @@ namespace GetSanger.ViewModels
             {
                 sr_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(SettingViewModel)}:backButtonBehavior", "Error", e.Message);
+            }
+        }
+
+        private async void distanceChanged()
+        {
+            if(AppManager.Instance.ConnectedUser.DistanceLimit != DistanceLimit)
+            {
+                AppManager.Instance.ConnectedUser.DistanceLimit = DistanceLimit;
+                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+            }
+        }
+
+        private async void infinityChecked()
+        {
+            if (InfinityChecked)
+            {
+                AppManager.Instance.ConnectedUser.DistanceLimit = -1;
+                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
             }
         }
 

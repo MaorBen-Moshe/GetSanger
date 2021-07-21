@@ -35,5 +35,12 @@ namespace GetSanger.Views
             (BindingContext as SettingViewModel).BackButtonCommand.Execute(null);
             return true;
         }
+
+        private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            double stepValue = 1.0;
+            double newStep = Math.Round(e.NewValue / stepValue);
+            (sender as Slider).Value = newStep * stepValue;
+        }
     }
 }
