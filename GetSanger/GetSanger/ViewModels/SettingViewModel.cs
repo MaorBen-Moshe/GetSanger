@@ -22,6 +22,7 @@ namespace GetSanger.ViewModels
         private double m_OldDistanceLimit;
         private bool m_IsSangerMode;
         private bool m_InfinityChecked;
+        private string m_DistanceString;
         #endregion
 
         #region Properties
@@ -53,6 +54,12 @@ namespace GetSanger.ViewModels
         {
             get => m_InfinityChecked;
             set => SetStructProperty(ref m_InfinityChecked, value);
+        }
+
+        public string DistanceString
+        {
+            get => m_DistanceString;
+            set => SetClassProperty(ref m_DistanceString, value);
         }
         #endregion
 
@@ -95,6 +102,7 @@ namespace GetSanger.ViewModels
             InfinityChecked = AppManager.Instance.ConnectedUser.DistanceLimit == -1;
             DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
             m_OldDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
+            setDistanceString();
         }
 
         public override void Disappearing()
@@ -109,8 +117,13 @@ namespace GetSanger.ViewModels
         {
             ToggledCommand = new Command(toggled);
             BackButtonCommand = new Command(backButtonBehavior);
-            DistanceChangedCommand = new Command(() => AppManager.Instance.ConnectedUser.DistanceLimit = DistanceLimit);
-            InfinityCommand = new Command(() => AppManager.Instance.ConnectedUser.DistanceLimit = -1);
+            DistanceChangedCommand = new Command(distanceChanged);
+            InfinityCommand = new Command(() => 
+            {
+                AppManager.Instance.ConnectedUser.DistanceLimit = -1;
+                DistanceLimit = 10;
+                setDistanceString();
+            });
         }
 
         private async void backButtonBehavior()
@@ -202,6 +215,29 @@ namespace GetSanger.ViewModels
             }
         }
 
+        private void distanceChanged(object i_Param)
+        {
+            // make double to int
+            double stepValue = 1.0;
+            double newStep = Math.Round(DistanceLimit / stepValue);
+            DistanceLimit = newStep * stepValue;
+
+            AppManager.Instance.ConnectedUser.DistanceLimit = DistanceLimit;
+            setDistanceString();
+        }
+
+        private void setDistanceString()
+        {
+            DistanceString = "Job distance: ";
+            if (InfinityChecked)
+            {
+                DistanceString += "unlimited";
+            }
+            else
+            {
+                DistanceString += DistanceLimit.ToString();
+            }
+        }
         #endregion
     }
 }

@@ -42,15 +42,18 @@
                                           IsVisible="{Binding IsSangerMode}"/>
             <StackLayout Margin="20"
                          IsVisible="{Binding IsSangerMode}">
-                <Label Text="{Binding DistanceLimit, StringFormat='Jobs distance: {0}'}" HorizontalOptions="CenterAndExpand"/>
+                <Label Text="{Binding DistanceString}" HorizontalOptions="CenterAndExpand"/>
                 <StackLayout Orientation="Horizontal">
                     <Slider Value="{Binding DistanceLimit}"
                             Maximum="400"
                             Minimum="1"
                             HorizontalOptions="FillAndExpand"
-                             IsEnabled="{Binding InfinityChecked, Converter={StaticResource InverseBoolConverter}}"
-                            DragCompletedCommand="{Binding DistanceChangedCommand}" 
-                            ValueChanged="Slider_ValueChanged"/>
+                            IsEnabled="{Binding InfinityChecked, Converter={StaticResource InverseBoolConverter}}">
+                        <Slider.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="ValueChanged"
+                                                              Command="{Binding DistanceChangedCommand}"/>
+                        </Slider.Behaviors>
+                    </Slider>
                     <CheckBox IsChecked="{Binding InfinityChecked, Mode=TwoWay}">
                         <CheckBox.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="CheckedChanged"

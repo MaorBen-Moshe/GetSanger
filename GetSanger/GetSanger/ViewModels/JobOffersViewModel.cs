@@ -3,8 +3,6 @@ using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Utils;
-using GetSanger.Views.popups;
-using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -200,10 +198,12 @@ namespace GetSanger.ViewModels
             string currentId = AppManager.Instance.ConnectedUser.UserId;
             List<JobOffer> joboffers = await FireStoreHelper.GetAllJobOffers(obsCollection.ToList());
             joboffers = joboffers.Where(current => current.ClientID != currentId).ToList();
+            // need to filter by distance also
             List<Activity> activities = await FireStoreHelper.GetActivities(currentId);
             AppManager.Instance.ConnectedUser.Activities = new ObservableCollection<Activity>(activities);
             List<JobOffer> toRetList = new List<JobOffer>();
             bool found = false;
+            // cleaning all the jobs that i already confirmed and created by them an activity
             foreach (JobOffer job in joboffers)
             {
                 found = false;
