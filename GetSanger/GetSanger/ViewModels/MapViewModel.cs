@@ -227,10 +227,11 @@ namespace GetSanger.ViewModels
                          Position = Span.Center,
                          //Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg"),
                          Icon = BitmapDescriptorFactory.DefaultMarker(Color.SeaGreen),
-                         Label = "Sanger Location"
+                         Label = "Sanger FromLocationString"
                      }
                 };
-                // need to change for job location
+
+                // need to change for Destination location
                 // when sanger is near to us we want to stop asking for location, 0.3 kilometers
                 Location location = await sr_LocationService.GetCurrentLocation();
                 if (location != null)
@@ -256,7 +257,7 @@ namespace GetSanger.ViewModels
             {
                 Placemark placemark = await sr_LocationService.GetPickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
                 string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
-                await sr_PageService.DisplayAlert("Location Chosen",
+                await sr_PageService.DisplayAlert("FromLocationString Chosen",
                                                  location,
                                                  "Yes",
                                                  "No",
@@ -300,7 +301,7 @@ namespace GetSanger.ViewModels
                     {
                         Type = PinType.Generic,
                         Position = Span.Center,
-                        Label = "My Location",
+                        Label = "My FromLocationString",
                     }
                 };
             }

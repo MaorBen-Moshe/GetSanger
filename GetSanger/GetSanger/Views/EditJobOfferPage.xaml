@@ -46,24 +46,26 @@
                 </Entry>
             </Grid>
 
-            <Grid>
-                <Entry Placeholder="My Location" 
-                           Text="{Binding MyLocation, Mode=TwoWay}" 
-                           IsReadOnly="True"
-                           Grid.Column="0" 
-                           Grid.ColumnSpan="2" />
-                <Button Text="Get Location" Grid.Column="2" Command="{Binding CurrentLocationCommand}"
-                            FontSize="14"/>
+            <Grid IsVisible="{Binding IsDeliveryCategory}">
+                <Entry Text="{Binding FromLocationString, Mode=OneWay, StringFormat='From: {0}'}"
+                       Margin="5"
+                       Grid.Column="0" 
+                       Grid.ColumnSpan="2"
+                       IsReadOnly="True"
+                       BackgroundColor="Transparent"/>
+                <Button Text="Get Location" Grid.Column="2" Command="{Binding FromLocationCommand}"
+                        FontSize="14"/>
             </Grid>
 
-            <Grid IsVisible="{Binding IsDeliveryCategory}">
-                <Entry Placeholder="Job Location" 
-                           Text="{Binding WorkLocation, Mode=TwoWay}"
-                           IsReadOnly="True" 
-                           Grid.Column="0" 
-                           Grid.ColumnSpan="2"/>
-                <Button Text="Get Location" Grid.Column="2" Command="{Binding JobLocationCommand}"
-                            FontSize="14"/>
+            <Grid>
+                <Entry Text="{Binding DestinationLocationString, Mode=OneWay, StringFormat='Destination: {0}'}"
+                       Margin="5"
+                       Grid.Column="0" 
+                       Grid.ColumnSpan="2"
+                       BackgroundColor="Transparent"
+                       IsReadOnly="True"/>
+                <Button Text="Get Location" Grid.Column="2" Command="{Binding DestinationLocationCommand}"
+                        FontSize="14"/>
             </Grid>
 
             <Entry  Text="{Binding NewJobOffer.ClientPhoneNumber, Mode=TwoWay}"

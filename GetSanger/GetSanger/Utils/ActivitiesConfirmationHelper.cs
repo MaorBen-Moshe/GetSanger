@@ -43,10 +43,6 @@ namespace GetSanger.Utils
                         action?.Invoke();
                     });
             }
-            else
-            {
-                await sr_PageService.DisplayAlert("Note", "You are now allow to do that, please contact the user");
-            }
         }
 
         public static async void RejectActivity(Activity activity, Action action)
@@ -64,10 +60,6 @@ namespace GetSanger.Utils
                 }
 
                 action?.Invoke();
-            }
-            else
-            {
-                await sr_PageService.DisplayAlert("Note", "You are now allow to do that, please contact the user");
             }
         }
 

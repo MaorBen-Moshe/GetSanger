@@ -26,7 +26,8 @@ namespace GetSanger.ViewModels
         private bool m_IsActivatedEndButton;
         private string m_ProfileName;
         private bool m_IsSangerNotesVisible;
-        private bool m_IsJobLocationVisible;
+        private bool m_IsFromLocationVisible;
+        private bool m_IsConfirmationStackVisible;
         private bool m_IsConfirmationButtonVisible;
         #endregion
 
@@ -63,13 +64,13 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_ActivatedButtonText, value);
         }
 
-        public string Location
+        public string FromLocation
         {
             get => m_Location; 
             set => SetClassProperty(ref m_Location, value); 
         }
 
-        public string JobLocation
+        public string DestinationLocation
         {
             get => m_JobLocation;
             set => SetClassProperty(ref m_JobLocation, value);
@@ -87,10 +88,16 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsSangerNotesVisible, value);
         }
 
-        public bool IsJobLocationVisible
+        public bool IsFromLocationVisible
         {
-            get => m_IsJobLocationVisible;
-            set => SetStructProperty(ref m_IsJobLocationVisible, value);
+            get => m_IsFromLocationVisible;
+            set => SetStructProperty(ref m_IsFromLocationVisible, value);
+        }
+
+        public bool IsConfirmationStackVisible
+        {
+            get => m_IsConfirmationStackVisible;
+            set => SetStructProperty(ref m_IsConfirmationStackVisible, value);
         }
 
         public bool IsConfirmationButtonVisible
@@ -134,21 +141,21 @@ namespace GetSanger.ViewModels
                 sr_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
                 setLocationsLabels();
                 ProfileName = setProfileName();
-                IsActivatedLocationButton = ConnectedActivity.Status.Equals(eActivityStatus.Active);
+                IsActivatedLocationButton = ConnectedActivity.Status.Equals(eActivityStatus.Active) && ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery);
                 IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
                                        AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger) &&
                                        ConnectedActivity.Status.Equals(eActivityStatus.Active) == true;
                 IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
                                        AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
-                IsJobLocationVisible = ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery);
-                IsConfirmationButtonVisible = ConnectedActivity.Status.Equals(eActivityStatus.Active) || ConnectedActivity.Status.Equals(eActivityStatus.Pending);
+                IsFromLocationVisible = ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery);
+                IsConfirmationStackVisible = ConnectedActivity.Status.Equals(eActivityStatus.Active) || ConnectedActivity.Status.Equals(eActivityStatus.Pending);
+                IsConfirmationButtonVisible = AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && ConnectedActivity.Status.Equals(eActivityStatus.Pending);
                 MessagingCenter.Subscribe<MapViewModel, User>(this, Constants.Constants.EndActivity, async (sender, args) =>
                 {
                     User sanger = args;
                     IsActivatedLocationButton = false;
                     sanger.ActivatedMap.Remove(ConnectedActivity.ActivityId);
                     ConnectedActivity.LocationActivatedBySanger = false;
-                    ConnectedActivity.Status = eActivityStatus.Completed;
                     await FireStoreHelper.UpdateActivity(ConnectedActivity);
                     await FireStoreHelper.UpdateUser(sanger);
                 });
@@ -191,15 +198,15 @@ namespace GetSanger.ViewModels
 
         private async void setLocationsLabels()
         {
-            Location = await getLocationString(ConnectedActivity.JobDetails.Location);
-            JobLocation = await getLocationString(ConnectedActivity.JobDetails.JobLocation);
+            FromLocation = await getLocationString(ConnectedActivity.JobDetails.FromLocation);
+            DestinationLocation = await getLocationString(ConnectedActivity.JobDetails.DestinationLocation);
             if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
             {
-                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask the sanger to active")} Location");
+                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask the sanger to active")} FromLocationString");
             }
             else if (AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {
-                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger == false ? "Enable" : "Disable")} Location");
+                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger == false ? "Enable" : "Disable")} FromLocationString");
             }
         }
 
@@ -246,8 +253,8 @@ namespace GetSanger.ViewModels
                                                          await FireStoreHelper.UpdateActivity(ConnectedActivity);
                                                          await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                                                          sr_TripHelper.LeaveTripThread();
-                                                         await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "Location sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!");
-                                                         ActivatedButtonText = "Enable Location";
+                                                         await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "FromLocationString sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!");
+                                                         ActivatedButtonText = "Enable FromLocationString";
                                                          sr_LoadingService.HideLoadingPage();
                                                      }
                                                  });
@@ -269,9 +276,9 @@ namespace GetSanger.ViewModels
                                                          ConnectedActivity.LocationActivatedBySanger = true;
                                                          await FireStoreHelper.UpdateActivity(ConnectedActivity);
                                                          await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                                                         await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
+                                                         await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "FromLocationString sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
                                                          sr_TripHelper.StartTripThread();
-                                                         ActivatedButtonText = "Disable Location";
+                                                         ActivatedButtonText = "Disable FromLocationString";
                                                          sr_LoadingService.HideLoadingPage();
                                                      }
                                                  });
@@ -294,8 +301,8 @@ namespace GetSanger.ViewModels
             }
             else
             {
-                await sr_PushService.SendToDevice(ConnectedActivity.SangerID, ConnectedActivity, typeof(Activity).Name, "Location request", $"{ConnectedActivity.JobDetails.ClientName}, asked you to activate location");
-                await sr_PageService.DisplayAlert("Note", "Location request has been sent!", "OK");
+                await sr_PushService.SendToDevice(ConnectedActivity.SangerID, ConnectedActivity, typeof(Activity).Name, "FromLocationString request", $"{ConnectedActivity.JobDetails.ClientName}, asked you to activate location");
+                await sr_PageService.DisplayAlert("Note", "FromLocationString request has been sent!", "OK");
             }
         }
 
@@ -304,7 +311,7 @@ namespace GetSanger.ViewModels
             Placemark placemark = await sr_LocationService.GetPickedLocation(i_Location);
             if (placemark == null)
             {
-                return "No Location was given";
+                return "No FromLocationString was given";
             }
 
             return string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare);

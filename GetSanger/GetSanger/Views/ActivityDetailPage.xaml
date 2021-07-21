@@ -64,12 +64,12 @@
                     <Label Text="Job Details:" 
                            TextDecorations="Underline"
                            HorizontalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding Location, StringFormat=' End Location:&#x0a; {0}'}"
+                    <Label Text="{Binding FromLocation, StringFormat=' From:&#x0a; {0}'}"
                            Margin="5"
+                           IsVisible="{Binding IsFromLocationVisible}"
                            BackgroundColor="Transparent"/>
-                    <Label Text="{Binding JobLocation, StringFormat=' Job Location:&#x0a; {0}'}"
+                    <Label Text="{Binding DestinationLocation, StringFormat=' Destination:&#x0a; {0}'}"
                            Margin="5"
-                           IsVisible="{Binding IsJobLocationVisible}"
                            BackgroundColor="Transparent"/>
                     <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"
@@ -153,12 +153,13 @@
                         Command="{Binding EndActivityCommand}"/>
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" IsVisible="{Binding IsConfirmationButtonVisible}">
+            <StackLayout IsVisible="{Binding IsConfirmationStackVisible}">
                 <Button Text="Confirm"
                         FontSize="12"
                         FontAttributes="Bold"
                         BackgroundColor="Transparent"
                         Command="{Binding ConfirmActivityCommand}" 
+                        IsVisible="{Binding IsConfirmationButtonVisible}"
                         BorderColor="Transparent"
                         HorizontalOptions="CenterAndExpand"/>
                 <Button Text="Delete"
@@ -168,8 +169,8 @@
                         BackgroundColor="Transparent"
                         Command="{Binding RejectActivityCommand}"
                         HorizontalOptions="CenterAndExpand"/>
-
             </StackLayout>
+                
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

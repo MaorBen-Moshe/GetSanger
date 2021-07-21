@@ -41,13 +41,13 @@ namespace GetSanger.Models
             set => SetClassProperty(ref m_ClientName, value);
         }
 
-        public Location Location
+        public Location FromLocation
         {
             get => m_Location;
             set => SetClassProperty(ref m_Location, value);
         }
 
-        public Location JobLocation
+        public Location DestinationLocation
         {
             get => m_JobLocation;
             set => SetClassProperty(ref m_JobLocation, value);

@@ -21,18 +21,18 @@ namespace GetSanger.ViewModels
         #region Fields
 
         private JobOffer m_NewJobOffer;
-        private Placemark m_MyPlacemark;
-        private Placemark m_JobPlacemark;
-        private string m_MyLocation;
-        private string m_JobLocation;
-        private bool m_IsMyLocation = true;
+        private Placemark m_FromPlacemark;
+        private Placemark m_DestinationPlacemark;
+        private string m_FromLocationString;
+        private string m_DestinationLocationString;
+        private bool m_IsFromLocation = true;
         private bool m_IsDeliveryCategory;
         #endregion
 
         #region Commands
 
-        public ICommand CurrentLocationCommand { get; private set; }
-        public ICommand JobLocationCommand { get; private set; }
+        public ICommand FromLocationCommand { get; private set; }
+        public ICommand DestinationLocationCommand { get; private set; }
         public ICommand SendJobCommand { get; private set; }
 
         #endregion
@@ -54,38 +54,38 @@ namespace GetSanger.ViewModels
             }
         }
 
-        public Placemark MyPlaceMark
+        public Placemark FromPlaceMark
         {
-            get { return m_MyPlacemark; }
+            get { return m_FromPlacemark; }
 
             set
             {
-                m_MyPlacemark = value;
-                MyLocation = placemarkValidation(m_MyPlacemark);
+                m_FromPlacemark = value;
+                FromLocationString = placemarkValidation(m_FromPlacemark);
             }
         }
 
-        public Placemark JobPlaceMark
+        public Placemark DestinationPlaceMark
         {
-            get { return m_JobPlacemark; }
+            get { return m_DestinationPlacemark; }
 
             set
             {
-                m_JobPlacemark = value;
-                WorkLocation = placemarkValidation(m_JobPlacemark);
+                m_DestinationPlacemark = value;
+                DestinationLocationString = placemarkValidation(m_DestinationPlacemark);
             }
         }
 
-        public string MyLocation
+        public string FromLocationString
         {
-            get => m_MyLocation; 
-            set => SetClassProperty(ref m_MyLocation, value); 
+            get => m_FromLocationString; 
+            set => SetClassProperty(ref m_FromLocationString, value); 
         }
 
-        public string WorkLocation
+        public string DestinationLocationString
         {
-            get => m_JobLocation; 
-            set => SetClassProperty(ref m_JobLocation, value); 
+            get => m_DestinationLocationString; 
+            set => SetClassProperty(ref m_DestinationLocationString, value); 
         }
 
         public string JobCategoryString
@@ -144,8 +144,8 @@ namespace GetSanger.ViewModels
                 Location location = await sr_LocationService.GetCurrentLocation();
                 if(location != null)
                 {
-                    MyPlaceMark ??= await sr_LocationService.GetPickedLocation(location);
-                    JobPlaceMark ??= MyPlaceMark;
+                    DestinationPlaceMark ??= await sr_LocationService.GetPickedLocation(location);
+                    FromPlaceMark ??= DestinationPlaceMark;
                 }
             }
             catch (PermissionException e)
@@ -156,8 +156,8 @@ namespace GetSanger.ViewModels
 
         protected override void SetCommands()
         {
-            CurrentLocationCommand = new Command(getCurrentLocation);
-            JobLocationCommand = new Command(getJobLocation);
+            FromLocationCommand = new Command(getFromLocation);
+            DestinationLocationCommand = new Command(getDestinationLocation);
             SendJobCommand = new Command(sendJob);
         }
 
@@ -168,18 +168,18 @@ namespace GetSanger.ViewModels
                 throw new ArgumentNullException("i_PlaceMark is null");
             }
 
-            _ = m_IsMyLocation == true ? MyPlaceMark = i_PlaceMark : JobPlaceMark = i_PlaceMark;
+            _ = m_IsFromLocation == true ? FromPlaceMark = i_PlaceMark : DestinationPlaceMark = i_PlaceMark;
         }
 
-        private void getCurrentLocation()
+        private void getFromLocation()
         {
-            m_IsMyLocation = true;
+            m_IsFromLocation = true;
             locationHelper();
         }
 
-        private void getJobLocation()
+        private void getDestinationLocation()
         {
-            m_IsMyLocation = false;
+            m_IsFromLocation = false;
             locationHelper();
         }
 
@@ -207,18 +207,18 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                if (MyPlaceMark != null &&
-                    JobPlaceMark != null &&
+                if (FromPlaceMark != null &&
+                    DestinationPlaceMark != null &&
                     NewJobOffer.Title != null &&
                     NewJobOffer.Description != null)
                 {
                     NewJobOffer.ClientID ??= AppManager.Instance.ConnectedUser.UserId;
                     NewJobOffer.ClientName ??= AppManager.Instance.ConnectedUser.PersonalDetails.NickName;
-                    NewJobOffer.Location = MyPlaceMark?.Location;
-                    NewJobOffer.JobLocation = JobPlaceMark?.Location;
+                    NewJobOffer.FromLocation = FromPlaceMark?.Location;
+                    NewJobOffer.DestinationLocation = DestinationPlaceMark?.Location;
                     if (NewJobOffer.Category.Equals(eCategory.Delivery) == false)
                     {
-                        NewJobOffer.JobLocation = NewJobOffer.Location;
+                        NewJobOffer.FromLocation = NewJobOffer.DestinationLocation;
                     }
 
                     NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
@@ -246,10 +246,13 @@ namespace GetSanger.ViewModels
             string toRet;
             if (i_Placemark == null)
             {
-                toRet = "Location could not be found, please try manually add it";
+                toRet = "FromLocationString could not be found, please try manually add it";
             }
-
-            toRet = string.Format("{0}, {1} {2}", i_Placemark.Locality, i_Placemark.Thoroughfare, i_Placemark.SubThoroughfare);
+            else
+            {
+                toRet = string.Format("{0}, {1} {2}", i_Placemark.Locality, i_Placemark.Thoroughfare, i_Placemark.SubThoroughfare);
+            }
+         
             return toRet;
         }
 

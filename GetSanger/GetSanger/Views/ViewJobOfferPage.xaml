@@ -44,13 +44,15 @@
             <Entry Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
                    IsEnabled="False"
                    IsReadOnly="True" />
-            <Entry Placeholder="My Location" 
-                   Text="{Binding MyLocation}" 
-                   IsEnabled="False" />
-            <Entry Placeholder="Job Location" 
-                   Text="{Binding WorkLocation}"
-                   IsVisible="{Binding IsDeliveryCategory}"
-                   IsEnabled="False" />
+            <Entry Text="{Binding FromLocation, Mode=OneWay, StringFormat=' From:&#x0a; {0}'}"
+                           Margin="5"
+                           IsVisible="{Binding IsDeliveryCategory}"
+                           BackgroundColor="Transparent"
+                   IsEnabled="False"/>
+            <Entry Text="{Binding DestinationLocation,Mode=OneWay, StringFormat=' Destination:&#x0a; {0}'}"
+                           Margin="5"
+                           BackgroundColor="Transparent"
+                   IsEnabled="False"/>
             <Entry Placeholder="Phone number" 
                    Text="{Binding Job.ClientPhoneNumber}"
                    Keyboard="Telephone" 

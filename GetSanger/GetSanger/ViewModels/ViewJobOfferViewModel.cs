@@ -56,13 +56,13 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_ProfileText, value);
         }
 
-        public string MyLocation
+        public string FromLocation
         {
             get => m_MyLocation;
             set => SetClassProperty(ref m_MyLocation, value);
         }
 
-        public string WorkLocation
+        public string DestinationLocation
         {
             get => m_JobLocation;
             set => SetClassProperty(ref m_JobLocation, value);
@@ -79,7 +79,6 @@ namespace GetSanger.ViewModels
             get => m_IsSangerMode;
             set => SetStructProperty(ref m_IsSangerMode, value);
         }
-
         #endregion
 
         #region Commands
@@ -128,16 +127,16 @@ namespace GetSanger.ViewModels
                 IsDeliveryCategory = Job.Category.Equals(eCategory.Delivery);
                 ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
 
-                if (Job.Location != null)
+                if (Job.FromLocation != null)
                 {
-                    Placemark myPlace = await sr_LocationService.GetPickedLocation(Job.Location);
-                    MyLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
+                    Placemark myPlace = await sr_LocationService.GetPickedLocation(Job.FromLocation);
+                    FromLocation ??= string.Format("{0}, {1} {2}", myPlace.Locality, myPlace.Thoroughfare, myPlace.SubThoroughfare);
                 }
 
-                if (Job.JobLocation != null)
+                if (Job.DestinationLocation != null)
                 {
-                    Placemark jobPlacemark = await sr_LocationService.GetPickedLocation(Job.JobLocation);
-                    WorkLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
+                    Placemark jobPlacemark = await sr_LocationService.GetPickedLocation(Job.DestinationLocation);
+                    DestinationLocation ??= string.Format("{0}, {1} {2}", jobPlacemark.Locality, jobPlacemark.Thoroughfare, jobPlacemark.SubThoroughfare);
                 }
 
                 IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
