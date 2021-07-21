@@ -253,9 +253,10 @@ namespace GetSanger.Services
                 vm.ConnectedActivity = activity;
                 vm.Appearing();
             }
-            else if (currentPage is { BindingContext: ActivitiesListViewModel acVm })
+            else if (currentPage is {BindingContext: ActivitiesListViewModel acVm} && i_Title != null)
             {
                 await pageServices.DisplayAlert(i_Title, i_Body);
+
                 acVm.RefreshingCommand.Execute(null);
             }
             else
@@ -282,9 +283,11 @@ namespace GetSanger.Services
                 vm.Job = job;
                 vm.Appearing();
             }
-            else if (currentPage is { BindingContext: JobOffersViewModel jobVm } && AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
+            else if (currentPage is {BindingContext: JobOffersViewModel jobVm} &&
+                     AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger) && i_Title != null)
             {
                 await pageServices.DisplayAlert(i_Title, i_Body);
+
                 jobVm.RefreshingCommand.Execute(null);
             }
             else
