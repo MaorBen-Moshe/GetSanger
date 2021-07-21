@@ -2,6 +2,7 @@
 using GetSanger.Extensions;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -130,36 +131,15 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Activity activity = i_Param as Activity;
-                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && activity.Status.Equals(eActivityStatus.Pending))
+                if(i_Param is Activity activity)
                 {
-                    await sr_PageService.DisplayAlert("Note", "Are you sure?", "Yes", "No",
-                        async (answer) =>
-                        {
-                            if (answer)
-                            {
-                                sr_LoadingService.ShowLoadingPage();
-                                activity.Status = eActivityStatus.Active;
-                                await FireStoreHelper.UpdateActivity(activity);
-                                await sr_PushService.SendToDevice(activity.SangerID, activity, typeof(Activity).Name, "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)");
-                                User sanger = await FireStoreHelper.GetUser(activity.SangerID);
-                                sanger.ActivatedMap.Add(activity.ActivityId, false);
-                                await FireStoreHelper.UpdateUser(sanger);
-                                //  need to check that the list(ActivitiesSource) is updated
-                                foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
-                                {
-                                    if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
-                                    {
-                                        current.Status = eActivityStatus.Rejected;
-                                        await sr_PushService.SendToDevice(current.SangerID, activity, typeof(Activity).Name, "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)");
-                                    }
-                                }
-
-                                string json = ObjectJsonSerializer.SerializeForPage(activity);
-                                await sr_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
-                                sr_LoadingService.HideLoadingPage();
-                            }
-                        });
+                    sr_LoadingService.ShowLoadingPage();
+                    ActivitiesConfirmationHelper.ConfirmActivity(activity, async () =>
+                    {
+                        string json = ObjectJsonSerializer.SerializeForPage(activity);
+                        await sr_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
+                    });
+                    sr_LoadingService.HideLoadingPage();
                 }
             }
             catch (Exception e)
@@ -176,56 +156,20 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                Activity activity = i_Param as Activity;
-                if (activity.Status.Equals(eActivityStatus.Pending) || activity.Status.Equals(eActivityStatus.Active))
+                if(i_Param is Activity activity)
                 {
-                    switch (AppManager.Instance.CurrentMode)
+                    sr_LoadingService.ShowLoadingPage();
+                    ActivitiesConfirmationHelper.RejectActivity(activity, () =>
                     {
-                        case eAppMode.Client:
-                            doReject(activity, activity.SangerID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :(");
-                            break;
-                        case eAppMode.Sanger:
-                            doReject(activity, activity.ClientID, $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} decided to cancel the job offer he already accepted. for more information please contact him :(");
-                            break;
-                    }
-
-                    IsVisibleViewList = AllCollection.Count > 0;
+                        IsVisibleViewList = AllCollection.Count > 0;
+                    });
+                    sr_LoadingService.HideLoadingPage();
                 }
             }
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:rejectActivity", "Error", e.Message);
             }
-        }
-
-        private async void doReject(Activity i_Activity,string i_SendToUserId, string i_Message)
-        {
-            await sr_PageService.DisplayAlert("Warning", "Are you sure?", "Yes", "No",
-                async (answer) =>
-                {
-                    if (answer)
-                    {
-                        if (i_Activity.Status.Equals(eActivityStatus.Active))
-                        {
-                            User user;
-                            if (i_Activity.SangerID.Equals(AuthHelper.GetLoggedInUserId()))
-                            {
-                                user = AppManager.Instance.ConnectedUser;
-                            }
-                            else
-                            {
-                                user = await FireStoreHelper.GetUser(i_Activity.SangerID);
-                            }
-
-                            user.ActivatedMap.Remove(i_Activity.ActivityId);
-                            await FireStoreHelper.UpdateUser(user);
-                        }
-
-                        i_Activity.Status = eActivityStatus.Rejected;
-                        await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(i_Activity));
-                        await RunTaskWhileLoading(sr_PushService.SendToDevice(i_SendToUserId, i_Activity, typeof(Activity).Name, "Activity Rejected", i_Message));
-                    }
-                });
         }
 
         protected async override void refreshList()

@@ -3,6 +3,7 @@ using GetSanger.Extensions;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Utils;
 using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -26,6 +27,7 @@ namespace GetSanger.ViewModels
         private string m_ProfileName;
         private bool m_IsSangerNotesVisible;
         private bool m_IsJobLocationVisible;
+        private bool m_IsConfirmationButtonVisible;
         #endregion
 
         #region Properties
@@ -91,6 +93,12 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsJobLocationVisible, value);
         }
 
+        public bool IsConfirmationButtonVisible
+        {
+            get => m_IsConfirmationButtonVisible;
+            set => SetStructProperty(ref m_IsConfirmationButtonVisible, value);
+        }
+
         #endregion
 
         #region Commands
@@ -102,6 +110,10 @@ namespace GetSanger.ViewModels
         public ICommand EndActivityCommand { get; private set; }
 
         public ICommand NotesCommand { get; private set; }
+
+        public ICommand ConfirmActivityCommand { get; set; }
+
+        public ICommand RejectActivityCommand { get; set; }
 
         #endregion
 
@@ -129,6 +141,7 @@ namespace GetSanger.ViewModels
                 IsSangerNotesVisible = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.ClientID) &&
                                        AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
                 IsJobLocationVisible = ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery);
+                IsConfirmationButtonVisible = ConnectedActivity.Status.Equals(eActivityStatus.Active) || ConnectedActivity.Status.Equals(eActivityStatus.Pending);
                 MessagingCenter.Subscribe<MapViewModel, User>(this, Constants.Constants.EndActivity, async (sender, args) =>
                 {
                     User sanger = args;
@@ -148,6 +161,7 @@ namespace GetSanger.ViewModels
 
         public override void Disappearing()
         {
+            MessagingCenter.Unsubscribe<MapViewModel>(this, Constants.Constants.EndActivity);
         }
 
         protected override void SetCommands()
@@ -156,6 +170,8 @@ namespace GetSanger.ViewModels
             EndActivityCommand = new Command(endActivity);
             LocationCommand = new Command(locationCommandHelper);
             NotesCommand = new Command(showNotes);
+            ConfirmActivityCommand = new Command(confirmActivity);
+            RejectActivityCommand = new Command(rejectActivity);
         }
 
         private string setProfileName()
@@ -278,7 +294,8 @@ namespace GetSanger.ViewModels
             }
             else
             {
-                await sr_PageService.DisplayAlert("Note", $"{ConnectedActivity.SangerName} did not share with you location, please contact him to share with you the location!", "OK");
+                await sr_PushService.SendToDevice(ConnectedActivity.SangerID, ConnectedActivity, typeof(Activity).Name, "Location request", $"{ConnectedActivity.JobDetails.ClientName}, asked you to activate location");
+                await sr_PageService.DisplayAlert("Note", "Location request has been sent!", "OK");
             }
         }
 
@@ -291,6 +308,26 @@ namespace GetSanger.ViewModels
             }
 
             return string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare);
+        }
+
+        private void confirmActivity(object i_Param)
+        {
+            ActivitiesConfirmationHelper.ConfirmActivity(ConnectedActivity, () =>
+            {
+                sr_LoadingService.ShowLoadingPage();
+                Appearing();
+                sr_LoadingService.HideLoadingPage();
+            });
+        }
+
+        private void rejectActivity(object i_Param)
+        {
+            ActivitiesConfirmationHelper.RejectActivity(ConnectedActivity, () =>
+            {
+                sr_LoadingService.ShowLoadingPage();
+                Appearing();
+                sr_LoadingService.HideLoadingPage();
+            });
         }
 
         private async void endActivity()

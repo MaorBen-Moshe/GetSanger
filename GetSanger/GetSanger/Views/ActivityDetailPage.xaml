@@ -95,14 +95,14 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding NotesCommand}"
                                                   CommandParameter="0">
-                                
+
                             </TapGestureRecognizer>
                         </Frame.GestureRecognizers>
                         <StackLayout Orientation="Horizontal">
                             <Label Text="Job description"
                                    HorizontalOptions="StartAndExpand"/>
                             <Label Text=">" 
-                                   HorizontalOptions="EndAndExpand"/> 
+                                   HorizontalOptions="EndAndExpand"/>
                         </StackLayout>
                     </Frame>
 
@@ -153,6 +153,23 @@
                         Command="{Binding EndActivityCommand}"/>
             </StackLayout>
 
+            <StackLayout Orientation="Horizontal" IsVisible="{Binding IsConfirmationButtonVisible}">
+                <Button Text="Confirm"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        Command="{Binding ConfirmActivityCommand}" 
+                        BorderColor="Transparent"
+                        HorizontalOptions="CenterAndExpand"/>
+                <Button Text="Delete"
+                        TextColor="Red"
+                        BorderColor="Transparent"
+                        FontSize="12"
+                        BackgroundColor="Transparent"
+                        Command="{Binding RejectActivityCommand}"
+                        HorizontalOptions="CenterAndExpand"/>
+
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
