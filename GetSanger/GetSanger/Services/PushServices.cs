@@ -212,7 +212,7 @@ namespace GetSanger.Services
             }
         }
 
-        private async static void movePageHelper(string route, string title, string txt)
+        private static async void movePageHelper(string route, string title, string txt)
         {
             Interfaces.INavigation navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             IPageService pageService = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
@@ -260,29 +260,12 @@ namespace GetSanger.Services
             }
             else
             {
-                Action action = new Action(async () =>
-                {
                     eAppMode modeToSet = activity.ClientID == AppManager.Instance.ConnectedUser.UserId ? eAppMode.Client : eAppMode.Sanger;
                     Application.Current.MainPage = AppManager.Instance.GetCurrentShell(modeToSet);
 
                     string activityJson = ObjectJsonSerializer.SerializeForPage(activity);
-                    await navigation.NavigateTo($"//activities/{ShellRoutes.Activity}?activity={activityJson}");
-                });
-
-                if (i_Title != null)
-                {
-                    await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) => 
-                    {
-                        if (choice)
-                        {
-                            action.Invoke();
-                        }
-                    });
-                }
-                else
-                {
-                    action.Invoke();
-                }
+                    string route = $"//activities/{ShellRoutes.Activity}?activity={activityJson}";
+                    movePageHelper(route, i_Title, i_Body);
             }
         }
 
@@ -291,13 +274,6 @@ namespace GetSanger.Services
             string message = i_Body + "\nDo you want to navigate the the job offer page?";
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
             Interfaces.INavigation navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-
-            Action action = new Action(async () =>
-            {
-                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(eAppMode.Sanger);
-                string jobJson = ObjectJsonSerializer.SerializeForPage(job);
-                await navigation.NavigateTo($"//jobOffers/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}");
-            });
 
             IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             Page currentPage = Shell.Current.CurrentPage;
@@ -313,16 +289,10 @@ namespace GetSanger.Services
             }
             else
             {
-                if (i_Title != null)
-                {
-                    await pageServices.DisplayAlert(i_Title, message, "Yes", "No", (choice) =>
-                    {
-                        if (choice)
-                        {
-                            action.Invoke();
-                        }
-                    });
-                }
+                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(eAppMode.Sanger);
+                string jobJson = ObjectJsonSerializer.SerializeForPage(job);
+                string route = $"//jobOffers/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}";
+                movePageHelper(route, i_Title, i_Body);
             }
         }
 
