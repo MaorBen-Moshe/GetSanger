@@ -88,7 +88,7 @@ namespace GetSanger.ChatDatabase
         public async Task<int> DeleteUserAsync(string i_UserId)
         {
             ChatUser toDelete = await m_Connection.Table<ChatUser>()?.Where(user => user.UserId.Equals(i_UserId) 
-                                                                      && user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).FirstAsync();
+                                                                      && user.UserCreatedById.Equals(AppManager.Instance.ConnectedUser.UserId)).FirstAsync();
             int retVal = 0;
             if(toDelete != null)
             {

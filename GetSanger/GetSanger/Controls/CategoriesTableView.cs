@@ -23,8 +23,7 @@ namespace GetSanger.Controls
                                   typeof(bool),
                                   typeof(CategoriesTableView),
                                   false,
-                                  BindingMode.TwoWay,
-                                  propertyChanged: IsGenericNotificationsOnChanged
+                                  BindingMode.TwoWay
                                   );
         public static BindableProperty ToggledCommandProperty
         = BindableProperty.Create(nameof(ToggledCommand),
@@ -131,27 +130,6 @@ namespace GetSanger.Controls
         private static void SourceOnCollectionChanged(BindableObject bindable, object oldValue, object newValue)
         {
             (bindable as CategoriesTableView)?.setCategoriesView();
-        }
-
-        private static void IsGenericNotificationsOnChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var binding = bindable as CategoriesTableView;
-            var cell = binding.Root[0][0] as SwitchCell;
-            if(oldValue == null || newValue == null || binding.ToggledCommand == null)
-            {
-                return;
-            }
-
-            bool oldVal = (bool)oldValue;
-            bool newVal = (bool)newValue;
-
-            if(oldVal != newVal)
-            {
-                if (binding.ToggledCommand.CanExecute(cell))
-                {
-                    binding.ToggledCommand.Execute(cell);
-                }
-            }
         }
 
         #endregion

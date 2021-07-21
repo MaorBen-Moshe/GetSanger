@@ -19,6 +19,7 @@ namespace GetSanger.ViewModels
         private List<string> m_NewCategoriesSubscribed;
         private List<string> m_NewCategoriesUnsubscribed;
         private double m_DistanceLimit;
+        private double m_OldDistanceLimit;
         private bool m_IsSangerMode;
         private bool m_InfinityChecked;
         #endregion
@@ -62,7 +63,7 @@ namespace GetSanger.ViewModels
 
         public ICommand DistanceChangedCommand { get; set; }
 
-        public ICommand InfinityCheckedCommand { get; set; }
+        public ICommand InfinityCommand { get; set; }
 
         #endregion
 
@@ -91,8 +92,9 @@ namespace GetSanger.ViewModels
             ).ToList());
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
             IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
-            DistanceLimit = 10;
-            InfinityChecked = false;
+            InfinityChecked = AppManager.Instance.ConnectedUser.DistanceLimit == -1;
+            DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
+            m_OldDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
         }
 
         public override void Disappearing()
@@ -107,8 +109,8 @@ namespace GetSanger.ViewModels
         {
             ToggledCommand = new Command(toggled);
             BackButtonCommand = new Command(backButtonBehavior);
-            DistanceChangedCommand = new Command(distanceChanged);
-            InfinityCheckedCommand = new Command(infinityChecked);
+            DistanceChangedCommand = new Command(() => AppManager.Instance.ConnectedUser.DistanceLimit = DistanceLimit);
+            InfinityCommand = new Command(() => AppManager.Instance.ConnectedUser.DistanceLimit = -1);
         }
 
         private async void backButtonBehavior()
@@ -134,7 +136,8 @@ namespace GetSanger.ViewModels
                     genericUpdateHelper();
                 }
 
-                if (isChanged)
+                bool sliderChanged = m_OldDistanceLimit != AppManager.Instance.ConnectedUser.DistanceLimit;
+                if (isChanged || sliderChanged)
                 {
                     await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                 }
@@ -147,24 +150,6 @@ namespace GetSanger.ViewModels
             {
                 sr_LoadingService.HideLoadingPage();
                 await e.LogAndDisplayError($"{nameof(SettingViewModel)}:backButtonBehavior", "Error", e.Message);
-            }
-        }
-
-        private async void distanceChanged()
-        {
-            if(AppManager.Instance.ConnectedUser.DistanceLimit != DistanceLimit)
-            {
-                AppManager.Instance.ConnectedUser.DistanceLimit = DistanceLimit;
-                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-            }
-        }
-
-        private async void infinityChecked()
-        {
-            if (InfinityChecked)
-            {
-                AppManager.Instance.ConnectedUser.DistanceLimit = -1;
-                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
             }
         }
 

@@ -25,25 +25,36 @@
 
     <ContentPage.Content>
         <StackLayout>
+            <TableView IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}">
+                <TableRoot>
+                    <TableSection Title="Generic Notifications">
+                        <SwitchCell Text="Notifications" 
+                                    On="{Binding IsGenericNotificatons}" />
+
+                    </TableSection>
+                </TableRoot>
+            </TableView>
             <controls:CategoriesTableView Source="{Binding CategoriesItems}" 
-                                    IsGenericNotifications="{Binding IsGenericNotificatons}" 
-                                    ToggledCommand="{Binding ToggledCommand}"
-                                    HasUnevenRows="True"
-                                    VerticalOptions="Start" />
-            <StackLayout Margin="20">
+                                          IsGenericNotifications="{Binding IsGenericNotificatons}" 
+                                          ToggledCommand="{Binding ToggledCommand}"
+                                          HasUnevenRows="True"
+                                          VerticalOptions="Start" 
+                                          IsVisible="{Binding IsSangerMode}"/>
+            <StackLayout Margin="20"
+                         IsVisible="{Binding IsSangerMode}">
                 <Label Text="{Binding DistanceLimit, StringFormat='Jobs distance: {0}'}" HorizontalOptions="CenterAndExpand"/>
                 <StackLayout Orientation="Horizontal">
                     <Slider Value="{Binding DistanceLimit}"
-                            Minimum="10"
                             Maximum="400"
+                            Minimum="1"
                             HorizontalOptions="FillAndExpand"
-                            IsEnabled="{Binding InfinityChecked}"
+                             IsEnabled="{Binding InfinityChecked, Converter={StaticResource InverseBoolConverter}}"
                             DragCompletedCommand="{Binding DistanceChangedCommand}" 
                             ValueChanged="Slider_ValueChanged"/>
-                    <CheckBox IsChecked="{Binding InfinityChecked, Mode=TwoWay, Converter={StaticResource InverseBoolConverter}}">
+                    <CheckBox IsChecked="{Binding InfinityChecked, Mode=TwoWay}">
                         <CheckBox.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="CheckedChanged"
-                                                              Command="{Binding InfinityCheckedCommand}"/>
+                                                              Command ="{Binding InfinityCommand}" />
                         </CheckBox.Behaviors>
                     </CheckBox>
                 </StackLayout>
