@@ -9,14 +9,14 @@ using GetSanger.Services;
 using Plugin.CurrentActivity;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Android.Content.PM;
+using Xamarin.Forms;
 
 namespace GetSanger.Droid
 {
-    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTask, ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTask,
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        internal static readonly string CHANNEL_ID = "notification_channel";
-        internal static readonly int NOTIFICATION_ID = 100;
         internal static MainActivity Instance { get; private set; }
         public static readonly int PickImageId = 1000;
 
@@ -24,17 +24,17 @@ namespace GetSanger.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            base.OnCreate(savedInstanceState);
+            Forms.Init(this, savedInstanceState);
             Firebase.Crashlytics.FirebaseCrashlytics.Instance.Log("Entered OnCreate");
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
             Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
-            base.OnCreate(savedInstanceState);
             PushService.InitializePushService(this);
             PushService.PushHelper(Intent);
             LoadApplication(new App());
