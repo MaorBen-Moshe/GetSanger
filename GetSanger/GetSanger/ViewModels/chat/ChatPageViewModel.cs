@@ -17,6 +17,7 @@ namespace GetSanger.ViewModels.chat
 {
     [QueryProperty(nameof(UserJson), "user")]
     [QueryProperty(nameof(PrevPage), "prev")]
+    [QueryProperty(nameof(IsDeletedUser), "deleted")]
     public class ChatPageViewModel : BaseViewModel
     {
         #region Fields
@@ -25,6 +26,7 @@ namespace GetSanger.ViewModels.chat
         private bool m_ShowScrollTap;
         private bool m_LastMessageVisible;
         private bool m_PendingMessageCountVisible;
+        private bool m_IsDeletedUser;
         private int m_PendingMessageCount;
         private Queue<Message> m_DelayedMessages;
         private ObservableCollection<Message> m_MessagesSource;
@@ -53,6 +55,12 @@ namespace GetSanger.ViewModels.chat
         }
 
         public string PrevPage { get; set; }
+
+        public bool IsDeletedUser
+        {
+            get => m_IsDeletedUser;
+            set => SetStructProperty(ref m_IsDeletedUser, value);
+        }
 
         public ImageSource UserPicture
         {

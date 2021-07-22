@@ -5,7 +5,8 @@
              x:Class="GetSanger.Views.chat.ChatInputBarView">
     <ContentView.Content>
         <Grid RowSpacing="0" 
-              ColumnSpacing="0">
+              ColumnSpacing="0"
+              x:Name="grid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -20,7 +21,8 @@
                    Padding="10,5"
                    CornerRadius="30"
                    BackgroundColor="WhiteSmoke"
-                   BorderColor="Black">
+                   BorderColor="Black"
+                   IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}">
                 <controls:ExtendedEditorControl x:Name="chatTextInput" 
                           Text="{Binding TextToSend}" 
                           Margin="1"  
@@ -32,11 +34,13 @@
                           Grid.Row="0" 
                           Grid.Column="0"
                           IsExpandable="True"
+                          IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
                           Completed="Handle_Completed"/>
             </Frame>
             <Label Text="Send"
                    Grid.Row="0"
                    Grid.Column="1"
+                   IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
                    BackgroundColor="Transparent"
                    VerticalTextAlignment="Center">
                   <Label.GestureRecognizers>

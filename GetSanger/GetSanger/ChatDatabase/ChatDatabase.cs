@@ -60,15 +60,9 @@ namespace GetSanger.ChatDatabase
             }
             else
             {
-                List<Message> messages = await GetAllMessagesAsync();
-                await DeleteUserAsync(id);
-                foreach(Message message in messages)
-                {
-                    if(message.FromId.Equals(id) || message.ToId.Equals(id))
-                    {
-                        await DeleteMessageAsync(message);
-                    }
-                }
+                ChatUser user = await GetUserAsync(id);
+                user.IsDeleted = true;
+                await UpdateUserAsync(user);
             }
         }
 
@@ -79,7 +73,8 @@ namespace GetSanger.ChatDatabase
             {
                 UserId = i_UserId,
                 LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now,
-                UserCreatedById = i_CreatedById ?? AuthHelper.GetLoggedInUserId()
+                UserCreatedById = i_CreatedById ?? AuthHelper.GetLoggedInUserId(),
+                IsDeleted = false
             };
 
             return (await m_Connection.InsertAsync(newUser) == 1) ? newUser : null;

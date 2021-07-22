@@ -216,15 +216,13 @@ namespace GetSanger.ViewModels
             {
                 User sanger = await FireStoreHelper.GetUser(SangerTripId);
                 Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
-                Span = new MapSpan(position, 0.01, 0.01);
-
                 Pins = new ObservableCollection<Pin>
                 {
                      Pins[0],
                      new Pin
                      {
                          Type = PinType.Generic,
-                         Position = Span.Center,
+                         Position = new MapSpan(position, 0.01, 0.01).Center,
                          //Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg"),
                          Icon = BitmapDescriptorFactory.DefaultMarker(Color.SeaGreen),
                          Label = "Sanger FromLocationString"
@@ -241,7 +239,6 @@ namespace GetSanger.ViewModels
                         await sr_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
                         sr_TripHelper.LeaveTripThread(handleTrip); 
                         MessagingCenter.Send(this, Constants.Constants.EndActivity, sanger);
-                        await GoBack();
                     }
                 }
             }

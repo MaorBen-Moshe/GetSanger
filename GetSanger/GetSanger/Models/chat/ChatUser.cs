@@ -10,6 +10,7 @@ namespace GetSanger.Models.chat
         private string m_UserId;
         private string m_UserCreatedById;
         private DateTime m_LastMessage;
+        private bool m_IsDeleted;
         private User m_User;
         private int m_Id = 0;
         #endregion
@@ -33,6 +34,12 @@ namespace GetSanger.Models.chat
         {
             get => m_UserCreatedById;
             set => SetClassProperty(ref m_UserCreatedById, value);
+        }
+
+        public bool IsDeleted
+        {
+            get => m_IsDeleted;
+            set => SetStructProperty(ref m_IsDeleted, value);
         }
 
         [Ignore]

@@ -56,9 +56,9 @@
             </Frame>
 
 
-            <Button Text="Call" 
-                    BackgroundColor="Black"
-                    TextColor="White"
+            <Button Text="Call Sanger" 
+                    BackgroundColor="Transparent"
+                    TextColor="Black"
                     IsVisible="{Binding IsTrip}"
                     VerticalOptions="EndAndExpand"
                     HorizontalOptions="CenterAndExpand"
@@ -67,8 +67,8 @@
                     Margin="120"
                     Command="{Binding CallTripCommand}"/>
             <Button Text="Focus" 
-                    BackgroundColor="Black"
-                    TextColor="White"
+                    BackgroundColor="Transparent"
+                    TextColor="Black"
                     VerticalOptions="EndAndExpand"
                     HorizontalOptions="CenterAndExpand"
                     CornerRadius="20"

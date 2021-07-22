@@ -23,18 +23,21 @@
 
     <Shell.TitleView>
         <StackLayout Orientation="Horizontal">
-            <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal"
+                         IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}">
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ClickProfileBarCommand}"/>
                 </StackLayout.GestureRecognizers>
                 <controls:RoundedImage ImageSource="{Binding UserPicture}" 
                                    Radius="40"
                                    Margin="5,10"
+                                   IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                                    HorizontalOptions="StartAndExpand"/>
 
                 <Label Text="{Binding UserToChat.PersonalDetails.NickName}" 
                    BackgroundColor="Transparent"
                    TextColor="WhiteSmoke"
+                   IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                    HorizontalOptions="StartAndExpand" 
                    Margin="5,10,0,10"/>
             </StackLayout>
@@ -44,6 +47,7 @@
                          WidthRequest="20"
                          HeightRequest="20"
                          Margin="90, 0, 0, 0"
+                         IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                          Command="{Binding SendWhatsappCommand}"/>
             <ImageButton Source="phone.png"
                          BackgroundColor="Transparent" 
@@ -51,6 +55,7 @@
                          WidthRequest="20"
                          HeightRequest="20"
                          Margin="0,0,0,0"
+                         IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                          Command="{Binding CallCommand}"/>
         </StackLayout>
     </Shell.TitleView>
@@ -108,6 +113,7 @@
             
             <chat:ChatInputBarView Grid.Row="1"
                                    Margin="0,0,10,0"
+                                   IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                                    x:Name="chatInput"/>
         </Grid>
     </ContentPage.Content>
