@@ -15,10 +15,10 @@ namespace GetSanger.Models
         private bool m_IsGenericNotifications;
         private Location m_UserLocation;
         private double m_DistanceLimit;
+        private bool m_IsDeleted;
         #endregion
 
         public string UserId { get; set; }
-        public bool IsDeleted { get; set; }
         public string RegistrationToken { get; set; }
         public string Email
         {
@@ -46,6 +46,12 @@ namespace GetSanger.Models
         {
             get => m_DistanceLimit;
             set => SetStructProperty(ref m_DistanceLimit, value);
+        }
+
+        public bool IsDeleted
+        {
+            get => m_IsDeleted;
+            set => SetStructProperty(ref m_IsDeleted, value);
         }
 
         [JsonIgnore]

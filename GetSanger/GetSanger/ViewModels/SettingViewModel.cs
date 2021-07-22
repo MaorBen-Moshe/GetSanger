@@ -100,7 +100,7 @@ namespace GetSanger.ViewModels
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
             IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
             InfinityChecked = AppManager.Instance.ConnectedUser.DistanceLimit == -1;
-            DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
+            m_DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
             m_OldDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
             setDistanceString();
         }
@@ -121,7 +121,6 @@ namespace GetSanger.ViewModels
             InfinityCommand = new Command(() => 
             {
                 AppManager.Instance.ConnectedUser.DistanceLimit = -1;
-                DistanceLimit = 10;
                 setDistanceString();
             });
         }
