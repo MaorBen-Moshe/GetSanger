@@ -43,6 +43,10 @@ namespace GetSanger.Utils
                         action?.Invoke();
                     });
             }
+            else
+            {
+                await sr_PageService.DisplayAlert("Note", $"activity's status is: {activity.Status}");
+            }
         }
 
         public static async void RejectActivity(Activity activity, Action action)
@@ -60,6 +64,10 @@ namespace GetSanger.Utils
                 }
 
                 action?.Invoke();
+            }
+            else
+            {
+                await sr_PageService.DisplayAlert("Note", $"activity's status is: {activity.Status}");
             }
         }
 

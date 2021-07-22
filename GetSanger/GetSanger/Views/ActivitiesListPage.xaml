@@ -124,7 +124,8 @@
                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Path=IsClientMode, Converter={StaticResource InverseBoolConverter}}"
                                                VerticalOptions="Start"/>
 
-                                        <StackLayout Orientation="Horizontal">
+                                        <StackLayout Orientation="Horizontal"
+                                                     IsVisible="{Binding IsClientMode, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}}">
                                             <Button Text="Confirm"
                                                     FontSize="12"
                                                     FontAttributes="Bold"
@@ -142,6 +143,16 @@
                                                     CommandParameter="{Binding .}"
                                                     HorizontalOptions="CenterAndExpand"/>
                                         </StackLayout>
+
+                                        <Button Text="Delete"
+                                                TextColor="Red"
+                                                BorderColor="Transparent"
+                                                FontSize="12"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding RejectActivityCommand, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}}"
+                                                CommandParameter="{Binding .}"
+                                                IsVisible="{Binding IsClientMode, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Converter={StaticResource InverseBoolConverter}}"
+                                                HorizontalOptions="CenterAndExpand"/>
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>
