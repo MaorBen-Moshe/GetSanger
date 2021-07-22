@@ -27,20 +27,18 @@
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"
                    Padding="50"/>
-            <Frame BackgroundColor="Transparent"
-                   BorderColor="Black"
-                   CornerRadius="20"
-                   HorizontalOptions="CenterAndExpand"
-                   Padding="15"
+            <Label Text="{Binding ProfileText}"
+                   TextColor="Blue"
+                   TextDecorations="Underline"
+                   Padding="10"
                    Margin="10"
-                   IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
-                   IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
-                <Frame.GestureRecognizers>
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="CenterAndExpand"
+                   IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"                    IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
+                <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
-                </Frame.GestureRecognizers>
-                <Label Text="{Binding ProfileText}">
-                </Label>
-            </Frame>
+                </Label.GestureRecognizers>
+            </Label>
             <Entry Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
                    IsEnabled="False"
                    IsReadOnly="True" />

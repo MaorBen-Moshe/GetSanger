@@ -125,7 +125,7 @@ namespace GetSanger.ViewModels
             {
                 sr_LoadingService.ShowLoadingPage();
                 IsDeliveryCategory = Job.Category.Equals(eCategory.Delivery);
-                ProfileText ??= string.Format(@"{0}'s profile", Job.ClientName);
+                ProfileText ??= string.Format(@"Go to {0}'s profile", Job.ClientName);
 
                 if (Job.FromLocation != null)
                 {
