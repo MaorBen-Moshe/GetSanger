@@ -73,6 +73,11 @@ namespace GetSanger.Droid.Services.FCM
 
         private void handleMessageReceived(RemoteMessage i_Message)
         {
+            if (!Forms.IsInitialized)
+            {
+                Forms.Init(this, null);
+            }
+
             // validation of data first
             string title = i_Message.GetNotification() != null ? i_Message.GetNotification().Title : null;
             string body = i_Message.GetNotification() != null ? i_Message.GetNotification().Body : null;
