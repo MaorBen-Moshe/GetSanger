@@ -17,7 +17,7 @@ namespace GetSanger.Services
 {
     public class PushServices : Service, IUiPush
     {
-        private static readonly IPushService sr_Push = DependencyService.Get<IPushService>();
+        private readonly IPushService r_Push = DependencyService.Get<IPushService>();
 
         public static Dictionary<string, string> BackgroundPushData { get; } = new Dictionary<string, string>();
 
@@ -106,7 +106,7 @@ namespace GetSanger.Services
 
         public async Task<string> GetRegistrationToken()
         {
-            string token = await sr_Push.GetRegistrationToken();
+            string token = await r_Push.GetRegistrationToken();
             return token;
         }
 
