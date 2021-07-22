@@ -18,6 +18,7 @@ namespace GetSanger.Models
         #endregion
 
         public string UserId { get; set; }
+        public bool IsDeleted { get; set; }
         public string RegistrationToken { get; set; }
         public string Email
         {
