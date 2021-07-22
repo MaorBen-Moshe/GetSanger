@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
@@ -197,8 +198,12 @@ namespace GetSanger.ViewModels
             IEnumerable<eCategory> obsCollection = AppManager.Instance.ConnectedUser.Categories;
             string currentId = AppManager.Instance.ConnectedUser.UserId;
             List<JobOffer> joboffers = await FireStoreHelper.GetAllJobOffers(obsCollection.ToList());
-            joboffers = joboffers.Where(current => current.ClientID != currentId).ToList();
-            // need to filter by distance also
+            Location userLastKnownLocation = AppManager.Instance.ConnectedUser.UserLocation;
+            double userDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
+            joboffers = joboffers.Where(current => current.ClientID != currentId &&
+                                        Location.CalculateDistance(userLastKnownLocation, current.FromLocation, DistanceUnits.Kilometers) <= userDistanceLimit &&
+                                        Location.CalculateDistance(userLastKnownLocation, current.DestinationLocation, DistanceUnits.Kilometers) <= userDistanceLimit)
+                                        .ToList();
             List<Activity> activities = await FireStoreHelper.GetActivities(currentId);
             AppManager.Instance.ConnectedUser.Activities = new ObservableCollection<Activity>(activities);
             List<JobOffer> toRetList = new List<JobOffer>();
