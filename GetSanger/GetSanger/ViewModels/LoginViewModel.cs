@@ -138,7 +138,8 @@ namespace GetSanger.ViewModels
             {
                 try
                 {
-                    bool verified = await RunTaskWhileLoading(sr_SocialService.SocialLogin(provider));
+                    sr_LoadingService.ShowLoadingPage();
+                    bool verified = await sr_SocialService.SocialLogin(provider);
                     if (!verified)
                     {
                         await sr_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
@@ -147,6 +148,10 @@ namespace GetSanger.ViewModels
                 catch(Exception e)
                 {
                     await e.LogAndDisplayError($"{nameof(LoginViewModel)}:socialClicked", "Error", e.Message);
+                }
+                finally
+                {
+                    sr_LoadingService.HideLoadingPage();
                 }
             }
         }

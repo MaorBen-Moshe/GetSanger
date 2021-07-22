@@ -18,6 +18,7 @@ namespace GetSanger.ViewModels
 
         private User m_CurrentUser;
         private ImageSource m_UserImage;
+        private bool m_ModeIsToggled;
 
         #endregion
 
@@ -33,6 +34,12 @@ namespace GetSanger.ViewModels
         {
             get => m_UserImage;
             set => SetClassProperty(ref m_UserImage, value);
+        }
+
+        public bool ModeIsToggled
+        {
+            get => m_ModeIsToggled;
+            set => SetStructProperty(ref m_ModeIsToggled, value);
         }
 
         #endregion
@@ -113,6 +120,7 @@ namespace GetSanger.ViewModels
 
                 CurrentUser = AppManager.Instance.ConnectedUser;
                 UserImage = sr_PhotoDisplay.DisplayPicture(CurrentUser?.ProfilePictureUri);
+                ModeIsToggled = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
             }
             catch(Exception e)
             {
@@ -125,10 +133,12 @@ namespace GetSanger.ViewModels
         {
             try
             {
+                sr_LoadingService.ShowLoadingPage();
                 // do logout
                 await sr_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
                 AuthHelper.SignOut();
                 AppManager.Instance.RefreshAppManager();
+                sr_LoadingService.HideLoadingPage();
                 Application.Current.MainPage = new AuthShell();
             }
             catch(Exception e)
@@ -141,12 +151,8 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                string labelText = i_Param as string;
-                bool isValidMode = Enum.TryParse(labelText, out eAppMode mode);
-                if (isValidMode)
-                {
-                    Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
-                }
+                eAppMode mode = ModeIsToggled ? eAppMode.Sanger : eAppMode.Client;
+                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(mode);
             }
             catch (Exception e)
             {

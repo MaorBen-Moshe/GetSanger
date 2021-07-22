@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Views.popups;
 using GetSanger.Interfaces;
-using System.Collections.Generic;
 
 namespace GetSanger.Services
 {
     public class LoginServices : Service, ILogin
     {
         private Interfaces.INavigation m_NavigationService;
-        private IRunTasks m_RunTasks;
         private ILocation m_Location;
         private ITrip m_Trip;
         private IUiPush m_PushServices;
@@ -83,7 +81,7 @@ namespace GetSanger.Services
                 bool verified = false;
                 if (firstTime == false)
                 {
-                    User user = await m_RunTasks.RunTaskWhileLoading(FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId()));
+                    User user = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
                     verified = await AuthHelper.IsVerifiedEmail();
                     AppManager.Instance.ConnectedUser = user;
                     AppManager.Instance.ConnectedUser.UserLocation = await m_Location.GetCurrentLocation();
@@ -140,7 +138,6 @@ namespace GetSanger.Services
         public override void SetDependencies()
         {
             m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
-            m_RunTasks ??= AppManager.Instance.Services.GetService(typeof(RunTasksService)) as RunTasksService;
             m_Location ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             m_PushServices ??= AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
             m_Trip ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;

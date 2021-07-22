@@ -66,7 +66,7 @@
                     Padding="0, 10"
                     Margin="120"
                     Command="{Binding CallTripCommand}"/>
-            <Button Text="My Location" 
+            <Button Text="Focus" 
                     BackgroundColor="Black"
                     TextColor="White"
                     VerticalOptions="EndAndExpand"

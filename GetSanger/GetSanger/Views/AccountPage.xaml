@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:controls="clr-namespace:GetSanger.Controls"
+             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.AccountPage"
              Shell.NavBarIsVisible="False">
 
@@ -25,43 +26,31 @@
                       
                        />
             </StackLayout>
-            <Grid AbsoluteLayout.LayoutBounds="0.5,0.30, 0.52, 0.06" 
-                  
-                  AbsoluteLayout.LayoutFlags="All">
-                <Frame Padding="0"
-                       Grid.Column="0"
-                       x:Name="ClientFrame">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding ChangeModeCommand}"
-                            CommandParameter="{Binding Source={x:Reference ClientLabel}, Path=Text}">
-                        </TapGestureRecognizer>
-                    </Frame.GestureRecognizers>
-                    <Label Text="Client"
-                       FontAttributes="Bold"
-                       x:Name="ClientLabel">
-                    </Label>
-                </Frame>
-
-                <Frame Padding="0"
-                       Grid.Column="1"
-                       x:Name="SangerFrame">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding ChangeModeCommand}"
-                            CommandParameter="{Binding Source={x:Reference SangerLabel}, Path=Text}">
-                        </TapGestureRecognizer>
-                    </Frame.GestureRecognizers>
-
-                    <Label Text="Sanger" 
-                       FontAttributes="Bold"
-                       x:Name="SangerLabel">
-                    </Label>
-                </Frame>
-            </Grid>
+            <Frame Padding="5"
+                   BorderColor="Black"
+                   AbsoluteLayout.LayoutBounds="0.5,0.30, 0.57, 0.1" 
+                   AbsoluteLayout.LayoutFlags="All">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Client Mode" 
+                           HorizontalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           x:Name="clientLabel"/>
+                    <Switch IsToggled="{Binding ModeIsToggled}">
+                        <Switch.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="Toggled"
+                                                              Command="{Binding ChangeModeCommand}"/>
+                        </Switch.Behaviors>
+                    </Switch>
+                    <Label Text="Sanger Mode"
+                           VerticalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           x:Name="SangerLabel"/>
+                </StackLayout>
+            </Frame>
 
             <Grid AbsoluteLayout.LayoutBounds="0.6, 0.70, 1 , 0.46"
-                  AbsoluteLayout.LayoutFlags="All">
+                  AbsoluteLayout.LayoutFlags="All"
+                  Margin="15">
                 <Button Text="Edit Profile" Command="{Binding EditProfileCommand}" Grid.Row="0"/>
                 <Button Text="My Ratings" Command="{Binding MyRatingsCommand}" Grid.Row="1"/>
                 <Button Text="Settings" Command="{Binding SettingCommand}" Grid.Row="2"/>
@@ -74,6 +63,7 @@
             <Button Text="Logout" 
                     FontSize="Large"
                     CornerRadius="20" 
+                    Margin="15, 0, 15, 15"
                     AbsoluteLayout.LayoutBounds="0.5, 0.99, 0.99, 0.06" 
                     AbsoluteLayout.LayoutFlags="All"
                     Command="{Binding LogoutCommand}"/>   
