@@ -198,12 +198,16 @@ namespace GetSanger.ViewModels
             IEnumerable<eCategory> obsCollection = AppManager.Instance.ConnectedUser.Categories;
             string currentId = AppManager.Instance.ConnectedUser.UserId;
             List<JobOffer> joboffers = await FireStoreHelper.GetAllJobOffers(obsCollection.ToList());
-            Location userLastKnownLocation = AppManager.Instance.ConnectedUser.UserLocation;
+            joboffers = joboffers.Where(current => current.ClientID != currentId).ToList();
             double userDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
-            joboffers = joboffers.Where(current => current.ClientID != currentId &&
-                                        Location.CalculateDistance(userLastKnownLocation, current.FromLocation, DistanceUnits.Kilometers) <= userDistanceLimit &&
-                                        Location.CalculateDistance(userLastKnownLocation, current.DestinationLocation, DistanceUnits.Kilometers) <= userDistanceLimit)
-                                        .ToList();
+            if (userDistanceLimit != -1)
+            {
+                Location userLastKnownLocation = AppManager.Instance.ConnectedUser.UserLocation;
+                joboffers = joboffers.Where(current => Location.CalculateDistance(userLastKnownLocation, current.FromLocation, DistanceUnits.Kilometers) <= userDistanceLimit &&
+                                                       Location.CalculateDistance(userLastKnownLocation, current.DestinationLocation, DistanceUnits.Kilometers) <= userDistanceLimit)
+                                     .ToList();
+                                        
+            }
             List<Activity> activities = await FireStoreHelper.GetActivities(currentId);
             AppManager.Instance.ConnectedUser.Activities = new ObservableCollection<Activity>(activities);
             List<JobOffer> toRetList = new List<JobOffer>();

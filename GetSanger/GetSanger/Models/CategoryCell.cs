@@ -2,7 +2,7 @@
 
 namespace GetSanger.Models
 {
-    public enum eCategory { All, Delivery, Arrangement, House_Devices, Studies, Computers_And_Smartphones, Cleaning, Handiman, Electrician, Gardening, Pets, Vehicle, Beauty }; // all categories are here
+    public enum eCategory { All, Delivery, Errands, House_Devices, Studies, Computers_And_Smartphones, Cleaning, Handiman, Electrician, Gardening, Pets, Vehicle, Beauty }; // all categories are here
 
     public class CategoryCell : PropertySetter
     {
@@ -35,7 +35,7 @@ namespace GetSanger.Models
         {
             ImageUri = Category switch
             {
-                eCategory.Arrangement => "IconArrangement.png",
+                eCategory.Errands => "IconArrangement.png",
                 eCategory.Beauty => "IconBeauty.png",
                 eCategory.Cleaning => "IconCleaning.png",
                 eCategory.Computers_And_Smartphones => "IconComputersAndSmartphones.png",
