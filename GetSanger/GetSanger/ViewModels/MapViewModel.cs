@@ -80,20 +80,7 @@ namespace GetSanger.ViewModels
         public MapViewModel()
         {
             SetCommands();
-            m_SangerPin = new Pin
-            {
-                Type = PinType.Generic,
-                Flat = true,
-                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconHD"),
-                Label = "Sanger Location",
-            };
-
-            m_SearchPin = new Pin
-            {
-                Type = PinType.SearchResult,
-                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconHD"),
-                Label = "Chosen Place"
-            };
+            setPersistPins();
         }
         #endregion
 
@@ -139,6 +126,24 @@ namespace GetSanger.ViewModels
             });
 
             ExitCommand = new Command(exit);
+        }
+
+        private void setPersistPins()
+        {
+            m_SangerPin = new Pin
+            {
+                Type = PinType.Generic,
+                Flat = true,
+                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconHD"),
+                Label = "Sanger Location",
+            };
+
+            m_SearchPin = new Pin
+            {
+                Type = PinType.SearchResult,
+                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconHD"),
+                Label = "Chosen Place"
+            };
         }
 
         private void mapClickedHelper(object i_Args)
