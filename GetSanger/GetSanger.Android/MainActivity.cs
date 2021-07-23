@@ -10,6 +10,7 @@ using Plugin.CurrentActivity;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Android.Content.PM;
 using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps.Android;
 
 namespace GetSanger.Droid
 {
@@ -33,7 +34,11 @@ namespace GetSanger.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
-            Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
+            Xamarin.FormsGoogleMaps.Init(this, savedInstanceState, new PlatformConfig
+            {
+                BitmapDescriptorFactory = new BitmapConfig()
+            }); 
+
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             PushService.InitializePushService(this);
             PushService.PushHelper(Intent);

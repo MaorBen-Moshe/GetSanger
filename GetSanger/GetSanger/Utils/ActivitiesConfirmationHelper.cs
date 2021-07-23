@@ -45,7 +45,7 @@ namespace GetSanger.Utils
             }
             else
             {
-                await sr_PageService.DisplayAlert("Note", $"activity's status is: {activity.Status}");
+                await sr_PageService.DisplayAlert("Note", $"activity status is: {activity.Status}");
             }
         }
 

@@ -25,6 +25,8 @@ namespace GetSanger.ViewModels
         private bool m_IsSearch;
         private bool m_IsTrip;
         private string m_SangerTripId;
+        private Pin m_SangerPin;
+        private Pin m_SearchPin;
         #endregion
 
         #region Properties
@@ -78,6 +80,20 @@ namespace GetSanger.ViewModels
         public MapViewModel()
         {
             SetCommands();
+            m_SangerPin = new Pin
+            {
+                Type = PinType.Generic,
+                Flat = true,
+                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconHD"),
+                Label = "Sanger Location",
+            };
+
+            m_SearchPin = new Pin
+            {
+                Type = PinType.SearchResult,
+                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconHD"),
+                Label = "Chosen Place"
+            };
         }
         #endregion
 
@@ -174,16 +190,13 @@ namespace GetSanger.ViewModels
                     if (positionList.Count != 0)
                     {
                         position = positionList.FirstOrDefault();
+                        m_SearchPin.Position = position;
                         Pins = new ObservableCollection<Pin>{
-                        Pins[0],
-                        new Pin
-                        {
-                            Type = PinType.Place,
-                            Position = position,
-                            Label = $"Chosen Place"
-                        }
-                    };
+                            Pins[0],
+                            m_SearchPin
+                        };
 
+                        
                         Span = new MapSpan(position, 0.01, 0.01);
                     }
                 }
@@ -216,17 +229,11 @@ namespace GetSanger.ViewModels
             {
                 User sanger = await FireStoreHelper.GetUser(SangerTripId);
                 Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
-
+                m_SangerPin.Position = position;
                 Pins = new ObservableCollection<Pin>
                 {
                      Pins[0],
-                     new Pin
-                     {
-                         Type = PinType.Generic,
-                         Position = position,
-                         Icon = BitmapDescriptorFactory.DefaultMarker(Color.SeaGreen),
-                         Label = "Sanger Location",
-                     }
+                     m_SangerPin
                 };
 
                 // need to change for Destination location

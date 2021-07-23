@@ -28,6 +28,7 @@ namespace GetSanger.ViewModels
         private bool m_IsFromLocationVisible;
         private bool m_IsConfirmationStackVisible;
         private bool m_IsConfirmationButtonVisible;
+        private ImageSource m_MapImage;
         #endregion
 
         #region Properties
@@ -105,6 +106,12 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsConfirmationButtonVisible, value);
         }
 
+        public ImageSource MapImage
+        {
+            get => m_MapImage;
+            set => SetClassProperty(ref m_MapImage, value);
+        }
+
         #endregion
 
         #region Commands
@@ -149,6 +156,7 @@ namespace GetSanger.ViewModels
                 IsFromLocationVisible = ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery);
                 IsConfirmationStackVisible = ConnectedActivity.Status.Equals(eActivityStatus.Active) || ConnectedActivity.Status.Equals(eActivityStatus.Pending);
                 IsConfirmationButtonVisible = AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && ConnectedActivity.Status.Equals(eActivityStatus.Pending);
+                MapImage = ImageSource.FromFile("LocationIcon.png");
                 MessagingCenter.Subscribe<MapViewModel, User>(this, Constants.Constants.EndActivity, async (sender, args) =>
                 {
                     User sanger = args;
@@ -201,7 +209,7 @@ namespace GetSanger.ViewModels
             DestinationLocation = await getLocationString(ConnectedActivity.JobDetails.DestinationLocation);
             if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
             {
-                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask the sanger to active")} Location");
+                ActivatedButtonText = string.Format($"{(ConnectedActivity.LocationActivatedBySanger ? "See" : "Ask the sanger to activate")} Location");
             }
             else if (AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {
@@ -318,12 +326,13 @@ namespace GetSanger.ViewModels
 
         private void confirmActivity(object i_Param)
         {
+            sr_LoadingService.ShowLoadingPage();
             ActivitiesConfirmationHelper.ConfirmActivity(ConnectedActivity, () =>
             {
-                sr_LoadingService.ShowLoadingPage();
                 Appearing();
-                sr_LoadingService.HideLoadingPage();
             });
+
+            sr_LoadingService.HideLoadingPage();
         }
 
         private void rejectActivity(object i_Param)
