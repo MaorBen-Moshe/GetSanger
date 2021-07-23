@@ -43,6 +43,7 @@
                                         IsVisible="{Binding IsVisibleViewList}"
                                         VerticalOptions="Start"
                                         Margin="10"
+                                        TimeSortFlag="{Binding TimeSortFlag}"
                                         TimeSortCommand="{Binding SortCommand}" />
                
                 <ListView x:Name="m_ListView" 

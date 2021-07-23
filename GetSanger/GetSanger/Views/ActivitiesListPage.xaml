@@ -51,6 +51,7 @@
                                         IsVisible="{Binding IsVisibleViewList}"
                                         VerticalOptions="Start"
                                         Margin="10"
+                                        TimeSortFlag="{Binding TimeSortFlag}"
                                         TimeSortCommand="{Binding SortCommand}"
                                         IsCategoryFilterEnabled="True"
                                         CategorySelectedIndex="{Binding SelectedCategoryFilterIndex, Mode=TwoWay}"

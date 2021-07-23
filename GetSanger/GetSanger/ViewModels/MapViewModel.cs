@@ -86,7 +86,7 @@ namespace GetSanger.ViewModels
         public override async void Appearing()
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(MapViewModel));
-            createMapSpan();
+            await createMapSpan();
             if (IsSearch)
             {
                 await sr_PageService.DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK");
@@ -178,9 +178,9 @@ namespace GetSanger.ViewModels
                         Pins[0],
                         new Pin
                         {
-                        Type = PinType.Place,
-                        Position = position,
-                        Label = $"Chosen Place"
+                            Type = PinType.Place,
+                            Position = position,
+                            Label = $"Chosen Place"
                         }
                     };
 
@@ -216,6 +216,7 @@ namespace GetSanger.ViewModels
             {
                 User sanger = await FireStoreHelper.GetUser(SangerTripId);
                 Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
+
                 Pins = new ObservableCollection<Pin>
                 {
                      Pins[0],
@@ -223,9 +224,8 @@ namespace GetSanger.ViewModels
                      {
                          Type = PinType.Generic,
                          Position = position,
-                         //Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg"),
                          Icon = BitmapDescriptorFactory.DefaultMarker(Color.SeaGreen),
-                         Label = "Sanger Location"
+                         Label = "Sanger Location",
                      }
                 };
 
@@ -242,7 +242,7 @@ namespace GetSanger.ViewModels
                     if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.05)
                     {
                         await sr_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
-                        sr_TripHelper.LeaveTripThread(handleTrip); 
+                        sr_TripHelper.LeaveTripThread(handleTrip);
                         MessagingCenter.Send(this, Constants.Constants.EndActivity, sanger);
                     }
                 }
@@ -259,7 +259,7 @@ namespace GetSanger.ViewModels
             {
                 Placemark placemark = await sr_LocationService.GetPickedLocation(new Location(i_Position.Latitude, i_Position.Longitude));
                 string location = $"Did you choose the right place?\n {string.Format("{0}, {1} {2}", placemark.Locality, placemark.Thoroughfare, placemark.SubThoroughfare)}";
-                await sr_PageService.DisplayAlert("FromLocationString Chosen",
+                await sr_PageService.DisplayAlert("Location Chosen",
                                                  location,
                                                  "Yes",
                                                  "No",
@@ -292,7 +292,7 @@ namespace GetSanger.ViewModels
             sr_LoadingService.HideLoadingPage();
         }
 
-        private async void createMapSpan()
+        private async Task createMapSpan()
         {
             try
             {
@@ -303,7 +303,7 @@ namespace GetSanger.ViewModels
                     {
                         Type = PinType.Generic,
                         Position = Span.Center,
-                        Label = "My FromLocationString",
+                        Label = "My Location"
                     }
                 };
             }

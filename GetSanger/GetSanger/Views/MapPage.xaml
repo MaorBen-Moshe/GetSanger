@@ -63,7 +63,7 @@
                     VerticalOptions="EndAndExpand"
                     HorizontalOptions="CenterAndExpand"
                     CornerRadius="20"
-                    Padding="0, 10"
+                    Padding="10"
                     Margin="120"
                     Command="{Binding CallTripCommand}"/>
             <Button Text="Focus" 

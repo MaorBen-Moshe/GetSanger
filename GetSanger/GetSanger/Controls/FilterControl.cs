@@ -18,6 +18,26 @@ namespace GetSanger.Controls
         #endregion
 
         #region TimeBindings
+        public bool TimeSortFlag // false means descending;
+        {
+            get => (bool)GetValue(TimeSortFlagProperty);
+            set => SetValue(TimeSortFlagProperty, value);
+        }
+
+        public static readonly BindableProperty TimeSortFlagProperty = BindableProperty.Create(
+                                                         propertyName: "TimeSortFlag",
+                                                         returnType: typeof(bool),
+                                                         declaringType: typeof(FilterControl),
+                                                         defaultValue: null,
+                                                         defaultBindingMode: BindingMode.OneWay,
+                                                         validateValue: null,
+                                                         propertyChanged: (bindable, oldValue, newValue) => {
+                                                             if (bindable is FilterControl filter)
+                                                             {
+                                                                 int angle = filter.TimeSortFlag ? 180 : 0;
+                                                                 filter.m_SortButton.RotateTo(angle, 500, Easing.Linear);
+                                                             }
+                                                         });
 
         public ICommand TimeSortCommand
         {
@@ -35,15 +55,7 @@ namespace GetSanger.Controls
                                                          propertyChanged: (bindable, oldValue, newValue) => {
                                                              if (bindable is FilterControl filter)
                                                              {
-                                                                 filter.m_SortButton.Command = new Command(() =>
-                                                                 {
-                                                                     double angle = filter.m_SortButton.Rotation + 180;
-                                                                     filter.m_SortButton.RotateTo(angle, 500, Easing.Linear);
-                                                                     if (filter.TimeSortCommand.CanExecute(null))
-                                                                     {
-                                                                         filter.TimeSortCommand.Execute(null);
-                                                                     }
-                                                                 });
+                                                                 filter.m_SortButton.Command = filter.TimeSortCommand;
                                                              }
                                                          });
 

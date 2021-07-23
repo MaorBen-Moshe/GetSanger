@@ -246,7 +246,7 @@ namespace GetSanger.ViewModels
             string toRet;
             if (i_Placemark == null)
             {
-                toRet = "FromLocationString could not be found, please try manually add it";
+                toRet = "Location could not be found, please try manually add it";
             }
             else
             {

@@ -55,7 +55,7 @@ namespace GetSanger.Services
 
             if (Permissions.ShouldShowRationale<Permissions.LocationWhenInUse>())
             {
-                await m_PageService.DisplayAlert("Note", "We need your FromLocationString to be able to give the best service with your job offer", "Thanks");
+                await m_PageService.DisplayAlert("Note", "We need your Location to be able to give the best service with your job offer", "Thanks");
             }
 
             return await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
