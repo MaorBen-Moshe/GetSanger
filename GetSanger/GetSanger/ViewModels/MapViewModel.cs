@@ -222,10 +222,10 @@ namespace GetSanger.ViewModels
                      new Pin
                      {
                          Type = PinType.Generic,
-                         Position = new MapSpan(position, 0.01, 0.01).Center,
+                         Position = position,
                          //Icon = BitmapDescriptorFactory.FromBundle("PinIcon.jpeg"),
                          Icon = BitmapDescriptorFactory.DefaultMarker(Color.SeaGreen),
-                         Label = "Sanger FromLocationString"
+                         Label = "Sanger Location"
                      }
                 };
 
@@ -234,6 +234,11 @@ namespace GetSanger.ViewModels
                 Location location = await sr_LocationService.GetCurrentLocation();
                 if (location != null)
                 {
+                    if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.2)
+                    {
+                        await sr_PageService.DisplayAlert("Note", "The sanger is near to your place", "Thanks");
+                    }
+
                     if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.05)
                     {
                         await sr_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");

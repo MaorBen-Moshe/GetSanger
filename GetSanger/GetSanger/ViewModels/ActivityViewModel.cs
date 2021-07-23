@@ -347,14 +347,18 @@ namespace GetSanger.ViewModels
                                                  IsActivatedLocationButton = !notActivated;
                                                  if (IsActivatedLocationButton == false)
                                                  {
+                                                     sr_LoadingService.ShowLoadingPage();
                                                      ConnectedActivity.Status = eActivityStatus.Completed;
                                                      AppManager.Instance.ConnectedUser.ActivatedMap.Remove(ConnectedActivity.ActivityId);
                                                      ConnectedActivity.LocationActivatedBySanger = false;
-                                                     sr_TripHelper.LeaveTripThread(); // sanger stop sharing location
-                                                     await RunTaskWhileLoading(FireStoreHelper.UpdateActivity(ConnectedActivity));
+                                                     // sanger stop sharing location
+                                                     sr_TripHelper.LeaveTripThread();
+                                                     await FireStoreHelper.UpdateActivity(ConnectedActivity);
+                                                     await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                                                      string message = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} completed your job :)";
-                                                     await RunTaskWhileLoading(sr_PushService.SendToDevice(ConnectedActivity.ClientID, ConnectedActivity, typeof(Activity).Name, "Job has ended", message));
+                                                     await sr_PushService.SendToDevice(ConnectedActivity.ClientID, ConnectedActivity, typeof(Activity).Name, "Job has ended", message);
                                                      IsActivatedEndButton = false;
+                                                     sr_LoadingService.HideLoadingPage();
                                                      await GoBack();
                                                  }
                                              });

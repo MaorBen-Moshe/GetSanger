@@ -87,8 +87,14 @@ namespace GetSanger.Services
             }
         }
 
-        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased = null , int i_Interval = 15000)
+        public async void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased = null , int i_Interval = 15000)
         {
+            if(i_Elpased == null && (await TryShareSangerLoaction(false)) == true)
+            {
+                // sanger already share his location in a seperate thread.
+                return;
+            }
+
             Device.BeginInvokeOnMainThread(() => {
                 m_Timer.Enabled = true;
                 m_Timer.Interval = i_Interval; //15000 by default
@@ -97,8 +103,13 @@ namespace GetSanger.Services
             });
         }
 
-        public void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elpased = null)
+        public async void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elpased = null)
         {
+            if(i_Elpased == null && (await TryShareSangerLoaction(false)) == true)
+            {
+                return;
+            }
+
             Device.BeginInvokeOnMainThread(() => {
                 m_Timer.Elapsed -= i_Elpased ?? handleSangerLocation;
                 m_Timer.Enabled = false;
