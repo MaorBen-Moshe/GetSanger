@@ -144,6 +144,11 @@ namespace GetSanger.ViewModels
         {
             try
             {
+                if(CurrentUser.IsDeleted)
+                {
+                    return;
+                }
+
                 string json = ObjectJsonSerializer.SerializeForPage(CurrentUser);
                 await sr_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.Profile}");
             }
@@ -154,7 +159,12 @@ namespace GetSanger.ViewModels
         }
 
         private async void reportUser(object i_Param)
-        {   
+        {
+            if (CurrentUser.IsDeleted)
+            {
+                return;
+            }
+
             string response = await sr_PageService.DisplayActionSheet("Please choose the reason:", "Cancel", null, typeof(ReportOption).GetListOfEnumNames().ToArray());
             if(Enum.TryParse(response, out ReportOption option))
             {
@@ -191,6 +201,11 @@ namespace GetSanger.ViewModels
         {
             try
             {
+                if (CurrentUser.IsDeleted)
+                {
+                    return;
+                }
+
                 var ratingsPopup = new AddRatingPage(CurrentUser.UserId);
                 (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += async () => AverageRating = getAverage(await FireStoreHelper.GetRatings(CurrentUser.UserId));
                 await PopupNavigation.Instance.PushAsync(ratingsPopup);

@@ -135,10 +135,6 @@ namespace GetSanger.Services
                     case "MessageInfo":
                         await handleMessageInfo(i_Title, i_Body, json);
                         break;
-                    case "DeletedUser":
-                        IChatDb chat = await ChatDatabase.ChatDatabase.Instance;
-                        chat.DeleteDb(ObjectJsonSerializer.DeserializeForServer<string>(json));
-                        break;
                     case "":
                         IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
                         if(!string.IsNullOrWhiteSpace(i_Title) && !string.IsNullOrWhiteSpace(i_Body))

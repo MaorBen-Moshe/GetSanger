@@ -75,7 +75,7 @@ namespace GetSanger.ViewModels.chat
                 if(i_Param is ChatUser chatUser)
                 {
                     string json = ObjectJsonSerializer.SerializeForPage(chatUser.User);
-                    await sr_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.ChatsList}&deleted={chatUser.IsDeleted}");
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.ChatsList}");
                 }
             }
             catch (Exception e)
@@ -95,20 +95,7 @@ namespace GetSanger.ViewModels.chat
             List<ChatUser> users = (await database.GetAllUsersAsync()).ToList();
             foreach(var user in users)
             {
-                if (user.IsDeleted)
-                {
-                    user.User = new User
-                    {
-                        PersonalDetails = new PersonalDetails
-                        {
-                            NickName = "Deleted account"
-                        }
-                    };
-                }
-                else
-                {
-                    user.User = await FireStoreHelper.GetUser(user.UserId);
-                }
+                user.User = await FireStoreHelper.GetUser(user.UserId);
             }
 
             AllCollection = new ObservableCollection<ChatUser>(users.OrderByDescending(user => user.LastMessage));

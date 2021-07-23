@@ -124,6 +124,7 @@ namespace GetSanger.ViewModels
             {
                 // if data has not changed do not call update user
                 if (string.IsNullOrWhiteSpace(ConnectedUser.PersonalDetails.NickName) ||
+                    ConnectedUser.PersonalDetails.NickName.Length < 4 ||
                     !sr_DialService.IsValidPhone(ConnectedUser.PersonalDetails.Phone) ||
                     (DateTime.Now.AddYears(-ConnectedUser.PersonalDetails.Birthday.Year).Year < 18)
                 )
@@ -189,7 +190,10 @@ namespace GetSanger.ViewModels
                                                      {
                                                          IChatDb chat = await ChatDatabase.ChatDatabase.Instance;
                                                          chat.DeleteDb();
-                                                         await RunTaskWhileLoading(FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId));
+                                                         ConnectedUser.IsDeleted = true;
+                                                         ConnectedUser.PersonalDetails.NickName += " Deleted";
+                                                         await FireStoreHelper.UpdateUser(ConnectedUser);
+                                                         await FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId);
                                                          await sr_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
                                                          Application.Current.MainPage = new AuthShell();
                                                      }

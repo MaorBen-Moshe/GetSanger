@@ -17,7 +17,6 @@ namespace GetSanger.ViewModels.chat
 {
     [QueryProperty(nameof(UserJson), "user")]
     [QueryProperty(nameof(PrevPage), "prev")]
-    [QueryProperty(nameof(IsDeletedUser), "deleted")]
     public class ChatPageViewModel : BaseViewModel
     {
         #region Fields
@@ -132,6 +131,7 @@ namespace GetSanger.ViewModels.chat
             {
                 sr_CrashlyticsService.LogPageEntrance(nameof(ChatPageViewModel));
                 UserPicture = sr_PhotoDisplay.DisplayPicture(UserToChat.ProfilePictureUri);
+                IsDeletedUser = UserToChat.IsDeleted;
                 DB = await ChatDatabase.ChatDatabase.Instance;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 setMessages();

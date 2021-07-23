@@ -72,6 +72,8 @@ namespace GetSanger.Models
             PersonalDetails = new PersonalDetails();
             IsGenericNotifications = true; // default generic notifications 
             LastUserMode = null;
+            DistanceLimit = -1; // unlimited by default
+            IsDeleted = false;
             Categories = new ObservableCollection<eCategory>();
         }
 

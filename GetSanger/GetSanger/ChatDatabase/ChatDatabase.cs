@@ -42,27 +42,17 @@ namespace GetSanger.ChatDatabase
 
         public async void DeleteDb(string id = null)
         {
-            if(id == null)
+            List<ChatUser> users = await GetAllUsersAsync();
+            users = users.Where(user => user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
+            foreach (ChatUser user in users)
             {
-                List<ChatUser> users = await GetAllUsersAsync();
-                users = users.Where(user => user.UserCreatedById.Equals(AuthHelper.GetLoggedInUserId())).ToList();
-                IUiPush push = AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
-                foreach(ChatUser user in users)
+                List<Message> messages = await GetMessagesAsync(user.UserId);
+                foreach(Message message in messages)
                 {
-                    // send to each device that the user is deleted so he would delete all the messages inside of his db
-                    await push.SendToDevice(user.UserId, AuthHelper.GetLoggedInUserId(), "DeletedUser", null, null);
+                    await DeleteMessageAsync(message);
                 }
 
-                foreach(TableMapping map in m_Connection.TableMappings)
-                {
-                    await m_Connection.DeleteAllAsync(map);
-                }
-            }
-            else
-            {
-                ChatUser user = await GetUserAsync(id);
-                user.IsDeleted = true;
-                await UpdateUserAsync(user);
+                await DeleteUserAsync(user.UserId);
             }
         }
 
@@ -73,8 +63,7 @@ namespace GetSanger.ChatDatabase
             {
                 UserId = i_UserId,
                 LastMessage = i_LastMessage != null ? (DateTime)i_LastMessage : DateTime.Now,
-                UserCreatedById = i_CreatedById ?? AuthHelper.GetLoggedInUserId(),
-                IsDeleted = false
+                UserCreatedById = i_CreatedById ?? AuthHelper.GetLoggedInUserId()
             };
 
             return (await m_Connection.InsertAsync(newUser) == 1) ? newUser : null;
