@@ -6,7 +6,7 @@ namespace GetSanger.Interfaces
 {
     public interface IUiPush : IPushService
     {
-        Task SendToDevice<T>(string i_UserId, T i_Data, string i_DataType, string i_Title = "", string i_Message = null) where T : class ;
+        Task SendToDevice<T>(string i_UserId, T i_Data, string i_DataType, string i_Title = "", string i_Body = null) where T : class ;
 
         Task RegisterTopics(string i_UserId, params string[] i_Topics);
 

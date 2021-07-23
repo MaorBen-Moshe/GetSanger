@@ -21,29 +21,24 @@ namespace GetSanger.Services
 
         public static Dictionary<string, string> BackgroundPushData { get; } = new Dictionary<string, string>();
 
-        public async Task SendToDevice<T>(string i_UserId, T i_Data, string i_DataType, string i_Title = "", string i_Message = null) where T : class
+        public async Task SendToDevice<T>(string i_UserId, T i_Data, string i_DataType, string i_Title = "", string i_Body = null) where T : class
         {
             User user = await FireStoreHelper.GetUser(i_UserId);
-            i_Message = user.IsGenericNotifications ? i_Message : null;
+            i_Body = user.IsGenericNotifications ? i_Body : null;
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPushToToken";
 
-            string dataJson = ObjectJsonSerializer.SerializeForServer(i_Data);
-            Dictionary<string, string> data = null;
-            if (i_Data != null)
+            var data = new Dictionary<string, string>
             {
-                data = new Dictionary<string, string>
-                {
-                    ["Type"] = i_DataType ?? "",
-                    ["Json"] = dataJson
-                };
-            }
+                ["Type"] = i_DataType ?? "",
+                ["Json"] = i_Data != null ? ObjectJsonSerializer.SerializeForServer(i_Data) : null
+            };
 
 
             Dictionary<string, object> pushData = new Dictionary<string, object>
             {
                 ["UserId"] = i_UserId,
                 ["Data"] = data,
-                ["Body"] = i_Message,
+                ["Body"] = i_Body,
                 ["Title"] = i_Title
             };
 
@@ -137,13 +132,11 @@ namespace GetSanger.Services
                         break;
                     case "":
                         IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
-                        if(!string.IsNullOrWhiteSpace(i_Title) && !string.IsNullOrWhiteSpace(i_Body))
+                        if (!string.IsNullOrWhiteSpace(i_Title) && !string.IsNullOrWhiteSpace(i_Body))
                         {
                             await service.DisplayAlert(i_Title, i_Body, "OK");
                         }
 
-                        break;
-                    default:
                         break;
                 }
             }
@@ -192,11 +185,11 @@ namespace GetSanger.Services
                     {
                         route = $"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={ShellRoutes.ChatsList}";
                     }
-                    
+
                     movePageHelper(route, i_Title, txt);
                 }
             }
-            else if(currentPage is { BindingContext: ChatListViewModel clVm })
+            else if (currentPage is {BindingContext: ChatListViewModel clVm})
             {
                 string route = $"{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={ShellRoutes.ChatsList}";
                 movePageHelper(route, i_Title, txt);
@@ -238,51 +231,56 @@ namespace GetSanger.Services
 
         private static async Task handleActivity(string i_Title, string i_Body, string i_Json)
         {
-            string message = i_Body + "\nDo you want to navigate to view the activity?";
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
-            Interfaces.INavigation navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
 
             IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             Page currentPage = Shell.Current.CurrentPage;
+
             if (currentPage is {BindingContext: ActivityViewModel vm} && vm.ConnectedActivity.ActivityId == activity.ActivityId)
             {
                 vm.ConnectedActivity = activity;
                 vm.Appearing();
             }
-            else if (currentPage is {BindingContext: ActivitiesListViewModel acVm} && i_Title != null)
+            else if (currentPage is {BindingContext: ActivitiesListViewModel acVm})
             {
-                await pageServices.DisplayAlert(i_Title, i_Body);
+                if (i_Title != null)
+                {
+                    await pageServices.DisplayAlert(i_Title, i_Body);
+                }
 
                 acVm.RefreshingCommand.Execute(null);
             }
             else
             {
-                    eAppMode modeToSet = activity.ClientID == AppManager.Instance.ConnectedUser.UserId ? eAppMode.Client : eAppMode.Sanger;
-                    Application.Current.MainPage = AppManager.Instance.GetCurrentShell(modeToSet);
+                eAppMode modeToSet = activity.ClientID == AppManager.Instance.ConnectedUser.UserId ? eAppMode.Client : eAppMode.Sanger;
+                Application.Current.MainPage = AppManager.Instance.GetCurrentShell(modeToSet);
 
-                    string activityJson = ObjectJsonSerializer.SerializeForPage(activity);
-                    string route = $"//activities/{ShellRoutes.Activity}?activity={activityJson}";
-                    movePageHelper(route, i_Title, i_Body);
+                string activityJson = ObjectJsonSerializer.SerializeForPage(activity);
+                string route = $"//activities/{ShellRoutes.Activity}?activity={activityJson}";
+                string body = i_Body + "\nDo you want to navigate to view the activity?";
+                movePageHelper(route, i_Title, body);
             }
         }
 
         private static async Task handleJobOffer(string i_Title, string i_Body, string i_Json)
         {
-            string message = i_Body + "\nDo you want to navigate the the job offer page?";
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
-            Interfaces.INavigation navigation = AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
 
             IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             Page currentPage = Shell.Current.CurrentPage;
-            if (currentPage is { BindingContext: ViewJobOfferViewModel vm } && vm.Job.JobId == job.JobId)
+
+            if (currentPage is {BindingContext: ViewJobOfferViewModel vm} && vm.Job.JobId == job.JobId)
             {
                 vm.Job = job;
                 vm.Appearing();
             }
             else if (currentPage is {BindingContext: JobOffersViewModel jobVm} &&
-                     AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger) && i_Title != null)
+                     AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {
-                await pageServices.DisplayAlert(i_Title, i_Body);
+                if (i_Title != null)
+                {
+                    await pageServices.DisplayAlert(i_Title, i_Body);
+                }
 
                 jobVm.RefreshingCommand.Execute(null);
             }
@@ -291,7 +289,8 @@ namespace GetSanger.Services
                 Application.Current.MainPage = AppManager.Instance.GetCurrentShell(eAppMode.Sanger);
                 string jobJson = ObjectJsonSerializer.SerializeForPage(job);
                 string route = $"//jobOffers/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}";
-                movePageHelper(route, i_Title, i_Body);
+                string body = i_Body + "\nDo you want to navigate the the job offer page?";
+                movePageHelper(route, i_Title, body);
             }
         }
 
