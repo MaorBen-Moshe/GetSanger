@@ -119,12 +119,18 @@ namespace GetSanger.ViewModels
                             );
                 }
 
-                filterByTIme(activity => activity.JobDetails.Date);
+                sortByTime(activity => activity.JobDetails.Date);
             }
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:filterSelected", "Error", e.Message);
             }
+        }
+
+        protected override void sort(object i_Param)
+        {
+            TimeSortFlag = !TimeSortFlag;
+            sortByTime(activity => activity.JobDetails.Date);
         }
 
         private async void confirmActivity(object i_Param)

@@ -70,20 +70,21 @@ namespace GetSanger.ViewModels
             SelectedRatingCommand = new Command(selectedRating);
         }
 
-        protected async override void filterSelected(object i_Param)
+        protected override void filterSelected(object i_Param)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override async void sort(object i_Param)
         {
             try
             {
-                filterByTIme(rating => rating.TimeAdded);
+                TimeSortFlag = !TimeSortFlag;
+                sortByTime(rating => rating.TimeAdded);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:filterSelected", "Error", e.Message);
-            }
-            finally
-            {
-
-                SearchCollection = new ObservableCollection<Rating>(FilteredCollection);
+                await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:sort", "Error", e.Message);
             }
         }
 

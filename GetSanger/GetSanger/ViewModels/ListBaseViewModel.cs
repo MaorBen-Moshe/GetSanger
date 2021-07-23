@@ -18,13 +18,9 @@ namespace GetSanger.ViewModels
         private ObservableCollection<T> m_FilteredCollection;
         private ObservableCollection<T> m_SearchCollection;
         private T m_SelectedItem;
-        private List<string> m_TimeFilterList;
-        private int m_SelectedTimeFilterIndex;
+        private bool m_SelectedTimeFilterIndex;
         private List<string> m_CategoriesFilterList;
         private int m_SelectedCategoryFilterIndex;
-
-        protected const string k_Newest = "Newest";
-        protected const string k_Oldest = "Oldest";
         #endregion
 
         #region Properties
@@ -64,13 +60,7 @@ namespace GetSanger.ViewModels
             set => SetClassProperty(ref m_SelectedItem, value);
         }
 
-        public List<string> TimeFilterList
-        {
-            get => m_TimeFilterList;
-            set => SetClassProperty(ref m_TimeFilterList, value);
-        }
-
-        public int SelectedTimeFilterIndex
+        public bool TimeSortFlag
         {
             get => m_SelectedTimeFilterIndex;
             set => SetStructProperty(ref m_SelectedTimeFilterIndex, value);
@@ -93,6 +83,7 @@ namespace GetSanger.ViewModels
         #region Commands
         public ICommand RefreshingCommand { get; set; }
         public ICommand FilterSelectedCommand { get; set; }
+        public ICommand SortCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -101,12 +92,6 @@ namespace GetSanger.ViewModels
             SetCommands();
             SelectedItem = null;
             CategoriesFilterList = typeof(eCategory).GetListOfEnumNames().ToList();
-            TimeFilterList = new List<string>
-            {
-                k_Newest,
-                k_Oldest
-            };
-
             setFilterIndices();
         }
         #endregion
@@ -116,25 +101,28 @@ namespace GetSanger.ViewModels
 
         protected abstract void filterSelected(object i_Param);
 
+        protected abstract void sort(object i_Param);
+
         protected override void SetCommands()
         {
             RefreshingCommand = new Command(refreshList);
             FilterSelectedCommand = new Command(filterSelected);
+            SortCommand = new Command(sort);
         }
 
         protected virtual void setFilterIndices()
         {
             SelectedCategoryFilterIndex = 0;
-            SelectedTimeFilterIndex = 0;
+            TimeSortFlag = false;
         }
 
-        protected void filterByTIme(Func<T, DateTime> lambda)
+        protected void sortByTime(Func<T, DateTime> lambda)
         {
-            if (TimeFilterList[SelectedTimeFilterIndex].Equals(k_Newest))
+            if (TimeSortFlag == false)
             {
                 FilteredCollection = new ObservableCollection<T>(FilteredCollection.OrderByDescending(lambda));
             }
-            else
+            else 
             {
                 FilteredCollection = new ObservableCollection<T>(FilteredCollection.OrderBy(lambda));
             }

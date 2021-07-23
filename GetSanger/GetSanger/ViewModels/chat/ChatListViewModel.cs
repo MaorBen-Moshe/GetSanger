@@ -109,6 +109,11 @@ namespace GetSanger.ViewModels.chat
             throw new NotImplementedException();
         }
 
+        protected override void sort(object i_Param)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

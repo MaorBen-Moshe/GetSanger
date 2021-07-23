@@ -76,7 +76,7 @@ namespace GetSanger.ViewModels
             {
                 eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
                 filterByCategory(job => job.Category.Equals(category));
-                filterByTIme(job => job.Date);
+                sortByTime(job => job.Date);
             }
             catch(Exception e)
             {
@@ -86,6 +86,12 @@ namespace GetSanger.ViewModels
             {
                 SearchCollection = new ObservableCollection<JobOffer>(FilteredCollection);
             }
+        }
+
+        protected override void sort(object i_Param)
+        {
+            TimeSortFlag = !TimeSortFlag;
+            sortByTime(job => job.Date);
         }
 
         private async void confirmJobOffer(object i_Param)
@@ -233,6 +239,7 @@ namespace GetSanger.ViewModels
 
             return toRetList;
         }
+
         #endregion
     }
 }

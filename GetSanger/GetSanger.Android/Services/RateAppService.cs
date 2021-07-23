@@ -19,7 +19,8 @@ namespace GetSanger.Droid.Services
                 {
                     activity.PackageManager.GetPackageInfo("com.android.vending", PackageInfoFlags.Activities);
                     Intent intent = new Intent(Intent.ActionView, Android.Net.Uri.Parse(url));
-
+                    
+                    //this line is a problem
                     activity.StartActivity(intent);
                 }
                 catch (PackageManager.NameNotFoundException ex)

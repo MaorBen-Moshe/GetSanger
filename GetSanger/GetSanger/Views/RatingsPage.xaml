@@ -43,9 +43,7 @@
                                         IsVisible="{Binding IsVisibleViewList}"
                                         VerticalOptions="Start"
                                         Margin="10"
-                                        TimeSelectedIndex="{Binding SelectedTimeFilterIndex, Mode=TwoWay}"
-                                        TimeFilterSource="{Binding TimeFilterList}" 
-                                        TimeFilterCommand="{Binding FilterSelectedCommand}" />
+                                        TimeSortCommand="{Binding SortCommand}" />
                
                 <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding FilteredCollection}"

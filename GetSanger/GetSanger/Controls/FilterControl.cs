@@ -11,49 +11,22 @@ namespace GetSanger.Controls
         private const string k_Filter = "Filter by:";
         private const string k_PickerEventName = "SelectedIndexChanged";
         private StackLayout m_Layout;
-        private Label m_Label;
-        private Picker m_TimePicker;
+        private Label m_FilterLabel;
+        private ImageButton m_SortButton;
         private Picker m_CategoryPicker;
         private Picker m_StatusPicker;
         #endregion
 
         #region TimeBindings
-        public List<string> TimeFilterSource
+
+        public ICommand TimeSortCommand
         {
-            get => (List<string>)GetValue(TimeFilterSourceProperty);
-            set => SetValue(TimeFilterSourceProperty, value);
+            get => (ICommand)GetValue(TimeSortCommandProperty);
+            set => SetValue(TimeSortCommandProperty, value);
         }
 
-        public static readonly BindableProperty TimeFilterSourceProperty = BindableProperty.Create(
-                                                         propertyName: "TimeFilterSource",
-                                                         returnType: typeof(List<string>),
-                                                         declaringType: typeof(FilterControl),
-                                                         defaultValue: null,
-                                                         defaultBindingMode: BindingMode.TwoWay,
-                                                         validateValue: null);
-
-        public int TimeSelectedIndex
-        {
-            get => (int)GetValue(TimeSelectedIndexProperty);
-            set => SetValue(TimeSelectedIndexProperty, value);
-        }
-
-        public static readonly BindableProperty TimeSelectedIndexProperty = BindableProperty.Create(
-                                                         propertyName: "TimeSelectedIndex",
-                                                         returnType: typeof(int),
-                                                         declaringType: typeof(FilterControl),
-                                                         defaultValue: -1,
-                                                         defaultBindingMode: BindingMode.TwoWay,
-                                                         validateValue: null);
-
-        public ICommand TimeFilterCommand
-        {
-            get => (ICommand)GetValue(TimeFilterCommandProperty);
-            set => SetValue(TimeFilterCommandProperty, value);
-        }
-
-        public static readonly BindableProperty TimeFilterCommandProperty = BindableProperty.Create(
-                                                         propertyName: "TimeFilterCommand",
+        public static readonly BindableProperty TimeSortCommandProperty = BindableProperty.Create(
+                                                         propertyName: "TimeSortCommand",
                                                          returnType: typeof(ICommand),
                                                          declaringType: typeof(FilterControl),
                                                          defaultValue: null,
@@ -62,7 +35,15 @@ namespace GetSanger.Controls
                                                          propertyChanged: (bindable, oldValue, newValue) => {
                                                              if (bindable is FilterControl filter)
                                                              {
-                                                                 filter.setCommand(filter.m_TimePicker, filter.TimeFilterCommand);
+                                                                 filter.m_SortButton.Command = new Command(() =>
+                                                                 {
+                                                                     double angle = filter.m_SortButton.Rotation + 180;
+                                                                     filter.m_SortButton.RotateTo(angle, 500, Easing.Linear);
+                                                                     if (filter.TimeSortCommand.CanExecute(null))
+                                                                     {
+                                                                         filter.TimeSortCommand.Execute(null);
+                                                                     }
+                                                                 });
                                                              }
                                                          });
 
@@ -232,17 +213,25 @@ namespace GetSanger.Controls
                 Spacing = 5
             };
 
-            m_Label = new Label
+            m_FilterLabel = new Label
             {
                 Text = k_Filter,
                 VerticalOptions = LayoutOptions.CenterAndExpand
             };
 
-            m_TimePicker = createPicker("Time");
+            m_SortButton = new ImageButton
+            {
+                Margin = new Thickness(10, 5),
+                BackgroundColor = Color.Transparent,
+                Source = ImageSource.FromFile("ascendingSort.png"),
+                Command = TimeSortCommand,
+                WidthRequest = 32,
+                HeightRequest = 32
+            };
+
             m_CategoryPicker = createPicker("Category");
             m_StatusPicker = createPicker("Status");
 
-            setPickerBindings(m_TimePicker, nameof(TimeFilterSource), nameof(TimeSelectedIndex), TimeFilterCommand);
             setPickerBindings(m_CategoryPicker, nameof(CategoryFilterSource), nameof(CategorySelectedIndex), CategoryFilterCommand);
             setPickerBindings(m_StatusPicker, nameof(StatusFilterSource), nameof(StatusSelectedIndex), StatusFilterCommand);
 
@@ -280,8 +269,12 @@ namespace GetSanger.Controls
         private void setLayout()
         {
             m_Layout.Children.Clear();
-            m_Layout.Children.Add(m_Label);
-            m_Layout.Children.Add(m_TimePicker);
+            m_Layout.Children.Add(m_SortButton);
+
+            if(IsCategoryFilterEnabled || IsStatusFilterEnabled)
+            {
+                m_Layout.Children.Add(m_FilterLabel);
+            }
 
             if (IsCategoryFilterEnabled)
             {
