@@ -14,6 +14,7 @@ namespace GetSanger.Services
     {
         private readonly System.Timers.Timer m_Timer;
         private IPageService m_PageService;
+        private static bool s_LocationSharedBySanger;
 
         public LocationService()
         {
@@ -87,37 +88,48 @@ namespace GetSanger.Services
             }
         }
 
-        public async void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased = null , int i_Interval = 15000)
+        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elapsed = null , int i_Interval = 15000)
         {
-            if(i_Elpased == null && (await TryShareSangerLoaction(false)) == true)
+            bool sangerShare = i_Elapsed == null;
+            if (s_LocationSharedBySanger && sangerShare) 
             {
-                // sanger already share his location in a seperate thread.
                 return;
             }
 
             Device.BeginInvokeOnMainThread(() => {
                 m_Timer.Enabled = true;
                 m_Timer.Interval = i_Interval; //15000 by default
-                m_Timer.Elapsed += i_Elpased ?? handleSangerLocation;
+                m_Timer.Elapsed += i_Elapsed ?? handleSangerLocation;
                 m_Timer.Start();
             });
+
+            if (sangerShare)
+            {
+                s_LocationSharedBySanger = true;
+            }
         }
 
-        public async void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elpased = null)
+        public void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elapsed = null)
         {
-            if(i_Elpased == null && (await TryShareSangerLoaction(false)) == true)
+            bool sangerShare = i_Elapsed == null;
+            if (!s_LocationSharedBySanger && sangerShare)
             {
                 return;
             }
 
             Device.BeginInvokeOnMainThread(() => {
-                m_Timer.Elapsed -= i_Elpased ?? handleSangerLocation;
+                m_Timer.Elapsed -= i_Elapsed ?? handleSangerLocation;
                 m_Timer.Enabled = false;
                 m_Timer.Stop();
             });
+
+            if (sangerShare)
+            {
+                s_LocationSharedBySanger = false;
+            }
         }
 
-        public async Task<bool> TryShareSangerLoaction(bool startTrip = true)
+        public async Task<bool> TryShareSangerLoaction()
         {
             bool shared = false;
             Dictionary<string, bool> activatedMap = AppManager.Instance.ConnectedUser.ActivatedMap;
@@ -128,11 +140,6 @@ namespace GetSanger.Services
                     && item.Value.Equals(true)
                     && activity.Status.Equals(eActivityStatus.Active))
                 {
-                    if (startTrip)
-                    {
-                        StartTripThread();
-                    }
-                    
                     shared = true;
                     break;
                 }
@@ -144,7 +151,7 @@ namespace GetSanger.Services
         // we should start and end sanger location sharing every time he leaves the app or move to user mode
         private async void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
         {
-            bool sharedEnabled = await TryShareSangerLoaction(false);
+            bool sharedEnabled = await TryShareSangerLoaction();
             if (sharedEnabled == false)
             {
                 LeaveTripThread();

@@ -166,6 +166,7 @@ namespace GetSanger.Services
             message.MessageSent = true;
             string senderId = message.FromId;
             User sender = await FireStoreHelper.GetUser(senderId);
+            string json = ObjectJsonSerializer.SerializeForPage(sender);
 
             Page currentPage = Shell.Current.CurrentPage;
             if (currentPage is {BindingContext: ChatPageViewModel vm})
@@ -179,24 +180,24 @@ namespace GetSanger.Services
                     string route;
                     if (vm.PrevPage.Equals(ShellRoutes.ChatsList))
                     {
-                        route = $"../{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={vm.PrevPage}";
+                        route = $"../{ShellRoutes.ChatView}?user={json}&prev={vm.PrevPage}";
                     }
                     else
                     {
-                        route = $"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={ShellRoutes.ChatsList}";
+                        route = $"//chatList/{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.ChatsList}";
                     }
 
                     movePageHelper(route, i_Title, txt);
                 }
             }
-            else if (currentPage is {BindingContext: ChatListViewModel clVm})
+            else if (currentPage is {BindingContext: ChatListViewModel _ })
             {
-                string route = $"{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={ShellRoutes.ChatsList}";
+                string route = $"{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.ChatsList}";
                 movePageHelper(route, i_Title, txt);
             }
             else
             {
-                string route = $"//chatList/{ShellRoutes.ChatView}?user={ObjectJsonSerializer.SerializeForPage(sender)}&prev={ShellRoutes.ChatsList}";
+                string route = $"//chatList/{ShellRoutes.ChatView}?user={json}&prev={ShellRoutes.ChatsList}";
                 movePageHelper(route, i_Title, txt);
             }
         }
@@ -274,8 +275,7 @@ namespace GetSanger.Services
                 vm.Job = job;
                 vm.Appearing();
             }
-            else if (currentPage is {BindingContext: JobOffersViewModel jobVm} &&
-                     AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
+            else if (currentPage is {BindingContext: JobOffersViewModel jobVm} && AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger))
             {
                 if (i_Title != null)
                 {
@@ -289,7 +289,7 @@ namespace GetSanger.Services
                 Application.Current.MainPage = AppManager.Instance.GetCurrentShell(eAppMode.Sanger);
                 string jobJson = ObjectJsonSerializer.SerializeForPage(job);
                 string route = $"//jobOffers/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}";
-                string body = i_Body + "\nDo you want to navigate the the job offer page?";
+                string body = i_Body + "\nDo you want to navigate to the job offer page?";
                 movePageHelper(route, i_Title, body);
             }
         }
