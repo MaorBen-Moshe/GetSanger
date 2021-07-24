@@ -245,9 +245,6 @@
     <ImageAsset Include="Assets.xcassets\locationIcon.jpg.imageset\locationIcon.jpg">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\locationIcon.jpg.imageset\locationIcon1.jpg">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\phone.png.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
