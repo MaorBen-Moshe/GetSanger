@@ -23,11 +23,10 @@
                 <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat ='Hello, {0}'}"
                        FontSize="Title" 
                        FontAttributes="Italic"
-                      
+                       
                        />
             </StackLayout>
             <Frame Padding="5"
-                   BorderColor="Black"
                    AbsoluteLayout.LayoutBounds="0.5,0.30, 0.57, 0.1" 
                    AbsoluteLayout.LayoutFlags="All">
                 <StackLayout Orientation="Horizontal">
@@ -66,7 +65,8 @@
                     Margin="15, 0, 15, 15"
                     AbsoluteLayout.LayoutBounds="0.5, 0.99, 0.99, 0.08" 
                     AbsoluteLayout.LayoutFlags="All"
-                    Command="{Binding LogoutCommand}"/>   
+                    Command="{Binding LogoutCommand}"
+                    />   
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
