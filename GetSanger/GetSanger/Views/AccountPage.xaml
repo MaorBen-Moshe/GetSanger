@@ -64,7 +64,7 @@
                     FontSize="Large"
                     CornerRadius="20" 
                     Margin="15, 0, 15, 15"
-                    AbsoluteLayout.LayoutBounds="0.5, 0.99, 0.99, 0.06" 
+                    AbsoluteLayout.LayoutBounds="0.5, 0.99, 0.99, 0.08" 
                     AbsoluteLayout.LayoutFlags="All"
                     Command="{Binding LogoutCommand}"/>   
         </AbsoluteLayout>
