@@ -52,7 +52,11 @@ namespace GetSanger.Services
                         AppManager.Instance.CurrentMode = (eAppMode) mode;
                         Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
                         await PushServices.HandleMessageReceived(null, null, PushServices.BackgroundPushData);
-                        await m_Trip.TryShareSangerLoaction();
+                        bool shared = await m_Trip.TryShareSangerLoaction();
+                        if (shared)
+                        {
+                            m_Trip.StartTripThread();
+                        }
                     }
                 }
                 else
@@ -100,7 +104,11 @@ namespace GetSanger.Services
                         if (i_Mode != null) // we are here from mode page or from auto login
                         {
                             setMode((eAppMode) i_Mode);
-                            await m_Trip.TryShareSangerLoaction();
+                            bool shared = await m_Trip.TryShareSangerLoaction();
+                            if (shared)
+                            {
+                                m_Trip.StartTripThread();
+                            }
                         }
                         else // we are here from login page
                         {
@@ -111,7 +119,11 @@ namespace GetSanger.Services
                             else
                             {
                                 setMode();
-                                await m_Trip.TryShareSangerLoaction();
+                                bool shared = await m_Trip.TryShareSangerLoaction();
+                                if (shared)
+                                {
+                                    m_Trip.StartTripThread();
+                                }
                             }
                         }
                     }
