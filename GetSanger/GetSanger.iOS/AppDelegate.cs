@@ -1,9 +1,7 @@
 using Foundation;
 using UIKit;
-using Firebase.Core;
-using UserNotifications;
 using Firebase.CloudMessaging;
-using System;
+using MessagingDelegate = GetSanger.iOS.Push.MessagingDelegate;
 
 namespace GetSanger.iOS
 {
@@ -44,10 +42,10 @@ namespace GetSanger.iOS
             Firebase.Crashlytics.Crashlytics.SharedInstance.Init();
             Firebase.Auth.Auth.DefaultInstance.Init();
             Messaging.SharedInstance.Init();
-            Messaging.SharedInstance.Delegate = this as Firebase.CloudMessaging.IMessagingDelegate;
             LoadApplication(new App());
 
-            RegisterForRemoteNotifications();
+            MessagingDelegate messagingDelegate = new MessagingDelegate();
+            messagingDelegate.RegisterForRemoteNotifications();
 
             //TEMPORARY
             Messaging.SharedInstance.Subscribe("Topic");
@@ -58,117 +56,118 @@ namespace GetSanger.iOS
             return base.FinishedLaunching(app, options); ;
         }
 
-        internal void RegisterForRemoteNotifications()
-        {
-            // Register your app for remote notifications.
-            if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
-            {
+        //internal void RegisterForRemoteNotifications()
+        //{
+        //    // Register your app for remote notifications.
+        //    if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+        //    {
+        //        // For iOS 10 display notification (sent via APNS)
+        //        UNUserNotificationCenter.Current.Delegate = this;
 
-                // For iOS 10 display notification (sent via APNS)
-                UNUserNotificationCenter.Current.Delegate = this as UserNotifications.IUNUserNotificationCenterDelegate;
+        //        var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
+        //        UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => { Console.WriteLine(granted); });
+        //    }
+        //    else
+        //    {
+        //        // iOS 9 or before
+        //        var allNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound;
+        //        var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
+        //        UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+        //    }
 
-                var authOptions = UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound;
-                UNUserNotificationCenter.Current.RequestAuthorization(authOptions, (granted, error) => {
-                    Console.WriteLine("in RegisterForRemoteNotifications, {0}", granted);
-                });
-            }
-            else
-            {
-                // iOS 9 or before
-                var allNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound;
-                var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
-                UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
-            }
+        //    UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
-            UIApplication.SharedApplication.RegisterForRemoteNotifications();
-        }
+        //    Messaging.SharedInstance.Delegate = this;
 
-        [Export("messaging:didReceiveRegistrationToken:")]
-        public void DidReceiveRegistrationToken(Messaging messaging, string newToken)
-        {
-            string oldToken = Services.PushService.FCMToken;
-            Services.PushService.FCMToken = newToken;
-            SendRegistrationToServer(newToken, oldToken); 
+        //    InstanceId.SharedInstance.GetInstanceId(InstanceIdResultHandler);
+        //}
 
-            var token = Messaging.SharedInstance.FcmToken ?? "";
-            Console.WriteLine($"Current FCM token: {token}");
-        }
+        //[Export("messaging:didReceiveRegistrationToken:")]
+        //public void DidReceiveRegistrationToken(Messaging messaging, string newToken)
+        //{
+        //    string oldToken = Services.PushService.FCMToken;
+        //    Services.PushService.FCMToken = newToken;
+        //    SendRegistrationToServer(newToken, oldToken); 
 
-        // For when Method Swizzling is disabled
-        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
-        {
-            Messaging.SharedInstance.ApnsToken = deviceToken;
-        }
+        //    var token = Messaging.SharedInstance.FcmToken ?? "";
+        //    Console.WriteLine($"Current FCM token: {token}");
+        //}
 
-        internal void SendRegistrationToServer(string newToken, string oldToken)
-        {
-            // Send token to server if needed
-            // Server should resubscribe the user(token) to the previous topics he was subscribed to
-        }
+        //// For when Method Swizzling is disabled
+        //public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        //{
+        //    Messaging.SharedInstance.ApnsToken = deviceToken;
+        //}
 
-        public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
-        {
-            // If you are receiving a notification message while your app is in the background,
-            // this callback will not be fired till the user taps on the notification launching the application.
-            // TODO: Handle data of notification
+        //internal void SendRegistrationToServer(string newToken, string oldToken)
+        //{
+        //    // Send token to server if needed
+        //    // Server should resubscribe the user(token) to the previous topics he was subscribed to
+        //}
 
-            // With swizzling disabled you must let Messaging know about the message, for Analytics
-            //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
+        //public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
+        //{
+        //    // If you are receiving a notification message while your app is in the background,
+        //    // this callback will not be fired till the user taps on the notification launching the application.
+        //    // TODO: Handle data of notification
 
-            // Print full message.
-            Console.WriteLine(userInfo);
-        }
+        //    // With swizzling disabled you must let Messaging know about the message, for Analytics
+        //    //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
 
-        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
-        {
-            // If you are receiving a notification message while your app is in the background,
-            // this callback will not be fired till the user taps on the notification launching the application.
-            // TODO: Handle data of notification
+        //    // Print full message.
+        //    Console.WriteLine(userInfo);
+        //}
 
-            // With swizzling disabled you must let Messaging know about the message, for Analytics
-            //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
+        //public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        //{
+        //    // If you are receiving a notification message while your app is in the background,
+        //    // this callback will not be fired till the user taps on the notification launching the application.
+        //    // TODO: Handle data of notification
 
-            // Print full message.
-            Console.WriteLine(userInfo);
+        //    // With swizzling disabled you must let Messaging know about the message, for Analytics
+        //    //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
 
-            Messaging.SharedInstance.AppDidReceiveMessage(userInfo);
-            completionHandler(UIBackgroundFetchResult.NewData);
-        }
+        //    // Print full message.
+        //    Console.WriteLine(userInfo);
 
-        [Foundation.Export("didReceiveMessage:conversation:")]
-        public virtual void DidReceiveMessage(Messages.MSMessage message, Messages.MSConversation conversation)
-        {// Handles messages while in the foreground
+        //    Messaging.SharedInstance.AppDidReceiveMessage(userInfo);
+        //    completionHandler(UIBackgroundFetchResult.NewData);
+        //}
+
+        //[Foundation.Export("didReceiveMessage:conversation:")]
+        //public virtual void DidReceiveMessage(Messages.MSMessage message, Messages.MSConversation conversation)
+        //{// Handles messages while in the foreground
             
-        }
+        //}
 
-        // Receive displayed notifications for iOS 10 devices.
-        // Handle incoming notification messages while app is in the foreground.
-        [Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
-        public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
-        {
-            var userInfo = notification.Request.Content.UserInfo;
+        //// Receive displayed notifications for iOS 10 devices.
+        //// Handle incoming notification messages while app is in the foreground.
+        //[Export("userNotificationCenter:willPresentNotification:withCompletionHandler:")]
+        //public void WillPresentNotification(UNUserNotificationCenter center, UNNotification notification, Action<UNNotificationPresentationOptions> completionHandler)
+        //{
+        //    var userInfo = notification.Request.Content.UserInfo;
 
-            // With swizzling disabled you must let Messaging know about the message, for Analytics
-            //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
+        //    // With swizzling disabled you must let Messaging know about the message, for Analytics
+        //    //Messaging.SharedInstance.AppDidReceiveMessage (userInfo);
 
-            // Print full message.
-            Console.WriteLine(userInfo);
+        //    // Print full message.
+        //    Console.WriteLine(userInfo);
 
-            // Change this to your preferred presentation option
-            completionHandler(UNNotificationPresentationOptions.None);
-        }
+        //    // Change this to your preferred presentation option
+        //    completionHandler(UNNotificationPresentationOptions.None);
+        //}
 
-        // Handle notification messages after display notification is tapped by the user.
-        [Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
-        public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
-        {
-            var userInfo = response.Notification.Request.Content.UserInfo;
+        //// Handle notification messages after display notification is tapped by the user.
+        //[Export("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")]
+        //public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
+        //{
+        //    var userInfo = response.Notification.Request.Content.UserInfo;
 
-            // Print full message.
-            Console.WriteLine(userInfo);
+        //    // Print full message.
+        //    Console.WriteLine(userInfo);
 
-            completionHandler();
-        }
+        //    completionHandler();
+        //}
 
 
 
