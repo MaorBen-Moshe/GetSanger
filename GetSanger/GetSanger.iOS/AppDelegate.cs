@@ -3,6 +3,7 @@ using Foundation;
 using UIKit;
 using Firebase.CloudMessaging;
 using Firebase.InstanceID;
+using GetSanger.iOS.Services;
 using UserNotifications;
 
 namespace GetSanger.iOS
@@ -93,7 +94,10 @@ namespace GetSanger.iOS
         {
             // Handle Data messages for iOS 10 and above.
 
-            LogInformation(nameof(DidReceiveMessage), remoteMessage.AppData);
+            NSDictionary messageAppData = remoteMessage.AppData;
+            LogInformation(nameof(DidReceiveMessage), messageAppData);
+
+            PushService.PushHelper(messageAppData);
         }
 
         public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo,
@@ -112,6 +116,8 @@ namespace GetSanger.iOS
 
             // Print full message.
             LogInformation(nameof(DidReceiveRemoteNotification), userInfo);
+
+            PushService.PushHelper(userInfo);
 
             completionHandler(UIBackgroundFetchResult.NewData);
         }
