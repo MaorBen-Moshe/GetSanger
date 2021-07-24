@@ -32,22 +32,22 @@
 
 
     <ContentPage.Content>
-
-        <StackLayout>
-            <Frame HorizontalOptions="Center"
+        <ScrollView>
+            <StackLayout>
+                <Frame HorizontalOptions="Center"
                    Margin="0,5,0,0"
                    Padding="40, 30"
                    BorderColor="Black">
-                <StackLayout>
-                    <Label Text="{Binding ConnectedActivity.Status, StringFormat='Status: {0}'}"
+                    <StackLayout>
+                        <Label Text="{Binding ConnectedActivity.Status, StringFormat='Status: {0}'}"
                            HorizontalOptions="CenterAndExpand"
                            FontSize="Large"
                            Margin="0,5,0,0"/>
-                    <Label Text="{Binding ConnectedActivity.JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, StringFormat='Job Category: {0}'}"
+                        <Label Text="{Binding ConnectedActivity.JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, StringFormat='Job Category: {0}'}"
                            HorizontalOptions="CenterAndExpand"
                            Margin="0,0,0,5"
                            VerticalOptions="Center"/>
-                    <Label Text="{Binding ProfileName, StringFormat='{0}\'s Profile'}" 
+                        <Label Text="{Binding ProfileName, StringFormat='{0}\'s Profile'}" 
                            TextTransform="None"
                            TextColor="Blue"
                            TextDecorations="Underline"
@@ -55,116 +55,116 @@
                            VerticalOptions="Center"
                            BackgroundColor="Transparent"
                            Margin="0,5,0,0">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ProfileCommand}">
-                            </TapGestureRecognizer>
-                        </Label.GestureRecognizers>
-                    </Label>
-                </StackLayout>
-            </Frame>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ProfileCommand}">
+                                </TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </Frame>
 
-            <Frame HorizontalOptions="Center"
+                <Frame HorizontalOptions="Center"
                    Margin="10,5,10,10"
                    Padding="20"
                    BorderColor="Black">
-                <StackLayout Spacing="10">
-                    <Label Text="Job Details:" 
+                    <StackLayout Spacing="10">
+                        <Label Text="Job Details:" 
                            TextDecorations="Underline"
                            HorizontalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding FromLocation, StringFormat=' From:&#x0a; {0}'}"
+                        <Label Text="{Binding FromLocation, StringFormat=' From:&#x0a; {0}'}"
                            Margin="5"
                            IsVisible="{Binding IsFromLocationVisible}"
                            BackgroundColor="Transparent"/>
-                    <Label Text="{Binding DestinationLocation, StringFormat=' Destination:&#x0a; {0}'}"
+                        <Label Text="{Binding DestinationLocation, StringFormat=' Destination:&#x0a; {0}'}"
                            Margin="5"
                            BackgroundColor="Transparent"/>
-                    <Frame HorizontalOptions="FillAndExpand"
+                        <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"
                            Padding="5"
                            BorderColor="Black">
-                        <StackLayout Orientation="Horizontal" 
+                            <StackLayout Orientation="Horizontal" 
                                  HorizontalOptions="FillAndExpand">
-                            <DatePicker Format="dd MMM yyyy" 
+                                <DatePicker Format="dd MMM yyyy" 
                                     Date="{Binding ConnectedActivity.JobDetails.Date}" 
                                     HorizontalOptions="FillAndExpand"
                                     Margin="10,0,0,0"
                                     IsEnabled="False"/>
-                            <TimePicker Time="{Binding ConnectedActivity.JobDetails.Time}"
+                                <TimePicker Time="{Binding ConnectedActivity.JobDetails.Time}"
                                     Margin="0,0,10,0"
                                     IsEnabled="False" />
-                        </StackLayout>
-                    </Frame>
+                            </StackLayout>
+                        </Frame>
 
-                    <Frame HorizontalOptions="FillAndExpand"
+                        <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"
                            Padding="5"
                            BorderColor="Black">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NotesCommand}"
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NotesCommand}"
                                                   CommandParameter="0">
 
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Job description"
+                                </TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Job description"
                                    HorizontalOptions="StartAndExpand"/>
-                            <Label Text=">" 
+                                <Label Text=">" 
                                    HorizontalOptions="EndAndExpand"/>
-                        </StackLayout>
-                    </Frame>
+                            </StackLayout>
+                        </Frame>
 
-                    <Frame HorizontalOptions="FillAndExpand"
+                        <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"
                            Padding="5"
                            BorderColor="Black"
                            IsVisible="{Binding IsSangerNotesVisible}"
                            IsEnabled="{Binding IsSangerNotesVisible}">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NotesCommand}"
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NotesCommand}"
                                                   CommandParameter="1">
 
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Sanger notes"
+                                </TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Sanger notes"
                                    HorizontalOptions="StartAndExpand"/>
-                            <Label Text=">" 
+                                <Label Text=">" 
                                    HorizontalOptions="EndAndExpand"/>
-                        </StackLayout>
-                    </Frame>
-                </StackLayout>
-            </Frame>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </Frame>
 
-            <StackLayout
+                <StackLayout
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="StartAndExpand"
                          Margin="10"
                          Spacing="5">
-                <Frame Padding="10"
+                    <Frame Padding="10"
                        CornerRadius="5"
                        BorderColor="Black"
                        Margin="0,0,0,10"
                        IsVisible="{Binding IsActivatedLocationButton}"
                        IsEnabled="{Binding IsActivatedLocationButton}">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding LocationCommand}"></TapGestureRecognizer>
-                    </Frame.GestureRecognizers>
-                    <StackLayout VerticalOptions="End"
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LocationCommand}"></TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <StackLayout VerticalOptions="End"
                                  Orientation="Horizontal"
                                  Margin="0, 0, 0, 10"
                                  HorizontalOptions="CenterAndExpand">
-                        <controls:RoundedImage BackgroundColor="Transparent"
+                            <controls:RoundedImage BackgroundColor="Transparent"
                                                Radius="80"
                                                ImageSource="{Binding MapImage}"
                                                Command="{Binding LocationCommand}"/>
-                        <Label Text="{Binding ActivatedButtonText}"
+                            <Label Text="{Binding ActivatedButtonText}"
                            BackgroundColor="Transparent" 
                            LineBreakMode="NoWrap"
                            VerticalTextAlignment="Center"/>
-                    </StackLayout>
-                </Frame>
+                        </StackLayout>
+                    </Frame>
 
-                <Button Text="End Activity"
+                    <Button Text="End Activity"
                         BackgroundColor="Transparent"
                         IsVisible="{Binding IsActivatedEndButton}"
                         IsEnabled="{Binding IsActivatedEndButton}"
@@ -173,10 +173,10 @@
                         Padding="20, 10"
                         CornerRadius="20"
                         Command="{Binding EndActivityCommand}"/>
-            </StackLayout>
+                </StackLayout>
 
-            <StackLayout IsVisible="{Binding IsConfirmationStackVisible}">
-                <Button Text="Confirm"
+                <StackLayout IsVisible="{Binding IsConfirmationStackVisible}">
+                    <Button Text="Confirm"
                         FontSize="12"
                         FontAttributes="Bold"
                         BackgroundColor="Transparent"
@@ -184,15 +184,16 @@
                         IsVisible="{Binding IsConfirmationButtonVisible}"
                         BorderColor="Transparent"
                         HorizontalOptions="CenterAndExpand"/>
-                <Button Text="Delete"
+                    <Button Text="Delete"
                         TextColor="Red"
                         BorderColor="Transparent"
                         FontSize="12"
                         BackgroundColor="Transparent"
                         Command="{Binding RejectActivityCommand}"
                         HorizontalOptions="CenterAndExpand"/>
+                </StackLayout>
+            
             </StackLayout>
-                
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
