@@ -8,6 +8,6 @@ namespace GetSanger.Interfaces
 
         void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elpased = null);
 
-        Task<bool> TryShareSangerLoaction(bool startTrip = true);
+        Task<bool> TryShareSangerLoaction();
     }
 }
