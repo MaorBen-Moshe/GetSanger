@@ -82,7 +82,6 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Persistence\SQLiteDb.cs" />
-    <Compile Include="Push\MessagingDelegate.cs" />
     <Compile Include="Rendrers\ChatEntryRendrer.cs" />
     <Compile Include="Rendrers\CustomEditorRendrer.cs" />
     <Compile Include="Rendrers\ExtendedListViewRenderer.cs" />
@@ -243,9 +242,6 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\locationIcon.jpg.imageset\locationIcon.jpg">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\locationIcon.jpg.imageset\locationIcon1.jpg">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\phone.png.imageset\Contents.json">
