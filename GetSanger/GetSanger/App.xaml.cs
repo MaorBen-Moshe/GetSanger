@@ -36,9 +36,15 @@ namespace GetSanger
             base.OnSleep();
         }
 
-        protected override void OnResume()
+        protected async override void OnResume()
         {
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            ITrip trip = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+            bool shared = await trip.TryShareSangerLoaction();
+            if (shared)
+            {
+                trip.StartTripThread();
+            }
             base.OnResume();
         }
 

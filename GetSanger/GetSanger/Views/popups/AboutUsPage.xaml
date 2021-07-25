@@ -23,6 +23,7 @@
                IsClippedToBounds="True"
                BackgroundColor="White"
                Padding="10"
+               Margin="10"
                BorderColor="Black">
             <ScrollView>
      
@@ -31,8 +32,7 @@
                 <Label Text="X" 
                        BackgroundColor="Transparent"
                        HorizontalOptions="EndAndExpand" 
-                       VerticalOptions="StartAndExpand"
-                       >
+                       VerticalOptions="StartAndExpand">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                     </Label.GestureRecognizers>
