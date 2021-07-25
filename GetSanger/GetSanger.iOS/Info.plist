@@ -65,5 +65,7 @@
 			<string>Editor</string>
 		</dict>
 	</array>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<true/>
 </dict>
 </plist>
