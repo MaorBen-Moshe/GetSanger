@@ -13,8 +13,14 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
-
-            MainPage = new SplashPage();
+            if(Properties.ContainsKey(Constants.Constants.StartProperty) == false)
+            {
+                MainPage = new OnBoardingView();
+            }
+            else
+            {
+                MainPage = new SplashPage();
+            }
         }
 
         protected override void OnStart()

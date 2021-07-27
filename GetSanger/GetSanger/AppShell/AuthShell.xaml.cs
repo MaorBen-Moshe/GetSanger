@@ -6,8 +6,6 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using GetSanger.Constants;
 using GetSanger.Views.Registration;
-using GetSanger.Views;
-using System.Linq;
 
 namespace GetSanger.AppShell
 {
@@ -31,7 +29,6 @@ namespace GetSanger.AppShell
             r_Routes.Add(ShellRoutes.SignupEmail, typeof(SignupEmailPage));
             r_Routes.Add(ShellRoutes.SignupPersonalDetails, typeof(SignupPersonalDetailPage));
             r_Routes.Add(ShellRoutes.SignupCategories, typeof(SignupCategoriesPage));
-            r_Routes.Add(ShellRoutes.LoadingPage, typeof(LoadingPage));
 
             foreach (var route in r_Routes)
             {

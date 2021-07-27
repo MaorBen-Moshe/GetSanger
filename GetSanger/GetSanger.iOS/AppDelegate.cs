@@ -5,6 +5,7 @@ using Firebase.CloudMessaging;
 using Firebase.InstanceID;
 using GetSanger.iOS.Services;
 using UserNotifications;
+using CarouselView.FormsPlugin.iOS;
 
 namespace GetSanger.iOS
 {
@@ -42,6 +43,7 @@ namespace GetSanger.iOS
         {
             Rg.Plugins.Popup.Popup.Init();
             global::Xamarin.Forms.Forms.Init();
+            CarouselViewRenderer.Init();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
             Firebase.Core.App.Configure();

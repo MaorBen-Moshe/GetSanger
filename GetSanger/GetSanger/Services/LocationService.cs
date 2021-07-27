@@ -132,16 +132,19 @@ namespace GetSanger.Services
         public async Task<bool> TryShareSangerLoaction()
         {
             bool shared = false;
-            Dictionary<string, bool> activatedMap = AppManager.Instance.ConnectedUser.ActivatedMap;
-            foreach (var item in activatedMap)
+            Dictionary<string, bool> activatedMap = AppManager.Instance.ConnectedUser?.ActivatedMap;
+            if(activatedMap != null)
             {
-                Activity activity = await FireStoreHelper.GetActivity(item.Key);
-                if (activity.SangerID.Equals(AuthHelper.GetLoggedInUserId())
-                    && item.Value.Equals(true)
-                    && activity.Status.Equals(eActivityStatus.Active))
+                foreach (var item in activatedMap)
                 {
-                    shared = true;
-                    break;
+                    Activity activity = await FireStoreHelper.GetActivity(item.Key);
+                    if (activity.SangerID.Equals(AuthHelper.GetLoggedInUserId())
+                        && item.Value.Equals(true)
+                        && activity.Status.Equals(eActivityStatus.Active))
+                    {
+                        shared = true;
+                        break;
+                    }
                 }
             }
 
