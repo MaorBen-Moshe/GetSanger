@@ -1,4 +1,4 @@
-﻿using GetSanger.Views;
+﻿using GetSanger.AppShell;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -55,13 +55,8 @@ namespace GetSanger.ViewModels
         protected override void SetCommands()
         {
             StartCommand = new Command(() =>
-            {
-                if(Application.Current.Properties.ContainsKey(Constants.Constants.StartProperty) == false)
-                {
-                    Application.Current.Properties.Add(Constants.Constants.StartProperty, "");
-                }
-                
-                Application.Current.MainPage = new SplashPage();
+            {                
+                Application.Current.MainPage = new AuthShell();
             });
         }
 
@@ -81,9 +76,10 @@ namespace GetSanger.ViewModels
                 },
                 new OnBoardingItem
                 {
-                    Text = "Decide what type of person you are:\n" +
-                    " Sanger\n" +
-                    " Client",
+                    Text = string.Format(@"Decide what type of person you are:
+Sanger
+Client
+Or you can be Both :)"),
                     IsLast = false
                 },
                 new OnBoardingItem

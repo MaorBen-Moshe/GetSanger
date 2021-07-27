@@ -13,7 +13,8 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
-            if(Properties.ContainsKey(Constants.Constants.StartProperty) == false)
+            VersionTracking.Track();
+            if(VersionTracking.IsFirstLaunchEver)
             {
                 MainPage = new OnBoardingView();
             }
