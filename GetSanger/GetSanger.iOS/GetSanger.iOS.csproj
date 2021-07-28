@@ -97,16 +97,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\account.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon.png.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountPage.png.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\activityIcon.png.imageset\activityIcon.png">
@@ -244,9 +235,6 @@
     <ImageAsset Include="Assets.xcassets\IconVehicles.png.imageset\IconVehicles.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\Images.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\locationIcon.jpg.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -332,6 +320,8 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon2x.png" />
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon3x.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
