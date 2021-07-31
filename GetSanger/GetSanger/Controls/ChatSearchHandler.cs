@@ -2,9 +2,7 @@
 using GetSanger.Models;
 using GetSanger.Models.chat;
 using GetSanger.Services;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 

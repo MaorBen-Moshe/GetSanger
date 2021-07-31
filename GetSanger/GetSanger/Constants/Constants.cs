@@ -1,8 +1,6 @@
 ﻿using SQLite;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace GetSanger.Constants
 {
@@ -26,6 +24,7 @@ namespace GetSanger.Constants
                                                             SQLiteOpenFlags.ReadWrite | 
                                                             SQLiteOpenFlags.Create | 
                                                             SQLiteOpenFlags.SharedCache;
+
         public static string ChatDBPath
         {
             get

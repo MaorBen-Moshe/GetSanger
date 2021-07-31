@@ -1,6 +1,5 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Models;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;

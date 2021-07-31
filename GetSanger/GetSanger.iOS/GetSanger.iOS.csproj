@@ -320,8 +320,12 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon2x.png" />
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon3x.png" />
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

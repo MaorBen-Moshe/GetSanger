@@ -1,10 +1,9 @@
 ﻿using FFImageLoading;
 using FFImageLoading.Cache;
 using FFImageLoading.Forms;
-using FFImageLoading.Work;
 using System;
-using System.Collections.Generic;
 using System.Windows.Input;
+using GetSanger.Extensions;
 using Xamarin.Forms;
 
 namespace GetSanger.Controls
@@ -35,7 +34,7 @@ namespace GetSanger.Controls
 
         public object CommandParameter
         {
-            get => (object)GetValue(CommandParameterProperty);
+            get => GetValue(CommandParameterProperty);
             set => SetValue(CommandParameterProperty, value);
         }
 
@@ -64,7 +63,7 @@ namespace GetSanger.Controls
                                                          validateValue: null,
                                                          propertyChanged: RadiusPropertyChanged);
 
-        public Xamarin.Forms.ImageSource ImageSource
+        public ImageSource ImageSource
         {
             get => (Xamarin.Forms.ImageSource)GetValue(ImageSourceProperty);
             set => SetValue(ImageSourceProperty, value);
@@ -129,10 +128,12 @@ namespace GetSanger.Controls
                     Aspect = Aspect.AspectFill,
                     FadeAnimationEnabled = true,
                     BitmapOptimizations = true,  
-                    LoadingPlaceholder = Xamarin.Forms.ImageSource.FromFile("rolling.gif")
+                    LoadingPlaceholder = ImageSource.FromFile("rolling.gif")
                 }
             };
 
+
+            m_CachedImage.Error += M_CachedImage_Error;
             setCache();
             setImage(this, ImageSource);
             m_CachedImage.GestureRecognizers.Add(new TapGestureRecognizer
@@ -144,9 +145,22 @@ namespace GetSanger.Controls
             Children.Add(m_Frame);
         }
 
+        private async void M_CachedImage_Error(object sender, CachedImageEvents.ErrorEventArgs e)
+        {
+            try
+            {
+                m_CachedImage.SetIsLoading(false);
+                setImage(this, ImageSource);
+            }
+            catch (Exception ex)
+            {
+                await ex.LogAndDisplayError(nameof(RoundedImage), "ERROR", ex.StackTrace + "separate" + e.Exception.StackTrace, true);
+            }
+        }
+
         private static void imagePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            if (!(bindable is RoundedImage thisInstance) || !(newValue is Xamarin.Forms.ImageSource newImageSource))
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is ImageSource newImageSource))
             {
                 return;
             }
@@ -154,7 +168,7 @@ namespace GetSanger.Controls
             setImage(thisInstance, newImageSource);
         }
 
-        private async static void setImage(RoundedImage bindable, Xamarin.Forms.ImageSource i_NewSource)
+        private async static void setImage(RoundedImage bindable, ImageSource i_NewSource)
         {
             if (!bindable.IsCacheEnable)
             {
@@ -196,7 +210,7 @@ namespace GetSanger.Controls
 
         private static void RadiusPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            if (!(bindable is RoundedImage thisInstance) || !(newValue is int val))
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is int))
             {
                 return;
             }
