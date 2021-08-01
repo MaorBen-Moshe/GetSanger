@@ -151,7 +151,7 @@ namespace GetSanger.Services
             {
                 User user = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
                 ILocation locationService = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
-                Location currentLocation = await locationService.GetCurrentLocation(false);
+                Location currentLocation = await locationService.GetCurrentLocation(false, true);
                 if(currentLocation != null && !user.UserLocation.Equals(currentLocation))
                 {
                     user.UserLocation = currentLocation;

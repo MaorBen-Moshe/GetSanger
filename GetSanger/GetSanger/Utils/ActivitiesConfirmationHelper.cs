@@ -28,9 +28,6 @@ namespace GetSanger.Utils
                         activity.Status = eActivityStatus.Active;
                         await FireStoreHelper.UpdateActivity(activity);
                         await sr_PushService.SendToDevice(activity.SangerID, activity, typeof(Activity).Name, "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)");
-                        User sanger = await FireStoreHelper.GetUser(activity.SangerID);
-                        sanger.ActivatedMap.Add(activity.ActivityId, false);
-                        await FireStoreHelper.UpdateUser(sanger);
                         //  need to check that the list(ActivitiesSource) is updated
                         foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
                         {
@@ -78,22 +75,6 @@ namespace GetSanger.Utils
                 {
                     if (answer)
                     {
-                        if (i_Activity.Status.Equals(eActivityStatus.Active))
-                        {
-                            User user;
-                            if (i_Activity.SangerID.Equals(AuthHelper.GetLoggedInUserId()))
-                            {
-                                user = AppManager.Instance.ConnectedUser;
-                            }
-                            else
-                            {
-                                user = await FireStoreHelper.GetUser(i_Activity.SangerID);
-                            }
-
-                            user.ActivatedMap.Remove(i_Activity.ActivityId);
-                            await FireStoreHelper.UpdateUser(user);
-                        }
-
                         i_Activity.Status = eActivityStatus.Rejected;
                         await FireStoreHelper.UpdateActivity(i_Activity);
                         await sr_PushService.SendToDevice(i_SendToUserId, i_Activity, typeof(Activity).Name, "Activity Rejected", i_Message);

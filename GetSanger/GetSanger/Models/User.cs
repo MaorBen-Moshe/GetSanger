@@ -1,7 +1,6 @@
 ﻿using GetSanger.Services;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xamarin.Essentials;
 
@@ -61,12 +60,10 @@ namespace GetSanger.Models
         public PersonalDetails PersonalDetails { get; set; }
         [JsonIgnore]
         public ObservableCollection<Rating> Ratings { get; set; }
-        public Dictionary<string, bool> ActivatedMap { get; set; } // map usage ==> when sanger activate map the key is the activity id and the value is true/false (true when activated)
 
         public User()
         {
             JobOffers = new ObservableCollection<JobOffer>();
-            ActivatedMap = new Dictionary<string, bool>();
             Activities = new ObservableCollection<Activity>();
             Ratings = new ObservableCollection<Rating>();
             PersonalDetails = new PersonalDetails();

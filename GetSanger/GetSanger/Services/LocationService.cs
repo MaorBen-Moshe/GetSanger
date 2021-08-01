@@ -21,11 +21,11 @@ namespace GetSanger.Services
 
         public CancellationTokenSource Cts { get; set; }
 
-        public async Task<Location> GetCurrentLocation(bool askFor = true)
+        public async Task<Location> GetCurrentLocation(bool askFor = true, bool requestAlways = false)
         {
             SetDependencies();
             Location location = null;
-            bool locationGranted = await IsLocationGrantedAndAskFor(askFor) == PermissionStatus.Granted;
+            bool locationGranted = await IsLocationGrantedAndAskFor(askFor, requestAlways) == PermissionStatus.Granted;
             if (locationGranted)
             {
                 GeolocationRequest geoReq = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
@@ -36,10 +36,10 @@ namespace GetSanger.Services
             return location;
         }
 
-        public async Task<PermissionStatus> IsLocationGrantedAndAskFor(bool askFor = true)
+        public async Task<PermissionStatus> IsLocationGrantedAndAskFor(bool askFor = true, bool requestAlways = false)
         {
             SetDependencies();
-            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            var status = await checkStatusHelper(requestAlways);
 
             if(status == PermissionStatus.Granted)
             {
@@ -56,7 +56,7 @@ namespace GetSanger.Services
                 return status;
             }
 
-            if (Permissions.ShouldShowRationale<Permissions.LocationWhenInUse>())
+            if (shoudlRationaleHelper(requestAlways))
             {
                 if (askFor)
                 {
@@ -64,9 +64,53 @@ namespace GetSanger.Services
                 }
             }
 
-            return await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            return await requestHelper(requestAlways);
         }
 
+        private bool shoudlRationaleHelper(bool requestAlways)
+        {
+            bool ret;
+            if (requestAlways)
+            {
+                ret = Permissions.ShouldShowRationale<Permissions.LocationAlways>();
+            }
+            else
+            {
+                ret = Permissions.ShouldShowRationale<Permissions.LocationWhenInUse>();
+            }
+
+            return ret;
+        }
+
+        private Task<PermissionStatus> checkStatusHelper(bool requestAlways)
+        {
+            Task<PermissionStatus> ret;
+            if (requestAlways)
+            {
+                ret = Permissions.CheckStatusAsync<Permissions.LocationAlways>();
+            }
+            else
+            {
+                ret = Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            }
+
+            return ret;
+        }
+
+        Task<PermissionStatus> requestHelper(bool requestAlways)
+        {
+            Task<PermissionStatus> ret = null;
+            if (requestAlways)
+            {
+                ret = Permissions.RequestAsync<Permissions.LocationAlways>();
+            }
+            else
+            {
+                ret = Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            }
+
+            return ret;
+        }
 
         public async Task<bool> IsLocationGranted()
         {
