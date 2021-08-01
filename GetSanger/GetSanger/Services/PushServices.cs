@@ -130,6 +130,9 @@ namespace GetSanger.Services
                     case "MessageInfo":
                         await handleMessageInfo(i_Title, i_Body, json);
                         break;
+                    case Constants.Constants.UpdateLocationType:
+                        handleeSangerLocation();
+                        break;
                     case "":
                         IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
                         if (!string.IsNullOrWhiteSpace(i_Title) && !string.IsNullOrWhiteSpace(i_Body))
@@ -138,6 +141,21 @@ namespace GetSanger.Services
                         }
 
                         break;
+                }
+            }
+        }
+
+        private static async void handleeSangerLocation()
+        {
+            if (AuthHelper.IsLoggedIn())
+            {
+                User user = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
+                ILocation locationService = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+                Location currentLocation = await locationService.GetCurrentLocation(false);
+                if(currentLocation != null && !user.UserLocation.Equals(currentLocation))
+                {
+                    user.UserLocation = currentLocation;
+                    await FireStoreHelper.UpdateUser(user);
                 }
             }
         }

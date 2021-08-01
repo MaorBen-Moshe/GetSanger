@@ -259,7 +259,6 @@ namespace GetSanger.ViewModels
                                                          ConnectedActivity.LocationActivatedBySanger = false;
                                                          await FireStoreHelper.UpdateActivity(ConnectedActivity);
                                                          await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                                                         sr_TripHelper.LeaveTripThread();
                                                          await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "Location sharing stopped", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} stopped sharing the location with you!");
                                                          ActivatedButtonText = "Enable Location";
                                                          sr_LoadingService.HideLoadingPage();
@@ -278,15 +277,23 @@ namespace GetSanger.ViewModels
                                                  {
                                                      if (agreed)
                                                      {
-                                                         sr_LoadingService.ShowLoadingPage();
-                                                         AppManager.Instance.ConnectedUser.ActivatedMap[ConnectedActivity.ActivityId] = true;
-                                                         ConnectedActivity.LocationActivatedBySanger = true;
-                                                         await FireStoreHelper.UpdateActivity(ConnectedActivity);
-                                                         await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                                                         await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
-                                                         sr_TripHelper.StartTripThread();
-                                                         ActivatedButtonText = "Disable Location";
-                                                         sr_LoadingService.HideLoadingPage();
+                                                         PermissionStatus status = await sr_LocationService.IsLocationGrantedAndAskFor();
+                                                         if (status == PermissionStatus.Granted)
+                                                         {
+                                                             sr_LoadingService.ShowLoadingPage();
+                                                             AppManager.Instance.ConnectedUser.ActivatedMap[ConnectedActivity.ActivityId] = true;
+                                                             ConnectedActivity.LocationActivatedBySanger = true;
+                                                             await FireStoreHelper.UpdateActivity(ConnectedActivity);
+                                                             await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                                                             await sr_PushService.SendToDevice<string>(ConnectedActivity.ClientID, null, null, "Location sharing allowed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} shared the location with you!");
+                                                             ActivatedButtonText = "Disable Location";
+                                                             sr_LoadingService.HideLoadingPage();
+                                                         }
+                                                         else
+                                                         {
+                                                             await sr_PageService.DisplayAlert("Note", "Please allow location to enable location services", "OK");
+                                                             return;
+                                                         }
                                                      }
                                                  });
             }

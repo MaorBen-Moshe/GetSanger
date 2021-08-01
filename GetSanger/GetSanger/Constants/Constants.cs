@@ -20,6 +20,8 @@ namespace GetSanger.Constants
 
         public static string ChatDatabaseName { get; } = "Chat.db3";
 
+        public const string UpdateLocationType = "UpdateLocation";
+
         public static SQLite.SQLiteOpenFlags ChatDbFlags { get; }  = 
                                                             SQLiteOpenFlags.ReadWrite | 
                                                             SQLiteOpenFlags.Create | 

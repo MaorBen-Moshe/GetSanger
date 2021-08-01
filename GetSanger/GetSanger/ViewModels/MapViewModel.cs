@@ -232,6 +232,8 @@ namespace GetSanger.ViewModels
         {
             try
             {
+                await sr_PushService.SendToDevice<string>(SangerTripId, null, Constants.Constants.UpdateLocationType);
+                await Task.Delay(500);
                 User sanger = await FireStoreHelper.GetUser(SangerTripId);
                 Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
                 m_SangerPin.Position = position;

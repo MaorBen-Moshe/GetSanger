@@ -8,7 +8,7 @@ namespace GetSanger.Interfaces
     {
         CancellationTokenSource Cts { get; set; }
 
-        Task<Location> GetCurrentLocation();
+        Task<Location> GetCurrentLocation(bool askFor = true);
 
         Task<PermissionStatus> IsLocationGrantedAndAskFor();
 
