@@ -71,9 +71,9 @@ namespace GetSanger.Controls
 
         public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(
                                                          propertyName: "ImageSource",
-                                                         returnType: typeof(Xamarin.Forms.ImageSource),
+                                                         returnType: typeof(ImageSource),
                                                          declaringType: typeof(RoundedImage),
-                                                         defaultValue: Xamarin.Forms.ImageSource.FromFile("profile.png"),
+                                                         defaultValue: ImageSource.FromFile("profile.png"),
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
                                                          propertyChanged: imagePropertyChanged);
@@ -127,13 +127,13 @@ namespace GetSanger.Controls
                     VerticalOptions = LayoutOptions.Center,
                     Aspect = Aspect.AspectFill,
                     FadeAnimationEnabled = true,
-                    BitmapOptimizations = true,  
-                    LoadingPlaceholder = ImageSource.FromFile("rolling.gif")
+                    BitmapOptimizations = true,
+                    LoadingPlaceholder = ImageSource.FromFile("rolling.gif"),
+                    ErrorPlaceholder = ImageSource.FromFile("profile.jpg")
                 }
             };
 
 
-            m_CachedImage.Error += M_CachedImage_Error;
             setCache();
             setImage(this, ImageSource);
             m_CachedImage.GestureRecognizers.Add(new TapGestureRecognizer
@@ -143,19 +143,6 @@ namespace GetSanger.Controls
             });
 
             Children.Add(m_Frame);
-        }
-
-        private async void M_CachedImage_Error(object sender, CachedImageEvents.ErrorEventArgs e)
-        {
-            try
-            {
-                m_CachedImage.SetIsLoading(false);
-                setImage(this, ImageSource);
-            }
-            catch (Exception ex)
-            {
-                await ex.LogAndDisplayError(nameof(RoundedImage), "ERROR", ex.StackTrace + "separate" + e.Exception.StackTrace, true);
-            }
         }
 
         private static void imagePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
