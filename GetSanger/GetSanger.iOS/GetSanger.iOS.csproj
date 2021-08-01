@@ -100,10 +100,16 @@
     <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\account.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon.png">
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon.png.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon.png.png">
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon2x1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon3x1.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountPage.png.png">

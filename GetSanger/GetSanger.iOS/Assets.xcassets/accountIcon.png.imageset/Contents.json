@@ -3,18 +3,20 @@
     {
       "appearances": [],
       "scale": "2x",
-      "idiom": "universal"
+      "idiom": "universal",
+      "filename": "AccountIcon2x1.png"
     },
     {
       "appearances": [],
       "scale": "3x",
-      "idiom": "universal"
+      "idiom": "universal",
+      "filename": "AccountIcon3x1.png"
     },
     {
       "appearances": [],
       "scale": "1x",
       "idiom": "universal",
-      "filename": "accountIcon.png"
+      "filename": "AccountIcon1x.png"
     }
   ],
   "properties": {},
