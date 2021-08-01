@@ -77,7 +77,9 @@ namespace GetSanger.Controls
         {
             bindableMap.Pins.Clear();
             foreach (var pin in newSource)
+            {
                 bindableMap.Pins.Add(pin);
+            }
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Xamarin.Forms;
 
 namespace GetSanger.Controls
@@ -199,7 +196,6 @@ namespace GetSanger.Controls
                 return "ratingStarOff.png";
             }
         }
-
 
         #endregion
     }

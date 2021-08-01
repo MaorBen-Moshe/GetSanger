@@ -100,9 +100,8 @@ namespace GetSanger.ViewModels
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
             IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
             InfinityChecked = AppManager.Instance.ConnectedUser.DistanceLimit == -1;
-            m_DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
+            DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
             m_OldDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
-            setDistanceString();
         }
 
         public override void Disappearing()
@@ -216,26 +215,21 @@ namespace GetSanger.ViewModels
 
         private void distanceChanged(object i_Param)
         {
-            // make double to int
-            double stepValue = 1.0;
-            double newStep = Math.Round(DistanceLimit / stepValue);
-            DistanceLimit = newStep * stepValue;
+            if (!InfinityChecked)
+            {
+                // make double to int
+                double stepValue = 1.0;
+                double newStep = Math.Round(DistanceLimit / stepValue);
+                DistanceLimit = newStep * stepValue;
 
-            AppManager.Instance.ConnectedUser.DistanceLimit = DistanceLimit;
-            setDistanceString();
+                AppManager.Instance.ConnectedUser.DistanceLimit = DistanceLimit;
+                setDistanceString();
+            }
         }
 
         private void setDistanceString()
         {
-            DistanceString = "Job distance: ";
-            if (InfinityChecked)
-            {
-                DistanceString += "unlimited";
-            }
-            else
-            {
-                DistanceString += DistanceLimit.ToString();
-            }
+            DistanceString = string.Format("Job Distance: {0}", InfinityChecked ? "unlimited" : DistanceLimit.ToString());
         }
         #endregion
     }

@@ -286,16 +286,21 @@ namespace GetSanger.Controls
             if(IsCategoryFilterEnabled || IsStatusFilterEnabled)
             {
                 m_Layout.Children.Add(m_FilterLabel);
-            }
+                if (IsCategoryFilterEnabled)
+                {
+                    m_Layout.Children.Add(m_CategoryPicker);
+                }
 
-            if (IsCategoryFilterEnabled)
-            {
-                m_Layout.Children.Add(m_CategoryPicker);
-            }
+                if (IsStatusFilterEnabled)
+                {
+                    m_Layout.Children.Add(m_StatusPicker);
+                }
 
-            if (IsStatusFilterEnabled)
+                BorderColor = Color.Red;
+            }
+            else
             {
-                m_Layout.Children.Add(m_StatusPicker);
+                BorderColor = Color.Transparent;
             }
 
             Content = m_Layout;

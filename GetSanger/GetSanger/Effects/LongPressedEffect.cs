@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace GetSanger.Effects
@@ -12,7 +9,11 @@ namespace GetSanger.Effects
         {
         }
 
-        public static readonly BindableProperty CommandProperty = BindableProperty.CreateAttached("Command", typeof(ICommand), typeof(LongPressedEffect), (object)null);
+        public static readonly BindableProperty CommandProperty = BindableProperty.CreateAttached("Command",
+                                                                                                  typeof(ICommand),
+                                                                                                  typeof(LongPressedEffect),
+                                                                                                  null);
+        
         public static ICommand GetCommand(BindableObject view)
         {
             return (ICommand)view.GetValue(CommandProperty);
@@ -24,7 +25,11 @@ namespace GetSanger.Effects
         }
 
 
-        public static readonly BindableProperty CommandParameterProperty = BindableProperty.CreateAttached("CommandParameter", typeof(object), typeof(LongPressedEffect), (object)null);
+        public static readonly BindableProperty CommandParameterProperty = BindableProperty.CreateAttached("CommandParameter", 
+                                                                                                            typeof(object),
+                                                                                                            typeof(LongPressedEffect),
+                                                                                                            null);
+        
         public static object GetCommandParameter(BindableObject view)
         {
             return view.GetValue(CommandParameterProperty);
