@@ -10,7 +10,7 @@ namespace GetSanger.Interfaces
 
         Task<Location> GetCurrentLocation(bool askFor = true);
 
-        Task<PermissionStatus> IsLocationGrantedAndAskFor();
+        Task<PermissionStatus> IsLocationGrantedAndAskFor(bool askFor = true);
 
         Task<bool> IsLocationGranted();
 

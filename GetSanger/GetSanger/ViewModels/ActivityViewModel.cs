@@ -368,7 +368,6 @@ namespace GetSanger.ViewModels
                                                      AppManager.Instance.ConnectedUser.ActivatedMap.Remove(ConnectedActivity.ActivityId);
                                                      ConnectedActivity.LocationActivatedBySanger = false;
                                                      // sanger stop sharing location
-                                                     sr_TripHelper.LeaveTripThread();
                                                      await FireStoreHelper.UpdateActivity(ConnectedActivity);
                                                      await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                                                      string message = $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} completed your job :)";
