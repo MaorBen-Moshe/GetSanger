@@ -97,12 +97,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\account.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon.png.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon1x.png">
       <Visible>false</Visible>
     </ImageAsset>
@@ -110,9 +104,6 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon3x1.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountPage.png.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\activityIcon.png.imageset\activityIcon.png">
