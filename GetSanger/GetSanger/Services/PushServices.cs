@@ -251,6 +251,7 @@ namespace GetSanger.Services
         private static async Task handleActivity(string i_Title, string i_Body, string i_Json)
         {
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
+            activity = await FireStoreHelper.GetActivity(activity.ActivityId);
 
             IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             Page currentPage = Shell.Current.CurrentPage;
@@ -284,6 +285,7 @@ namespace GetSanger.Services
         private static async Task handleJobOffer(string i_Title, string i_Body, string i_Json)
         {
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
+            job = await FireStoreHelper.GetJobOffer(job.JobId);
 
             IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             Page currentPage = Shell.Current.CurrentPage;
