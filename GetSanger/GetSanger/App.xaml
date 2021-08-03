@@ -30,7 +30,10 @@
             <Color x:Key="EntryBackgroundColorLight">#91abfa</Color>
             <Color x:Key="FrameBorderColorDark">#FFFFFF</Color>
             <Color x:Key="FrameBorderColorLight">#000000</Color>
-            
+            <Color x:Key="NavBarBackgroundColorDark">#000000</Color>
+            <Color x:Key="NavBarBackgroundColorLight">#FFFFFF</Color>
+            <Color x:Key="NavBarTextColorDark">#000000</Color>
+            <Color x:Key="NavBarTextColorLight">#FFFFFF</Color>
             
             <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
             <Style TargetType="Label" ApplyToDerivedTypes="True">
@@ -77,6 +80,11 @@
             <Style TargetType="Frame">
                 <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColorLight}}"/>
 
+            </Style>
+
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource NavBarBackgroundColorDark}, Light={StaticResource NavBarBackgroundColorLight}}"  />
+                <Setter Property="BarTextColor" Value="{AppThemeBinding Dark={StaticResource NavBarTextColorDark}, Light={StaticResource NavBarTextColorLight}}"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>
