@@ -279,8 +279,8 @@ namespace GetSanger.ViewModels.chat
                                                      if (answer)
                                                      {
                                                          Message message = i_Param as Message;
-                                                         await DB.DeleteMessageAsync(message);
                                                          MessagesSource.Remove(message);
+                                                         await DB.DeleteMessageAsync(message);
                                                      }
                                                  });
             }

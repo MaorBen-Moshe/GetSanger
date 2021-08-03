@@ -20,7 +20,7 @@ namespace GetSanger.Models
 
         public Status Status { get; set; }
 
-        public System.DateTime TimeReportCreated { get; set; }
+        public DateTime TimeReportCreated { get; set; }
 
         public override bool Equals(object obj)
         {

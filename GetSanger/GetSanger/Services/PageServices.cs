@@ -29,10 +29,6 @@ namespace GetSanger.Services
             }
         }
 
-        public override void SetDependencies()
-        {
-        }
-
         public  Task<string> DisplayActionSheet(string i_Title, string i_Cancel, string i_Distruction, params string[] i_Buttons)
         {
             return Application.Current.MainPage.DisplayActionSheet(i_Title, i_Cancel, i_Distruction, i_Buttons);
@@ -42,6 +38,10 @@ namespace GetSanger.Services
         {
             var keyboard = Keyboard.Create(KeyboardFlags.All);
             return Application.Current.MainPage.DisplayPromptAsync(i_Title, i_Message, placeholder: i_PlaceHolder, keyboard:keyboard);
+        }
+
+        public override void SetDependencies()
+        {
         }
     }
 }

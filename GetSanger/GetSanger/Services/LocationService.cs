@@ -97,9 +97,9 @@ namespace GetSanger.Services
             return ret;
         }
 
-        Task<PermissionStatus> requestHelper(bool requestAlways)
+        private Task<PermissionStatus> requestHelper(bool requestAlways)
         {
-            Task<PermissionStatus> ret = null;
+            Task<PermissionStatus> ret;
             if (requestAlways)
             {
                 ret = Permissions.RequestAsync<Permissions.LocationAlways>();
@@ -114,11 +114,13 @@ namespace GetSanger.Services
 
         public async Task<bool> IsLocationGranted()
         {
+            SetDependencies();
             return await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>() == PermissionStatus.Granted;
         } 
 
         public async Task<Placemark> GetPickedLocation(Location i_Location)
         {
+            SetDependencies();
             Placemark placemark = null;
             if(i_Location != null)
             {
@@ -131,6 +133,7 @@ namespace GetSanger.Services
 
         public void Cancelation()
         {
+            SetDependencies();
             if (Cts != null && !Cts.IsCancellationRequested)
             {
                 Cts.Cancel();
@@ -139,6 +142,7 @@ namespace GetSanger.Services
 
         public void StartTripThread(System.Timers.ElapsedEventHandler i_Elapsed, int i_Interval = 5000)
         {
+            SetDependencies();
             if (i_Elapsed == null)
             {
                 return;
@@ -155,7 +159,8 @@ namespace GetSanger.Services
 
         public void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elapsed)
         {
-            if(i_Elapsed == null)
+            SetDependencies();
+            if (i_Elapsed == null)
             {
                 return;
             }

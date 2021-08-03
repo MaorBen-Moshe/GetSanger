@@ -18,29 +18,37 @@ namespace GetSanger.Models
         #endregion
 
         public string UserId { get; set; }
+
         public string RegistrationToken { get; set; }
+
         public string Email
         {
             get => m_Email;
             set => SetClassProperty(ref m_Email, value);
         }
+
         public Uri ProfilePictureUri
         {
             get => m_ProfilePictureUre;
             set => SetClassProperty(ref m_ProfilePictureUre, value);
         }
+
         public eAppMode? LastUserMode { get; set; } // if null open mode page else open client/sanger shell
+
         public ObservableCollection<eCategory> Categories { get; set; }
+
         public bool IsGenericNotifications
         {
             get => m_IsGenericNotifications;
             set => SetStructProperty(ref m_IsGenericNotifications, value);
         }
+
         public Location UserLocation
         {
             get => m_UserLocation;
             set => SetClassProperty(ref m_UserLocation, value);
         }
+
         public double DistanceLimit // should be a number between 1 - 400 if -1 than infinity
         {
             get => m_DistanceLimit;
@@ -55,9 +63,12 @@ namespace GetSanger.Models
 
         [JsonIgnore]
         public ObservableCollection<Activity> Activities { get; set; } // sanger and user activities each mode shows its own activities
+
         [JsonIgnore]
         public ObservableCollection<JobOffer> JobOffers { get; set; }
+
         public PersonalDetails PersonalDetails { get; set; }
+
         [JsonIgnore]
         public ObservableCollection<Rating> Ratings { get; set; }
 

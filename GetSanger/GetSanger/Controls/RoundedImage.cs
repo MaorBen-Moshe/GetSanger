@@ -3,7 +3,6 @@ using FFImageLoading.Cache;
 using FFImageLoading.Forms;
 using System;
 using System.Windows.Input;
-using GetSanger.Extensions;
 using Xamarin.Forms;
 
 namespace GetSanger.Controls
@@ -13,7 +12,6 @@ namespace GetSanger.Controls
         #region Fields
         private Frame m_Frame;
         private CachedImage m_CachedImage;
-        //private Image m_Image;
         #endregion
 
         #region Properties
@@ -111,18 +109,13 @@ namespace GetSanger.Controls
             Children.Clear();
             m_Frame = new Frame
             {
-                CornerRadius = Radius / 2,
                 Padding = 0,
-                HeightRequest = Radius,
-                WidthRequest = Radius,
                 IsClippedToBounds = true,
                 HasShadow = false,
                 BorderColor = Color.Transparent,
                 HorizontalOptions = LayoutOptions.Center,
                 Content = m_CachedImage = new CachedImage
                 {
-                    WidthRequest = Radius,
-                    HeightRequest = Radius,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     Aspect = Aspect.AspectFill,
@@ -133,7 +126,7 @@ namespace GetSanger.Controls
                 }
             };
 
-
+            setRadius();
             setCache();
             setImage(this, ImageSource);
             m_CachedImage.GestureRecognizers.Add(new TapGestureRecognizer
@@ -202,17 +195,17 @@ namespace GetSanger.Controls
                 return;
             }
 
-            thisInstance.setView();
+            thisInstance.setRadius();
         }
 
         private static void cachePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            if (!(bindable is RoundedImage thisInstance) || !(newValue is bool val))
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is bool))
             {
                 return;
             }
 
-            thisInstance.setView();
+            thisInstance.setCache();
         }
 
         private void setCache()
@@ -227,6 +220,21 @@ namespace GetSanger.Controls
                 m_CachedImage.CacheType = CacheType.Memory;
                 m_CachedImage.CacheDuration = new TimeSpan(0);
             }
+        }
+
+        private void setRadius()
+        {
+            if(Radius % 2 != 0)
+            {
+                throw new ArgumentException("Rounded Image expect only even values for the radius property!");
+            }
+
+            m_Frame.CornerRadius = Radius / 2;
+            m_Frame.HeightRequest = Radius;
+            m_Frame.WidthRequest = Radius;
+
+            m_CachedImage.WidthRequest = Radius;
+            m_CachedImage.HeightRequest = Radius;
         }
 
         #endregion

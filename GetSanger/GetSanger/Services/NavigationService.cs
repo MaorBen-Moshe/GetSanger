@@ -4,12 +4,7 @@ using Xamarin.Forms;
 namespace GetSanger.Services
 {
     public class NavigationService : Service, Interfaces.INavigation
-    {
-        public NavigationService()
-        {
-
-        }
-
+    { 
         public async Task NavigateTo(string i_ViewPath)
         {
             try
@@ -22,7 +17,7 @@ namespace GetSanger.Services
             }
         }
 
-        public override void SetDependencies()
+        protected override void SetDependencies()
         {
         }
     }

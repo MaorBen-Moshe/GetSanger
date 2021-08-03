@@ -32,10 +32,8 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(id);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 string responseJson = await response.Content.ReadAsStringAsync();
-
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(responseJson);
@@ -43,7 +41,6 @@ namespace GetSanger.Services
 
                 List<Activity> activities = ObjectJsonSerializer.DeserializeForServer<List<Activity>>(responseJson);
                 convertDateTimeToLocalTime(activities);
-
                 return activities;
             }
             else
@@ -72,7 +69,6 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(data);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -81,7 +77,6 @@ namespace GetSanger.Services
 
                 Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(await response.Content.ReadAsStringAsync());
                 activity.JobDetails.Date = activity.JobDetails.Date.ToLocalTime();
-
                 return activity;
             }
             else
@@ -102,9 +97,7 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddActivities";
                 string json = ObjectJsonSerializer.SerializeForServer(i_Activity);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
@@ -160,9 +153,7 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateActivity";
                 string json = ObjectJsonSerializer.SerializeForServer(i_Activity);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
@@ -190,7 +181,6 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(id);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 string responseMessage = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
@@ -200,7 +190,6 @@ namespace GetSanger.Services
 
                 List<JobOffer> jobOffers = ObjectJsonSerializer.DeserializeForServer<List<JobOffer>>(responseMessage);
                 convertDateTimeToLocalTime(jobOffers);
-
                 return jobOffers;
             }
             else
@@ -222,16 +211,13 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(categoriesDictionary);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
                 }
-
                 List<JobOffer> jobOffers = ObjectJsonSerializer.DeserializeForServer<List<JobOffer>>(await response.Content.ReadAsStringAsync());
                 convertDateTimeToLocalTime(jobOffers);
-
                 return jobOffers;
             }
             else
@@ -252,7 +238,6 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(data);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -261,7 +246,6 @@ namespace GetSanger.Services
 
                 JobOffer jobOffer = ObjectJsonSerializer.DeserializeForServer<JobOffer>(await response.Content.ReadAsStringAsync());
                 jobOffer.Date = jobOffer.Date.ToLocalTime();
-
                 return jobOffer;
             }
             else
@@ -282,7 +266,6 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddJobOffer";
                 string json = ObjectJsonSerializer.SerializeForServer(i_JobOffer);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -291,7 +274,6 @@ namespace GetSanger.Services
 
                 List<JobOffer> jobOffers = ObjectJsonSerializer.DeserializeForServer<List<JobOffer>>(await response.Content.ReadAsStringAsync());
                 convertDateTimeToLocalTime(jobOffers);
-
                 return jobOffers;
             }
             else
@@ -320,9 +302,7 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteJobOffer";
                 string json = ObjectJsonSerializer.SerializeForServer(data);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
@@ -341,9 +321,7 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateJobOffer";
                 string json = ObjectJsonSerializer.SerializeForServer(i_JobOffer);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
@@ -371,7 +349,6 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(id);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -398,7 +375,6 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddRating";
                 string json = ObjectJsonSerializer.SerializeForServer(i_Rating);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -425,7 +401,6 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/DeleteRating";
                 string json = ObjectJsonSerializer.SerializeForServer(i_Rating);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -445,7 +420,6 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateRating";
                 string json = ObjectJsonSerializer.SerializeForServer(i_Rating);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -474,7 +448,6 @@ namespace GetSanger.Services
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddReport";
                 string json = ObjectJsonSerializer.SerializeForServer(i_Report);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -500,11 +473,11 @@ namespace GetSanger.Services
                 {
                     ["UserId"] = i_UserID,
                 };
+
                 string json = ObjectJsonSerializer.SerializeForServer(details);
                 string idToken = await AuthHelper.GetIdTokenAsync();
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
                 string responseJson = await response.Content.ReadAsStringAsync();
-
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(responseJson);
@@ -527,7 +500,6 @@ namespace GetSanger.Services
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/AddUserToDatabase";
-
                 Dictionary<string, User> requestDictionary = new Dictionary<string, User>()
                 {
                     ["User"] = i_User
@@ -536,9 +508,7 @@ namespace GetSanger.Services
                 string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
                 string idToken = await AuthHelper.GetIdTokenAsync();
 
-                HttpResponseMessage response =
-                    await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
-
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
@@ -562,10 +532,8 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(data);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 AuthHelper.SignOut();
-                
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());
@@ -582,10 +550,8 @@ namespace GetSanger.Services
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 string server_uri = "https://europe-west3-get-sanger.cloudfunctions.net/UpdateUser";
-
                 string json = ObjectJsonSerializer.SerializeForServer(i_User);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(server_uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {

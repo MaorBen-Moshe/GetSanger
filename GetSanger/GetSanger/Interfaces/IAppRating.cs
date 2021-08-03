@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace GetSanger.Interfaces
+﻿namespace GetSanger.Interfaces
 {
     public interface IAppRating
     {

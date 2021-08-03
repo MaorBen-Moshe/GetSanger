@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using Xamarin.Forms;
 
 namespace GetSanger.Converters
@@ -10,7 +8,7 @@ namespace GetSanger.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (int)value > 0;
+            return (value is int length) && length > 0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

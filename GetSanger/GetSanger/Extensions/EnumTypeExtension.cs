@@ -8,9 +8,7 @@ namespace GetSanger.Extensions
     {
         public static IList<string> GetListOfEnumNames(this Type i_EnumType)
         {
-            return (from name in i_EnumType.GetEnumNames() 
-                    select name)
-                    .ToList();
+            return i_EnumType.GetEnumNames().ToList();
         }
     }
 }

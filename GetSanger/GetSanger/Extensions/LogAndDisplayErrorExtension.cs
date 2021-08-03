@@ -2,11 +2,7 @@
 using GetSanger.Services;
 using System.Text;
 using System.Threading.Tasks;
-using GetSanger.Views.popups;
-using Rg.Plugins.Popup.Services;
 using GetSanger.Interfaces;
-using Rg.Plugins.Popup.Pages;
-using Xamarin.Forms;
 
 namespace GetSanger.Extensions
 {

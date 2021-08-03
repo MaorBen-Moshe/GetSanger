@@ -20,6 +20,7 @@ namespace GetSanger.Services
                     prop.Converter = null;  // Ignore [JsonConverter]
                     prop.PropertyName = prop.UnderlyingName;  // restore original property name
                 }
+
                 return props;
             }
         }

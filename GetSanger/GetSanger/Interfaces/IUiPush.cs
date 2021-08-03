@@ -1,5 +1,4 @@
 ﻿using GetSanger.Models.chat;
-using System;
 using System.Threading.Tasks;
 
 namespace GetSanger.Interfaces

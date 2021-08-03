@@ -1,8 +1,6 @@
 ﻿using GetSanger.Models;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using Xamarin.Forms;
 
 namespace GetSanger.Converters
@@ -52,6 +50,6 @@ namespace GetSanger.Converters
             }
 
             return status;
+        }
     }
-}
 }

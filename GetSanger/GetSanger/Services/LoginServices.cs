@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Views.popups;
 using GetSanger.Interfaces;
+using GetSanger.Extensions;
 
 namespace GetSanger.Services
 {
@@ -14,7 +15,6 @@ namespace GetSanger.Services
     {
         private Interfaces.INavigation m_NavigationService;
         private ILocation m_Location;
-        private ITrip m_Trip;
         private IUiPush m_PushServices;
 
         public LoginServices()
@@ -24,56 +24,61 @@ namespace GetSanger.Services
         public async Task TryAutoLogin()
         {
             SetDependencies();
-            if (AuthHelper.IsLoggedIn())
+            try
             {
-                string userId = AuthHelper.GetLoggedInUserId();
-                bool firstTime = await AuthHelper.IsFirstTimeLogIn();
-                if (!firstTime)
+                if (AuthHelper.IsLoggedIn())
                 {
-                    AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
-                    AppManager.Instance.ConnectedUser.UserLocation = await m_Location.GetCurrentLocation();
-
-                    bool isRegistrationTokenChanged = await m_PushServices.IsRegistrationTokenChanged();
-                    if (isRegistrationTokenChanged)
+                    string userId = AuthHelper.GetLoggedInUserId();
+                    bool firstTime = await AuthHelper.IsFirstTimeLogIn();
+                    if (!firstTime)
                     {
-                        AppManager.Instance.ConnectedUser.RegistrationToken = await m_PushServices.GetRegistrationToken();
-                    }
+                        AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
+                        AppManager.Instance.ConnectedUser.UserLocation = await m_Location.GetCurrentLocation();
+                        bool isRegistrationTokenChanged = await m_PushServices.IsRegistrationTokenChanged();
+                        if (isRegistrationTokenChanged)
+                        {
+                            AppManager.Instance.ConnectedUser.RegistrationToken = await m_PushServices.GetRegistrationToken();
+                        }
 
-                    await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                    eAppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
-                    if (mode == null)
-                    {
-                        await Task.Delay(1500);
-                        Application.Current.MainPage = new AuthShell();
-                        await PopupNavigation.Instance.PushAsync(new ModePage());
+                        await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                        eAppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
+                        if (mode == null)
+                        {
+                            await Task.Delay(1500);
+                            Application.Current.MainPage = new AuthShell();
+                            await PopupNavigation.Instance.PushAsync(new ModePage());
+                        }
+                        else
+                        {
+                            AppManager.Instance.CurrentMode = (eAppMode)mode;
+                            Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
+                            await PushServices.HandleMessageReceived(null, null, PushServices.BackgroundPushData);
+                        }
                     }
                     else
                     {
-                        AppManager.Instance.CurrentMode = (eAppMode) mode;
-                        Application.Current.MainPage = AppManager.Instance.GetCurrentShell();
-                        await PushServices.HandleMessageReceived(null, null, PushServices.BackgroundPushData);
+                        AppManager.Instance.ConnectedUser = new User { UserId = userId };
+                        string json = null;
+                        await Task.Delay(1500);
+                        Application.Current.MainPage = new AuthShell();
+                        await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}&userJson={json}");
                     }
                 }
                 else
                 {
-                    AppManager.Instance.ConnectedUser = new User {UserId = userId};
-                    string json = null;
                     await Task.Delay(1500);
                     Application.Current.MainPage = new AuthShell();
-                    await m_NavigationService.NavigateTo(ShellRoutes.SignupPersonalDetails + $"?isFacebookGmail={false}&userJson={json}");
                 }
             }
-            else
+            catch(Exception e)
             {
-                await Task.Delay(1500);
-                Application.Current.MainPage = new AuthShell();
+                await e.LogAndDisplayError($"{nameof(LoginServices)}:TryAutoLogin", "Error", e.Message);
             }
         }
 
         public async Task<bool> LoginUser(eAppMode? i_Mode = null, bool socialLogin = false)
         {
             SetDependencies();
-
             try
             {
                 bool firstTime = await AuthHelper.IsFirstTimeLogIn();
@@ -132,12 +137,11 @@ namespace GetSanger.Services
             Application.Current.MainPage = AppManager.Instance.GetCurrentShell(i_Mode);
         }
 
-        public override void SetDependencies()
+        protected override void SetDependencies()
         {
             m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             m_Location ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
             m_PushServices ??= AppManager.Instance.Services.GetService(typeof(PushServices)) as PushServices;
-            m_Trip ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
         }
     }
 }

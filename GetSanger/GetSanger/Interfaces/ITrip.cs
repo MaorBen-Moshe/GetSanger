@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-
-namespace GetSanger.Interfaces
+﻿namespace GetSanger.Interfaces
 {
     public interface ITrip
     {
-        void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased, int i_Interval = 15000);
+        void StartTripThread(System.Timers.ElapsedEventHandler i_Elpased, int i_Interval = 5000);
 
         void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elpased);
     }

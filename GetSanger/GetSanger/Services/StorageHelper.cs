@@ -25,10 +25,8 @@ namespace GetSanger.Services
             i_Stream.Position = 0;
             byte[] bytes = new byte[i_Stream.Length];
             await i_Stream.ReadAsync(bytes, 0, bytes.Length);
-
             string idToken = await AuthHelper.GetIdTokenAsync();
             string requestUri = "https://europe-west3-get-sanger.cloudfunctions.net/SetUserProfilePicture";
-
             string json = JsonConvert.SerializeObject(new Dictionary<string, object>()
             {
                 ["Picture"] = JsonConvert.SerializeObject(bytes),
@@ -36,11 +34,9 @@ namespace GetSanger.Services
             });
 
             HttpResponseMessage httpResponseMessage = await HttpClientService.SendHttpRequest(requestUri, json, HttpMethod.Post, idToken);
-
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 string responseMessage = await httpResponseMessage.Content.ReadAsStringAsync();
-
                 throw new Exception(responseMessage);
             }
 
@@ -58,11 +54,9 @@ namespace GetSanger.Services
             });
 
             HttpResponseMessage httpResponseMessage = await HttpClientService.SendHttpRequest(requestUri, json, HttpMethod.Delete, idToken);
-
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 string responseMessage = await httpResponseMessage.Content.ReadAsStringAsync();
-
                 throw new Exception(responseMessage);
             }
         }
