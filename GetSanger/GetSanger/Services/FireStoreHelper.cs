@@ -76,7 +76,7 @@ namespace GetSanger.Services
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception(await response.Content.ReadAsStringAsync());
+                    throw new Exception("Failed to get activity.");
                 }
 
                 Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(await response.Content.ReadAsStringAsync());
@@ -256,7 +256,7 @@ namespace GetSanger.Services
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception(await response.Content.ReadAsStringAsync());
+                    throw new Exception("Failed to get job offer.");
                 }
 
                 JobOffer jobOffer = ObjectJsonSerializer.DeserializeForServer<JobOffer>(await response.Content.ReadAsStringAsync());
