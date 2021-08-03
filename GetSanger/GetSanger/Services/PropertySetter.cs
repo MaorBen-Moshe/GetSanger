@@ -15,8 +15,7 @@ namespace GetSanger.Services
 
         public void SetStructProperty<T>(ref T i_Member, T i_Value, [CallerMemberName] string i_PropertyName = null) where T : struct
         {
-            T? nullableMember = i_Member;
-            setHelper(ref nullableMember, i_Value, i_PropertyName);
+            setHelper(ref i_Member, i_Value, i_PropertyName);
         }
 
         protected void OnPropertyChanged([CallerMemberName] string i_PropertyName = null)

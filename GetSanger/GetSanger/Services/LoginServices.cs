@@ -137,7 +137,7 @@ namespace GetSanger.Services
             Application.Current.MainPage = AppManager.Instance.GetCurrentShell(i_Mode);
         }
 
-        protected override void SetDependencies()
+        public override void SetDependencies()
         {
             m_NavigationService ??= AppManager.Instance.Services.GetService(typeof(NavigationService)) as NavigationService;
             m_Location ??= AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;

@@ -17,7 +17,7 @@ namespace GetSanger.Services
             }
         }
 
-        protected override void SetDependencies()
+        public override void SetDependencies()
         {
         }
     }
