@@ -137,7 +137,7 @@ namespace GetSanger.Services
             }
         }
 
-        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elapsed, int i_Interval = 15000)
+        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elapsed, int i_Interval = 5000)
         {
             if (i_Elapsed == null)
             {
@@ -147,7 +147,7 @@ namespace GetSanger.Services
             Device.BeginInvokeOnMainThread(() =>
             {
                 m_Timer.Enabled = true;
-                m_Timer.Interval = i_Interval; //15000 by default
+                m_Timer.Interval = i_Interval; //5000 by default
                 m_Timer.Elapsed += i_Elapsed;
                 m_Timer.Start();
             });
