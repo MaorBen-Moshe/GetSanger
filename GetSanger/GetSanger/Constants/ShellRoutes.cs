@@ -36,8 +36,6 @@
 
         public const string ViewJobOffer = "viewJoboffer";
 
-        public const string LoadingPage = "loading";
-
         public const string EditProfile = "editProfile";
 
         public const string ChatsList = "chatsList";

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using GetSanger.Exceptions;
 using GetSanger.Interfaces;
-using GetSanger.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -15,16 +13,21 @@ namespace GetSanger.Services
 {
     public static class AuthHelper
     {
-        private static readonly IAuth s_Auth = DependencyService.Get<IAuth>();
+        private static readonly IAuth sr_Auth;
+
+        static AuthHelper()
+        {
+            sr_Auth = DependencyService.Get<IAuth>();
+        }
 
         public static async Task RegisterViaEmail(string i_Email, string i_Password)
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                if (!s_Auth.IsAnonymousUser())
+                if (!sr_Auth.IsAnonymousUser())
                 {
-                    s_Auth.SignOut();
-                    await s_Auth.SignInAnonymouslyAsync();
+                    sr_Auth.SignOut();
+                    await sr_Auth.SignInAnonymouslyAsync();
                 }
 
                 Dictionary<string, string> details = new Dictionary<string, string>()
@@ -35,9 +38,7 @@ namespace GetSanger.Services
 
                 string idToken = await GetIdTokenAsync();
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/RegisterUserWithEmailAndPassword";
-
                 string json = ObjectJsonSerializer.SerializeForServer(details);
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -55,7 +56,7 @@ namespace GetSanger.Services
 
         public static void SignOut()
         {
-            s_Auth.SignOut();
+            sr_Auth.SignOut();
         }
 
         public static async Task SendVerificationEmail()
@@ -64,10 +65,7 @@ namespace GetSanger.Services
             {
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendVerificationEmail";
                 string idToken = await GetIdTokenAsync();
-
-                HttpResponseMessage response =
-                    await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
-
+                HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
                 if (!response.IsSuccessStatusCode)
                 {
                     string responseMessage = await response.Content.ReadAsStringAsync();
@@ -92,9 +90,7 @@ namespace GetSanger.Services
                 };
 
                 string json = ObjectJsonSerializer.SerializeForServer(details);
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     string responseMessage = await response.Content.ReadAsStringAsync();
@@ -102,9 +98,8 @@ namespace GetSanger.Services
                 }
 
                 string customToken = await response.Content.ReadAsStringAsync();
-
                 SignOut();
-                await s_Auth.SignInWithCustomToken(customToken);
+                await sr_Auth.SignInWithCustomToken(customToken);
             }
             else
             {
@@ -123,10 +118,8 @@ namespace GetSanger.Services
 
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/LinkWithEmailAndPassword";
             string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
-
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
             string responseString = await response.Content.ReadAsStringAsync();
-
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(responseString);
@@ -138,7 +131,6 @@ namespace GetSanger.Services
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 Dictionary<string, string> requestDictionary = new Dictionary<string, string>();
-
                 switch (i_Provider)
                 {
                     case eSocialProvider.Facebook:
@@ -165,19 +157,14 @@ namespace GetSanger.Services
 
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithCredential";
                 string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
                 string responseString = await response.Content.ReadAsStringAsync();
-
                 if (response.IsSuccessStatusCode)
                 {
-                    Dictionary<string, object> responseDictionary =
-                        ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
+                    Dictionary<string, object> responseDictionary = ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
                     string customToken = responseDictionary["customToken"] as string;
-
-                    s_Auth.SignOut();
-                    await s_Auth.SignInWithCustomToken(customToken);
-
+                    sr_Auth.SignOut();
+                    await sr_Auth.SignInWithCustomToken(customToken);
                     return responseDictionary;
                 }
                 else
@@ -225,15 +212,11 @@ namespace GetSanger.Services
 
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/LinkWithCredential";
             string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
-
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
             string responseString = await response.Content.ReadAsStringAsync();
-
             if (response.IsSuccessStatusCode)
             {
-                Dictionary<string, object> responseDictionary =
-                    ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
-
+                Dictionary<string, object> responseDictionary = ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
                 return responseDictionary;
             }
             else
@@ -246,9 +229,8 @@ namespace GetSanger.Services
         {
             try
             {
-                WebAuthenticatorResult r = null;
+                WebAuthenticatorResult webResult = null;
                 string idToken = null;
-
                 if (i_Scheme.Equals("Apple")
                     && DeviceInfo.Platform == DevicePlatform.iOS
                     && DeviceInfo.Version.Major >= 13)
@@ -259,8 +241,8 @@ namespace GetSanger.Services
                         IncludeEmailScope = true,
                         IncludeFullNameScope = true,
                     };
-                    r = await AppleSignInAuthenticator.AuthenticateAsync(options);
-                    idToken = r.IdToken;
+                    webResult = await AppleSignInAuthenticator.AuthenticateAsync(options);
+                    idToken = webResult.IdToken;
                 }
                 else
                 {
@@ -272,9 +254,8 @@ namespace GetSanger.Services
                         string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithGoogle";
                         uriString =
                             $"https://accounts.google.com/o/oauth2/v2/auth?scope=openid profile email&response_type=code&redirect_uri={url}&client_id={clientId}&prompt=select_account";
-                        r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
-
-                        idToken = r.IdToken;
+                        webResult = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
+                        idToken = webResult.IdToken;
                     }
                     else if (i_Scheme.Equals("Facebook"))
                     {
@@ -282,8 +263,8 @@ namespace GetSanger.Services
                         string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithFacebook";
                         uriString =
                             $"https://www.facebook.com/v10.0/dialog/oauth?client_id={clientId}&redirect_uri={url}&scope=email&auth_type=rerequest,reauthenticate";
-                        r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
-                        idToken = r.AccessToken;
+                        webResult = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
+                        idToken = webResult.AccessToken;
                     }
                     else if (i_Scheme.Equals("Apple"))
                     {
@@ -291,8 +272,8 @@ namespace GetSanger.Services
                         string url = "https://europe-west3-get-sanger.cloudfunctions.net/SignInWithApple";
                         uriString =
                             $"https://appleid.apple.com/auth/authorize?client_id={clientId}&redirect_uri={url}&response_type=code id_token&scope=name email&response_mode=form_post";
-                        r = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
-                        idToken = r.IdToken;
+                        webResult = await WebAuthenticator.AuthenticateAsync(new Uri(uriString), new Uri(callBackUrl));
+                        idToken = webResult.IdToken;
                     }
                 }
 
@@ -310,17 +291,15 @@ namespace GetSanger.Services
 
         public static bool IsLoggedIn()
         {
-            return s_Auth.IsLoggedIn();
+            return sr_Auth.IsLoggedIn();
         }
 
         public static async Task<bool> IsVerifiedEmail()
         {
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsEmailVerified";
             string idToken = await GetIdTokenAsync();
-
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, "", HttpMethod.Post, idToken);
             string responseBody = await response.Content.ReadAsStringAsync();
-
             if (response.IsSuccessStatusCode)
             {
                 bool result = ObjectJsonSerializer.DeserializeForServer<bool>(responseBody);
@@ -334,7 +313,7 @@ namespace GetSanger.Services
 
         public static string GetLoggedInUserId()
         {
-            return s_Auth.GetUserId();
+            return sr_Auth.GetUserId();
         }
 
         public static async Task<bool> IsFirstTimeLogIn()
@@ -348,10 +327,8 @@ namespace GetSanger.Services
             string json = ObjectJsonSerializer.SerializeForServer(dictionary);
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserInDatabase";
             string idToken = await GetIdTokenAsync();
-
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             string responseMessage = await response.Content.ReadAsStringAsync();
-
             if (response.IsSuccessStatusCode)
             {
                 bool result = ObjectJsonSerializer.DeserializeForServer<bool>(responseMessage);
@@ -373,18 +350,14 @@ namespace GetSanger.Services
             try
             {
                 // Normalize the domain
-                i_Verify = Regex.Replace(i_Verify, @"(@)(.+)$", DomainMapper,
-                    RegexOptions.None, TimeSpan.FromMilliseconds(200));
-
+                i_Verify = Regex.Replace(i_Verify, @"(@)(.+)$", DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
                 // Examines the domain part of the email and normalizes it.
-                string DomainMapper(Match match)
+                static string DomainMapper(Match match)
                 {
                     // Use IdnMapping class to convert Unicode domain names.
                     var idn = new IdnMapping();
-
                     // Pull out and process domain name (throws ArgumentException on invalid)
                     string domainName = idn.GetAscii(match.Groups[2].Value);
-
                     return match.Groups[1].Value + domainName;
                 }
             }
@@ -399,9 +372,7 @@ namespace GetSanger.Services
 
             try
             {
-                return Regex.IsMatch(i_Verify,
-                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+                return Regex.IsMatch(i_Verify, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
             }
             catch (RegexMatchTimeoutException)
             {
@@ -420,7 +391,6 @@ namespace GetSanger.Services
                 string json = ObjectJsonSerializer.SerializeForServer(dictionary);
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPasswordResetEmail";
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     string error = await response.Content.ReadAsStringAsync();
@@ -435,7 +405,7 @@ namespace GetSanger.Services
 
         public static async Task<string> GetIdTokenAsync()
         {
-            return await s_Auth.GetIdToken();
+            return await sr_Auth.GetIdToken();
         }
 
         public static async Task<bool> IsUserPassword(string i_Password)
@@ -443,7 +413,6 @@ namespace GetSanger.Services
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/IsUserPassword";
-
                 Dictionary<string, string> details = new Dictionary<string, string>()
                 {
                     ["Password"] = i_Password
@@ -451,11 +420,9 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(details);
                 string idToken = await GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
                 string responseMessage = await response.Content.ReadAsStringAsync();
-                bool result = false;
-
+                bool result;
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(responseMessage);
@@ -478,7 +445,6 @@ namespace GetSanger.Services
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/ChangeUserPassword";
-
                 Dictionary<string, string> details = new Dictionary<string, string>()
                 {
                     ["OldPassword"] = i_OldPassword,
@@ -487,9 +453,7 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(details);
                 string idToken = await GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception(await response.Content.ReadAsStringAsync());

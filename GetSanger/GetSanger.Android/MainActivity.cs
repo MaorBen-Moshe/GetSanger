@@ -11,6 +11,7 @@ using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Android.Content.PM;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps.Android;
+using CarouselView.FormsPlugin.Droid;
 
 namespace GetSanger.Droid
 {
@@ -37,8 +38,9 @@ namespace GetSanger.Droid
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState, new PlatformConfig
             {
                 BitmapDescriptorFactory = new BitmapConfig()
-            }); 
+            });
 
+            CarouselViewRenderer.Init();
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             PushService.InitializePushService(this);
             PushService.PushHelper(Intent);

@@ -34,7 +34,6 @@ namespace GetSanger.AppShell
             r_Routes.Add(ShellRoutes.EditJobOffer, typeof(EditJobOfferPage));
             r_Routes.Add(ShellRoutes.ViewJobOffer, typeof(ViewJobOfferPage));
             r_Routes.Add(ShellRoutes.EditProfile, typeof(EditProfilePage));
-            r_Routes.Add(ShellRoutes.LoadingPage, typeof(LoadingPage));
             r_Routes.Add(ShellRoutes.Ratings, typeof(RatingsPage));
             r_Routes.Add(ShellRoutes.ChatView, typeof(ChatView));
 

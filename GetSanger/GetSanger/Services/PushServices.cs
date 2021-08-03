@@ -26,7 +26,6 @@ namespace GetSanger.Services
             User user = await FireStoreHelper.GetUser(i_UserId);
             i_Body = user.IsGenericNotifications ? i_Body : null;
             string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendPushToToken";
-
             var data = new Dictionary<string, string>
             {
                 ["Type"] = i_DataType ?? "",
@@ -44,9 +43,7 @@ namespace GetSanger.Services
 
             string json = ObjectJsonSerializer.SerializeForServer(pushData);
             string idToken = await AuthHelper.GetIdTokenAsync();
-
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -65,9 +62,7 @@ namespace GetSanger.Services
 
             string json = ObjectJsonSerializer.SerializeForServer(pushData);
             string idToken = await AuthHelper.GetIdTokenAsync();
-
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
-
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -86,17 +81,11 @@ namespace GetSanger.Services
 
             string json = ObjectJsonSerializer.SerializeForServer(pushData);
             string idToken = await AuthHelper.GetIdTokenAsync();
-
             HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }
-        }
-
-        public override void SetDependencies()
-        {
-            // do nothing
         }
 
         public async Task<string> GetRegistrationToken()
@@ -112,7 +101,6 @@ namespace GetSanger.Services
                 string type = i_Message["Type"];
                 string json = i_Message.ContainsKey("Json") ? i_Message["Json"] : null;
                 i_Message.Clear();
-
                 switch (type)
                 {
                     case nameof(JobOffer):
@@ -130,6 +118,9 @@ namespace GetSanger.Services
                     case "MessageInfo":
                         await handleMessageInfo(i_Title, i_Body, json);
                         break;
+                    case Constants.Constants.UpdateLocationType:
+                        handleSangerLocation();
+                        break;
                     case "":
                         IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
                         if (!string.IsNullOrWhiteSpace(i_Title) && !string.IsNullOrWhiteSpace(i_Body))
@@ -142,12 +133,29 @@ namespace GetSanger.Services
             }
         }
 
+        public override void SetDependencies()
+        {
+        }
+
+        private static async void handleSangerLocation()
+        {
+            if (AuthHelper.IsLoggedIn())
+            {
+                User user = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
+                ILocation locationService = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
+                Location currentLocation = await locationService.GetCurrentLocation(false, true);
+                if(currentLocation != null && !user.UserLocation.Equals(currentLocation))
+                {
+                    user.UserLocation = currentLocation;
+                    await FireStoreHelper.UpdateUser(user);
+                }
+            }
+        }
+
         private static void handleRating(string i_Title, string i_Body, string i_Json)
         {
             string message = i_Body + "\nGo to profile page to view your ratings?";
-
             Page currentPage = Shell.Current.CurrentPage;
-
             if (currentPage is {BindingContext: RatingsViewModel {IsMyRatings: true} vm})
             {
                 vm.RefreshingCommand.Execute(null);
@@ -167,7 +175,6 @@ namespace GetSanger.Services
             string senderId = message.FromId;
             User sender = await FireStoreHelper.GetUser(senderId);
             string json = ObjectJsonSerializer.SerializeForPage(sender);
-
             Page currentPage = Shell.Current.CurrentPage;
             if (currentPage is {BindingContext: ChatPageViewModel vm})
             {
@@ -233,7 +240,7 @@ namespace GetSanger.Services
         private static async Task handleActivity(string i_Title, string i_Body, string i_Json)
         {
             Activity activity = ObjectJsonSerializer.DeserializeForServer<Activity>(i_Json);
-
+            activity = await FireStoreHelper.GetActivity(activity.ActivityId);
             IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             Page currentPage = Shell.Current.CurrentPage;
 
@@ -266,10 +273,9 @@ namespace GetSanger.Services
         private static async Task handleJobOffer(string i_Title, string i_Body, string i_Json)
         {
             JobOffer job = ObjectJsonSerializer.DeserializeForServer<JobOffer>(i_Json);
-
+            job = await FireStoreHelper.GetJobOffer(job.JobId);
             IPageService pageServices = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
             Page currentPage = Shell.Current.CurrentPage;
-
             if (currentPage is {BindingContext: ViewJobOfferViewModel vm} && vm.Job.JobId == job.JobId)
             {
                 vm.Job = job;
@@ -297,7 +303,6 @@ namespace GetSanger.Services
         public async Task<bool> IsRegistrationTokenChanged()
         {
             User connectedUser = AppManager.Instance.ConnectedUser;
-
             return await GetRegistrationToken() != connectedUser.RegistrationToken;
         }
 
@@ -306,7 +311,6 @@ namespace GetSanger.Services
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/UnsubscribeUser";
-
                 Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
                 {
                     ["UserId"] = i_UserId
@@ -314,7 +318,6 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             }
             else
@@ -328,7 +331,6 @@ namespace GetSanger.Services
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SubscribeUser";
-
                 Dictionary<string, string> requestDictionary = new Dictionary<string, string>()
                 {
                     ["UserId"] = i_UserId
@@ -336,7 +338,6 @@ namespace GetSanger.Services
 
                 string json = ObjectJsonSerializer.SerializeForServer(requestDictionary);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 HttpResponseMessage response = await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             }
             else
@@ -350,10 +351,8 @@ namespace GetSanger.Services
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 string uri = "https://europe-west3-get-sanger.cloudfunctions.net/SendChatMessage";
-
                 string json = ObjectJsonSerializer.SerializeForServer(i_Message);
                 string idToken = await AuthHelper.GetIdTokenAsync();
-
                 await HttpClientService.SendHttpRequest(uri, json, HttpMethod.Post, idToken);
             }
             else

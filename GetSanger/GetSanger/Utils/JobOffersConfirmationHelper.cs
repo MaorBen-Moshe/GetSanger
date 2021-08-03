@@ -1,11 +1,8 @@
-﻿using GetSanger.Extensions;
-using GetSanger.Models;
+﻿using GetSanger.Models;
 using GetSanger.Services;
 using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GetSanger.Utils

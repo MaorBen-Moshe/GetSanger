@@ -1,8 +1,6 @@
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using GetSanger.Views;
-using GetSanger.Interfaces;
-using GetSanger.Services;
 
 namespace GetSanger
 {
@@ -13,8 +11,15 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
-
-            MainPage = new SplashPage();
+            VersionTracking.Track();
+            if(VersionTracking.IsFirstLaunchEver)
+            {
+                MainPage = new OnBoardingView();
+            }
+            else
+            {
+                MainPage = new SplashPage();
+            }
         }
 
         protected override void OnStart()
@@ -23,16 +28,9 @@ namespace GetSanger
             base.OnStart();
         }
 
-        protected async override void OnSleep()
+        protected override void OnSleep()
         {
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
-            ITrip trip = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
-            bool shared = await trip.TryShareSangerLoaction();
-            if (shared)
-            {
-                trip.LeaveTripThread();
-            }
-
             base.OnSleep();
         }
 

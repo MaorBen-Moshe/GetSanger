@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -15,10 +13,10 @@ namespace GetSanger.Controls
 
         public ExtendedListView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy)
         {
-            this.ItemSelected += OnItemSelected;
-            this.ItemTapped += OnItemTapped;
-            this.ItemAppearing += OnItemAppearing;
-            this.ItemDisappearing += OnItemDisappering;
+            ItemSelected += OnItemSelected;
+            ItemTapped += OnItemTapped;
+            ItemAppearing += OnItemAppearing;
+            ItemDisappearing += OnItemDisappering;
         }
 
         public static readonly BindableProperty TappedCommandProperty =
@@ -60,19 +58,13 @@ namespace GetSanger.Controls
 
         private void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (TappedCommand != null)
-            {
-                TappedCommand?.Execute(e.Item);
-            }
+            TappedCommand?.Execute(e.Item);
             SelectedItem = null;
         }
 
         private void OnItemAppearing(object sender, ItemVisibilityEventArgs e)
         {
-            if (ItemAppearingCommand != null)
-            {
-                ItemAppearingCommand?.Execute(e.Item);
-            }
+            ItemAppearingCommand?.Execute(e.Item);
         }
 
 

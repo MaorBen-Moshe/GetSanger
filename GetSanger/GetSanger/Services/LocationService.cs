@@ -1,5 +1,4 @@
 ﻿using GetSanger.Interfaces;
-using GetSanger.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,6 @@ namespace GetSanger.Services
     {
         private readonly System.Timers.Timer m_Timer;
         private IPageService m_PageService;
-        private static bool s_LocationSharedBySanger;
 
         public LocationService()
         {
@@ -23,11 +21,11 @@ namespace GetSanger.Services
 
         public CancellationTokenSource Cts { get; set; }
 
-        public async Task<Location> GetCurrentLocation()
+        public async Task<Location> GetCurrentLocation(bool askFor = true, bool requestAlways = false)
         {
             SetDependencies();
             Location location = null;
-            bool locationGranted = await IsLocationGrantedAndAskFor() == PermissionStatus.Granted;
+            bool locationGranted = await IsLocationGrantedAndAskFor(askFor, requestAlways) == PermissionStatus.Granted;
             if (locationGranted)
             {
                 GeolocationRequest geoReq = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
@@ -38,10 +36,10 @@ namespace GetSanger.Services
             return location;
         }
 
-        public async Task<PermissionStatus> IsLocationGrantedAndAskFor()
+        public async Task<PermissionStatus> IsLocationGrantedAndAskFor(bool askFor = true, bool requestAlways = false)
         {
             SetDependencies();
-            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            var status = await checkStatusHelper(requestAlways);
 
             if(status == PermissionStatus.Granted)
             {
@@ -50,26 +48,79 @@ namespace GetSanger.Services
 
             if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
             {
-                await m_PageService.DisplayAlert("Error", "Please go to your settings and enable the location!", "OK");
+                if (askFor)
+                {
+                    await m_PageService.DisplayAlert("Error", "Please go to your settings and enable the location!", "OK");
+                }
+
                 return status;
             }
 
-            if (Permissions.ShouldShowRationale<Permissions.LocationWhenInUse>())
+            if (shoudlRationaleHelper(requestAlways))
             {
-                await m_PageService.DisplayAlert("Note", "We need your Location to be able to give the best service with your job offer", "Thanks");
+                if (askFor)
+                {
+                    await m_PageService.DisplayAlert("Note", "We need your Location to be able to give the best service with your job offer", "Thanks");
+                }
             }
 
-            return await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            return await requestHelper(requestAlways);
         }
 
+        private bool shoudlRationaleHelper(bool requestAlways)
+        {
+            bool ret;
+            if (requestAlways)
+            {
+                ret = Permissions.ShouldShowRationale<Permissions.LocationAlways>();
+            }
+            else
+            {
+                ret = Permissions.ShouldShowRationale<Permissions.LocationWhenInUse>();
+            }
+
+            return ret;
+        }
+
+        private Task<PermissionStatus> checkStatusHelper(bool requestAlways)
+        {
+            Task<PermissionStatus> ret;
+            if (requestAlways)
+            {
+                ret = Permissions.CheckStatusAsync<Permissions.LocationAlways>();
+            }
+            else
+            {
+                ret = Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            }
+
+            return ret;
+        }
+
+        private Task<PermissionStatus> requestHelper(bool requestAlways)
+        {
+            Task<PermissionStatus> ret;
+            if (requestAlways)
+            {
+                ret = Permissions.RequestAsync<Permissions.LocationAlways>();
+            }
+            else
+            {
+                ret = Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            }
+
+            return ret;
+        }
 
         public async Task<bool> IsLocationGranted()
         {
+            SetDependencies();
             return await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>() == PermissionStatus.Granted;
         } 
 
         public async Task<Placemark> GetPickedLocation(Location i_Location)
         {
+            SetDependencies();
             Placemark placemark = null;
             if(i_Location != null)
             {
@@ -82,87 +133,43 @@ namespace GetSanger.Services
 
         public void Cancelation()
         {
+            SetDependencies();
             if (Cts != null && !Cts.IsCancellationRequested)
             {
                 Cts.Cancel();
             }
         }
 
-        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elapsed = null , int i_Interval = 15000)
+        public void StartTripThread(System.Timers.ElapsedEventHandler i_Elapsed, int i_Interval = 5000)
         {
-            bool sangerShare = i_Elapsed == null;
-            if (s_LocationSharedBySanger && sangerShare) 
+            SetDependencies();
+            if (i_Elapsed == null)
             {
                 return;
             }
 
-            Device.BeginInvokeOnMainThread(() => {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 m_Timer.Enabled = true;
-                m_Timer.Interval = i_Interval; //15000 by default
-                m_Timer.Elapsed += i_Elapsed ?? handleSangerLocation;
+                m_Timer.Interval = i_Interval; //5000 by default
+                m_Timer.Elapsed += i_Elapsed;
                 m_Timer.Start();
             });
-
-            if (sangerShare)
-            {
-                s_LocationSharedBySanger = true;
-            }
         }
 
-        public void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elapsed = null)
+        public void LeaveTripThread(System.Timers.ElapsedEventHandler i_Elapsed)
         {
-            bool sangerShare = i_Elapsed == null;
-            if (!s_LocationSharedBySanger && sangerShare)
+            SetDependencies();
+            if (i_Elapsed == null)
             {
                 return;
             }
 
             Device.BeginInvokeOnMainThread(() => {
-                m_Timer.Elapsed -= i_Elapsed ?? handleSangerLocation;
+                m_Timer.Elapsed -= i_Elapsed;
                 m_Timer.Enabled = false;
                 m_Timer.Stop();
             });
-
-            if (sangerShare)
-            {
-                s_LocationSharedBySanger = false;
-            }
-        }
-
-        public async Task<bool> TryShareSangerLoaction()
-        {
-            bool shared = false;
-            Dictionary<string, bool> activatedMap = AppManager.Instance.ConnectedUser.ActivatedMap;
-            foreach (var item in activatedMap)
-            {
-                Activity activity = await FireStoreHelper.GetActivity(item.Key);
-                if (activity.SangerID.Equals(AuthHelper.GetLoggedInUserId())
-                    && item.Value.Equals(true)
-                    && activity.Status.Equals(eActivityStatus.Active))
-                {
-                    shared = true;
-                    break;
-                }
-            }
-
-            return shared;
-        }
-
-        // we should start and end sanger location sharing every time he leaves the app or move to user mode
-        private async void handleSangerLocation(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            bool sharedEnabled = await TryShareSangerLoaction();
-            if (sharedEnabled == false)
-            {
-                LeaveTripThread();
-                return;
-            }
-
-            AppManager.Instance.ConnectedUser.UserLocation = await GetCurrentLocation();
-            if(AppManager.Instance.ConnectedUser.UserLocation != null)
-            {
-                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-            }
         }
 
         public override void SetDependencies()

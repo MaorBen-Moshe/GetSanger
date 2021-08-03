@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using Xamarin.Forms;
 
 namespace GetSanger.Converters
@@ -11,8 +9,8 @@ namespace GetSanger.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             DateTime date = (DateTime)value;
-            return ((DateTime.Now.Year - date.Year) >= 18);
-            
+            int years = DateTime.Now.Year - date.Year;
+            return (years > 18) || (years == 18 && DateTime.Now.Month >= date.Month);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

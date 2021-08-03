@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -63,14 +59,14 @@ namespace GetSanger.Controls
 
         public object CommandParameter
         {
-            get => (object)GetValue(CommandPropertyParameter);
+            get => GetValue(CommandPropertyParameter);
             set => SetValue(CommandPropertyParameter, value);
         }
         public SocialButton()
         {
             InitializeComponent();
 
-            this.GestureRecognizers.Add(new TapGestureRecognizer
+            GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command(() => {
                     Clicked?.Invoke(this, EventArgs.Empty);

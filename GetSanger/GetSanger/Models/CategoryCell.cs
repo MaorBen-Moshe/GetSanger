@@ -10,10 +10,15 @@ namespace GetSanger.Models
         private eCategory m_category;
         private bool m_Checked;
         #endregion
+
         public eCategory Category
         {
             get => m_category;
-            set  { SetStructProperty(ref m_category, value); setCategoriesImage(); }
+            set 
+            { 
+                SetStructProperty(ref m_category, value); 
+                setCategoriesImage(); 
+            }
         }
 
         // for sign up categories page
@@ -25,11 +30,6 @@ namespace GetSanger.Models
 
         //for categories main page (embedded image not Uri)
         public string ImageUri { get; set; }
-
-        public CategoryCell()
-        {
-            
-        }
 
         private void setCategoriesImage()
         {

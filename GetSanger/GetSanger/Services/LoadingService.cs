@@ -9,12 +9,12 @@ namespace GetSanger.Services
 
         public LoadingService()
         {
-            SetDependencies();
         }
 
         public void ShowLoadingPage(ContentPage i_Page = null)
         {
-            if(i_Page != null && !m_LoadingService.IsLoading)
+            SetDependencies();
+            if (i_Page != null && !m_LoadingService.IsLoading)
             {
                 m_LoadingService.InitLoadingPage(i_Page);
                 m_LoadingService.ShowLoadingPage();
@@ -27,6 +27,7 @@ namespace GetSanger.Services
 
         public void HideLoadingPage()
         {
+            SetDependencies();
             m_LoadingService.HideLoadingPage();
         }
 

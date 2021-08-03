@@ -8,9 +8,9 @@ namespace GetSanger.Interfaces
     {
         CancellationTokenSource Cts { get; set; }
 
-        Task<Location> GetCurrentLocation();
+        Task<Location> GetCurrentLocation(bool askFor = true, bool requestAlways = false);
 
-        Task<PermissionStatus> IsLocationGrantedAndAskFor();
+        Task<PermissionStatus> IsLocationGrantedAndAskFor(bool askFor = true, bool requestAlways = false);
 
         Task<bool> IsLocationGranted();
 

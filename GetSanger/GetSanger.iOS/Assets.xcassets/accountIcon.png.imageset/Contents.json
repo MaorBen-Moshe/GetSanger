@@ -1,25 +1,56 @@
 {
   "images": [
     {
-      "appearances": [],
+      "idiom": "universal"
+    },
+    {
+      "filename": "accountIcon.png",
+      "scale": "1x",
+      "idiom": "universal"
+    },
+    {
+      "filename": "accountIcon2x.png",
       "scale": "2x",
-      "idiom": "universal"
+      "idiom": "universal",
+      "filename": "AccountIcon2x1.png"
     },
     {
-      "appearances": [],
+      "filename": "accountIcon3x.png",
       "scale": "3x",
-      "idiom": "universal"
+      "idiom": "universal",
+      "filename": "AccountIcon3x1.png"
     },
     {
-      "appearances": [],
+      "idiom": "iphone"
+    },
+    {
+      "scale": "1x",
+      "idiom": "iphone"
+    },
+    {
+      "scale": "2x",
+      "idiom": "iphone"
+    },
+    {
+      "subtype": "retina4",
+      "scale": "2x",
+      "idiom": "iphone"
+    },
+    {
+      "scale": "3x",
+      "idiom": "iphone"
+    },
+    {
+      "idiom": "ipad"
+    },
+    {
       "scale": "1x",
       "idiom": "universal",
-      "filename": "accountIcon.png"
+      "filename": "AccountIcon1x.png"
     }
   ],
-  "properties": {},
   "info": {
     "version": 1,
-    "author": ""
+    "author": "xcode"
   }
 }

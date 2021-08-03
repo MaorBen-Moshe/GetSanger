@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Xamarin.Forms;
 
 namespace GetSanger.Controls
@@ -188,18 +185,20 @@ namespace GetSanger.Controls
         //uses zero based position for stars 
         private string GetStarFileName(int position)
         {
-            int currentStarMaxRating = (position + 1) ;
+            int currentStarMaxRating = (position + 1);
+            string imageStr;
             //Rating is out of 5
             if (Rating >= currentStarMaxRating)
             {
-                return "ratingStarOn.png";
+                imageStr = "ratingStarOn.png";
             }
             else
             {
-                return "ratingStarOff.png";
+                imageStr = "ratingStarOff.png";
             }
-        }
 
+            return imageStr;
+        }
 
         #endregion
     }

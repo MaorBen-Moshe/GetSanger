@@ -91,7 +91,7 @@
                                  HeightRequest="50" WidthRequest="50"
                                  CornerRadius="25"
                                  Padding="1"
-                                 BackgroundColor="White"   
+                                 BackgroundColor="Transparent"   
                                  IsVisible="{Binding ShowScrollTap,Mode=TwoWay}">
                 <StackLayout Spacing="3">
                     <Label Text="{Binding PendingMessageCount, Mode=TwoWay}"
@@ -101,8 +101,8 @@
                               VerticalTextAlignment="Center"
                               TextColor="Red"/>
                     <Image Source="ic_scrolldown"
-                               WidthRequest="25"
-                               HeightRequest="25"
+                               WidthRequest="30"
+                               HeightRequest="30"
                                VerticalOptions="CenterAndExpand"/>
 
                 </StackLayout>

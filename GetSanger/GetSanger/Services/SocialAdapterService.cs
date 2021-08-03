@@ -18,7 +18,7 @@ namespace GetSanger.Services
     public class SocialAdapterService : Service, ISocialAdapter
     {
         private ILogin m_LoginService;
-        private Interfaces.INavigation m_NavigationService;
+        private INavigation m_NavigationService;
         private IPhotoDisplay m_PhotoDisplay;
 
         public async Task<bool> SocialLogin(eSocialProvider i_Provider)
@@ -43,6 +43,7 @@ namespace GetSanger.Services
 
         public async Task SocialLink(eSocialProvider i_Provider) // except eSocialProvider.Email
         {
+            SetDependencies();
             Dictionary<string, object> details = await AuthHelper.LinkWithSocialProvider(i_Provider);
             string photoUrl = details.ContainsKey("photoUrl") ? details["photoUrl"] as string : null;
             await m_PhotoDisplay.TryGetPictureFromUri(photoUrl, AppManager.Instance.ConnectedUser);
@@ -51,7 +52,6 @@ namespace GetSanger.Services
         private User getDetails(Dictionary<string, object> i_Details)
         {
             string displayName = i_Details.ContainsKey("displayName") ? i_Details["displayName"] as string : null;
-
             User user = new User
             {
                 PersonalDetails = new PersonalDetails
@@ -63,7 +63,6 @@ namespace GetSanger.Services
             };
 
             string photoUrl = i_Details.ContainsKey("photoUrl") ? i_Details["photoUrl"] as string : null;
-
             if (photoUrl != null && user.ProfilePictureUri == null)
             {
                 user.ProfilePictureUri = new Uri(photoUrl);

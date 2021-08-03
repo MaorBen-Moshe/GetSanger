@@ -37,17 +37,12 @@ namespace GetSanger.Services
 
         public void Call()
         {
-            if(PhoneNumber == null)
-            {
-                throw new ArgumentNullException("No phone number was given!");
-            }
-
             PhoneDialer.Open(PhoneNumber);
         }
 
         public Task SendDefAppMsg()
         {
-            return Xamarin.Essentials.Sms.ComposeAsync(new SmsMessage(Message, PhoneNumber));
+            return Sms.ComposeAsync(new SmsMessage(Message, PhoneNumber));
         }
 
         public async Task<bool> SendWhatsapp()
@@ -80,7 +75,6 @@ namespace GetSanger.Services
 
         public override void SetDependencies()
         {
-           //
         }
     }
 }

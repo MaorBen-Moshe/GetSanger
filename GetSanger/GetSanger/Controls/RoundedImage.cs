@@ -1,9 +1,7 @@
 ﻿using FFImageLoading;
 using FFImageLoading.Cache;
 using FFImageLoading.Forms;
-using FFImageLoading.Work;
 using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -14,7 +12,6 @@ namespace GetSanger.Controls
         #region Fields
         private Frame m_Frame;
         private CachedImage m_CachedImage;
-        //private Image m_Image;
         #endregion
 
         #region Properties
@@ -35,7 +32,7 @@ namespace GetSanger.Controls
 
         public object CommandParameter
         {
-            get => (object)GetValue(CommandParameterProperty);
+            get => GetValue(CommandParameterProperty);
             set => SetValue(CommandParameterProperty, value);
         }
 
@@ -64,7 +61,7 @@ namespace GetSanger.Controls
                                                          validateValue: null,
                                                          propertyChanged: RadiusPropertyChanged);
 
-        public Xamarin.Forms.ImageSource ImageSource
+        public ImageSource ImageSource
         {
             get => (Xamarin.Forms.ImageSource)GetValue(ImageSourceProperty);
             set => SetValue(ImageSourceProperty, value);
@@ -72,9 +69,9 @@ namespace GetSanger.Controls
 
         public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(
                                                          propertyName: "ImageSource",
-                                                         returnType: typeof(Xamarin.Forms.ImageSource),
+                                                         returnType: typeof(ImageSource),
                                                          declaringType: typeof(RoundedImage),
-                                                         defaultValue: Xamarin.Forms.ImageSource.FromFile("profile.png"),
+                                                         defaultValue: ImageSource.FromFile("profile.png"),
                                                          defaultBindingMode: BindingMode.OneWay,
                                                          validateValue: null,
                                                          propertyChanged: imagePropertyChanged);
@@ -112,27 +109,24 @@ namespace GetSanger.Controls
             Children.Clear();
             m_Frame = new Frame
             {
-                CornerRadius = Radius / 2,
                 Padding = 0,
-                HeightRequest = Radius,
-                WidthRequest = Radius,
                 IsClippedToBounds = true,
                 HasShadow = false,
                 BorderColor = Color.Transparent,
                 HorizontalOptions = LayoutOptions.Center,
                 Content = m_CachedImage = new CachedImage
                 {
-                    WidthRequest = Radius,
-                    HeightRequest = Radius,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     Aspect = Aspect.AspectFill,
                     FadeAnimationEnabled = true,
-                    BitmapOptimizations = true,  
-                    LoadingPlaceholder = Xamarin.Forms.ImageSource.FromFile("rolling.gif")
+                    BitmapOptimizations = true,
+                    LoadingPlaceholder = ImageSource.FromFile("rolling.gif"),
+                    ErrorPlaceholder = ImageSource.FromFile("profile.jpg")
                 }
             };
 
+            setRadius();
             setCache();
             setImage(this, ImageSource);
             m_CachedImage.GestureRecognizers.Add(new TapGestureRecognizer
@@ -146,7 +140,7 @@ namespace GetSanger.Controls
 
         private static void imagePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            if (!(bindable is RoundedImage thisInstance) || !(newValue is Xamarin.Forms.ImageSource newImageSource))
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is ImageSource newImageSource))
             {
                 return;
             }
@@ -154,7 +148,7 @@ namespace GetSanger.Controls
             setImage(thisInstance, newImageSource);
         }
 
-        private async static void setImage(RoundedImage bindable, Xamarin.Forms.ImageSource i_NewSource)
+        private async static void setImage(RoundedImage bindable, ImageSource i_NewSource)
         {
             if (!bindable.IsCacheEnable)
             {
@@ -196,22 +190,22 @@ namespace GetSanger.Controls
 
         private static void RadiusPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            if (!(bindable is RoundedImage thisInstance) || !(newValue is int val))
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is int))
             {
                 return;
             }
 
-            thisInstance.setView();
+            thisInstance.setRadius();
         }
 
         private static void cachePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            if (!(bindable is RoundedImage thisInstance) || !(newValue is bool val))
+            if (!(bindable is RoundedImage thisInstance) || !(newValue is bool))
             {
                 return;
             }
 
-            thisInstance.setView();
+            thisInstance.setCache();
         }
 
         private void setCache()
@@ -226,6 +220,21 @@ namespace GetSanger.Controls
                 m_CachedImage.CacheType = CacheType.Memory;
                 m_CachedImage.CacheDuration = new TimeSpan(0);
             }
+        }
+
+        private void setRadius()
+        {
+            if(Radius % 2 != 0)
+            {
+                throw new ArgumentException("Rounded Image expect only even values for the radius property!");
+            }
+
+            m_Frame.CornerRadius = Radius / 2;
+            m_Frame.HeightRequest = Radius;
+            m_Frame.WidthRequest = Radius;
+
+            m_CachedImage.WidthRequest = Radius;
+            m_CachedImage.HeightRequest = Radius;
         }
 
         #endregion

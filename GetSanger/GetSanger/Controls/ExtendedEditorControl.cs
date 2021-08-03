@@ -52,8 +52,9 @@ namespace GetSanger.Controls
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
             if (IsExpandable)
+            {
                 InvalidateMeasure();
+            }
         }
-
     }
 }

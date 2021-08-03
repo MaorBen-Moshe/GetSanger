@@ -18,31 +18,37 @@ namespace GetSanger.Models
         #endregion
 
         public string ActivityId { get; set; }
+
         public string ClientID
         {
             get => m_ClientId;
             set => SetClassProperty(ref m_ClientId, value);
         }
+
         public string SangerID
         {
             get => m_SangertId;
             set => SetClassProperty(ref m_SangertId, value);
         }
+
         public string SangerName // the Name of the client is in jobdetails
         {
             get => m_SangerName;
             set => SetClassProperty(ref m_SangerName, value);
         }
+
         public JobOffer JobDetails
         {
             get => m_JobDetails;
             set => SetClassProperty(ref m_JobDetails, value);
         }
+
         public eActivityStatus Status
         {
             get => m_Status;
             set => SetStructProperty(ref m_Status, value);
         }
+
         public bool LocationActivatedBySanger
         {
             get => m_LocationActivatedBySanger;

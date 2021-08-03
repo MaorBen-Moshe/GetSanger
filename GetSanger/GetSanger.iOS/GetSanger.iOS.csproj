@@ -82,7 +82,6 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Persistence\SQLiteDb.cs" />
-    <Compile Include="Push\MessagingDelegate.cs" />
     <Compile Include="Rendrers\ChatEntryRendrer.cs" />
     <Compile Include="Rendrers\CustomEditorRendrer.cs" />
     <Compile Include="Rendrers\ExtendedListViewRenderer.cs" />
@@ -98,7 +97,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon.png">
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon1x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon2x1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\AccountIcon3x1.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\activityIcon.png.imageset\activityIcon.png">
@@ -245,9 +250,6 @@
     <ImageAsset Include="Assets.xcassets\locationIcon.jpg.imageset\locationIcon.jpg">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\locationIcon.jpg.imageset\locationIcon1.jpg">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\phone.png.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -324,6 +326,12 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon2x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon3x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -334,6 +342,9 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CarouselView.FormsPlugin">
+      <Version>6.0.0</Version>
+    </PackageReference>
     <PackageReference Include="Google.Apis">
       <Version>1.52.0</Version>
     </PackageReference>

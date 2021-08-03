@@ -4,12 +4,7 @@ using Xamarin.Forms;
 namespace GetSanger.Services
 {
     public class NavigationService : Service, Interfaces.INavigation
-    {
-        public NavigationService()
-        {
-
-        }
-
+    { 
         public async Task NavigateTo(string i_ViewPath)
         {
             try

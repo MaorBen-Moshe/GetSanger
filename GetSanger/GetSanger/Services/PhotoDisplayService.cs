@@ -64,6 +64,7 @@ namespace GetSanger.Services
 
         public async Task TryGetPictureFromStream(User i_User)
         {
+            SetDependencies();
             Stream stream = await DependencyService.Get<IPhotoPicker>().GetImageStreamAsync();
             if (stream != null)
             {
