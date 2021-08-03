@@ -55,17 +55,28 @@
                    SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
             </Frame>
 
-
-            <Button Text="Call Sanger" 
+            <StackLayout Orientation="Horizontal"
+                         VerticalOptions="EndAndExpand"
+                         HorizontalOptions="CenterAndExpand"
+                         Margin="0, 0, 0, 120"
+                         IsVisible="{Binding IsTrip}"
+                         Padding="10">
+                
+                <Button Text="Call Sanger" 
                     BackgroundColor="Transparent"
                     TextColor="Black"
-                    IsVisible="{Binding IsTrip}"
-                    VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
                     CornerRadius="20"
                     Padding="10"
-                    Margin="120"
                     Command="{Binding CallTripCommand}"/>
+
+                <Button Text="Focus Sanger" 
+                    BackgroundColor="Transparent"
+                    TextColor="Black"
+                    CornerRadius="20"
+                    Padding="10"
+                    Command="{Binding FocusSangerLocationCommand}"/>
+            </StackLayout>
+
             <Button Text="Focus" 
                     BackgroundColor="Transparent"
                     TextColor="Black"

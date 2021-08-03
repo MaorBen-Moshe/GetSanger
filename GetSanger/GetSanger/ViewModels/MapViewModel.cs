@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -71,7 +70,11 @@ namespace GetSanger.ViewModels
         public ICommand PinClicked { get; private set; }
 
         public ICommand CallTripCommand { get; private set; }
+
         public ICommand FocusMyLocationCommand { get; private set; }
+
+        public ICommand FocusSangerLocationCommand { get; private set; }
+
         public ICommand ExitCommand { get; set; }
 
         #endregion
@@ -125,6 +128,13 @@ namespace GetSanger.ViewModels
                 await focusLocation(i_Object);
             });
 
+            FocusSangerLocationCommand = new Command((i_Object) => {
+                if (m_SangerPin?.Position != null)
+                {
+                    Span = new MapSpan(m_SangerPin.Position, 0.01, 0.01);
+                }
+            });
+
             ExitCommand = new Command(exit);
         }
 
@@ -141,7 +151,7 @@ namespace GetSanger.ViewModels
             m_SearchPin = new Pin
             {
                 Type = PinType.SearchResult,
-                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconHD"),
+                Flat = true,
                 Label = "Chosen Place"
             };
         }
