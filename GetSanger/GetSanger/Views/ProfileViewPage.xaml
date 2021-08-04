@@ -21,7 +21,6 @@
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand">
             <Label Text="Profile" 
-                   TextColor="White"
                    FontSize="Title"
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
@@ -57,7 +56,6 @@
                                        BackgroundColor="Transparent"/>
                 <Label Text="{Binding CurrentUser.PersonalDetails.NickName}"
                    FontSize="Title"
-                   TextColor="Black"
                    BackgroundColor="Transparent"
                    Margin="0,5"
                    HorizontalOptions="CenterAndExpand"
@@ -71,7 +69,6 @@
                                           HorizontalOptions="CenterAndExpand"/>
 
             <Frame Padding="0"
-                   BorderColor="Black"
                    Margin="50,20,50,0">
                 <TableView VerticalOptions="Center"
                            
@@ -88,7 +85,6 @@
             </Frame>
 
             <Frame Padding="10"
-                   BorderColor="Black"
                    Margin="50, 10, 50, 0">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ViewRatingsCommand}" />

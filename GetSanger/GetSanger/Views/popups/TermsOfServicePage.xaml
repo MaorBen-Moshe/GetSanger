@@ -19,7 +19,7 @@
 
     <popup:PopupPage.Content>
         <StackLayout Margin="20"
-                     BackgroundColor="WhiteSmoke">
+                     >
             <Label Text="X" 
                    BackgroundColor="Transparent"
                    HorizontalOptions="EndAndExpand" 

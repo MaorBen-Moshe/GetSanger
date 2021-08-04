@@ -95,7 +95,6 @@
             <Frame 
                        VerticalOptions="FillAndExpand"
                        Padding="10"
-                       BorderColor="Black"
                        Margin="5,5,5,20"
                        HasShadow="True">
                 <Editor IsSpellCheckEnabled="True"

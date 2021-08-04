@@ -31,7 +31,6 @@
                    HorizontalTextAlignment="Center" 
                    Text="Choose Categories:" 
                    FontSize="21"
-                   TextColor="Black"
                    HorizontalOptions="CenterAndExpand" />
             <CollectionView ItemsSource="{Binding CategoriesItems}"
                             SelectedItem="{Binding SelectedItem}"
