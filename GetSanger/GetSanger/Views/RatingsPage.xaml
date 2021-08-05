@@ -44,7 +44,8 @@
                                         VerticalOptions="Start"
                                         Margin="10"
                                         TimeSortFlag="{Binding TimeSortFlag}"
-                                        TimeSortCommand="{Binding SortCommand}" />
+                                        TimeSortCommand="{Binding SortCommand}" 
+                                        BackgroundColor="{AppThemeBinding Dark={StaticResource FilterBackgroundColorDark}, Light={StaticResource FilterBackgroundColorLight}}"/>
                
                 <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding FilteredCollection}"

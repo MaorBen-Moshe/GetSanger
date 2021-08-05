@@ -32,9 +32,10 @@
                    TextDecorations="Underline"
                    Padding="10"
                    Margin="10"
-                   BackgroundColor="Transparent"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource ColorGray}, Light={StaticResource ColorTransparent}}"
                    HorizontalOptions="CenterAndExpand"
-                   IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"                    IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
+                   IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
+                   IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
                 </Label.GestureRecognizers>

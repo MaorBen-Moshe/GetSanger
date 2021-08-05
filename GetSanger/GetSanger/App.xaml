@@ -5,18 +5,22 @@
              x:Class="GetSanger.App">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary Source="View1.xaml" />
             <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
             <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
             <Color x:Key="ClientButtonColor">#91abfa</Color>
             <Color x:Key="SangerButtonColor">#7bcc54</Color>
 
+            <Color x:Key="ColorGray">Gray</Color>
+            <Color x:Key="ColorTransparent">Transparent</Color>
+            
             <Color x:Key="LabelTextColorDark">White</Color>
             <Color x:Key="LabelTextColorLight">#000000</Color>
             <Color x:Key="LabelBackgroundColorDark">#00000000</Color>
             <Color x:Key="LabelBackgroundColorLight">#00FFFFFF</Color>
             <Color x:Key="StackLayoutBackgroundColorDark">#1A1A1A</Color>
             <Color x:Key="StackLayoutBackgroundColorLight">White</Color>
-            <Color x:Key="FrameBackgroundColorDark">#000000</Color>
+            <Color x:Key="FrameBackgroundColorDark">#1A1A1A</Color>
             <Color x:Key="FrameBackgroundColorLight">White</Color>
             <Color x:Key="ListViewBackgroundColorDark">#1A1A1A</Color>
             <Color x:Key="ListViewBackgroundColorLight">White</Color>
@@ -44,15 +48,31 @@
             <Color x:Key="TabBarTextColorLight">White</Color>
             <Color x:Key="TabBarBackgroundColorDark">#1A1A1A</Color>
             <Color x:Key="TabBarBackgroundColorLight">White</Color>
+            <Color x:Key="TabBarForegroundColorLight">Gray</Color>
+            <Color x:Key="TabBarForegroundColorDark">Gray</Color>
             <Color x:Key="TabBarTitleColorDark">#910000</Color>
-            <Color x:Key="TabBarTitleColorLight">White</Color>
+            <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>
+            <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
+            <Color x:Key="TabBarUnselectedColorLight">Gray</Color>
             <Color x:Key="EditorBackgroundColorDark">#1A1A1A</Color>
             <Color x:Key="EditorBackgroundColorLight">White</Color>
-            <Color x:Key="TableViewBackgroundColorDark">#4d4d4d</Color>
+            <Color x:Key="TableViewBackgroundColorDark">#1A1A1A</Color>
             <Color x:Key="TableViewBackgroundColorLight">White</Color>
-            
+            <Color x:Key="ContentPageBackgroundColorDark">#1a1a1a</Color>
+            <Color x:Key="ContentPageBackgroundColorLight">White</Color>
+            <Color x:Key="FilterBackgroundColorDark">Transparent</Color>
+            <Color x:Key="FilterBackgroundColorLight">Transparent</Color>
+            <Color x:Key="SearchBoxTextColorDark">Gray</Color>
+            <Color x:Key="SearchBoxTextColorLight">Gray</Color>
+            <Color x:Key="ShellTitleColorDark">White</Color>
+            <Color x:Key="ShellTitleColorLight">Black</Color>
+            <Color x:Key="TableViewTextColorDark">White</Color>
+            <Color x:Key="TableViewTextColorLight">Black</Color>
+            <Color x:Key="DatePickerTextColorDark">White</Color>
+            <Color x:Key="DatePickerTextColorLight">Black</Color>
+           
             <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
-            <Style TargetType="Label" ApplyToDerivedTypes="True">
+            <Style TargetType="Label" ApplyToDerivedTypes="True" BasedOn="Styles">
                 <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource LabelTextColorDark}, Light={StaticResource LabelTextColorLight}}"/>
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource LabelBackgroundColorDark}, Light={StaticResource LabelBackgroundColorLight}}" />
                 <Setter Property="FontSize" Value="17"/>
@@ -61,37 +81,35 @@
                 <Setter Property="MaxLines" Value="7" />
 
             </Style>
-            <Style TargetType="Button" ApplyToDerivedTypes="True">
+            <Style TargetType="Button">
                 <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource ButtonTextColorDark}, Light={StaticResource ButtonTextColorLight}}" />
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundColorDark}, Light={StaticResource ButtonBackgroundColorLight}}" />
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="1,1,1,0"/>
                 <Setter Property="CornerRadius" Value="12"/>
                 <Setter Property="Padding" Value="5"/>
-                <Setter Property="BorderColor" Value="Black"/>
                 <Setter Property="BorderWidth" Value="1"/>
-
+                <Setter Property="BorderColor" Value="Black"/>
 
             </Style>
-            <Style TargetType="Entry" ApplyToDerivedTypes="True">
-                <Setter Property="TextColor" Value="Black" />
+            <Style TargetType="Entry">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EntryBackgroundColorDark}, Light={StaticResource EntryBackgroundColorLight}}" />
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Margin" Value="1,1,1,0"/>
             </Style>
-            <Style TargetType="Grid" ApplyToDerivedTypes="True">
+            <Style TargetType="Grid">
                 <Setter Property="VerticalOptions" Value ="Center"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource GridBackgroundColorDark}, Light={StaticResource GridBackgroundColorLight}}"/>
             </Style>
-            <Style TargetType="StackLayout" ApplyToDerivedTypes="True">
+            <Style TargetType="StackLayout">
                 <Setter Property="Spacing" Value="7"/>
                 <Setter Property="Orientation" Value="Vertical"/>
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource StackLayoutBackgroundColorDark}, Light={StaticResource StackLayoutBackgroundColorLight}}"/>
             </Style>
-            <Style TargetType="AbsoluteLayout" ApplyToDerivedTypes="True">
+            <Style TargetType="AbsoluteLayout">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource StackLayoutBackgroundColorDark}, Light={StaticResource StackLayoutBackgroundColorLight}}"/>
             </Style>
             <Style TargetType="Frame">
@@ -103,6 +121,12 @@
             </Style>
             <Style TargetType="TableView">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TableViewBackgroundColorDark}, Light={StaticResource TableViewBackgroundColorLight}}"/>
+            </Style>
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ContentPageBackgroundColorDark},Light={StaticResource ContentPageBackgroundColorLight}}"/>
+            </Style>
+            <Style TargetType="DatePicker">
+                <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
             </Style>
             <!--<Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource NavBarBackgroundColorDark}, Light={StaticResource NavBarBackgroundColorLight}}"  />

@@ -5,8 +5,27 @@
              xmlns:views="clr-namespace:GetSanger.Views"
              x:Class="GetSanger.AppShell.SangerShell"
              FlowDirection="LeftToRight">
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}" />
+                <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"/>
+                <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Dark={StaticResource ShellTitleColorDark}, Light={StaticResource ShellTitleColorLight}}" />
+                <Setter Property="Shell.DisabledColor" Value="#808080" />
+                <Setter Property="Shell.UnselectedColor" Value="#616161" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
+                <Setter Property="BarTextColor" Value="Green" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
 
-    
     <TabBar>
         <Tab Title="Account"
              Route="account"

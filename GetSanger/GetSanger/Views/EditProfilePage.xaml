@@ -40,18 +40,19 @@
                         <Entry Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" 
                                Keyboard="Text" 
                                Placeholder="Name"
-                               Margin="20">
+                               Margin="20"
+                               TextColor="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}">
                             <Entry.Behaviors>
                                 <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
                             </Entry.Behaviors>
                         </Entry>
                     </ViewCell>
-
                     <ViewCell>
                         <Entry Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" 
                                Keyboard="Telephone" 
                                Placeholder="Phone number"
-                               Margin="20">
+                               Margin="20"
+                               TextColor="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}">
                             <Entry.Behaviors>
                                 <behaviors:PhoneNumberMaskBehavior />
                                 <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>

@@ -25,7 +25,8 @@
         <controls:ActivitiesSearchHandler Placeholder="Search activity..."
                                     ShowsResults="True"
                                     SearchBoxVisibility="Collapsible"
-                                    Source="{Binding SearchCollection}">
+                                    Source="{Binding SearchCollection}"
+                                    >
             <controls:ActivitiesSearchHandler.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"
@@ -60,7 +61,8 @@
                                         IsStatusFilterEnabled="True"
                                         StatusSelectedIndex="{Binding SelectedStatusFilterIndex, Mode=TwoWay}"
                                         StatusFilterSource="{Binding StatusFilterList}"
-                                        StatusFilterCommand="{Binding FilterSelectedCommand}"/>
+                                        StatusFilterCommand="{Binding FilterSelectedCommand}"
+                                        BackgroundColor="{AppThemeBinding Dark={StaticResource FilterBackgroundColorDark}, Light={StaticResource FilterBackgroundColorLight}}"/>
                 
                 <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding FilteredCollection}"
