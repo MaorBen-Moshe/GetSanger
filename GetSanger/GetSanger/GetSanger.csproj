@@ -80,7 +80,7 @@
     <EmbeddedResource Update="Controls\SocialButton.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Styles\View1.xaml">
+    <EmbeddedResource Update="Styles\GeneralResourceDictionary.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="UI pages\common\ActivitiesMasterPage.xaml">

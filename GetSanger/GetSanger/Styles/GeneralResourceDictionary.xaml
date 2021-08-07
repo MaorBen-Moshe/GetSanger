@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             >
+    <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
+    <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
+    <Color x:Key="ClientButtonColor">#91abfa</Color>
+    <Color x:Key="SangerButtonColor">#7bcc54</Color>
+
+    <Color x:Key="ColorsGray">Gray</Color>
+    <Color x:Key="ColorsTransparent">Transparent</Color>
+
+    <Color x:Key="LabelTextColorDark">White</Color>
+    <Color x:Key="LabelTextColorLight">#000000</Color>
+    <Color x:Key="LabelBackgroundColorDark">#00000000</Color>
+    <Color x:Key="LabelBackgroundColorLight">#00FFFFFF</Color>
+    <Color x:Key="StackLayoutBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="StackLayoutBackgroundColorLight">White</Color>
+    <Color x:Key="FrameBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="FrameBackgroundColorLight">White</Color>
+    <Color x:Key="ListViewBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="ListViewBackgroundColorLight">White</Color>
+    <Color x:Key="ButtonBackgroundColorDark">#3d4aA3</Color>
+    <Color x:Key="ButtonBackgroundColorLight">#91abfa</Color>
+    <Color x:Key="ButtonTextColorDark">White</Color>
+    <Color x:Key="ButtonTextColorLight">#000000</Color>
+    <Color x:Key="EntryTextColorDark">White</Color>
+    <Color x:Key="EntryTextColorLight">#000000</Color>
+    <Color x:Key="EntryBackgroundColorDark">#3d4aA3</Color>
+    <Color x:Key="EntryBackgroundColorLight">#91abfa</Color>
+    <Color x:Key="FrameBorderColorDark">#000000</Color>
+    <Color x:Key="FrameBorderColorLight">#000000</Color>
+    <Color x:Key="FramBackgroundColorDark">#1a1a1a</Color>
+    <Color x:Key="FramBackgroundColorLight">White</Color>
+    <Color x:Key="GridBackgroundColorDark">#1a1a1a</Color>
+    <Color x:Key="GridBackgroundColorLight">White</Color>
+    <Color x:Key="ShellBackgroundColorDark">#1a1a1a</Color>
+    <Color x:Key="ShellBackgroundColorLight">White</Color>
+    <Color x:Key="ShellForegroundColorDark">White</Color>
+    <Color x:Key="ShellForegroundColorLight">#000000</Color>
+    <Color x:Key="NavBarTextColorDark">#1a1a1a</Color>
+    <Color x:Key="NavBarTextColorLight">White</Color>
+    <Color x:Key="TabBarTextColorDark">#000000</Color>
+    <Color x:Key="TabBarTextColorLight">White</Color>
+    <Color x:Key="TabBarBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="TabBarBackgroundColorLight">White</Color>
+    <Color x:Key="TabBarForegroundColorLight">Gray</Color>
+    <Color x:Key="TabBarForegroundColorDark">Gray</Color>
+    <Color x:Key="TabBarTitleColorDark">#910000</Color>
+    <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>
+    <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
+    <Color x:Key="TabBarUnselectedColorLight">Gray</Color>
+    <Color x:Key="EditorBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="EditorBackgroundColorLight">White</Color>
+    <Color x:Key="TableViewBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="TableViewBackgroundColorLight">White</Color>
+    <Color x:Key="ContentPageBackgroundColorDark">#1a1a1a</Color>
+    <Color x:Key="ContentPageBackgroundColorLight">White</Color>
+    <Color x:Key="FilterBackgroundColorDark">Transparent</Color>
+    <Color x:Key="FilterBackgroundColorLight">Transparent</Color>
+    <Color x:Key="SearchBoxTextColorDark">Gray</Color>
+    <Color x:Key="SearchBoxTextColorLight">Gray</Color>
+    <Color x:Key="ShellTitleColorDark">White</Color>
+    <Color x:Key="ShellTitleColorLight">Black</Color>
+    <Color x:Key="TableViewTextColorDark">White</Color>
+    <Color x:Key="TableViewTextColorLight">Black</Color>
+    <Color x:Key="DatePickerTextColorDark">White</Color>
+    <Color x:Key="DatePickerTextColorLight">Black</Color>
+    
+    <Style TargetType="Shell">
+        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}" />
+        <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"/>
+        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Dark={StaticResource ShellTitleColorDark}, Light={StaticResource ShellTitleColorLight}}" />
+        <Setter Property="Shell.DisabledColor" Value="#808080" />
+        <Setter Property="Shell.UnselectedColor" Value="#616161" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"/>
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"/>
+        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>
+    </Style>
+    <Style TargetType="TabBar">
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"/>
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"/>
+        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>
+    </Style>
+    <Style TargetType="NavigationPage" ApplyToDerivedTypes="true">
+        <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
+        <Setter Property="BarTextColor" Value="Green" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark},
+            Light={StaticResource ShellBackgroundColorLight},
+            Default={StaticResource ShellBackgroundColorLight}}"/>
+    </Style>
+    <Style TargetType="Button">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource ButtonTextColorDark}, Light={StaticResource ButtonTextColorLight}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundColorDark}, Light={StaticResource ButtonBackgroundColorLight}}" />
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Margin" Value="1,1,1,0"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="BorderColor" Value="Black"/>
+    </Style>
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource LabelTextColorDark}, Light={StaticResource LabelTextColorLight}}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource LabelBackgroundColorDark}, Light={StaticResource LabelBackgroundColorLight}}" />
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="LineBreakMode" Value="TailTruncation" />
+        <Setter Property="MaxLines" Value="7" />
+
+    </Style>
+    <Style TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EntryBackgroundColorDark}, Light={StaticResource EntryBackgroundColorLight}}" />
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Margin" Value="1,1,1,0"/>
+    </Style>
+    <Style TargetType="Grid">
+        <Setter Property="VerticalOptions" Value ="Center"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource GridBackgroundColorDark}, Light={StaticResource GridBackgroundColorLight}}"/>
+    </Style>
+    <Style TargetType="StackLayout">
+        <Setter Property="Spacing" Value="7"/>
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource StackLayoutBackgroundColorDark}, Light={StaticResource StackLayoutBackgroundColorLight}}"/>
+    </Style>
+    <Style TargetType="AbsoluteLayout">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource StackLayoutBackgroundColorDark}, Light={StaticResource StackLayoutBackgroundColorLight}}"/>
+    </Style>
+    <Style TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColorLight}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColorLight}}"/>
+    </Style>
+    <Style TargetType="Editor">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EditorBackgroundColorDark}, Light={StaticResource EditorBackgroundColorLight}}"/>
+    </Style>
+    <Style TargetType="TableView">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TableViewBackgroundColorDark}, Light={StaticResource TableViewBackgroundColorLight}}"/>
+    </Style>
+    <Style TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ContentPageBackgroundColorDark},Light={StaticResource ContentPageBackgroundColorLight}}"/>
+    </Style>
+    <Style TargetType="DatePicker">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
+    </Style>
+</ResourceDictionary>

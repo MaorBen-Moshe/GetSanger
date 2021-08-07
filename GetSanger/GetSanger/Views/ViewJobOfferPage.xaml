@@ -32,7 +32,7 @@
                    TextDecorations="Underline"
                    Padding="10"
                    Margin="10"
-                   BackgroundColor="{AppThemeBinding Dark={StaticResource ColorGray}, Light={StaticResource ColorTransparent}}"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource ColorsGray}, Light={StaticResource ColorsTransparent}}"
                    HorizontalOptions="CenterAndExpand"
                    IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
                    IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
