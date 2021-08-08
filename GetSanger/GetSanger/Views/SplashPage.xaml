@@ -12,7 +12,7 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand">
-            <Image Source="getSangerIconHD.png"
+            <Image Source="getSangerIcon.png"
                    WidthRequest="150"
                    HeightRequest="150">
             </Image>

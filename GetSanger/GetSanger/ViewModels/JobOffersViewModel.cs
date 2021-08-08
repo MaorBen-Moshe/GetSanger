@@ -126,13 +126,11 @@ namespace GetSanger.ViewModels
                                                          {
                                                              if (answer)
                                                              {
-                                                                 sr_LoadingService.ShowLoadingPage();
+                                                                 await Task.Run(async () => await FireStoreHelper.DeleteJobOffer(job.JobId));
                                                                  AllCollection.Remove(job);
                                                                  FilteredCollection.Remove(job);
                                                                  IsVisibleViewList = AllCollection.Count > 0;
-                                                                 await FireStoreHelper.DeleteJobOffer(job.JobId);
                                                                  AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
-                                                                 sr_LoadingService.HideLoadingPage();
                                                              }
                                                          });
                     });
@@ -181,6 +179,7 @@ namespace GetSanger.ViewModels
                     {
                         case eAppMode.Client:
                             currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId()));
+                            AppManager.Instance.ConnectedUser.JobOffers = new ObservableCollection<JobOffer>(currentList);
                             break;
                         case eAppMode.Sanger:
                             List<JobOffer> temp = await getSangerJobOffers();

@@ -4,7 +4,6 @@ using GetSanger.Services;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 

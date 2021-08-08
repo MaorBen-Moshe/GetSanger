@@ -40,7 +40,7 @@
                                    BorderColor="Transparent"
                                    HasShadow="False"
                                    Padding="0">
-                                <Image Source="getSangerIconHD.png"
+                                <Image Source="getSangerIcon.png"
                                        WidthRequest="140"
                                        HeightRequest="140"
                                        HorizontalOptions="Center"
@@ -49,7 +49,7 @@
                                        />
                             </Frame>
                             <!--<controls:RoundedImage Radius="94"
-                                                   ImageSource="getSangerIconHD.png"
+                                                   ImageSource="getSangerIcon.png"
                                                    HorizontalOptions="CenterAndExpand"
                                                    VerticalOptions="CenterAndExpand"
                                                    Margin="0, 0"

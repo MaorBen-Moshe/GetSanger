@@ -144,7 +144,7 @@ namespace GetSanger.ViewModels
             {
                 Type = PinType.Generic,
                 Flat = true,
-                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconHD"),
+                Icon = BitmapDescriptorFactory.FromBundle("getSangerIcon"),
                 Label = "Sanger Location",
             };
 

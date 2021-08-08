@@ -12,8 +12,8 @@ namespace GetSanger.Droid.Services
             int iconId = 0;
             switch (descriptor.Id)
             {
-                case "getSangerIconHD":
-                    iconId = Resource.Drawable.getSangerIconHD;
+                case "getSangerIcon":
+                    iconId = Resource.Drawable.getSangerIcon;
                     break;
             }
 

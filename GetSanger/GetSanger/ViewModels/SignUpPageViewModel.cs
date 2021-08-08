@@ -270,6 +270,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
+                sr_LoadingService.ShowLoadingPage();
                 m_CheckedItems = (from category in CategoriesItems
                 where category.Checked == true && category.Category.Equals(eCategory.All) == false
                 select category.Category).ToList();
@@ -277,9 +278,10 @@ namespace GetSanger.ViewModels
                 CreatedUser.RegistrationToken = await sr_PushService.GetRegistrationToken();
                 CreatedUser.UserId ??= AuthHelper.GetLoggedInUserId();
                 CreatedUser.UserLocation = await sr_LocationService.GetCurrentLocation();
-                await RunTaskWhileLoading(FireStoreHelper.AddUser(CreatedUser));
-                await RunTaskWhileLoading(sr_PushService.RegisterTopics(CreatedUser.UserId,
-                    (m_CheckedItems.Select(category => ((int) category).ToString())).ToArray()));
+                await FireStoreHelper.AddUser(CreatedUser);
+                await sr_PushService.RegisterTopics(CreatedUser.UserId,
+                    (m_CheckedItems.Select(category => ((int) category).ToString())).ToArray());
+                sr_LoadingService.HideLoadingPage();
                 await PopupNavigation.Instance.PushAsync(new ModePage());
                 await sr_NavigationService.NavigateTo("../../..");
             }

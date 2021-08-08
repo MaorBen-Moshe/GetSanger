@@ -48,31 +48,21 @@ namespace GetSanger.ViewModels
             SangerCommand = new Command(sangerCommandHelper);
         }
 
-        private async void userCommandHelper()
+        private void userCommandHelper()
         {
-            try
-            {
-                bool verified = await RunTaskWhileLoading(sr_LoginServices.LoginUser(eAppMode.Client));
-                if (!verified)
-                {
-                    await sr_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
-                }
-                else
-                {
-                    await PopupNavigation.Instance.PopAsync();
-                }
-            }
-            catch(Exception e)
-            {
-                await e.LogAndDisplayError($"{nameof(ModeViewModel)}:userCommandHelper", "Error", e.Message);
-            }
+            commandHelper(eAppMode.Client);
         }
 
-        private async void sangerCommandHelper()
+        private void sangerCommandHelper()
+        {
+            commandHelper(eAppMode.Sanger);
+        }
+
+        private async void commandHelper(eAppMode i_Mode)
         {
             try
             {
-                bool verified = await RunTaskWhileLoading(sr_LoginServices.LoginUser(eAppMode.Sanger));
+                bool verified = await RunTaskWhileLoading(sr_LoginServices.LoginUser(i_Mode));
                 if (!verified)
                 {
                     await sr_PageService.DisplayAlert("Note", "Please verify your email to continue!", "OK");
@@ -82,9 +72,9 @@ namespace GetSanger.ViewModels
                     await PopupNavigation.Instance.PopAsync();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                await e.LogAndDisplayError($"{nameof(ModeViewModel)}:sangerCommandHelper", "Error", e.Message);
+                await e.LogAndDisplayError($"{nameof(ModeViewModel)}:commandHelper:{i_Mode}", "Error", e.Message);
             }
         }
         #endregion

@@ -112,7 +112,8 @@ namespace GetSanger.ViewModels
                 UserImage = sr_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
                 Placemark placemark = await sr_LocationService.GetPickedLocation(CurrentUser.UserLocation);
                 UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
-                AverageRating = getAverage(ratings);
+                AverageRating = ratings?.Count > 0 ? (int)ratings.Average(rating => rating.Score) : 1;
+                //AverageRating = getAverage(ratings);
             }
             catch(Exception e)
             {
@@ -207,7 +208,13 @@ namespace GetSanger.ViewModels
                 }
 
                 var ratingsPopup = new AddRatingPage(CurrentUser.UserId);
-                (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += async () => AverageRating = getAverage(await FireStoreHelper.GetRatings(CurrentUser.UserId));
+                (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += async () =>
+                {
+                    List<Rating> ratings = await FireStoreHelper.GetRatings(CurrentUser.UserId);
+                    AverageRating = ratings?.Count > 0 ? (int)ratings.Average(rating => rating.Score) : 1;
+                    //AverageRating = getAverage(await FireStoreHelper.GetRatings(CurrentUser.UserId))
+                };
+
                 await PopupNavigation.Instance.PushAsync(ratingsPopup);
             }
             catch (Exception e)
