@@ -143,8 +143,7 @@ namespace GetSanger.ViewModels
             m_SangerPin = new Pin
             {
                 Type = PinType.Generic,
-                Flat = true,
-                Icon = BitmapDescriptorFactory.FromBundle("getSangerIcon"),
+                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconTransparent"),
                 Label = "Sanger Location",
             };
 

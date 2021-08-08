@@ -332,6 +332,9 @@
   <ItemGroup>
     <AndroidResource Include="Resources\mipmap-xxxhdpi\getSangerIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\getSangerIconTransparent.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
