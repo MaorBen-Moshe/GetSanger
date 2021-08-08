@@ -88,20 +88,22 @@ namespace GetSanger.ViewModels.chat
             }
         }
 
-        private async void setUsers()
+        private void setUsers()
         {
-            sr_LoadingService.ShowLoadingPage();
-            IChatDb database = await ChatDatabase.ChatDatabase.Instance;
-            List<ChatUser> users = (await database.GetAllUsersAsync()).ToList();
-            foreach(var user in users)
+            setItems(async () =>
             {
-                user.User = await FireStoreHelper.GetUser(user.UserId);
-            }
+                IChatDb database = await ChatDatabase.ChatDatabase.Instance;
+                List<ChatUser> users = (await database.GetAllUsersAsync()).ToList();
+                foreach (var user in users)
+                {
+                    user.User = await FireStoreHelper.GetUser(user.UserId);
+                }
 
-            AllCollection = new ObservableCollection<ChatUser>(users.OrderByDescending(user => user.LastMessage));
-            SearchCollection = new ObservableCollection<ChatUser>(AllCollection);
-            IsVisibleViewList = AllCollection.Count > 0;
-            sr_LoadingService.HideLoadingPage();
+                AllCollection = new ObservableCollection<ChatUser>(users.OrderByDescending(user => user.LastMessage));
+                SearchCollection = new ObservableCollection<ChatUser>(AllCollection);
+                IsVisibleViewList = AllCollection.Count > 0;
+                NoItemsText = "No chats available";
+            });
         }
 
         protected override void filterSelected(object i_Param)

@@ -24,7 +24,21 @@ namespace GetSanger.Controls
                                                                                 validateValue: null,
                                                                                 propertyChanged: LabelTextPropertyChanged);
 
-       public ICommand RefreshListCommand
+        public Color TextColor
+        {
+            get => (Color)GetValue(TextColorProperty);
+            set => SetValue(TextColorProperty, value);
+        }
+
+        public static readonly BindableProperty TextColorProperty = BindableProperty.Create(
+                                                                                propertyName: "TextColor",
+                                                                                returnType: typeof(Color),
+                                                                                declaringType: typeof(NoItemsInListTemplate),
+                                                                                defaultValue: Color.DarkGray,
+                                                                                defaultBindingMode: BindingMode.OneWay,
+                                                                                validateValue: null);
+
+        public ICommand RefreshListCommand
         {
             get => (ICommand)GetValue(RefreshListCommandProperty);
             set => SetValue(RefreshListCommandProperty, value);
@@ -55,10 +69,10 @@ namespace GetSanger.Controls
             {
                 FontSize = 20,
                 BackgroundColor = Color.Transparent,
-                TextColor = Color.DarkGray
             };
 
             updateLabelText();
+            m_EmptyLabel.SetBinding(Label.TextColorProperty, new Binding("TextColor", mode:BindingMode.TwoWay));
             /*Refresh List Label Part*/
             m_RefreshLabel = new Label
             {
@@ -72,9 +86,9 @@ namespace GetSanger.Controls
 
 
 
-            this.Children.Add(m_LogoImage);
-            this.Children.Add(m_EmptyLabel);
-            this.Children.Add(m_RefreshLabel);
+            Children.Add(m_LogoImage);
+            Children.Add(m_EmptyLabel);
+            Children.Add(m_RefreshLabel);
         }
 
         private static void LabelTextPropertyChanged(BindableObject bindable, object oldvalue, object newValue)

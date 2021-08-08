@@ -102,6 +102,7 @@ namespace GetSanger.ViewModels
             InfinityChecked = AppManager.Instance.ConnectedUser.DistanceLimit == -1;
             DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
             m_OldDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
+            setDistanceString();
         }
 
         public override void Disappearing()

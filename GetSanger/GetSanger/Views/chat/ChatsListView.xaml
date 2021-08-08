@@ -94,7 +94,8 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsInListTemplate Text="No Messages" 
+                <controls:NoItemsInListTemplate Text="{Binding NoItemsText}"
+                                                TextColor="{Binding NoItemsTextColor}"
                                                 RefreshListCommand="{Binding RefreshingCommand}"
                                                 IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
             </StackLayout>
