@@ -1,11 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Shell xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:views="clr-namespace:GetSanger.Views"
-             xmlns:chat="clr-namespace:GetSanger.Views.chat"
-             x:Class="GetSanger.AppShell.UserShell"
-             FlowDirection="LeftToRight">
-
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:views="clr-namespace:GetSanger.Views"
+            xmlns:chat="clr-namespace:GetSanger.Views.chat"
+            x:Class="GetSanger.AppShell.UserShell"
+            FlowDirection="LeftToRight"
+            BackgroundColor="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}"
+             ForegroundColor="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"
+             TitleColor="{AppThemeBinding Dark={StaticResource ShellTitleColorDark}, Light={StaticResource ShellTitleColorLight}}"
+             DisabledColor="#808080"
+             UnselectedColor="#616161"
+             TabBarBackgroundColor="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}"
+             TabBarForegroundColor="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"
+             TabBarUnselectedColor="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"
+             TabBarTitleColor="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"
+       >
+    
     <TabBar>
         <Tab Title="Account"
              Route="account"

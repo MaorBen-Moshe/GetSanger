@@ -6,7 +6,8 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.EditJobOfferPage"
-             Shell.TabBarIsVisible="False">
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource ContentPageBackgroundColorDark},Light={StaticResource ContentPageBackgroundColorLight}}">
 
     <ContentPage.BindingContext>
         <vm:EditJobOfferViewModel />
@@ -95,7 +96,6 @@
             <Frame 
                        VerticalOptions="FillAndExpand"
                        Padding="10"
-                       BorderColor="Black"
                        Margin="5,5,5,20"
                        HasShadow="True">
                 <Editor IsSpellCheckEnabled="True"

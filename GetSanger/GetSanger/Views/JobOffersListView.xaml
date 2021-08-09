@@ -21,9 +21,10 @@
 
     <Shell.SearchHandler>
         <controls:JobOffersSearchHandler Placeholder="Search job offer..."
-                                    ShowsResults="True"
-                                    SearchBoxVisibility="Collapsible"
-                                    Source="{Binding SearchCollection}">
+                                        ShowsResults="True"
+                                        SearchBoxVisibility="Collapsible"
+                                        Source="{Binding SearchCollection}"
+                                        TextColor="{AppThemeBinding Dark={StaticResource SearchBoxTextColorDark}, Light={StaticResource SearchBoxTextColorLight}}">
             <controls:JobOffersSearchHandler.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10"
@@ -53,8 +54,9 @@
                                         IsCategoryFilterEnabled="True"
                                         CategorySelectedIndex="{Binding SelectedCategoryFilterIndex, Mode=TwoWay}"
                                         CategoryFilterSource="{Binding CategoriesFilterList}" 
-                                        CategoryFilterCommand="{Binding FilterSelectedCommand}" />
-                
+                                        CategoryFilterCommand="{Binding FilterSelectedCommand}" 
+                                        BackgroundColor="{AppThemeBinding Dark={StaticResource FilterBackgroundColorDark}, Light={StaticResource FilterBackgroundColorLight}}"/>
+
                 <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding FilteredCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
@@ -72,8 +74,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame BorderColor="Gray" 
-                                       Padding="0"
+                                <Frame Padding="0"
                                        Margin="10">
                                     <StackLayout Padding="20">
                                         <StackLayout Orientation="Horizontal"

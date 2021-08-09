@@ -21,13 +21,11 @@
         <Frame Padding="5"
                Margin="20"
                BorderColor="Black"
-               BackgroundColor="White"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
                HasShadow="True">
             <StackLayout>
                 <Label Text="Add Notes"
-                       TextColor="Black"
                        TextDecorations="Underline"
                        TextTransform="Uppercase"
                        FontSize="Title"

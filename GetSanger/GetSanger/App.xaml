@@ -5,48 +5,8 @@
              x:Class="GetSanger.App">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary Source="Styles/GeneralResourceDictionary.xaml" />
             <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="BackgroundColor" Value="White" />
-                <Setter Property="FontSize" Value="17"/>
-                <Setter Property="Padding" Value="5"/>
-                <Setter Property="LineBreakMode" Value="TailTruncation" />
-                <Setter Property="MaxLines" Value="7" />
-            </Style>
-            <Style TargetType="Button">
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="BackgroundColor" Value="#91abfa" />
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Margin" Value="1,1,1,0"/>
-                <Setter Property="CornerRadius" Value="12"/>
-                <Setter Property="Padding" Value="5"/>
-                <Setter Property="BorderColor" Value="Black"/>
-                <Setter Property="BorderWidth" Value="1"/>
-
-            </Style>
-            <Style TargetType="Entry">
-                <Setter Property="TextColor" Value="Black" />
-                <Setter Property="BackgroundColor" Value="#91abfa" />
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Margin" Value="1,1,1,0"/>
-            </Style>
-            <Style TargetType="Grid">
-                <Setter Property="VerticalOptions" Value ="Center"/>
-                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-            </Style>
-            <Style TargetType="StackLayout">
-                <Setter Property="Spacing" Value="7"/>
-                <Setter Property="Orientation" Value="Vertical"/>
-                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
-                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-            </Style>
-
-            <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
-            <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
-            <Color x:Key="ClientButtonColor">#91abfa</Color>
-            <Color x:Key="SangerButtonColor">#7bcc54</Color>
-            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -23,9 +23,7 @@
                VerticalOptions="FillAndExpand"
                Margin="20, 160"
                CornerRadius="20"
-               BackgroundColor="AliceBlue"
                Padding="10"
-               BorderColor="Black"
                HasShadow="True">
             <Editor IsSpellCheckEnabled="True"
                     IsTextPredictionEnabled="True"

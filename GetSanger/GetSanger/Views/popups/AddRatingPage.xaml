@@ -31,12 +31,11 @@
     </popup:PopupPage.Animation>
 
     <popup:PopupPage.Content>
-        <Frame BackgroundColor="White"
-               Padding="5"
+        <Frame Padding="5"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
                Margin="10"
-               BorderColor="Black">
+               >
             <StackLayout>
                 <Label Text="Add rating"
                        Margin="10"

@@ -21,7 +21,6 @@
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand">
             <Label Text="Profile" 
-                   TextColor="White"
                    FontSize="Title"
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
@@ -57,7 +56,6 @@
                                        BackgroundColor="Transparent"/>
                 <Label Text="{Binding CurrentUser.PersonalDetails.NickName}"
                    FontSize="Title"
-                   TextColor="Black"
                    BackgroundColor="Transparent"
                    Margin="0,5"
                    HorizontalOptions="CenterAndExpand"
@@ -71,25 +69,24 @@
                                           HorizontalOptions="CenterAndExpand"/>
 
             <Frame Padding="0"
-                   BorderColor="Black"
                    Margin="50,20,50,0">
                 <TableView VerticalOptions="Center"
                            
                            HeightRequest="136">
-                    <TableRoot TextColor="Black">
-                        <TableSection Title="Details" TextColor="Black">
+                    <TableRoot>
+                        <TableSection Title="Details" TextColor="{AppThemeBinding Dark={StaticResource TableViewTextColorDark}, Light={StaticResource TableViewTextColorLight}}">
                             <TextCell Text="{Binding CurrentUser.PersonalDetails.Gender, StringFormat='Gender: {0}'}"
-                                      TextColor="Black"/>
+                                     TextColor="{AppThemeBinding Dark={StaticResource TableViewTextColorDark}, Light={StaticResource TableViewTextColorLight}}"/>
                             <TextCell Text="{Binding  CurrentUser.PersonalDetails.Birthday, StringFormat='Birthday: {0:dd/MM/yyyy}'}"
-                                      TextColor="Black"/>
+                                     TextColor="{AppThemeBinding Dark={StaticResource TableViewTextColorDark}, Light={StaticResource TableViewTextColorLight}}"/>
                         </TableSection>
                     </TableRoot>
                 </TableView>
             </Frame>
 
             <Frame Padding="10"
-                   BorderColor="Black"
-                   Margin="50, 10, 50, 0">
+                   Margin="50, 10, 50, 0"
+                   BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ViewRatingsCommand}" />
                 </Frame.GestureRecognizers>
