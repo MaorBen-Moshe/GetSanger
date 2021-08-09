@@ -33,14 +33,25 @@ namespace GetSanger.Services
                     if (!firstTime)
                     {
                         AppManager.Instance.ConnectedUser = await FireStoreHelper.GetUser(userId);
-                        AppManager.Instance.ConnectedUser.UserLocation = await m_Location.GetCurrentLocation();
-                        bool isRegistrationTokenChanged = await m_PushServices.IsRegistrationTokenChanged();
-                        if (isRegistrationTokenChanged)
+                        await Task.Run(async () =>
                         {
-                            AppManager.Instance.ConnectedUser.RegistrationToken = await m_PushServices.GetRegistrationToken();
-                        }
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+                                AppManager.Instance.ConnectedUser.UserLocation = await m_Location.GetCurrentLocation();
+                                await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                                return;
+                            });
+                             
+                            bool isRegistrationTokenChanged = await m_PushServices.IsRegistrationTokenChanged();
+                            if (isRegistrationTokenChanged)
+                            {
+                                 AppManager.Instance.ConnectedUser.RegistrationToken = await m_PushServices.GetRegistrationToken();
+                            }
 
-                        await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+
+                            await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                        });
+
                         eAppMode? mode = AppManager.Instance.ConnectedUser.LastUserMode;
                         if (mode == null)
                         {

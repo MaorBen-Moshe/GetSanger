@@ -29,7 +29,7 @@
 	<key>MinimumOSVersion</key>
 	<string>13.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>GetSanger</string>
+	<string>Get Sanger</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.companyname.GetSanger</string>
 	<key>CFBundleVersion</key>

@@ -7,7 +7,6 @@ using Android.Content;
 using GetSanger.Droid.Services;
 using GetSanger.Services;
 using Plugin.CurrentActivity;
-using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Android.Content.PM;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps.Android;
@@ -15,7 +14,7 @@ using CarouselView.FormsPlugin.Droid;
 
 namespace GetSanger.Droid
 {
-    [Activity(Label = "GetSanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTask,
+    [Activity(Label = "Get Sanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTask,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {

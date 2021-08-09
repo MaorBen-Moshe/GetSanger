@@ -211,25 +211,29 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private async void setActivities()
+        private void setActivities()
         {
-            List<Activity> activities = await RunTaskWhileLoading(FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId()));
-            if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
+            setItems(async () =>
             {
-                // client should not see pending activities because it is like job offers
-                activities = activities.Where(activity => activity.ClientID.Equals(AuthHelper.GetLoggedInUserId())).ToList();
-            }
-            else // sanger mode
-            {
-                activities = activities.Where(activity => activity.SangerID.Equals(AuthHelper.GetLoggedInUserId())).ToList();
-            }
+                List<Activity> activities = await FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId());
+                if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
+                {
+                    // client should not see pending activities because it is like job offers
+                    activities = activities.Where(activity => activity.ClientID.Equals(AuthHelper.GetLoggedInUserId())).ToList();
+                }
+                else // sanger mode
+                {
+                    activities = activities.Where(activity => activity.SangerID.Equals(AuthHelper.GetLoggedInUserId())).ToList();
+                }
 
-            AllCollection = new ObservableCollection<Activity>(activities.OrderByDescending(activity => activity.JobDetails.Date));
-            FilteredCollection = new ObservableCollection<Activity>(AllCollection);
-            SearchCollection = new ObservableCollection<Activity>(AllCollection);
-            IsVisibleViewList = AllCollection.Count > 0;
-            setFilterIndices();
-            IsClientMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
+                AllCollection = new ObservableCollection<Activity>(activities.OrderByDescending(activity => activity.JobDetails.Date));
+                FilteredCollection = new ObservableCollection<Activity>(AllCollection);
+                SearchCollection = new ObservableCollection<Activity>(AllCollection);
+                IsVisibleViewList = AllCollection.Count > 0;
+                NoItemsText = "No activities available";
+                setFilterIndices();
+                IsClientMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Client);
+            });
         }
         #endregion
     }

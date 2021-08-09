@@ -26,6 +26,7 @@ namespace GetSanger.Extensions
             sr_CrashesService.SetCustomKey("ClassName", i_NameOfClassCrashes);
             sr_CrashesService.SetCustomKey("eAppMode", AppManager.Instance.CurrentMode.ToString());
             IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+            i_CustomMessage = i_CustomMessage != null ? i_CustomMessage + " " + i_Exception.Message : i_Exception.Message;
             if (i_IsAcceptDisplay)
             {
                 await service.DisplayAlert(i_Header, i_CustomMessage, "OK");

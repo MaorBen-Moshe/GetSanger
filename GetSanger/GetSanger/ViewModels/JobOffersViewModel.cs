@@ -126,13 +126,11 @@ namespace GetSanger.ViewModels
                                                          {
                                                              if (answer)
                                                              {
-                                                                 sr_LoadingService.ShowLoadingPage();
+                                                                 await Task.Run(async () => await FireStoreHelper.DeleteJobOffer(job.JobId));
                                                                  AllCollection.Remove(job);
                                                                  FilteredCollection.Remove(job);
                                                                  IsVisibleViewList = AllCollection.Count > 0;
-                                                                 await FireStoreHelper.DeleteJobOffer(job.JobId);
                                                                  AppManager.Instance.ConnectedUser.JobOffers.Remove(job);
-                                                                 sr_LoadingService.HideLoadingPage();
                                                              }
                                                          });
                     });
@@ -170,33 +168,38 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private async void setJobOffers()
+        private void setJobOffers()
         {
-            try
+            setItems(async () =>
             {
-                ObservableCollection<JobOffer> currentList = null;
-                switch (AppManager.Instance.CurrentMode)
+                try
                 {
-                    case eAppMode.Client:
-                        currentList = new ObservableCollection<JobOffer>(await RunTaskWhileLoading(FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId())));
-                        break;
-                    case eAppMode.Sanger:
-                        List<JobOffer> temp = await RunTaskWhileLoading(getSangerJobOffers());
-                        currentList = new ObservableCollection<JobOffer>(temp);
-                        break;
-                }
+                    ObservableCollection<JobOffer> currentList = null;
+                    switch (AppManager.Instance.CurrentMode)
+                    {
+                        case eAppMode.Client:
+                            currentList = new ObservableCollection<JobOffer>(await FireStoreHelper.GetUserJobOffers(AuthHelper.GetLoggedInUserId()));
+                            AppManager.Instance.ConnectedUser.JobOffers = new ObservableCollection<JobOffer>(currentList);
+                            break;
+                        case eAppMode.Sanger:
+                            List<JobOffer> temp = await getSangerJobOffers();
+                            currentList = new ObservableCollection<JobOffer>(temp);
+                            break;
+                    }
 
-                AllCollection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
-                FilteredCollection = new ObservableCollection<JobOffer>(AllCollection);
-                SearchCollection = new ObservableCollection<JobOffer>(AllCollection);
-                IsVisibleViewList = AllCollection.Count > 0;
-                IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
-                setFilterIndices();
-            }
-            catch (Exception e)
-            {
-                await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:setJobOffers", "Error", e.Message);
-            }
+                    AllCollection = new ObservableCollection<JobOffer>(currentList.OrderByDescending(joboffer => joboffer.Date));
+                    FilteredCollection = new ObservableCollection<JobOffer>(AllCollection);
+                    SearchCollection = new ObservableCollection<JobOffer>(AllCollection);
+                    IsVisibleViewList = AllCollection.Count > 0;
+                    NoItemsText = "No jobs available";
+                    IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
+                    setFilterIndices();
+                }
+                catch (Exception e)
+                {
+                    await e.LogAndDisplayError($"{nameof(JobOffersViewModel)}:setJobOffers", "Error", e.Message);
+                }
+            });
         }
 
         private async Task<List<JobOffer>> getSangerJobOffers()

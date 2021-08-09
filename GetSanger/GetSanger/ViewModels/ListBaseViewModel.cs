@@ -21,6 +21,8 @@ namespace GetSanger.ViewModels
         private bool m_SelectedTimeFilterIndex;
         private List<string> m_CategoriesFilterList;
         private int m_SelectedCategoryFilterIndex;
+        private string m_NoItemsText;
+        private Color m_NoItemsTextColor;
         #endregion
 
         #region Properties
@@ -77,6 +79,18 @@ namespace GetSanger.ViewModels
         {
             get => m_SelectedCategoryFilterIndex;
             set => SetStructProperty(ref m_SelectedCategoryFilterIndex, value);
+        }
+
+        public string NoItemsText
+        {
+            get => m_NoItemsText;
+            set => SetClassProperty(ref m_NoItemsText, value);
+        }
+
+        public Color NoItemsTextColor
+        {
+            get => m_NoItemsTextColor;
+            set => SetStructProperty(ref m_NoItemsTextColor, value);
         }
         #endregion
 
@@ -143,6 +157,15 @@ namespace GetSanger.ViewModels
                     select current
                     );
             }
+        }
+
+        protected void setItems(Action action)
+        {
+            NoItemsTextColor = Color.Red;
+            IsVisibleViewList = false;
+            NoItemsText = "Fetching items...";
+            action?.Invoke();
+            NoItemsTextColor = Color.DarkGray;
         }
         #endregion
     }

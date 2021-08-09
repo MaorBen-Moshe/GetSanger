@@ -107,31 +107,35 @@ namespace GetSanger.ViewModels
             }
         }
 
-        private async void setRatings()
+        private void setRatings()
         {
-            try
+            setItems(async () =>
             {
-                List<Rating> ratingLst = await RunTaskWhileLoading(FireStoreHelper.GetRatings(Id));
-                AllCollection = new ObservableCollection<Rating>(ratingLst.OrderByDescending(rating => rating.TimeAdded));
-                FilteredCollection = new ObservableCollection<Rating>(AllCollection);
-                SearchCollection = new ObservableCollection<Rating>(AllCollection);
-                if (IsMyRatings)
+                try
                 {
-                    AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst); 
-                }
+                    List<Rating> ratingLst = await FireStoreHelper.GetRatings(Id);
+                    AllCollection = new ObservableCollection<Rating>(ratingLst.OrderByDescending(rating => rating.TimeAdded));
+                    FilteredCollection = new ObservableCollection<Rating>(AllCollection);
+                    SearchCollection = new ObservableCollection<Rating>(AllCollection);
+                    if (IsMyRatings)
+                    {
+                        AppManager.Instance.ConnectedUser.Ratings = new ObservableCollection<Rating>(ratingLst);
+                    }
 
-                IsVisibleViewList = AllCollection.Count > 0;
-                if(IsVisibleViewList)
+                    IsVisibleViewList = AllCollection.Count > 0;
+                    NoItemsText = "No ratings available";
+                    if (IsVisibleViewList)
+                    {
+                        await sr_PageService.DisplayAlert("Note", "Click on rating to move to the writer's profile!", "OK");
+                    }
+
+                    setFilterIndices();
+                }
+                catch (Exception e)
                 {
-                    await sr_PageService.DisplayAlert("Note", "Click on rating to move to the writer's profile!", "OK");
+                    await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:setRatings", "Error", e.Message);
                 }
-
-                setFilterIndices();
-            }
-            catch (Exception e)
-            {
-                await e.LogAndDisplayError($"{nameof(RatingsViewModel)}:setRatings", "Error", e.Message);
-            }
+            });
         }
 
         #endregion

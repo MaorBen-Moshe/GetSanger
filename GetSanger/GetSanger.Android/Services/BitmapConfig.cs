@@ -15,6 +15,9 @@ namespace GetSanger.Droid.Services
                 case "getSangerIconHD":
                     iconId = Resource.Drawable.getSangerIconHD;
                     break;
+                case "getSangerIconTransparent":
+                    iconId = Resource.Drawable.getSangerIconTransparent;
+                    break;
             }
 
             return AndroidBitmapDescriptorFactory.FromResource(iconId);

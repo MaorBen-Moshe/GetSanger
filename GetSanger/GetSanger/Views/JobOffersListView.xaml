@@ -126,7 +126,8 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <controls:NoItemsInListTemplate Text="No Job Offers" 
+                <controls:NoItemsInListTemplate Text="{Binding NoItemsText}" 
+                                                TextColor="{Binding NoItemsTextColor}"
                                                 RefreshListCommand="{Binding RefreshingCommand}"
                                                 IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
             </StackLayout>

@@ -123,7 +123,6 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                sr_LoadingService.ShowLoadingPage();
                 IsDeliveryCategory = Job.Category.Equals(eCategory.Delivery);
                 ProfileText ??= string.Format(@"Go to {0}'s profile", Job.ClientName);
 
@@ -141,7 +140,6 @@ namespace GetSanger.ViewModels
 
                 IsMyjobOffer = AppManager.Instance.ConnectedUser.UserId == Job.ClientID;
                 IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
-                sr_LoadingService.HideLoadingPage();
             }
             catch(Exception e)
             {
@@ -182,10 +180,21 @@ namespace GetSanger.ViewModels
                                                      {
                                                          if (answer)
                                                          {
-                                                             sr_LoadingService.ShowLoadingPage();
-                                                             await FireStoreHelper.DeleteJobOffer(Job.JobId);
+                                                             await Task.Run(async() => {
+                                                                 try
+                                                                 {
+                                                                     await FireStoreHelper.DeleteJobOffer(Job.JobId);
+                                                                 }
+                                                                 catch(Exception e)
+                                                                 {
+                                                                     Device.BeginInvokeOnMainThread(async () =>
+                                                                     {
+                                                                         await e.LogAndDisplayError($"{nameof(ViewJobOfferViewModel)}:DeleteMyJobOfferCommand", "Error");
+                                                                     });
+                                                                 }
+                                                             });
+
                                                              AppManager.Instance.ConnectedUser.JobOffers.Remove(Job);
-                                                             sr_LoadingService.HideLoadingPage();
                                                              await GoBack();
                                                          }
                                                      });

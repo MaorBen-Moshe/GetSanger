@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -102,6 +103,7 @@ namespace GetSanger.ViewModels
             InfinityChecked = AppManager.Instance.ConnectedUser.DistanceLimit == -1;
             DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
             m_OldDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
+            setDistanceString();
         }
 
         public override void Disappearing()
@@ -130,28 +132,31 @@ namespace GetSanger.ViewModels
             {
                 bool isChanged = false;
                 sr_LoadingService.ShowLoadingPage(new LoadingPage("Saving..."));
-                if (m_NewCategoriesSubscribed?.Count > 0)
+                await Task.Run(async () =>
                 {
-                    isChanged = true;
-                    await sr_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray());
-                }
-                if (m_NewCategoriesUnsubscribed?.Count > 0)
-                {
-                    isChanged = true;
-                    await sr_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray());
-                }
-                if (IsGenericNotificatons != AppManager.Instance.ConnectedUser.IsGenericNotifications)
-                {
-                    isChanged = true;
-                    AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
-                    genericUpdateHelper();
-                }
+                    if (m_NewCategoriesSubscribed?.Count > 0)
+                    {
+                        isChanged = true;
+                        await sr_PushService.RegisterTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesSubscribed.ToArray());
+                    }
+                    if (m_NewCategoriesUnsubscribed?.Count > 0)
+                    {
+                        isChanged = true;
+                        await sr_PushService.UnsubscribeTopics(AppManager.Instance.ConnectedUser.UserId, m_NewCategoriesUnsubscribed.ToArray());
+                    }
+                    if (IsGenericNotificatons != AppManager.Instance.ConnectedUser.IsGenericNotifications)
+                    {
+                        isChanged = true;
+                        AppManager.Instance.ConnectedUser.IsGenericNotifications = IsGenericNotificatons;
+                        genericUpdateHelper();
+                    }
 
-                bool sliderChanged = m_OldDistanceLimit != AppManager.Instance.ConnectedUser.DistanceLimit;
-                if (isChanged || sliderChanged)
-                {
-                    await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
-                }
+                    bool sliderChanged = m_OldDistanceLimit != AppManager.Instance.ConnectedUser.DistanceLimit;
+                    if (isChanged || sliderChanged)
+                    {
+                        await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
+                    }
+                });
 
                 m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;
                 sr_LoadingService.HideLoadingPage();
