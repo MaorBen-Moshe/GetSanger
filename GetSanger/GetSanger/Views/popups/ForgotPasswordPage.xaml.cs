@@ -1,12 +1,5 @@
 ﻿using GetSanger.ViewModels;
 using Rg.Plugins.Popup.Pages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views.popups
@@ -21,14 +14,14 @@ namespace GetSanger.Views.popups
 
         protected override void OnAppearing()
         {
-            (BindingContext as BaseViewModel).Appearing();
             base.OnAppearing();
+            (BindingContext as BaseViewModel).Appearing();
         }
 
         protected override void OnDisappearing()
         {
-            (BindingContext as BaseViewModel).Disappearing();
             base.OnDisappearing();
+            (BindingContext as BaseViewModel).Disappearing();
         }
     }
 }

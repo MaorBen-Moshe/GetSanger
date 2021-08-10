@@ -103,7 +103,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ListBaseViewModel()
         {
-            SetCommands();
             SelectedItem = null;
             CategoriesFilterList = typeof(eCategory).GetListOfEnumNames().ToList();
             setFilterIndices();
@@ -142,7 +141,7 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected void filterByCategory(Func<T, bool> predicate)
+        protected void filterByCategory(Predicate<T> predicate)
         {
             eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
             if (category.Equals(eCategory.All))

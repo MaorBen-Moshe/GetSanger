@@ -1,7 +1,6 @@
 ﻿using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Linq;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views.popups

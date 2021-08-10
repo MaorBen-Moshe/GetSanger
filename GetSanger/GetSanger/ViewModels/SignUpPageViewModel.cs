@@ -21,23 +21,14 @@ namespace GetSanger.ViewModels
         #region Fields
 
         private string m_Password;
-
         private string m_ConfirmPassword;
-
         private ImageSource m_PersonalImage;
-
         private IList<string> m_GenderItems;
-
         private ObservableCollection<CategoryCell> m_CategoriesItems;
-
         private IList<CategoryCell> m_TempCategories;
-
         private IList<eCategory> m_CheckedItems;
-
         private string m_PickedGender;
-
         private User m_CreatedUser;
-
         private DateTime m_MaxDatePicker;
 
         #endregion
@@ -46,18 +37,16 @@ namespace GetSanger.ViewModels
 
         public SignUpPageViewModel()
         {
-            SetCommands();
             GenderItems = typeof(GenderType).GetListOfEnumNames();
             CategoriesItems = new ObservableCollection<CategoryCell>(typeof(eCategory).GetListOfEnumNames()
-                .Select(name => new CategoryCell
-                                                {Category = (eCategory) Enum.Parse(typeof(eCategory), name)}).ToList());
+                .Select(name => new CategoryCell { Category = (eCategory) Enum.Parse(typeof(eCategory), name) }).ToList());
             m_TempCategories = CategoriesItems;
             MaxDatePicker = DateTime.Now.AddYears(-18);
         }
 
         #endregion
 
-        #region Property
+        #region Properties
 
         public User CreatedUser
         {
@@ -307,8 +296,7 @@ namespace GetSanger.ViewModels
 
         private void allCategoriesChecked(object i_Param)
         {
-            var category = i_Param as CategoryCell;
-            if (category != null)
+            if (i_Param is CategoryCell category)
             {
                 if (category.Category.Equals(eCategory.All))
                 {

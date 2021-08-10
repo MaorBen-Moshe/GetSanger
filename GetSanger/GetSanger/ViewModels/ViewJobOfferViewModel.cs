@@ -23,6 +23,7 @@ namespace GetSanger.ViewModels
         private bool m_IsMyJobOffer;
         private bool m_IsDeliveryCategory;
         private bool m_IsSangerMode;
+
         #endregion
 
         #region Properties
@@ -95,7 +96,6 @@ namespace GetSanger.ViewModels
 
         public ViewJobOfferViewModel()
         {
-            SetCommands();
         }
 
         #endregion

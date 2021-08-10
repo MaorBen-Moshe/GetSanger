@@ -18,14 +18,13 @@ namespace GetSanger.Views
 
         protected override void OnAppearing()
         {
-            (BindingContext as BaseViewModel).Appearing();
             base.OnAppearing();
+            (BindingContext as BaseViewModel).Appearing();
         }
-
         protected override void OnDisappearing()
         {
-            (BindingContext as BaseViewModel).Disappearing();
             base.OnDisappearing();
+            (BindingContext as BaseViewModel).Disappearing();
         }
     }
 }

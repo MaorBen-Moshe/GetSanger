@@ -12,7 +12,7 @@ namespace GetSanger.ViewModels
     public class AddRatingViewModel : BaseViewModel
     {
         #region Events
-        public event Action RatingAddedEvent;
+        public event Action<Rating> RatingAddedEvent;
         #endregion
 
         #region Fields
@@ -75,7 +75,7 @@ namespace GetSanger.ViewModels
                     NewRating.TimeAdded = DateTime.Now;
                     await RunTaskWhileLoading(FireStoreHelper.AddRating(NewRating));
                     await sr_PageService.DisplayAlert("Note", "Rating added successfully!");
-                    RatingAddedEvent?.Invoke();
+                    RatingAddedEvent?.Invoke(NewRating);
                     await PopupNavigation.Instance.PopAsync();
                 }
             }

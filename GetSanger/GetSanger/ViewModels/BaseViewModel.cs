@@ -41,6 +41,7 @@ namespace GetSanger.ViewModels
         #region Constructor
         protected BaseViewModel()
         {
+            SetCommands();
             IsEnabledsendBtn = false;
         }
 

@@ -22,12 +22,11 @@ namespace GetSanger.ViewModels
 
         public LoginViewModel()
         {
-            SetCommands();
         }
 
         #endregion
 
-        #region Property
+        #region Properties
 
         public string Email
         {
@@ -68,10 +67,10 @@ namespace GetSanger.ViewModels
 
         protected override void SetCommands()
         {
-            this.LoginCommand = new Command(this.LoginClicked);
-            this.SignUpCommand = new Command(this.SignUpClicked);
-            this.ForgotPasswordCommand = new Command(this.ForgotPasswordClicked);
-            this.SocialLoginCommand = new Command(this.socialClicked);
+            LoginCommand = new Command(this.LoginClicked);
+            SignUpCommand = new Command(this.SignUpClicked);
+            ForgotPasswordCommand = new Command(this.ForgotPasswordClicked);
+            SocialLoginCommand = new Command(this.socialClicked);
         }
 
         private async void LoginClicked(object obj)

@@ -1,10 +1,4 @@
 ﻿using GetSanger.ViewModels.chat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,14 +14,14 @@ namespace GetSanger.Views.chat
 
         protected override void OnAppearing()
         {
-            (BindingContext as ChatListViewModel).Appearing();
             base.OnAppearing();
+            (BindingContext as ChatListViewModel).Appearing();
         }
 
         protected override void OnDisappearing()
         {
-            (BindingContext as ChatListViewModel).Disappearing();
             base.OnDisappearing();
+            (BindingContext as ChatListViewModel).Disappearing();
         }
     }
 }

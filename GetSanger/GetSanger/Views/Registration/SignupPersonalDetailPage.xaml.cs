@@ -31,16 +31,16 @@ namespace GetSanger.Views.Registration
 
         protected override void OnAppearing()
         {
-           (BindingContext as SignUpPageViewModel).Appearing();
+            base.OnAppearing();
+            (BindingContext as SignUpPageViewModel).Appearing();
            (BindingContext as SignUpPageViewModel).InPersonalPage = true;
-           base.OnAppearing();
         }
 
         protected override void OnDisappearing()
         {
+            base.OnDisappearing();
             (BindingContext as SignUpPageViewModel).Disappearing();
             (BindingContext as SignUpPageViewModel).InPersonalPage = false;
-            base.OnDisappearing();
         }
     }
 }

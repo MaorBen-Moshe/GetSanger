@@ -19,7 +19,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ModeViewModel()
         {
-            SetCommands();
         }
         #endregion
 

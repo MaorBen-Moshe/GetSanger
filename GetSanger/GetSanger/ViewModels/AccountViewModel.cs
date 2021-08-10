@@ -4,6 +4,7 @@ using GetSanger.Extensions;
 using GetSanger.Interfaces;
 using GetSanger.Models;
 using GetSanger.Services;
+using GetSanger.Views;
 using GetSanger.Views.popups;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -70,7 +71,6 @@ namespace GetSanger.ViewModels
 
         public AccountViewModel()
         {
-            SetCommands();
         }
 
         #endregion
@@ -133,7 +133,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                sr_LoadingService.ShowLoadingPage();
+                sr_LoadingService.ShowLoadingPage(new LoadingPage("Logging out..."));
                 // do logout
                 await sr_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
                 AuthHelper.SignOut();

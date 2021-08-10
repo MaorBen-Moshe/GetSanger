@@ -32,7 +32,6 @@ namespace GetSanger.ViewModels
             {
                 string message = string.Format("{0}\nPlease try to reopen the app!", e.Message);
                 await e.LogAndDisplayError($"{nameof(SplashViewModel)}:Appearing", "Error", message, i_IsAcceptDisplay: false);
-                System.Environment.Exit(0);
             }
         }
 

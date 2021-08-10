@@ -32,7 +32,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public SangerNotesViewModel(JobOffer job)
         {
-            SetCommands();
             CurrentConfirmedJobOffer = job;
         }
         #endregion

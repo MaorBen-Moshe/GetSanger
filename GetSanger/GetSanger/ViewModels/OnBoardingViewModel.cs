@@ -36,7 +36,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public OnBoardingViewModel()
         {
-            SetCommands();
             initialItems();
         }
         #endregion

@@ -24,8 +24,10 @@ namespace GetSanger.ViewModels
         private bool m_IsSearch;
         private bool m_IsTrip;
         private string m_SangerTripId;
+        private User m_TripSanger;
         private Pin m_SangerPin;
         private Pin m_SearchPin;
+        private Geocoder m_GeoCoder;
         #endregion
 
         #region Properties
@@ -82,7 +84,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public MapViewModel()
         {
-            SetCommands();
             setPersistPins();
         }
         #endregion
@@ -95,7 +96,7 @@ namespace GetSanger.ViewModels
             await createMapSpan();
             if (IsSearch)
             {
-                await sr_PageService.DisplayAlert("הודעה", "תלחץ על המקום הרצוי במפה", "OK");
+                await sr_PageService.DisplayAlert("Note", "Click on the desired place", "OK");
             }
 
             if (IsTrip) // we already checked if sanger gave permission to client to see location
@@ -175,8 +176,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                User sanger = await RunTaskWhileLoading(FireStoreHelper.GetUser(SangerTripId));
-                sr_DialService.PhoneNumber = sanger.PersonalDetails.Phone; // check for null value
+                sr_DialService.PhoneNumber = m_TripSanger.PersonalDetails.Phone; // check for null value
                 sr_DialService.Call();
             }
             catch(ArgumentNullException anex)
@@ -199,8 +199,9 @@ namespace GetSanger.ViewModels
             {
                 if (i_Search is string)
                 {
+                    m_GeoCoder ??= new Geocoder();
                     Position position;
-                    List<Position> positionList = new List<Position>(await (new Geocoder()).GetPositionsForAddressAsync(i_Search as string));
+                    List<Position> positionList = new List<Position>(await m_GeoCoder.GetPositionsForAddressAsync(i_Search as string));
                     if (positionList.Count != 0)
                     {
                         position = positionList.FirstOrDefault();
@@ -243,8 +244,8 @@ namespace GetSanger.ViewModels
             {
                 await sr_PushService.SendToDevice<string>(SangerTripId, null, Constants.Constants.UpdateLocationType);
                 await Task.Delay(500);
-                User sanger = await FireStoreHelper.GetUser(SangerTripId);
-                Position position = new Position(sanger.UserLocation.Latitude, sanger.UserLocation.Longitude);
+                m_TripSanger = await FireStoreHelper.GetUser(SangerTripId);
+                Position position = new Position(m_TripSanger.UserLocation.Latitude, m_TripSanger.UserLocation.Longitude);
                 m_SangerPin.Position = position;
                 Pins = new ObservableCollection<Pin>
                 {
@@ -257,16 +258,16 @@ namespace GetSanger.ViewModels
                 Location location = await sr_LocationService.GetCurrentLocation();
                 if (location != null)
                 {
-                    if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.2)
+                    if (Location.CalculateDistance(location, m_TripSanger.UserLocation, DistanceUnits.Kilometers) <= 0.2)
                     {
                         await sr_PageService.DisplayAlert("Note", "The sanger is near to your place", "Thanks");
                     }
 
-                    if (Location.CalculateDistance(location, sanger.UserLocation, DistanceUnits.Kilometers) <= 0.05)
+                    if (Location.CalculateDistance(location, m_TripSanger.UserLocation, DistanceUnits.Kilometers) <= 0.05)
                     {
                         await sr_PageService.DisplayAlert("Note", "The sanger has arrived, enjoy your ingredients!", "Thanks");
                         sr_TripHelper.LeaveTripThread(handleTrip);
-                        MessagingCenter.Send(this, Constants.Constants.EndActivity, sanger);
+                        MessagingCenter.Send(this, Constants.Constants.EndActivity, m_TripSanger);
                     }
                 }
             }

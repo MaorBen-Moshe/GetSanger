@@ -6,10 +6,10 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System.Collections.Generic;
 using Rg.Plugins.Popup.Services;
 using GetSanger.Views.popups;
 using GetSanger.Extensions;
+using System.Threading.Tasks;
 
 namespace GetSanger.ViewModels
 {
@@ -68,7 +68,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ProfileViewModel()
         {
-            SetCommands();
         }
         #endregion
 
@@ -108,12 +107,17 @@ namespace GetSanger.ViewModels
                     throw new ArgumentException("User details aren't available.");
                 }
 
-                List<Rating> ratings = new List<Rating>(CurrentUser.Ratings);
                 UserImage = sr_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
-                Placemark placemark = await sr_LocationService.GetPickedLocation(CurrentUser.UserLocation);
-                UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
-                AverageRating = ratings?.Count > 0 ? (int)ratings.Average(rating => rating.Score) : 1;
-                //AverageRating = getAverage(ratings);
+                await Task.Run(async () =>
+                {
+                    Placemark placemark = await sr_LocationService.GetPickedLocation(CurrentUser.UserLocation);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
+                    });
+                });
+
+                AverageRating = CurrentUser.Ratings?.Count > 0 ? (int)CurrentUser.Ratings.Average(rating => rating.Score) : 1;
             }
             catch(Exception e)
             {
@@ -123,22 +127,6 @@ namespace GetSanger.ViewModels
             {
                 sr_LoadingService.HideLoadingPage();
             }
-        }
-
-        private int getAverage(List<Rating> i_Ratings)
-        {
-            int avg = 0;
-            foreach(var rating in i_Ratings)
-            {
-                avg += rating.Score;
-            }
-
-            if(i_Ratings.Count > 0)
-            {
-                avg /= i_Ratings.Count;
-            }
-            
-            return (avg > 0) ? avg : 1;
         }
 
         private async void sendMessageToUser(object i_Param)
@@ -208,11 +196,10 @@ namespace GetSanger.ViewModels
                 }
 
                 var ratingsPopup = new AddRatingPage(CurrentUser.UserId);
-                (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += async () =>
+                (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += (RatingAdded) =>
                 {
-                    List<Rating> ratings = await FireStoreHelper.GetRatings(CurrentUser.UserId);
-                    AverageRating = ratings?.Count > 0 ? (int)ratings.Average(rating => rating.Score) : 1;
-                    //AverageRating = getAverage(await FireStoreHelper.GetRatings(CurrentUser.UserId))
+                    CurrentUser.Ratings.Add(RatingAdded);
+                    AverageRating = CurrentUser.Ratings?.Count > 0 ? (int)CurrentUser.Ratings.Average(rating => rating.Score) : 1;
                 };
 
                 await PopupNavigation.Instance.PushAsync(ratingsPopup);

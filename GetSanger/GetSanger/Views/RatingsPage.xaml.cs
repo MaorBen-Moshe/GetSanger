@@ -1,10 +1,4 @@
 ﻿using GetSanger.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,14 +14,14 @@ namespace GetSanger.Views
 
         protected override void OnAppearing()
         {
-            (BindingContext as RatingsViewModel).Appearing();
             base.OnAppearing();
+            (BindingContext as RatingsViewModel).Appearing();
         }
 
         protected override void OnDisappearing()
         {
-            (BindingContext as BaseViewModel).Disappearing();
             base.OnDisappearing();
+            (BindingContext as BaseViewModel).Disappearing();
         }
     }
 }

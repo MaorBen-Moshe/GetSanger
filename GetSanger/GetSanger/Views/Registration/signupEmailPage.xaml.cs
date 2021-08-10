@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GetSanger.Services;
+﻿using GetSanger.Services;
 using GetSanger.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -28,14 +23,14 @@ namespace GetSanger.Views.Registration
 
         protected override void OnAppearing()
         {
-           (BindingContext as SignUpPageViewModel).Appearing();
             base.OnAppearing();
+            (BindingContext as SignUpPageViewModel).Appearing();
         }
 
         protected override void OnDisappearing()
         {
-            (BindingContext as BaseViewModel).Disappearing();
             base.OnDisappearing();
+            (BindingContext as BaseViewModel).Disappearing();
         }
     }
 }

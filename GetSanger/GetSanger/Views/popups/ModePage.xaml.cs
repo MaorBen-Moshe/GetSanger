@@ -1,7 +1,5 @@
-﻿using GetSanger.Services;
-using GetSanger.ViewModels;
+﻿using GetSanger.ViewModels;
 using Rg.Plugins.Popup.Pages;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views.popups
@@ -28,15 +26,15 @@ namespace GetSanger.Views.popups
 
         protected override void OnAppearing()
         {
+            base.OnAppearing();
             DisplayAlert("Note", "You must choose a mode to continue.", "OK");
             (BindingContext as BaseViewModel).Appearing();
-            base.OnAppearing();
         }
 
         protected override void OnDisappearing()
         {
-            (BindingContext as BaseViewModel).Disappearing();
             base.OnDisappearing();
+            (BindingContext as BaseViewModel).Disappearing();
         }
     }
 }

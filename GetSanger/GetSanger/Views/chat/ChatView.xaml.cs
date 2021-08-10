@@ -7,6 +7,13 @@ namespace GetSanger.Views.chat
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ChatView : ContentPage
     {
+        private static readonly object sr_ScrollLock;
+
+        static ChatView()
+        {
+            sr_ScrollLock = new object();
+        }
+
         public ChatView()
         {
             InitializeComponent();
@@ -14,19 +21,19 @@ namespace GetSanger.Views.chat
 
         protected override void OnAppearing()
         {
-            (BindingContext as ChatPageViewModel).Appearing();
             base.OnAppearing();
+            (BindingContext as ChatPageViewModel).Appearing();
         }
 
         protected override void OnDisappearing()
         {
-            (BindingContext as ChatPageViewModel).Disappearing();
             base.OnDisappearing();
+            (BindingContext as ChatPageViewModel).Disappearing();
         }
 
         public void ScrollTap(object sender, System.EventArgs e)
         {
-            lock (new object())
+            lock (sr_ScrollLock)
             {
                 if (BindingContext != null)
                 {

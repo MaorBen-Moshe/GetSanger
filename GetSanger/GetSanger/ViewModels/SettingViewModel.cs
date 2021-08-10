@@ -78,7 +78,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public SettingViewModel()
         {
-            SetCommands();
         }
         #endregion
 
@@ -130,10 +129,10 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                bool isChanged = false;
                 sr_LoadingService.ShowLoadingPage(new LoadingPage("Saving..."));
                 await Task.Run(async () =>
                 {
+                    bool isChanged = false;
                     if (m_NewCategoriesSubscribed?.Count > 0)
                     {
                         isChanged = true;
@@ -156,9 +155,10 @@ namespace GetSanger.ViewModels
                     {
                         await FireStoreHelper.UpdateUser(AppManager.Instance.ConnectedUser);
                     }
+
+                    m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;
                 });
 
-                m_NewCategoriesSubscribed = m_NewCategoriesUnsubscribed = null;
                 sr_LoadingService.HideLoadingPage();
                 await GoBack();
             }
@@ -175,9 +175,8 @@ namespace GetSanger.ViewModels
             {
                 m_NewCategoriesSubscribed ??= new List<string>();
                 m_NewCategoriesUnsubscribed ??= new List<string>();
-                if (i_Param is CategoryCell)
+                if (i_Param is CategoryCell current)
                 {
-                    CategoryCell current = i_Param as CategoryCell;
                     if (current.Checked)
                     {
                         AppManager.Instance.ConnectedUser.Categories.Add(current.Category);
