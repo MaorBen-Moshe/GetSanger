@@ -50,7 +50,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public ActivitiesListViewModel()
         {
-            SetCommands();
             StatusFilterList = typeof(eActivityStatus).GetListOfEnumNames().ToList();
             StatusFilterList.Insert(0, k_All);
         }
