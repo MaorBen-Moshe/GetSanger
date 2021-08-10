@@ -36,7 +36,7 @@
                    VerticalOptions="CenterAndExpand">
         <ListView ItemsSource="{Binding Socials}"
                   HasUnevenRows="True"
-                  BackgroundColor="GhostWhite"
+                  BackgroundColor="{AppThemeBinding Dark=#1A1A1A, Light=GhostWhite}"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                   HeightRequest="200"
                   SeparatorVisibility="None">

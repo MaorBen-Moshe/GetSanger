@@ -25,8 +25,7 @@
             <Label Text="Get Sanger" 
                    FontSize="30"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   TextColor="Black" />
+                   HorizontalOptions="Center"/>
             <Label Text="Be the best Sanger you can!"
                    FontSize="18"
                    HorizontalOptions="Center" />
