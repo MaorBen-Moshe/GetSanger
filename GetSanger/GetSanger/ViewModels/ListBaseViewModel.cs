@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System;
+using System.Threading.Tasks;
 
 namespace GetSanger.ViewModels
 {
@@ -158,12 +159,12 @@ namespace GetSanger.ViewModels
             }
         }
 
-        protected void setItems(Action action)
+        protected async void setItems(Func<Task> func)
         {
             NoItemsTextColor = Color.Red;
             IsVisibleViewList = false;
             NoItemsText = "Fetching items...";
-            action?.Invoke();
+            await func?.Invoke();
             NoItemsTextColor = Color.DarkGray;
         }
         #endregion
