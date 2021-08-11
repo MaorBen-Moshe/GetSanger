@@ -108,7 +108,6 @@ namespace GetSanger.ViewModels
 
         public EditJobOfferViewModel()
         {
-            SetCommands();
             NewJobOffer = new JobOffer
             {
                 Date = DateTime.Now,
@@ -122,12 +121,12 @@ namespace GetSanger.ViewModels
 
         #region Methods
 
-        public override async void Appearing()
+        public override void Appearing()
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(EditJobOfferViewModel));
             IsDeliveryCategory = NewJobOffer.Category.Equals(eCategory.Delivery);
-            await InitialCurrentLocation();
-            MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage,  (sender, args) =>
+            InitialCurrentLocation();
+            MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage, (sender, args) =>
             {
                 setLocation(args);
             });
@@ -137,7 +136,7 @@ namespace GetSanger.ViewModels
         {
         }
 
-        public async Task InitialCurrentLocation()
+        public async void InitialCurrentLocation()
         {
             try
             {
@@ -222,10 +221,12 @@ namespace GetSanger.ViewModels
                     }
 
                     NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
-                    List<JobOffer> job = await RunTaskWhileLoading(FireStoreHelper.AddJobOffer(NewJobOffer));
+                    sr_LoadingService.ShowLoadingPage();
+                    List<JobOffer> job = await FireStoreHelper.AddJobOffer(NewJobOffer);
                     AppManager.Instance.ConnectedUser.JobOffers.Append<ObservableCollection<JobOffer>, JobOffer>(new ObservableCollection<JobOffer>(job));
                     await sr_PageService.DisplayAlert("Success", "Job sent!", "Thanks");
                     string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
+                    sr_LoadingService.HideLoadingPage();
                     await GoBack();
                     await RunTaskWhileLoading(sr_NavigationService.NavigateTo($"////{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
                 }
@@ -243,17 +244,8 @@ namespace GetSanger.ViewModels
 
         private string placemarkValidation(Placemark i_Placemark)
         {
-            string toRet;
-            if (i_Placemark == null)
-            {
-                toRet = "Location could not be found, please try manually add it";
-            }
-            else
-            {
-                toRet = string.Format("{0}, {1} {2}", i_Placemark.Locality, i_Placemark.Thoroughfare, i_Placemark.SubThoroughfare);
-            }
-         
-            return toRet;
+            return i_Placemark == null ? "Location could not be found, please try manually add it" 
+                                       : string.Format("{0}, {1} {2}", i_Placemark.Locality, i_Placemark.Thoroughfare, i_Placemark.SubThoroughfare);
         }
 
         #endregion

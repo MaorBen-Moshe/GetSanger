@@ -101,7 +101,7 @@ namespace GetSanger.ViewModels
                 else
                 {
                     eActivityStatus status = (eActivityStatus)Enum.Parse(typeof(eActivityStatus), StatusFilterList[SelectedStatusFilterIndex]);
-                    Func<Activity, bool> predicate;
+                    Predicate<Activity> predicate;
                     if (category.Equals(eCategory.All))
                     {
                         predicate = activity => activity.Status.Equals(status);
@@ -119,6 +119,7 @@ namespace GetSanger.ViewModels
                 }
 
                 sortByTime(activity => activity.JobDetails.Date);
+                IsVisibleViewList = FilteredCollection.Count > 0;
             }
             catch (Exception e)
             {
@@ -144,7 +145,6 @@ namespace GetSanger.ViewModels
                         string json = ObjectJsonSerializer.SerializeForPage(activity);
                         await sr_NavigationService.NavigateTo($"{ShellRoutes.Activity}?activity={json}");
                     });
-                    sr_LoadingService.HideLoadingPage();
                 }
             }
             catch (Exception e)
@@ -153,6 +153,7 @@ namespace GetSanger.ViewModels
             }
             finally
             {
+                sr_LoadingService.HideLoadingPage();
                 SearchCollection = new ObservableCollection<Activity>(FilteredCollection);
             }
         }
@@ -168,12 +169,15 @@ namespace GetSanger.ViewModels
                     {
                         IsVisibleViewList = AllCollection.Count > 0;
                     });
-                    sr_LoadingService.HideLoadingPage();
                 }
             }
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ActivitiesListViewModel)}:rejectActivity", "Error", e.Message);
+            }
+            finally
+            {
+                sr_LoadingService.HideLoadingPage();
             }
         }
 
@@ -215,6 +219,7 @@ namespace GetSanger.ViewModels
             setItems(async () =>
             {
                 List<Activity> activities = await FireStoreHelper.GetActivities(AuthHelper.GetLoggedInUserId());
+                AppManager.Instance.ConnectedUser.Activities = new ObservableCollection<Activity>(activities);
                 if (AppManager.Instance.CurrentMode.Equals(eAppMode.Client))
                 {
                     // client should not see pending activities because it is like job offers

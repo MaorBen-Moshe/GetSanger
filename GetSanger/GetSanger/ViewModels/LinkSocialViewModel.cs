@@ -34,13 +34,14 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Commands
+
         public ICommand LinkSocialCommand { get; set; }
+
         #endregion
 
         #region Constructor
         public LinkSocialViewModel()
         {
-            SetCommands();
             eSocialProvider[] providers = (eSocialProvider[])Enum.GetValues(typeof(eSocialProvider));
             Socials = providers.Select(provider => new SocialProviderCell
             {

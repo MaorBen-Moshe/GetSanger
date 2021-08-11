@@ -4,7 +4,6 @@ using Rg.Plugins.Popup.Services;
 using System;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace GetSanger.ViewModels
 {
@@ -18,7 +17,6 @@ namespace GetSanger.ViewModels
 
         public ForgotPasswordViewModel()
         {
-            SetCommands();
         }
 
         #endregion
@@ -43,7 +41,6 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(ForgotPasswordViewModel));
-            base.Appearing();
         }
 
         public override void Disappearing()
@@ -53,7 +50,7 @@ namespace GetSanger.ViewModels
         protected override void SetCommands()
         {
             base.SetCommands();
-            SendCommand = new Command(this.SendClicked);
+            SendCommand = new Command(SendClicked);
         }
 
         private async void SendClicked()

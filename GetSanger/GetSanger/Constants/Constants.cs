@@ -10,7 +10,7 @@ namespace GetSanger.Constants
 
         public static string GenericNotificationTopic { get; } = "Generic";
 
-        public static string LocationMessage { get; }  = "Location";
+        public static string LocationMessage { get; } = "Location";
 
         public static string EndActivity { get; } = "ActivatedLocation";
 

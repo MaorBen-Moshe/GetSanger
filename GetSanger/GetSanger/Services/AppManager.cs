@@ -3,6 +3,7 @@ using GetSanger.ViewModels;
 using System;
 using GetSanger.AppShell;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace GetSanger.Services
 {
@@ -80,7 +81,7 @@ namespace GetSanger.Services
                 eAppMode mode = (eAppMode)i_Mode;
                 CurrentMode = mode;
                 ConnectedUser.LastUserMode = mode;
-                await FireStoreHelper.UpdateUser(ConnectedUser);
+                await Task.Run(async () => await FireStoreHelper.UpdateUser(ConnectedUser));
             }
         }
 

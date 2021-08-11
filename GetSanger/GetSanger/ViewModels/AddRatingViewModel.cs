@@ -36,7 +36,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public AddRatingViewModel()
         {
-            SetCommands();
         }
         #endregion
 

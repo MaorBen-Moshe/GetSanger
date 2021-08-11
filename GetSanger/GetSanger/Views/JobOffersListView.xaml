@@ -46,7 +46,6 @@
         <ScrollView>
             <StackLayout>
                 <controls:FilterControl HorizontalOptions="FillAndExpand"
-                                        IsVisible="{Binding IsVisibleViewList}"
                                         VerticalOptions="Start"
                                         Margin="10"
                                         TimeSortFlag="{Binding TimeSortFlag}"

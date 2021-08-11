@@ -12,6 +12,7 @@ using GetSanger.Extensions;
 using GetSanger.Constants;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using GetSanger.Interfaces;
+using System.Threading.Tasks;
 
 namespace GetSanger.ViewModels.chat
 {
@@ -120,7 +121,6 @@ namespace GetSanger.ViewModels.chat
         #region Constructor
         public ChatPageViewModel()
         {
-            SetCommands();
         }
         #endregion
 
@@ -202,7 +202,7 @@ namespace GetSanger.ViewModels.chat
         {
             List<Message> messages = await DB.GetMessagesAsync(UserToChat.UserId);
             MessagesSource = new ObservableCollection<Message>(messages.OrderByDescending(item => item.MessageId));
-            sendUnsentMessages();
+            await Task.Run(() => sendUnsentMessages());
         }
 
         private async void sendMessage(object i_Param)
@@ -222,22 +222,24 @@ namespace GetSanger.ViewModels.chat
                 try
                 {
                     MessagesSource.Insert(0, msg);
-                    sr_PushService.SendChatMessage(msg);
-                    // adding the message to the local DB
-                    msg.MessageSent = true;
-                    await DB.AddMessageAsync(msg, msg.ToId);
+                    await Task.Run(async () =>
+                    {
+                        await DB.AddMessageAsync(msg, msg.ToId);
+                        sr_PushService.SendChatMessage(msg);
+                        Device.BeginInvokeOnMainThread(() => msg.MessageSent = true);
+                        await DB.UpdateMessageAsync(msg);
+                    });
                 }
                 catch(Exception e)
                 {
-                    msg.MessageSent = false;
                     await e.LogAndDisplayError($"{nameof(ChatPageViewModel)}:sendMessage", "Error", e.Message);
                 }
             }
         }
 
-        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            sendUnsentMessages();
+            await Task.Run(() => sendUnsentMessages());
         }
 
         private async void sendUnsentMessages()
@@ -253,7 +255,7 @@ namespace GetSanger.ViewModels.chat
                             if (msg.MessageSent == false)
                             {
                                 sr_PushService.SendChatMessage(msg);
-                                msg.MessageSent = true;
+                                Device.BeginInvokeOnMainThread(() => msg.MessageSent = true);
                                 await DB.UpdateMessageAsync(msg);
                             }
                         }
@@ -278,9 +280,11 @@ namespace GetSanger.ViewModels.chat
                                                  {
                                                      if (answer)
                                                      {
-                                                         Message message = i_Param as Message;
-                                                         MessagesSource.Remove(message);
-                                                         await DB.DeleteMessageAsync(message);
+                                                         if(i_Param is Message message)
+                                                         {
+                                                             MessagesSource.Remove(message);
+                                                             await Task.Run(async () => await DB.DeleteMessageAsync(message));
+                                                         }
                                                      }
                                                  });
             }
@@ -294,22 +298,24 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                Message message = i_Param as Message;
-                var idx = MessagesSource.IndexOf(message);
-                if (idx <= 6)
+                if(i_Param is Message message)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    var idx = MessagesSource.IndexOf(message);
+                    if (idx <= 6)
                     {
-                        while (DelayedMessages.Count > 0)
+                        Device.BeginInvokeOnMainThread(() =>
                         {
-                            MessagesSource.Insert(0, DelayedMessages.Dequeue());
-                        }
+                            while (DelayedMessages.Count > 0)
+                            {
+                                MessagesSource.Insert(0, DelayedMessages.Dequeue());
+                            }
 
-                        ShowScrollTap = false;
-                        LastMessageVisible = true;
-                        PendingMessageCount = 0;
-                        PendingMessageCountVisible = false;
-                    });
+                            ShowScrollTap = false;
+                            LastMessageVisible = true;
+                            PendingMessageCount = 0;
+                            PendingMessageCountVisible = false;
+                        });
+                    }
                 }
             }
             catch (Exception e)
@@ -322,16 +328,17 @@ namespace GetSanger.ViewModels.chat
         {
             try
             {
-                Message message = i_Param as Message;
-                var idx = MessagesSource.IndexOf(message);
-                if (idx >= 6)
+                if(i_Param is Message message)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    var idx = MessagesSource.IndexOf(message);
+                    if (idx >= 6)
                     {
-                        ShowScrollTap = true;
-                        LastMessageVisible = false;
-                    });
-
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            ShowScrollTap = true;
+                            LastMessageVisible = false;
+                        });
+                    }
                 }
             }
             catch (Exception e)
@@ -356,7 +363,7 @@ namespace GetSanger.ViewModels.chat
                     return;
                 }
 
-                await sr_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+                await sr_PageService.DisplayAlert("Note", "User did not provide phone number!", "OK");
             }
             catch (Exception e)
             {
@@ -375,7 +382,7 @@ namespace GetSanger.ViewModels.chat
                     return;
                 }
 
-                await sr_PageService.DisplayAlert("Note", "User does not provide phone number!", "OK");
+                await sr_PageService.DisplayAlert("Note", "User did not provide phone number!", "OK");
             }
             catch (Exception e)
             {

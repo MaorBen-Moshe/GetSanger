@@ -1,6 +1,5 @@
 ﻿using GetSanger.Constants;
 using GetSanger.Models;
-using GetSanger.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +40,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public CategoriesViewModel()
         {
-            SetCommands();
             CategoriesItems = typeof(eCategory).GetListOfEnumNames().Select(name => new CategoryCell { Category = (eCategory)Enum.Parse(typeof(eCategory), name) }).ToList();
             CategoriesItems = CategoriesItems.Where(categoryCell => categoryCell.Category.Equals(eCategory.All) == false).ToList();
         }
@@ -68,8 +66,7 @@ namespace GetSanger.ViewModels
             {
                 if (SelectedItem != null)
                 {
-                    var category = SelectedItem.Category;
-                    await sr_NavigationService.NavigateTo($"{ShellRoutes.EditJobOffer }?category={category}&isCreate={true}");
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.EditJobOffer}?category={SelectedItem.Category}&isCreate={true}");
                     SelectedItem = null;
                 }
             }

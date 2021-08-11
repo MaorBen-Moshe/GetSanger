@@ -74,9 +74,9 @@ namespace GetSanger.ViewModels
 
         public EditProfileViewModel()
         {
-            SetCommands();
             GenderItems = new ObservableCollection<GenderType>(typeof(GenderType).GetListOfEnumNames()
-                .Select(name => (GenderType) Enum.Parse(typeof(GenderType), name)).ToList());
+                                                                                 .Select(name => (GenderType) Enum.Parse(typeof(GenderType), name))
+                                                                                 .ToList());
             MaxDate = DateTime.Now.AddYears(-18);
         }
 
@@ -154,7 +154,6 @@ namespace GetSanger.ViewModels
             try
             {
                 await sr_PhotoDisplay.TryGetPictureFromStream(ConnectedUser);
-                await FireStoreHelper.UpdateUser(ConnectedUser);
                 ProfileImage = sr_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
             }
             catch (Exception e)

@@ -39,7 +39,6 @@ namespace GetSanger.ViewModels
         #region Constructor
         public JobOffersViewModel()
         {
-            SetCommands();
         }
         #endregion
 
@@ -77,6 +76,7 @@ namespace GetSanger.ViewModels
                 eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
                 filterByCategory(job => job.Category.Equals(category));
                 sortByTime(job => job.Date);
+                IsVisibleViewList = FilteredCollection.Count > 0;
             }
             catch(Exception e)
             {
@@ -217,6 +217,7 @@ namespace GetSanger.ViewModels
                                      .ToList();
                                         
             }
+
             List<Activity> activities = await FireStoreHelper.GetActivities(currentId);
             AppManager.Instance.ConnectedUser.Activities = new ObservableCollection<Activity>(activities);
             List<JobOffer> toRetList = new List<JobOffer>();

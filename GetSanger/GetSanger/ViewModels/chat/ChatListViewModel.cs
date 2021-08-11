@@ -32,7 +32,6 @@ namespace GetSanger.ViewModels.chat
 
         public ChatListViewModel()
         {
-            SetCommands();
         }
 
         #endregion
@@ -61,7 +60,8 @@ namespace GetSanger.ViewModels.chat
             {
                 setUsers();
                 IsListRefreshing = false;
-            }catch(Exception e)
+            }
+            catch(Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ChatListViewModel)}:refreshList", "Error", e.Message);
             }

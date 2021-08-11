@@ -138,12 +138,15 @@ namespace GetSanger.ViewModels
                 await sr_PushService.UnsubscribeUser(AppManager.Instance.ConnectedUser.UserId);
                 AuthHelper.SignOut();
                 AppManager.Instance.RefreshAppManager();
-                sr_LoadingService.HideLoadingPage();
                 Application.Current.MainPage = new AuthShell();
             }
             catch(Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(AccountViewModel)}:logout", "Error", e.Message);
+            }
+            finally
+            {
+                sr_LoadingService.HideLoadingPage();
             }
         }
 
