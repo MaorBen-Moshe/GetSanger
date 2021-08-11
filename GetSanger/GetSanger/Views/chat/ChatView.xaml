@@ -6,7 +6,7 @@
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
              x:Class="GetSanger.Views.chat.ChatView"
              x:Name="chatView"
-             BackgroundColor="White"
+             
              Shell.NavBarHasShadow="False"
              Shell.TabBarIsVisible="False">
 
@@ -36,7 +36,6 @@
 
                 <Label Text="{Binding UserToChat.PersonalDetails.NickName}" 
                    BackgroundColor="Transparent"
-                   TextColor="WhiteSmoke"
                    IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                    HorizontalOptions="StartAndExpand" 
                    Margin="5,10,0,10"/>
@@ -95,11 +94,12 @@
                                  IsVisible="{Binding ShowScrollTap,Mode=TwoWay}">
                 <StackLayout Spacing="3">
                     <Label Text="{Binding PendingMessageCount, Mode=TwoWay}"
-                              HorizontalOptions="CenterAndExpand"
+                           HorizontalOptions="CenterAndExpand"
                            FontSize="10"
-                              IsVisible="{Binding PendingMessageCountVisible}"
-                              VerticalTextAlignment="Center"
-                              TextColor="Red"/>
+                           IsVisible="{Binding PendingMessageCountVisible}"
+                           VerticalTextAlignment="Center"
+                           TextColor="Red"
+                           />
                     <Image Source="ic_scrolldown"
                                WidthRequest="30"
                                HeightRequest="30"

@@ -66,6 +66,13 @@
     <Color x:Key="TableViewTextColorLight">Black</Color>
     <Color x:Key="DatePickerTextColorDark">White</Color>
     <Color x:Key="DatePickerTextColorLight">Black</Color>
+    <Color x:Key="ChatIncomingBackgroundColorDark">#163375</Color>
+    <Color x:Key="ChatIncomingBackgroundColorLight">LightBlue</Color>
+    <Color x:Key="ChatOutgoingBackgroundColorDark">Black</Color>
+    <Color x:Key="ChatOutgoingBackgroundColorLight">Gray</Color>
+    <Color x:Key="PickerTextColorDark">White</Color>
+    <Color x:Key="PickerTextColorLight">Black</Color>
+    
     
     <Style TargetType="Shell">
         <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}" />
@@ -145,5 +152,8 @@
     </Style>
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
+    </Style>
+    <Style TargetType="Picker">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
     </Style>
 </ResourceDictionary>

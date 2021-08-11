@@ -5,29 +5,21 @@
              BackgroundColor="#80000000"
              Title="Loading Screen">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Label" x:Key="TransparentLabel">
-                <Setter Property="BackgroundColor" Value="Transparent" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
     <ContentPage.Content>
         <StackLayout HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand">
+                     VerticalOptions="FillAndExpand"
+                     BackgroundColor="Transparent">
             <Frame CornerRadius="10"
                    Padding="30"
                    BorderColor="Black"
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
-                <StackLayout>
-                    <ActivityIndicator IsRunning="True"/>
+                <StackLayout BackgroundColor="Transparent">
+                    <ActivityIndicator IsRunning="True"
+                                       BackgroundColor="Transparent"/>
                     <Label
                            HorizontalTextAlignment="Center"
-                           TextColor="WhiteSmoke"
-                           Style="{StaticResource Key=TransparentLabel}"
                            HorizontalOptions="CenterAndExpand"
                            x:Name="label">
                     </Label>

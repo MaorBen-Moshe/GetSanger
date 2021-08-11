@@ -5,7 +5,7 @@
           xmlns:effects="clr-namespace:GetSanger.Effects"
           x:Class="GetSanger.Views.chat.OutgoingViewCell">
 
-    <Frame BackgroundColor="Gray"
+    <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ChatOutgoingBackgroundColorDark}, Light={StaticResource ChatOutgoingBackgroundColorLight}}"
             Rotation="180"
             FlowDirection="LeftToRight"
             Padding="10"
@@ -19,12 +19,11 @@
         <Frame.Effects>
             <effects:LongPressedEffect />
         </Frame.Effects>
-        <Grid>
+        <Grid BackgroundColor="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Text="{Binding Text}"
-                   TextColor="White" 
                    BackgroundColor="Transparent"
                    HorizontalOptions="StartAndExpand"
                    Grid.Column="0"/>
