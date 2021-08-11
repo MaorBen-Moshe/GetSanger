@@ -14,11 +14,11 @@
     <Color x:Key="LabelTextColorLight">#000000</Color>
     <Color x:Key="LabelBackgroundColorDark">#00000000</Color>
     <Color x:Key="LabelBackgroundColorLight">#00FFFFFF</Color>
-    <Color x:Key="StackLayoutBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="StackLayoutBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="StackLayoutBackgroundColorLight">White</Color>
-    <Color x:Key="FrameBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="FrameBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FrameBackgroundColorLight">White</Color>
-    <Color x:Key="ListViewBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="ListViewBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="ListViewBackgroundColorLight">White</Color>
     <Color x:Key="ButtonBackgroundColorDark">#3d4aA3</Color>
     <Color x:Key="ButtonBackgroundColorLight">#91abfa</Color>
@@ -30,19 +30,19 @@
     <Color x:Key="EntryBackgroundColorLight">#91abfa</Color>
     <Color x:Key="FrameBorderColorDark">#000000</Color>
     <Color x:Key="FrameBorderColorLight">#000000</Color>
-    <Color x:Key="FramBackgroundColorDark">#1a1a1a</Color>
+    <Color x:Key="FramBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FramBackgroundColorLight">White</Color>
-    <Color x:Key="GridBackgroundColorDark">#1a1a1a</Color>
+    <Color x:Key="GridBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="GridBackgroundColorLight">White</Color>
-    <Color x:Key="ShellBackgroundColorDark">#1a1a1a</Color>
+    <Color x:Key="ShellBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="ShellBackgroundColorLight">White</Color>
     <Color x:Key="ShellForegroundColorDark">White</Color>
     <Color x:Key="ShellForegroundColorLight">#000000</Color>
-    <Color x:Key="NavBarTextColorDark">#1a1a1a</Color>
+    <Color x:Key="NavBarTextColorDark">#3d3d3d</Color>
     <Color x:Key="NavBarTextColorLight">White</Color>
     <Color x:Key="TabBarTextColorDark">#000000</Color>
     <Color x:Key="TabBarTextColorLight">White</Color>
-    <Color x:Key="TabBarBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="TabBarBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="TabBarBackgroundColorLight">White</Color>
     <Color x:Key="TabBarForegroundColorLight">Gray</Color>
     <Color x:Key="TabBarForegroundColorDark">Gray</Color>
@@ -50,11 +50,11 @@
     <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>
     <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
     <Color x:Key="TabBarUnselectedColorLight">Gray</Color>
-    <Color x:Key="EditorBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="EditorBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="EditorBackgroundColorLight">White</Color>
-    <Color x:Key="TableViewBackgroundColorDark">#1A1A1A</Color>
+    <Color x:Key="TableViewBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="TableViewBackgroundColorLight">White</Color>
-    <Color x:Key="ContentPageBackgroundColorDark">#1a1a1a</Color>
+    <Color x:Key="ContentPageBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="ContentPageBackgroundColorLight">White</Color>
     <Color x:Key="FilterBackgroundColorDark">Transparent</Color>
     <Color x:Key="FilterBackgroundColorLight">Transparent</Color>
@@ -66,6 +66,13 @@
     <Color x:Key="TableViewTextColorLight">Black</Color>
     <Color x:Key="DatePickerTextColorDark">White</Color>
     <Color x:Key="DatePickerTextColorLight">Black</Color>
+    <Color x:Key="ChatIncomingBackgroundColorDark">#163375</Color>
+    <Color x:Key="ChatIncomingBackgroundColorLight">LightBlue</Color>
+    <Color x:Key="ChatOutgoingBackgroundColorDark">Black</Color>
+    <Color x:Key="ChatOutgoingBackgroundColorLight">Gray</Color>
+    <Color x:Key="PickerTextColorDark">White</Color>
+    <Color x:Key="PickerTextColorLight">Black</Color>
+    
     
     <Style TargetType="Shell">
         <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}" />
@@ -145,5 +152,8 @@
     </Style>
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
+    </Style>
+    <Style TargetType="Picker">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
     </Style>
 </ResourceDictionary>

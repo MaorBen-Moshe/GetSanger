@@ -14,8 +14,8 @@ using CarouselView.FormsPlugin.Droid;
 
 namespace GetSanger.Droid
 {
-    [Activity(Label = "Get Sanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTask,
-        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "Get Sanger", Icon = "@mipmap/getSangerIcon", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleInstance,
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.ColorMode | ConfigChanges.UiMode | ConfigChanges.ScreenLayout, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         internal static MainActivity Instance { get; private set; }

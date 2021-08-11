@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              x:Class="GetSanger.Views.SplashPage"
-             BackgroundColor="#f9ffed">
+             BackgroundColor="{AppThemeBinding Dark=#1a1a1a, Light=#f9ffed}">
 
     <ContentPage.BindingContext>
         <vm:SplashViewModel />
@@ -11,10 +11,12 @@
     
     <ContentPage.Content>
         <StackLayout HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand">
+                     VerticalOptions="CenterAndExpand"
+                     BackgroundColor="Transparent">
             <Image Source="getSangerIconHD.png"
                    WidthRequest="150"
-                   HeightRequest="150">
+                   HeightRequest="150"
+                   BackgroundColor="Transparent">
             </Image>
             <ActivityIndicator IsRunning="True" Color="Aqua"/>
         </StackLayout>
