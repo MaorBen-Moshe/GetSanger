@@ -36,7 +36,14 @@ namespace GetSanger.Controls
                                                                                 declaringType: typeof(NoItemsInListTemplate),
                                                                                 defaultValue: Color.DarkGray,
                                                                                 defaultBindingMode: BindingMode.OneWay,
-                                                                                validateValue: null);
+                                                                                validateValue: null,
+                                                                                propertyChanged: (bindable, oldVal, newVal) =>
+                                                                                {
+                                                                                    if (!oldVal.Equals(newVal))
+                                                                                    {
+                                                                                        (bindable as NoItemsInListTemplate).updateLabelColor();
+                                                                                    }
+                                                                                });
 
         public ICommand RefreshListCommand
         {
@@ -72,7 +79,7 @@ namespace GetSanger.Controls
             };
 
             updateLabelText();
-            m_EmptyLabel.SetBinding(Label.TextColorProperty, new Binding("TextColor", mode:BindingMode.TwoWay));
+            updateLabelColor();
             /*Refresh List Label Part*/
             m_RefreshLabel = new Label
             {
@@ -99,6 +106,11 @@ namespace GetSanger.Controls
         private void updateLabelText()
         {
             m_EmptyLabel.Text = Text ?? "No Items";
+        }
+
+        private void updateLabelColor()
+        {
+            m_EmptyLabel.TextColor = TextColor;
         }
 
         private void setImage()

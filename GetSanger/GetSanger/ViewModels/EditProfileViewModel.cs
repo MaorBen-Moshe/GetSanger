@@ -154,6 +154,7 @@ namespace GetSanger.ViewModels
             try
             {
                 await sr_PhotoDisplay.TryGetPictureFromStream(ConnectedUser);
+                await FireStoreHelper.UpdateUser(ConnectedUser);
                 ProfileImage = sr_PhotoDisplay.DisplayPicture(ConnectedUser.ProfilePictureUri);
             }
             catch (Exception e)
