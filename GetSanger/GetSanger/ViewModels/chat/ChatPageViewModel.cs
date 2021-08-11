@@ -134,12 +134,12 @@ namespace GetSanger.ViewModels.chat
                 IsDeletedUser = UserToChat.IsDeleted;
                 DB = await ChatDatabase.ChatDatabase.Instance;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-                setMessages();
                 ShowScrollTap = false;
                 DelayedMessages = new Queue<Message>();
                 PendingMessageCount = 0;
                 PendingMessageCountVisible = false;
                 LastMessageVisible = true;
+                setMessages();
                 if (Device.RuntimePlatform.Equals(Device.Android))
                 {
                     Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
@@ -222,12 +222,14 @@ namespace GetSanger.ViewModels.chat
                 try
                 {
                     MessagesSource.Insert(0, msg);
-                    await Task.Run(async () =>
+                    await Task.Run(() =>
                     {
-                        await DB.AddMessageAsync(msg, msg.ToId);
                         sr_PushService.SendChatMessage(msg);
-                        Device.BeginInvokeOnMainThread(() => msg.MessageSent = true);
-                        await DB.UpdateMessageAsync(msg);
+                        Device.BeginInvokeOnMainThread(async () =>
+                        {
+                            msg.MessageSent = true;
+                            await DB.AddMessageAsync(msg, msg.ToId);
+                        });
                     });
                 }
                 catch(Exception e)
@@ -255,8 +257,11 @@ namespace GetSanger.ViewModels.chat
                             if (msg.MessageSent == false)
                             {
                                 sr_PushService.SendChatMessage(msg);
-                                Device.BeginInvokeOnMainThread(() => msg.MessageSent = true);
-                                await DB.UpdateMessageAsync(msg);
+                                Device.BeginInvokeOnMainThread(async () => 
+                                {
+                                    msg.MessageSent = true;
+                                    await DB.UpdateMessageAsync(msg);
+                                });
                             }
                         }
                     }
