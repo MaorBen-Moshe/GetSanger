@@ -37,7 +37,8 @@
             <Grid>
                 <Entry Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
                        IsReadOnly="True" 
-                       Grid.Column="0"/>
+                       Grid.Column="0"
+                       TextColor="Red"/>
                 <Entry Text="{Binding NewJobOffer.Title}" 
                            Placeholder="Job Title" 
                            Grid.Column="1">
@@ -104,7 +105,8 @@
                             VerticalOptions="FillAndExpand"
                             MaxLength="255"
                             HeightRequest="220"
-                            Text="{Binding NewJobOffer.Description}">
+                            Text="{Binding NewJobOffer.Description}"
+                        PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
                     <Editor.Keyboard>
                         <Keyboard x:FactoryMethod="Create" >
                             <x:Arguments>
