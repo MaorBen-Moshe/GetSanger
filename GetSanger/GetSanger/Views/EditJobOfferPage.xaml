@@ -35,91 +35,140 @@
     <ContentPage.Content>
         <StackLayout Margin="10">
             <Grid>
-                <Entry Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
-                       IsReadOnly="True" 
-                       Grid.Column="0"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="4*" />
+                    <RowDefinition Height="4*" />
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="17*" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
+                <Label Text="Job name:" 
+                       Grid.Row="0" 
+                       Grid.Column="0"
+                       FontSize="10"
+                       Padding="0"/>
+                <Label Text="Category:" 
+                       Grid.Row="0" 
+                       Grid.Column="3"
+                       FontSize="10"
+                       Padding="0"/>
                 <Entry Text="{Binding NewJobOffer.Title}" 
                            Placeholder="Job Title" 
-                           Grid.Column="1">
+                           Grid.Column="0"
+                       Grid.Row="1"
+                       Grid.ColumnSpan="3">
                     <Entry.Behaviors>
                         <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
                     </Entry.Behaviors>
                 </Entry>
-            </Grid>
+                <Label Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
+                       Grid.Column="3"
+                       Grid.Row="1"
+                       TextColor="Red"
+                       Grid.ColumnSpan="1"
+                       Padding="0"/>
 
-            <Grid IsVisible="{Binding IsDeliveryCategory}">
-                <Entry Text="{Binding FromLocationString, Mode=OneWay, StringFormat='From: {0}'}"
-                       Margin="5"
-                       Grid.Column="0" 
-                       Grid.ColumnSpan="2"
-                       IsReadOnly="True"
-                       BackgroundColor="Transparent"/>
-                <Button Text="Get Location" Grid.Column="2" Command="{Binding FromLocationCommand}"
+                <Label IsVisible="{Binding IsDeliveryCategory}"
+                        Text="{Binding FromLocationString, Mode=OneWay, StringFormat='From: {0}'}"
+                        Margin="5"
+                        Grid.Column="0" 
+                        Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        BackgroundColor="Transparent"
+                        HeightRequest="100"
                         FontSize="14"/>
-            </Grid>
+                <Button IsVisible="{Binding IsDeliveryCategory}" Text="Get Location" Grid.Column="3" Command="{Binding FromLocationCommand}"
+                        FontSize="14"
+                        Grid.Row="2"
+                        Grid.ColumnSpan="1"/>
 
-            <Grid>
-                <Entry Text="{Binding DestinationLocationString, Mode=OneWay, StringFormat='Destination: {0}'}"
+                <Label Text="{Binding DestinationLocationString, Mode=OneWay, StringFormat='Destination: {0}'}"
                        Margin="5"
-                       Grid.Column="0" 
-                       Grid.ColumnSpan="2"
+                       Grid.Column="0"
+                       Grid.Row="3"
+                       Grid.ColumnSpan="3"
                        BackgroundColor="Transparent"
-                       IsReadOnly="True"/>
-                <Button Text="Get Location" Grid.Column="2" Command="{Binding DestinationLocationCommand}"
-                        FontSize="14"/>
-            </Grid>
-
-            <Entry  Text="{Binding NewJobOffer.ClientPhoneNumber, Mode=TwoWay}"
+                       HeightRequest="100"
+                       FontSize="14"/>
+                <Button Text="Get Location" Grid.Column="3" Command="{Binding DestinationLocationCommand}"
+                        FontSize="14"
+                        Grid.Row="3"
+                        Grid.ColumnSpan="1"/>
+                <Label Text="Phone Number:"
+                       Grid.Column="0"
+                       Grid.Row="4"
+                       Padding="0"/>
+                <Entry  Text="{Binding NewJobOffer.ClientPhoneNumber, Mode=TwoWay}"
                         Placeholder="Phone number" 
                         Keyboard="Telephone" 
-                        x:Name="Phone">
-                <Entry.Behaviors>
-                    <behaviors:PhoneNumberMaskBehavior />
-                    <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
-                </Entry.Behaviors>
-            </Entry>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.4*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Text="Job date:" Padding="10" Grid.Column="0"/>
-                <StackLayout Orientation="Horizontal" 
+                        x:Name="Phone"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3">
+                    <Entry.Behaviors>
+                        <behaviors:PhoneNumberMaskBehavior />
+                        <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Job date:" Padding="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <StackLayout Orientation="Horizontal" 
                                  HorizontalOptions="StartAndExpand"
                                  Spacing="20"
-                                 Grid.Column="1">
-                    <DatePicker Format="dd/MM/yyyy" 
+                                 Grid.Column="2">
+                        <DatePicker Format="dd/MM/yyyy" 
                                 MinimumDate="{x:Static system:DateTime.Now}" 
                                 Date="{Binding NewJobOffer.Date}" />
-                    <TimePicker Time="{Binding NewJobOffer.Time}" />
-                </StackLayout>
-            </Grid>
-            <Frame 
+                        <TimePicker Time="{Binding NewJobOffer.Time}" />
+                    </StackLayout>
+                </Grid>
+                <Frame 
                        VerticalOptions="FillAndExpand"
                        Padding="10"
                        Margin="5,5,5,20"
-                       HasShadow="True">
-                <Editor IsSpellCheckEnabled="True"
+                       HasShadow="True"
+                       Grid.Row="6"
+                       Grid.ColumnSpan="4">
+                    <Editor IsSpellCheckEnabled="True"
                             IsTextPredictionEnabled="True"
                             Placeholder="Job Description"
                             VerticalOptions="FillAndExpand"
                             MaxLength="255"
                             HeightRequest="220"
-                            Text="{Binding NewJobOffer.Description}">
-                    <Editor.Keyboard>
-                        <Keyboard x:FactoryMethod="Create" >
-                            <x:Arguments>
-                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                            </x:Arguments>
-                        </Keyboard>
-                    </Editor.Keyboard>
-                </Editor>
-            </Frame>
-            <Button Text="Send" 
+                            Text="{Binding NewJobOffer.Description}"
+                        PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
+                        <Editor.Keyboard>
+                            <Keyboard x:FactoryMethod="Create" >
+                                <x:Arguments>
+                                    <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                                </x:Arguments>
+                            </Keyboard>
+                        </Editor.Keyboard>
+                    </Editor>
+                </Frame>
+                <Button Text="Send" 
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="EndAndExpand"
                     CornerRadius="20"
                     Margin="5"
-                    Command="{Binding SendJobCommand}"/>
+                    Command="{Binding SendJobCommand}"
+                    Grid.Row="7"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"/>
+            </Grid>
         </StackLayout>
 
     </ContentPage.Content>
