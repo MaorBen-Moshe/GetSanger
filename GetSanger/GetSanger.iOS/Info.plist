@@ -67,5 +67,28 @@
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
+	
+	<key>CFBundleURLTypes</key>
+	<array>
+	  <dict>
+		<key>CFBundleURLName</key>
+		<string>fb</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		   <string>fb328227848585394</string>
+		</array>
+	  </dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>328227848585394</string>
+	<key>FacebookDisplayName</key>
+	<string>Get Sanger</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	  <string>fbapi</string>
+	  <string>fb-messenger-share-api</string>
+	  <string>fbauth2</string>
+	  <string>fbshareextension</string>
+	</array>
 </dict>
 </plist>

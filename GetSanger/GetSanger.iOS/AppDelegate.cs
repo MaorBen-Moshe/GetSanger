@@ -6,6 +6,7 @@ using Firebase.InstanceID;
 using GetSanger.iOS.Services;
 using UserNotifications;
 using CarouselView.FormsPlugin.iOS;
+using Plugin.FacebookClient;
 
 namespace GetSanger.iOS
 {
@@ -21,7 +22,12 @@ namespace GetSanger.iOS
             if (Xamarin.Essentials.Platform.OpenUrl(app, url, options))
                 return true;
 
-            return base.OpenUrl(app, url, options);
+            return FacebookClientManager.OpenUrl(app, url, options);
+        }
+
+        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            return FacebookClientManager.OpenUrl(application, url, sourceApplication, annotation);
         }
 
         public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity,
@@ -59,7 +65,16 @@ namespace GetSanger.iOS
             // force Right to left flow direction in app
             ObjCRuntime.Selector selector = new ObjCRuntime.Selector("setSemanticContentAttribute:");
 
+            FacebookClientManager.Initialize(app,options);
+
             return base.FinishedLaunching(app, options);
+        }
+
+        public override void OnActivated(UIApplication uiApplication)
+        {
+            FacebookClientManager.OnActivated();
+
+            base.OnActivated(uiApplication);
         }
 
         void InstanceIdResultHandler(InstanceIdResult result, NSError error)

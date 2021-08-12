@@ -12,5 +12,10 @@
 	</array>
 	<key>aps-environment</key>
 	<string>development</string>
+	
+	<key>keychain-access-groups</key>
+	<array>
+	<string>UF7B6CCLDH.com.companyname.GetSanger</string>
+	</array>
 </dict>
 </plist>
