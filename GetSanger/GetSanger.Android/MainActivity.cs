@@ -11,7 +11,7 @@ using Android.Content.PM;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps.Android;
 using CarouselView.FormsPlugin.Droid;
-using Plugin.FacebookClient;
+using Xamarin.Facebook;
 
 namespace GetSanger.Droid
 {
@@ -21,6 +21,7 @@ namespace GetSanger.Droid
     {
         internal static MainActivity Instance { get; private set; }
         public static readonly int PickImageId = 1000;
+        private ICallbackManager m_CallbackManager;
 
         public TaskCompletionSource<Stream> PickImageTaskCompletionSource { set; get; }
 
@@ -39,7 +40,8 @@ namespace GetSanger.Droid
             {
                 BitmapDescriptorFactory = new BitmapConfig()
             });
-            FacebookClientManager.Initialize(this);
+
+            m_CallbackManager = CallbackManagerFactory.Create();
 
             CarouselViewRenderer.Init();
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
@@ -108,7 +110,7 @@ namespace GetSanger.Droid
                 }
             }
 
-            FacebookClientManager.OnActivityResult(requestCode, resultCode, intent);
+            m_CallbackManager.OnActivityResult(requestCode, (int)resultCode, intent);
         }
 
         protected override async void OnNewIntent(Intent intent)
