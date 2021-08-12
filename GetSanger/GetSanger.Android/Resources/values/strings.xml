@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
 	<string name="com.google.firebase.crashlytics.mapping_file_id">1.0</string>
+	<string name="facebook_app_name">Get Sanger</string>
+	<string name="facebook_app_id">328227848585394</string>
+	<string name="fb_login_protocol_scheme">fb328227848585394</string>
 </resources>

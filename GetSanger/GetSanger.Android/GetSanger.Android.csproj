@@ -100,6 +100,9 @@
     <PackageReference Include="Plugin.CurrentActivity">
       <Version>2.1.0.4</Version>
     </PackageReference>
+    <PackageReference Include="Plugin.FacebookClient">
+      <Version>2.2.1</Version>
+    </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
       <Version>2.0.0.12</Version>
     </PackageReference>
@@ -338,7 +341,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" TriggeredFromHotReload="False" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
