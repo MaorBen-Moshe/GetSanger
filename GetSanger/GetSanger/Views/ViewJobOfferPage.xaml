@@ -40,10 +40,10 @@
                     <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
                 </Label.GestureRecognizers>
             </Label>
-            <Entry Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
+            <Label Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
                    IsEnabled="False"
-                   IsReadOnly="True" />
-            <Entry Text="{Binding FromLocation, Mode=OneWay, StringFormat=' From:&#x0a; {0}'}"
+                   />
+            <Label Text="{Binding FromLocation, Mode=OneWay, StringFormat=' From:&#x0a; {0}'}"
                            Margin="5"
                            IsVisible="{Binding IsDeliveryCategory}"
                            BackgroundColor="Transparent"
@@ -52,17 +52,14 @@
                            Margin="5"
                            BackgroundColor="Transparent"
                    IsEnabled="False"/>
-            <Entry Placeholder="Phone number" 
-                   Text="{Binding Job.ClientPhoneNumber}"
-                   Keyboard="Telephone" 
+            <Label Text="{Binding Job.ClientPhoneNumber}"
                    x:Name="Phone" 
-                   IsReadOnly="True"
-                   IsEnabled="False">
+                   >
                 <Entry.Behaviors>
                     <behaviors:PhoneNumberMaskBehavior />
                     <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
                 </Entry.Behaviors>
-            </Entry>
+            </Label>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.2*"></ColumnDefinition>

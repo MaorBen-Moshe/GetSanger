@@ -49,7 +49,7 @@
     <Color x:Key="TabBarTitleColorDark">#910000</Color>
     <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>
     <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
-    <Color x:Key="TabBarUnselectedColorLight">Gray</Color>
+    <Color x:Key="TabBarUnselectedColorLight">Black</Color>
     <Color x:Key="EditorBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="EditorBackgroundColorLight">White</Color>
     <Color x:Key="TableViewBackgroundColorDark">#3d3d3d</Color>
@@ -72,6 +72,8 @@
     <Color x:Key="ChatOutgoingBackgroundColorLight">Gray</Color>
     <Color x:Key="PickerTextColorDark">White</Color>
     <Color x:Key="PickerTextColorLight">Black</Color>
+    <Color x:Key="TimePickerTextColorDark">White</Color>
+    <Color x:Key="TimePickerTextColorLight">Black</Color>
     
     
     <Style TargetType="Shell">
@@ -156,4 +158,8 @@
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
     </Style>
+    <Style TargetType="TimePicker">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TimePickerTextColorDark}, Light={StaticResource TimePickerTextColorLight}}"/>
+    </Style>
+
 </ResourceDictionary>

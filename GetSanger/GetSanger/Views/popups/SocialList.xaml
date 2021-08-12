@@ -27,16 +27,16 @@
         </ResourceDictionary>
     </popup:PopupPage.Resources>
 
-    <Frame CornerRadius="10"
-                   Padding="10"
-                   Margin="20, 0"
+    <Frame CornerRadius="1"
+                   Padding="1"
+                   Margin="10, 0"
                    BorderColor="Red"
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
         <ListView ItemsSource="{Binding Socials}"
                   HasUnevenRows="True"
-                  BackgroundColor="{AppThemeBinding Dark=#1A1A1A, Light=GhostWhite}"
+                  BackgroundColor="{AppThemeBinding Dark=#002157, Light=GhostWhite}"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                   HeightRequest="200"
                   SeparatorVisibility="None">
@@ -48,7 +48,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid HorizontalOptions="CenterAndExpand">
+                        <Grid HorizontalOptions="CenterAndExpand" BackgroundColor="{AppThemeBinding Dark=#002157, Light=WhiteSmoke}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.5*"/>
                                 <ColumnDefinition Width="0.5*" />
