@@ -22,43 +22,68 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="{Binding Job.Title}"
-                   FontSize="Title"
-                   VerticalOptions="StartAndExpand"
-                   HorizontalOptions="CenterAndExpand"
-                   Padding="50"/>
-            <Label Text="{Binding ProfileText}"
-                   TextColor="Blue"
-                   TextDecorations="Underline"
-                   Padding="10"
-                   Margin="10"
-                   BackgroundColor="{AppThemeBinding Dark={StaticResource ColorsGray}, Light={StaticResource ColorsTransparent}}"
-                   HorizontalOptions="CenterAndExpand"
-                   IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
-                   IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
-                </Label.GestureRecognizers>
-            </Label>
-            <Label Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
-                   IsEnabled="False"
-                   />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+
+
+
+                </Grid.RowDefinitions>
+                
+                <Label Text="{Binding Job.Title}"
+                       FontSize="Title"
+                       VerticalOptions="StartAndExpand"
+                       HorizontalOptions="CenterAndExpand"
+                       Padding="4"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="1"
+                       Grid.RowSpan="3"
+                       />
+                <Label Text="{Binding ProfileText}"
+                       TextColor="Blue"
+                       TextDecorations="Underline"
+                       Padding="10"
+                       Margin="10"
+                       BackgroundColor="{AppThemeBinding Dark=Gray, Light=Transparent}"
+                       HorizontalOptions="CenterAndExpand"
+                       IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
+                       IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Grid.RowSpan="2">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="Category:" Grid.Row="0" Grid.Column="3" FontSize="13"/>
+                <Label Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
+                       IsEnabled="False"
+                       Grid.Row="1"
+                       Grid.Column="3"
+                       Grid.ColumnSpan="1" FontSize="13"/>
+            
+            </Grid>
             <Label Text="{Binding FromLocation, Mode=OneWay, StringFormat=' From:&#x0a; {0}'}"
                            Margin="5"
                            IsVisible="{Binding IsDeliveryCategory}"
                            BackgroundColor="Transparent"
-                   IsEnabled="False"/>
-            <Entry Text="{Binding DestinationLocation,Mode=OneWay, StringFormat=' Destination:&#x0a; {0}'}"
+                   />
+            <Label Text="{Binding DestinationLocation,Mode=OneWay, StringFormat=' Destination:&#x0a; {0}'}"
                            Margin="5"
-                           BackgroundColor="Transparent"
-                   IsEnabled="False"/>
+                           BackgroundColor="Transparent"/>
             <Label Text="{Binding Job.ClientPhoneNumber}"
                    x:Name="Phone" 
                    >
-                <Entry.Behaviors>
-                    <behaviors:PhoneNumberMaskBehavior />
-                    <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
-                </Entry.Behaviors>
             </Label>
             <Grid>
                 <Grid.ColumnDefinitions>

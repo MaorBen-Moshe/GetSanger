@@ -23,11 +23,11 @@
 
     <Shell.TitleView>
         <StackLayout HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand">
+                     VerticalOptions="CenterAndExpand"
+                     BackgroundColor="Transparent">
             <Label Text="{Binding NewJobOffer.Title}"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"
-                   BackgroundColor="Transparent"
                    Margin="20,0,0,0"/>
         </StackLayout>
     </Shell.TitleView>
@@ -120,7 +120,7 @@
                     </Entry.Behaviors>
                 </Entry>
 
-                <Grid Grid.Row="5">
+                <Grid Grid.Row="5" BackgroundColor="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.4*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
