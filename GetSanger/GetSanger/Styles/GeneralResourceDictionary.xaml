@@ -34,8 +34,8 @@
     <Color x:Key="FramBackgroundColorLight">White</Color>
     <Color x:Key="GridBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="GridBackgroundColorLight">White</Color>
-    <Color x:Key="ShellBackgroundColorDark">#3d3d3d</Color>
-    <Color x:Key="ShellBackgroundColorLight">White</Color>
+    <Color x:Key="ShellBackgroundColorDark">Black</Color>
+    <Color x:Key="ShellBackgroundColorLight">WhiteSmoke</Color>
     <Color x:Key="ShellForegroundColorDark">White</Color>
     <Color x:Key="ShellForegroundColorLight">#000000</Color>
     <Color x:Key="NavBarTextColorDark">#3d3d3d</Color>

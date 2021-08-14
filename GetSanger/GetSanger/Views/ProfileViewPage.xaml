@@ -14,12 +14,14 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <ResourceDictionary Source="../Styles/GeneralResourceDictionary.xaml" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <Shell.TitleView>
         <StackLayout HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand">
+                     VerticalOptions="CenterAndExpand"
+                     BackgroundColor="Transparent">
             <Label Text="Profile" 
                    FontSize="Title"
                    BackgroundColor="Transparent"
