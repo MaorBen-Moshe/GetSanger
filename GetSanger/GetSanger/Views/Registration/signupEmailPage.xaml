@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             xmlns:Controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.Registration.SignupEmailPage"
              xmlns:Converters="clr-namespace:GetSanger.Converters"
              BackgroundColor="{AppThemeBinding Dark={StaticResource ContentPageBackgroundColorDark},Light={StaticResource ContentPageBackgroundColorLight}}">

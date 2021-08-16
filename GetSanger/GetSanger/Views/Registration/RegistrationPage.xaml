@@ -22,16 +22,24 @@
                       Grid.Row="0" 
                       Grid.RowSpan="1" 
                       Margin="0, 10, 0, 0">
-            <Label Text="Get Sanger" 
-                   FontSize="30"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"/>
-            <Label Text="Be the best Sanger you can!"
-                   FontSize="18"
-                   HorizontalOptions="Center" />
-            <Label Text="Treat the sangers well!" 
-                   FontSize="14"
-                   HorizontalOptions="Center" />
+            <Frame BackgroundColor="White"
+                   Padding="1"
+                   Margin="20, 10, 20, 10"
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="Get Sanger" 
+                           FontSize="30"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Be the best Sanger you can!"
+                           FontSize="18"
+                           HorizontalOptions="Center" />
+                    <Label Text="Treat the sangers well!" 
+                           FontSize="14"
+                           HorizontalOptions="Center" 
+                           Margin="0,0,0,10"/>
+                </StackLayout>
+            </Frame>
             <Frame BorderColor="Transparent">
                 <StackLayout Spacing="20">
                     <Entry Keyboard="Email" 
@@ -49,10 +57,13 @@
                 </StackLayout>
             </Frame>
             <Label Text="Forgot password?" 
-                    BackgroundColor="Transparent" 
-                    Margin="0,0,20,0"
-                    VerticalOptions="EndAndExpand"
-                    HorizontalOptions="EndAndExpand"
+                   FontAttributes="Italic"
+                   TextDecorations="Underline"
+                   CharacterSpacing="1"
+                   BackgroundColor="Transparent" 
+                   Margin="0,0,20,0"
+                   VerticalOptions="EndAndExpand"
+                   HorizontalOptions="EndAndExpand"
                    FontSize="14">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"
@@ -60,7 +71,7 @@
                 </Label.GestureRecognizers>
             </Label>
 
-            <Button Text="Login" Margin="20"
+            <Button Text="Login" Margin="20" CornerRadius="20"
                     Command="{Binding LoginCommand}" IsEnabled="{Binding IsEnabledsendBtn}">
                 <Button.Triggers>
                     <MultiTrigger TargetType="Button">
@@ -86,7 +97,7 @@
 
         </StackLayout>
         <StackLayout Grid.Row="3" Orientation="Horizontal"
-              Margin="50, 8, 8, 8">
+              Margin="50, 15, 8, 50">
             
             <controls:SocialButton Text="Facebook"
                     Image="facebookIcon.png"
@@ -108,6 +119,7 @@
                      Grid.Row="3">
             <Button Text="Sign up" 
                     VerticalOptions="EndAndExpand"
+                    CornerRadius="20"
                     Command="{Binding SignUpCommand}"
                     Margin="10"/>
         </StackLayout>

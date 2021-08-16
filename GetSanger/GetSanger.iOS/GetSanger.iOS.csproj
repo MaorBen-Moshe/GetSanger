@@ -82,6 +82,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Persistence\SQLiteDb.cs" />
+    <Compile Include="Rendrers\BorderEntryRenderer.cs" />
     <Compile Include="Rendrers\ChatEntryRendrer.cs" />
     <Compile Include="Rendrers\CustomEditorRendrer.cs" />
     <Compile Include="Rendrers\ExtendedListViewRenderer.cs" />
