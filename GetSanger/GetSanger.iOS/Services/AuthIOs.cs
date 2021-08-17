@@ -1,9 +1,8 @@
 ﻿using Foundation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Facebook.CoreKit;
+using Facebook.LoginKit;
 using Firebase.Auth;
 using GetSanger.Interfaces;
 using GetSanger.iOS.Services;
@@ -74,14 +73,33 @@ namespace GetSanger.iOS.Services
             return result;
         }
 
-        public string GetGoogleClientId()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task SignInAnonymouslyAsync()
         {
             await Auth.DefaultInstance.SignInAnonymouslyAsync();
+        }
+
+        public async Task LoginViaFacebook()
+        {
+            var window = UIApplication.SharedApplication.KeyWindow;
+            var vc = window.RootViewController;
+
+            LoginManager manager = new LoginManager();
+            manager.LogOut();
+            await Task.Run(() =>
+            {
+                manager.LogIn(new[] { "public_profile", "email" }, vc, ((result, error) =>
+                {
+                    if (error != null || result == null || result.IsCancelled)
+                    {
+                        throw new Exception("Login cancelled.");
+                    }
+                }));
+            });
+        }
+
+        public string GetFacebookAccessToken()
+        {
+            return AccessToken.CurrentAccessToken.TokenString;
         }
     }
 }
