@@ -24772,51 +24772,72 @@ namespace GetSanger.Droid
 			public const int mtrl_ic_cancel = 2131165376;
 			
 			// aapt resource value: 0x7F0700C1
+			public const int noVisibility = 2131165377;
 			public const int mtrl_ic_error = 2131165377;
 			
 			// aapt resource value: 0x7F0700C2
+			public const int phone = 2131165378;
 			public const int mtrl_popupmenu_background = 2131165378;
 			
 			// aapt resource value: 0x7F0700C3
+			public const int preference_list_divider_material = 2131165379;
 			public const int mtrl_popupmenu_background_dark = 2131165379;
 			
 			// aapt resource value: 0x7F0700C4
+			public const int Prev = 2131165380;
 			public const int mtrl_tabs_default_indicator = 2131165380;
 			
 			// aapt resource value: 0x7F0700C5
+			public const int profile = 2131165381;
 			public const int navigation_empty_icon = 2131165381;
 			
 			// aapt resource value: 0x7F0700C6
+			public const int ratingStarOff = 2131165382;
 			public const int Next = 2131165382;
 			
 			// aapt resource value: 0x7F0700D2
 			public const int notificationPic = 2131165394;
 			
 			// aapt resource value: 0x7F0700C7
+			public const int ratingStarOff2x = 2131165383;
 			public const int notification_action_background = 2131165383;
 			
 			// aapt resource value: 0x7F0700C8
+			public const int ratingStarOn = 2131165384;
 			public const int notification_bg = 2131165384;
 			
 			// aapt resource value: 0x7F0700C9
+			public const int ratingStarOn2x = 2131165385;
 			public const int notification_bg_low = 2131165385;
 			
 			// aapt resource value: 0x7F0700CA
+			public const int rolling = 2131165386;
 			public const int notification_bg_low_normal = 2131165386;
 			
 			// aapt resource value: 0x7F0700CB
+			public const int test_custom_background = 2131165387;
 			public const int notification_bg_low_pressed = 2131165387;
 			
 			// aapt resource value: 0x7F0700CC
+			public const int tooltip_frame_dark = 2131165388;
 			public const int notification_bg_normal = 2131165388;
 			
 			// aapt resource value: 0x7F0700CD
+			public const int tooltip_frame_light = 2131165389;
 			public const int notification_bg_normal_pressed = 2131165389;
 			
 			// aapt resource value: 0x7F0700CE
+			public const int Up = 2131165390;
 			public const int notification_icon_background = 2131165390;
 			
 			// aapt resource value: 0x7F0700CF
+			public const int visibility = 2131165391;
+			
+			// aapt resource value: 0x7F0700D0
+			public const int watermark = 2131165392;
+			
+			// aapt resource value: 0x7F0700D1
+			public const int whatsapp = 2131165393;
 			public const int notification_template_icon_bg = 2131165391;
 			
 			// aapt resource value: 0x7F0700D0

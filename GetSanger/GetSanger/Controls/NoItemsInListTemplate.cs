@@ -16,7 +16,7 @@ namespace GetSanger.Controls
         }
 
         public static readonly BindableProperty TextProperty = BindableProperty.Create(
-                                                                                propertyName: "Text",
+                                                                                propertyName: "PasswordText",
                                                                                 returnType: typeof(string),
                                                                                 declaringType: typeof(NoItemsInListTemplate),
                                                                                 defaultValue: null,
@@ -71,7 +71,7 @@ namespace GetSanger.Controls
             VerticalOptions = LayoutOptions.CenterAndExpand;
             /*Image Part*/
             setImage();
-            /*Text Label Part*/
+            /*PasswordText Label Part*/
             m_EmptyLabel = new Label
             {
                 FontSize = 20,

@@ -82,9 +82,13 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Persistence\SQLiteDb.cs" />
-    <Compile Include="Rendrers\ChatEntryRendrer.cs" />
-    <Compile Include="Rendrers\CustomEditorRendrer.cs" />
-    <Compile Include="Rendrers\ExtendedListViewRenderer.cs" />
+    <Compile Include="Renderers\BorderDatePickerRenderer.cs" />
+    <Compile Include="Renderers\BorderEntryRenderer.cs" />
+    <Compile Include="Renderers\BorderPickerRenderer.cs" />
+    <Compile Include="Renderers\ChatEntryRendrer.cs" />
+    <Compile Include="Renderers\CustomEditorRendrer.cs" />
+    <Compile Include="Renderers\ExtendedListViewRenderer.cs" />
+    <Compile Include="Renderers\UITextFieldPadding.cs" />
     <Compile Include="Services\AuthIOs.cs" />
     <Compile Include="Services\Crashlytics.cs" />
     <Compile Include="Services\LoadingServices.cs" />
