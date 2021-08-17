@@ -2,19 +2,19 @@
 
 namespace GetSanger.Controls
 {
-    public sealed class BorderWithEntry : Entry
+    public sealed class EntryWithBorder : Entry
     {
         public static BindableProperty CornerRadiusProperty =
-            BindableProperty.Create(nameof(CornerRadius), typeof(int), typeof(BorderWithEntry), 8);
+            BindableProperty.Create(nameof(CornerRadius), typeof(int), typeof(EntryWithBorder), 8);
 
         public static BindableProperty BorderThicknessProperty =
-            BindableProperty.Create(nameof(BorderThickness), typeof(int), typeof(BorderWithEntry), 1);
+            BindableProperty.Create(nameof(BorderThickness), typeof(int), typeof(EntryWithBorder), 1);
 
         public static BindableProperty PaddingProperty =
-            BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(BorderWithEntry), new Thickness(10));
+            BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(EntryWithBorder), new Thickness(10));
 
         public static BindableProperty BorderColorProperty =
-            BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(BorderWithEntry), Color.Gray);
+            BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(EntryWithBorder), Color.Gray);
 
         public int CornerRadius
         {

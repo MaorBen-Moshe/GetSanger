@@ -34,13 +34,13 @@
                 <Label Text="Sign Up" FontSize="Title" HorizontalOptions="CenterAndExpand"/>
                 <Label Text="Create an account to start doing more" HorizontalOptions="CenterAndExpand" FontSize="14"/>
             </StackLayout>
-            <controls:BorderWithEntry Placeholder="Email" Keyboard="Email" Text="{Binding CreatedUser.Email}" CornerRadius="20" x:Name="EmailEntry" />
+            <controls:EntryWithBorder Placeholder="Email" Keyboard="Email" Text="{Binding CreatedUser.Email}" CornerRadius="20" x:Name="EmailEntry" />
             <controls:VisibiltyPasswordControl PasswordPlaceHolder="Password" CornerRadius="20"
-                   PasswordText="{Binding Password}" 
+                   PasswordText="{Binding Password, Mode=TwoWay}" 
                    x:Name="PasswordControl">
             </controls:VisibiltyPasswordControl>
             <controls:VisibiltyPasswordControl PasswordPlaceHolder="Confirm Password" CornerRadius="20"
-                   PasswordText="{Binding ConfirmPassword}"  x:Name="ConfirmPasswordControl">
+                   PasswordText="{Binding ConfirmPassword, Mode=TwoWay}"  x:Name="ConfirmPasswordControl">
             </controls:VisibiltyPasswordControl>
             <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="10">
                 <Button Text="Register" Padding="10"  Command="{Binding EmailPartCommand}" IsEnabled="{Binding IsEnabledsendBtn}" BackgroundColor="White">

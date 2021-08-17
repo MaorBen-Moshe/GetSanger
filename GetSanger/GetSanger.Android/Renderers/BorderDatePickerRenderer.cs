@@ -5,35 +5,37 @@ using GetSanger.Droid.Renderers;
 using System.ComponentModel;
 using Android.Content;
 using Android.Graphics.Drawables;
+using Android.Widget;
 
-[assembly: ExportRenderer(typeof(EntryWithBorder), typeof(BorderEntryRenderer))]
+[assembly: ExportRenderer(typeof(DatePickerWithBorder), typeof(BorderDatePickerRenderer))]
 namespace GetSanger.Droid.Renderers
 {
-    public class BorderEntryRenderer : EntryRenderer
+    public class BorderDatePickerRenderer : DatePickerRenderer
     {
-        public EntryWithBorder ElementV2 => Element as EntryWithBorder;
+        public DatePickerWithBorder ElementV2 => Element as DatePickerWithBorder;
 
-        public BorderEntryRenderer(Context context) : base(context)
+        public BorderDatePickerRenderer(Context context) : base(context)
         {
         }
 
-        protected override FormsEditText CreateNativeControl()
+        protected override EditText CreateNativeControl()
         {
-            FormsEditText control = base.CreateNativeControl();
+            EditText control = base.CreateNativeControl();
             UpdateBackground(control);
             return control;
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == EntryWithBorder.CornerRadiusProperty.PropertyName)
-            {
-                UpdateBackground();
-            }else if (e.PropertyName == EntryWithBorder.BorderThicknessProperty.PropertyName)
+            if (e.PropertyName == DatePickerWithBorder.CornerRadiusProperty.PropertyName)
             {
                 UpdateBackground();
             }
-            else if (e.PropertyName == EntryWithBorder.BorderColorProperty.PropertyName)
+            else if (e.PropertyName == DatePickerWithBorder.BorderThicknessProperty.PropertyName)
+            {
+                UpdateBackground();
+            }
+            else if (e.PropertyName == DatePickerWithBorder.BorderColorProperty.PropertyName)
             {
                 UpdateBackground();
             }
@@ -46,7 +48,7 @@ namespace GetSanger.Droid.Renderers
             UpdateBackground();
         }
 
-        protected void UpdateBackground(FormsEditText control)
+        protected void UpdateBackground(EditText control)
         {
             if (control == null) return;
 

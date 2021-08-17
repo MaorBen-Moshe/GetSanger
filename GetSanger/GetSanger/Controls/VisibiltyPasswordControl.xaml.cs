@@ -16,7 +16,20 @@ namespace GetSanger.Controls
         }
 
         public static readonly BindableProperty PasswordTextProperty
-        = BindableProperty.Create(nameof(PasswordText), typeof(string), typeof(VisibiltyPasswordControl), defaultValue:"", defaultBindingMode: BindingMode.TwoWay);
+        = BindableProperty.Create(nameof(PasswordText), 
+                                  typeof(string), typeof(VisibiltyPasswordControl),
+                                  defaultValue:null, 
+                                  defaultBindingMode: BindingMode.TwoWay,
+                                  propertyChanged: (bindable, oldVal, newVal) =>
+                                  {
+                                      if(bindable is VisibiltyPasswordControl control)
+                                      {
+                                          if(newVal is string val)
+                                          {
+                                              control.PasswordEntry.Text = val;
+                                          }
+                                      }
+                                  });
 
         public string PasswordText
         {
@@ -33,7 +46,7 @@ namespace GetSanger.Controls
             set => SetValue(CornerRadiusProperty, value);
         }
 
-        public BorderWithEntry PasswordEntry
+        public EntryWithBorder PasswordEntry
         {
             get => m_PasswordEntry;
         }
@@ -41,6 +54,7 @@ namespace GetSanger.Controls
         public VisibiltyPasswordControl()
         {
             InitializeComponent();
+            PasswordEntry.TextChanged += (sender, args) => PasswordText = args.NewTextValue;
             PasswordText = "";
             PasswordPlaceHolder = "";
         }

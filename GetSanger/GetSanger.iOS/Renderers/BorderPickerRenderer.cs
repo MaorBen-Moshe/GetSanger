@@ -6,12 +6,12 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using System.Drawing;
 
-[assembly: ExportRenderer(typeof(EntryWithBorder), typeof(BorderEntryRenderer))]
+[assembly: ExportRenderer(typeof(PickerWithBorder), typeof(BorderPickerRenderer))]
 namespace GetSanger.iOS.Renderers
 {
-    public class BorderEntryRenderer : EntryRenderer
+    public class BorderPickerRenderer : PickerRenderer
     {
-        public EntryWithBorder ElementV2 => Element as EntryWithBorder;
+        public PickerWithBorder ElementV2 => Element as PickerWithBorder;
         public UITextFieldPadding ControlV2 => Control as UITextFieldPadding;
 
         protected override UITextField CreateNativeControl()
@@ -38,7 +38,7 @@ namespace GetSanger.iOS.Renderers
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == EntryWithBorder.PaddingProperty.PropertyName)
+            if (e.PropertyName == PickerWithBorder.PaddingProperty.PropertyName)
             {
                 UpdatePadding();
             }

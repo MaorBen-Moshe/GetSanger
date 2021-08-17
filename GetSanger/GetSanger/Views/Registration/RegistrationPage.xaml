@@ -43,7 +43,7 @@
             </Frame>
             <Frame BorderColor="Transparent">
                 <StackLayout Spacing="20">
-                    <controls:BorderWithEntry Keyboard="Email" 
+                    <controls:EntryWithBorder Keyboard="Email" 
                                               Placeholder="Email" 
                                               Text="{Binding Email, Mode=TwoWay}" x:Name="EmailEntry" />
                     <controls:VisibiltyPasswordControl PasswordText="{Binding Password, Mode=TwoWay}" 
