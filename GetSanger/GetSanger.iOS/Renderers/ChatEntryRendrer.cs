@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CoreGraphics;
+﻿using CoreGraphics;
 using Foundation;
-using GetSanger.iOS.Rendrers;
+using GetSanger.iOS.Renderers;
 using GetSanger.Views.chat;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(ChatInputBarView), typeof(ChatEntryRenderer))]
-namespace GetSanger.iOS.Rendrers
+namespace GetSanger.iOS.Renderers
 {
     public class ChatEntryRenderer : ViewRenderer //Depending on your situation, you will need to inherit from a different renderer
     {

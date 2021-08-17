@@ -5,7 +5,6 @@
              x:Class="GetSanger.Views.Registration.RegistrationPage"
              xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:Converters="clr-namespace:GetSanger.Converters"
-             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.BindingContext>
@@ -14,6 +13,8 @@
 
     <ContentPage.Resources>
         <Converters:EntryLengthToBoolConverter x:Key="EntryLengthToBoolConverter"/>
+        <Converters:PasswordEntryToBoolConverter x:Key="PasswordEntryToBoolConverter" />
+        <Converters:EmailEntryToBoolConverter x:Key="EmailEntryToBoolConverter" />
     </ContentPage.Resources>
 
     <StackLayout>
@@ -42,18 +43,12 @@
             </Frame>
             <Frame BorderColor="Transparent">
                 <StackLayout Spacing="20">
-                    <Entry Keyboard="Email" 
-                           Placeholder="Email" 
-                           Text="{Binding Email, Mode=TwoWay}" x:Name ="EmailEntry" />
-                    <Entry IsPassword="True" 
-                           Placeholder="Password" 
-                           Text="{Binding Password, Mode=TwoWay}" x:Name = "PasswordEntry">
-                        <Entry.Behaviors>
-                            <behaviors:EntryLengthValidator MinLength="6" MaxLength="12"/>
-                        </Entry.Behaviors>
-                    </Entry>
-
-
+                    <controls:BorderWithEntry Keyboard="Email" 
+                                              Placeholder="Email" 
+                                              Text="{Binding Email, Mode=TwoWay}" x:Name="EmailEntry" />
+                    <controls:VisibiltyPasswordControl PasswordText="{Binding Password, Mode=TwoWay}" 
+                                                       PasswordPlaceHolder="Password"
+                                                       x:Name="PasswordControl"/>
                 </StackLayout>
             </Frame>
             <Label Text="Forgot password?" 
@@ -78,10 +73,10 @@
                         <MultiTrigger.Conditions>
 
                             <BindingCondition Binding="{Binding Source = {x:Reference EmailEntry}, 
-                                Path = Text.Length, Converter={StaticResource EntryLengthToBoolConverter}}" Value="True"/>
+                                Path = Text, Converter={StaticResource EmailEntryToBoolConverter}}" Value="True"/>
 
-                            <BindingCondition Binding="{Binding Source = {x:Reference PasswordEntry}, 
-                                Path = Text.Length, Converter={StaticResource EntryLengthToBoolConverter}}" Value="True"/>
+                            <BindingCondition Binding="{Binding Source = {x:Reference PasswordControl}, 
+                                Path = PasswordEntry.Text, Converter={StaticResource PasswordEntryToBoolConverter}}" Value="True"/>
 
                         </MultiTrigger.Conditions>
                         <Setter Property="IsEnabled" Value="True"/>

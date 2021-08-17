@@ -1,26 +1,72 @@
-﻿using Android.Content;
-using Xamarin.Forms.Platform.Android;
+﻿using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms;
 using GetSanger.Controls;
-using GetSanger.Droid.Rendrers;
+using GetSanger.Droid.Renderers;
+using System.ComponentModel;
+using Android.Content;
+using Android.Graphics.Drawables;
 
 [assembly: ExportRenderer(typeof(BorderWithEntry), typeof(BorderEntryRenderer))]
-namespace GetSanger.Droid.Rendrers
+namespace GetSanger.Droid.Renderers
 {
-    class BorderEntryRenderer : EntryRenderer
+    public class BorderEntryRenderer : EntryRenderer
     {
+        public BorderWithEntry ElementV2 => Element as BorderWithEntry;
+
         public BorderEntryRenderer(Context context) : base(context)
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override FormsEditText CreateNativeControl()
         {
-            base.OnElementChanged(e);
+            FormsEditText control = base.CreateNativeControl();
+            UpdateBackground(control);
+            return control;
+        }
 
-            if (Control != null)
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == BorderWithEntry.CornerRadiusProperty.PropertyName)
             {
-                Control.SetBackgroundColor(global::Android.Graphics.Color.LightGray);
+                UpdateBackground();
+            }else if (e.PropertyName == BorderWithEntry.BorderThicknessProperty.PropertyName)
+            {
+                UpdateBackground();
             }
+            else if (e.PropertyName == BorderWithEntry.BorderColorProperty.PropertyName)
+            {
+                UpdateBackground();
+            }
+
+            base.OnElementPropertyChanged(sender, e);
+        }
+
+        protected override void UpdateBackgroundColor()
+        {
+            UpdateBackground();
+        }
+
+        protected void UpdateBackground(FormsEditText control)
+        {
+            if (control == null) return;
+
+            var gd = new GradientDrawable();
+            gd.SetColor(Element.BackgroundColor.ToAndroid());
+            gd.SetCornerRadius(Context.ToPixels(ElementV2.CornerRadius));
+            gd.SetStroke((int)Context.ToPixels(ElementV2.BorderThickness), ElementV2.BorderColor.ToAndroid());
+            control.SetBackground(gd);
+
+            var padTop = (int)Context.ToPixels(ElementV2.Padding.Top);
+            var padBottom = (int)Context.ToPixels(ElementV2.Padding.Bottom);
+            var padLeft = (int)Context.ToPixels(ElementV2.Padding.Left);
+            var padRight = (int)Context.ToPixels(ElementV2.Padding.Right);
+
+            control.SetPadding(padLeft, padTop, padRight, padBottom);
+        }
+
+        protected override void UpdateBackground()
+        {
+            UpdateBackground(Control);
         }
     }
 }
