@@ -291,7 +291,14 @@ namespace GetSanger.Services
 
         public static bool IsLoggedIn()
         {
-            return sr_Auth.IsLoggedIn();
+            try
+            {
+                return sr_Auth.IsLoggedIn();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public static async Task<bool> IsVerifiedEmail()
