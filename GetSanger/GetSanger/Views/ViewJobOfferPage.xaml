@@ -17,25 +17,21 @@
         <ResourceDictionary>
             <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <x:String x:Key="formattimewithoutseconds">{0:h:mm tt}</x:String>
+            <x:String x:Key="formatdatetimewithoutseconds">{0:d/M/yy h:mm tt}</x:String>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Spacing="0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="4*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
-                    <RowDefinition Height="1*" />
-
-
-
                 </Grid.RowDefinitions>
                 
                 <Label Text="{Binding Job.Title}"
@@ -45,8 +41,6 @@
                        Padding="4"
                        Grid.Row="0"
                        Grid.Column="0"
-                       Grid.ColumnSpan="1"
-                       Grid.RowSpan="3"
                        />
                 <Label Text="{Binding ProfileText}"
                        TextColor="Blue"
@@ -58,43 +52,49 @@
                        IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
                        IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
                        Grid.Row="1"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Grid.RowSpan="2">
+                       Grid.Column="0">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Text="Category:" Grid.Row="0" Grid.Column="3" FontSize="13"/>
-                <Label Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
+                <StackLayout Grid.Row="0" Grid.Column="1" Spacing="0">
+                    <Label Text="Category:" FontSize="13"/>
+                    <Label Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
                        IsEnabled="False"
-                       Grid.Row="1"
-                       Grid.Column="3"
-                       Grid.ColumnSpan="1" FontSize="13"/>
-            
+                       FontSize="13"/>
+                </StackLayout>
             </Grid>
             <Label Text="{Binding FromLocation, Mode=OneWay, StringFormat=' From:&#x0a; {0}'}"
-                           Margin="5"
-                           IsVisible="{Binding IsDeliveryCategory}"
-                           BackgroundColor="Transparent"
+                   Margin="5"
+                   IsVisible="{Binding IsDeliveryCategory}"
+                   BackgroundColor="Transparent"
+                   FontSize="14" Padding="0"
                    />
             <Label Text="{Binding DestinationLocation,Mode=OneWay, StringFormat=' Destination:&#x0a; {0}'}"
-                           Margin="5"
-                           BackgroundColor="Transparent"/>
-            <Label Text="{Binding Job.ClientPhoneNumber}"
-                   x:Name="Phone" 
-                   >
-            </Label>
+                   Margin="5"
+                   BackgroundColor="Transparent"
+                   FontSize="14" Padding="0"/>
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Label Text="Phone number:" Grid.Row="0" Grid.Column="0" FontSize="14"/>
+                <Label Text="{Binding Job.ClientPhoneNumber}"
+                       x:Name="Phone" Margin="15"
+                       Grid.Row="0" Grid.Column="1" FontSize="14" Padding="0"/>
+            </Grid>
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.2*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Text="Job date:" Padding="10" Grid.Column="0"/>
+                <Label Text="Job date:" Padding="10" Grid.Column="0" FontSize="14"/>
                 <StackLayout Orientation="Horizontal" 
                              Spacing="20"
                              Grid.Column="1">
-                    <DatePicker Format="dd/MM/yyyy" Date="{Binding Job.Date}" IsEnabled="False"/>
-                    <TimePicker Time="{Binding Job.Time}" IsEnabled="False"/>
+                    <Label Text="{Binding Job.Date, StringFormat={StaticResource formatdatetimewithoutseconds}}"
+                           Margin="10" FontSize="14"/>
                 </StackLayout>
             </Grid>
 
