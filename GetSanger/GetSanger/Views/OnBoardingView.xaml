@@ -2,13 +2,19 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
-             xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
+             xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.OnBoardingView">
 
     <ContentPage.BindingContext>
         <vm:OnBoardingViewModel />
     </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <ContentPage.Content>
         <Grid HorizontalOptions="FillAndExpand"
@@ -48,30 +54,52 @@
                                        Aspect="AspectFill"
                                        />
                             </Frame>
-                            <!--<controls:RoundedImage Radius="94"
-                                                   ImageSource="getSangerIconHD.png"
-                                                   HorizontalOptions="CenterAndExpand"
-                                                   VerticalOptions="CenterAndExpand"
-                                                   Margin="0, 0"
-                                                   BackgroundColor="Transparent"/>-->
-                            <StackLayout HorizontalOptions="CenterAndExpand"
-                                         VerticalOptions="CenterAndExpand">
-                                <Label Text="{Binding Text}"
-                                   HorizontalTextAlignment="Center"
-                                   
-                                   FontAttributes="Bold"
-                                   FontSize="25"
-                                   Margin="10,0"  
-                                   BackgroundColor="Transparent"/>
+                            <Frame HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand"
+                                   BackgroundColor="Transparent"
+                                   HasShadow="True"
+                                   Margin="10"
+                                   Padding="10"
+                                   BorderColor="LightSlateGray">
+                                <StackLayout HorizontalOptions="FillAndExpand"
+                                             VerticalOptions="FillAndExpand"
+                                             BackgroundColor="Transparent">
+                                    <Label Text="{Binding Header}"
+                                           HorizontalTextAlignment="Center"
+                                           FontSize="25"
+                                           FontAttributes="Bold"
+                                           Margin="10, 0"
+                                           BackgroundColor="Transparent"/>
+                                    <Label Text="{Binding Body}"
+                                           HorizontalTextAlignment="Center"
+                                           FontAttributes="Italic"
+                                           FontSize="15"
+                                           Margin="10,0"  
+                                           BackgroundColor="Transparent"/>
 
-                                <Button Text="Start"
-                                    IsVisible="{Binding IsLast}"
-                                    HorizontalOptions="CenterAndExpand"
-                                    VerticalOptions="CenterAndExpand"
-                                    TextColor="Black"
-                                    Command="{Binding StartCommand, Source={RelativeSource AncestorType={x:Type vm:OnBoardingViewModel}}}"
-                                    BackgroundColor="Transparent"/>
-                            </StackLayout>
+                                    <Button Text="Start"
+                                            IsVisible="{Binding IsLast}"
+                                            HorizontalOptions="CenterAndExpand"
+                                            VerticalOptions="CenterAndExpand"
+                                            BorderColor="LightGray"
+                                            BorderWidth="1"
+                                            TextColor="Black"
+                                            Command="{Binding StartCommand, Source={RelativeSource AncestorType={x:Type vm:OnBoardingViewModel}}}"
+                                            BackgroundColor="Transparent"/>
+                                    <Label Text="skip"
+                                           FontAttributes="Italic"
+                                           FontSize="14"
+                                           IsVisible="{Binding IsLast, Converter={StaticResource InverseBoolConverter}}"
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="CenterAndExpand"
+                                           TextColor="Black"
+                                           BackgroundColor="Transparent">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding StartCommand, Source={RelativeSource AncestorType={x:Type vm:OnBoardingViewModel}}}" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </StackLayout>
+                            </Frame>
                         </StackLayout>
                         
                     </DataTemplate>

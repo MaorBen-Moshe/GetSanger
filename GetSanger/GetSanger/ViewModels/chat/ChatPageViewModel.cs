@@ -31,6 +31,7 @@ namespace GetSanger.ViewModels.chat
         private Queue<Message> m_DelayedMessages;
         private ObservableCollection<Message> m_MessagesSource;
         private ImageSource m_UserPicture;
+        private Message m_SelectedItem;
         #endregion
 
         #region Properties
@@ -102,6 +103,20 @@ namespace GetSanger.ViewModels.chat
         {
             get => m_DelayedMessages;
             set => SetClassProperty(ref m_DelayedMessages, value);
+        }
+
+        public Message SelectedItem
+        {
+            get => m_SelectedItem;
+            set
+            {
+                SetClassProperty(ref m_SelectedItem, value);
+                if(value != null)
+                {
+                    m_SelectedItem.IsDateVisible = !m_SelectedItem.IsDateVisible;
+                    SelectedItem = null;
+                }
+            }
         }
 
         private IChatDb DB { get; set; }
