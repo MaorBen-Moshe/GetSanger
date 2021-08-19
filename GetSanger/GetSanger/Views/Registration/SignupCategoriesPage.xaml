@@ -24,6 +24,7 @@
                    WidthRequest="350"
                    HorizontalTextAlignment="Center" 
                    Text="Choose Categories:" 
+                   
                    FontSize="21"
                    TextColor="Black"
                    HorizontalOptions="CenterAndExpand" />
@@ -35,19 +36,24 @@
                    HorizontalOptions="FillAndExpand">
 
                 <ListView SeparatorVisibility="None" 
-                          Margin="0"
-                          RowHeight="55"
+                          Margin="5"
                           ItemsSource="{Binding CategoriesItems}"
                           BackgroundColor="Transparent"
-                          HasUnevenRows="True">
-
+                          HasUnevenRows="True"
+                          SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
+                          
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame WidthRequest="327" Padding="2" CornerRadius="07" HasShadow="false" BackgroundColor="Silver" Margin="24,10,34,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+                                <Frame WidthRequest="327" Padding="1" CornerRadius="7" HasShadow="false" BackgroundColor="Silver" Margin="24,10,34,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
                                     <Frame WidthRequest="327" Padding="0" CornerRadius="07" HasShadow="false" OutlineColor="Transparent">
-                                        <StackLayout WidthRequest="327" Orientation="Horizontal" Spacing="0">
-                                            <Label HeightRequest="30" WidthRequest="120" FontSize="20" Margin="22,0,0,0" Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray"  VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" />
+                                        <StackLayout WidthRequest="327" Orientation="Horizontal" Spacing="5">
+                                            <Label HeightRequest="40" 
+                                                   WidthRequest="120" 
+                                                   FontSize="20" Margin="22,0,0,0" 
+                                                   Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray" 
+                                                   VerticalOptions="CenterAndExpand" 
+                                                   HorizontalOptions="StartAndExpand" />
                                             <CheckBox HeightRequest="27" 
                                                       WidthRequest="31" 
                                                       Margin="24,0,0,0" 

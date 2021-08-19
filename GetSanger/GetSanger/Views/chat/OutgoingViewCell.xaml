@@ -4,8 +4,17 @@
           xmlns:vm="clr-namespace:GetSanger.ViewModels.chat"
           xmlns:effects="clr-namespace:GetSanger.Effects"
           x:Class="GetSanger.Views.chat.OutgoingViewCell">
+    <StackLayout>
 
-    <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ChatOutgoingBackgroundColorDark}, Light={StaticResource ChatOutgoingBackgroundColorLight}}"
+        <Label Text="{Binding DateString}"
+               IsVisible="{Binding IsDateVisible}"
+               HorizontalOptions="Start"
+               HorizontalTextAlignment="Start"
+               Margin="0, 0, 20, 5"
+               Rotation="180">
+
+        </Label>
+        <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ChatOutgoingBackgroundColorDark}, Light={StaticResource ChatOutgoingBackgroundColorLight}}"
             Rotation="180"
             FlowDirection="LeftToRight"
             Padding="10"
@@ -16,24 +25,26 @@
             BorderColor="Black"
             effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
             effects:LongPressedEffect.CommandParameter="{Binding .}">
-        <Frame.Effects>
-            <effects:LongPressedEffect />
-        </Frame.Effects>
-        <Grid BackgroundColor="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Label Text="{Binding Text}"
+            <Frame.Effects>
+                <effects:LongPressedEffect />
+            </Frame.Effects>
+            <Grid BackgroundColor="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Text="{Binding Text}"
                    BackgroundColor="Transparent"
                    HorizontalOptions="StartAndExpand"
                    Grid.Column="0"/>
-            <Label Text="!"
+                <Label Text="!"
                    TextColor="Red"
                    BackgroundColor="Transparent"
                    IsVisible="{Binding MessageSent, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
                    Grid.Column="1"
                    HorizontalOptions="EndAndExpand"
                    VerticalOptions="EndAndExpand"/>
-        </Grid>
-    </Frame>
+            </Grid>
+        </Frame>
+    </StackLayout>
+   
 </ViewCell>

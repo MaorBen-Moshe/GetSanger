@@ -30,7 +30,7 @@ namespace GetSanger.ViewModels
         private string m_PickedGender;
         private User m_CreatedUser;
         private DateTime m_MaxDatePicker;
-
+        private CategoryCell m_SelectedCategory;
         #endregion
 
         #region Constructor
@@ -47,6 +47,12 @@ namespace GetSanger.ViewModels
         #endregion
 
         #region Properties
+        public CategoryCell SelectedCategory
+        {
+            get => m_SelectedCategory;
+            set => SetClassProperty(ref m_SelectedCategory, null);
+        }
+
 
         public User CreatedUser
         {

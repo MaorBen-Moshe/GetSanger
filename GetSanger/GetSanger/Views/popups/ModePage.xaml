@@ -45,7 +45,7 @@
                            FontAttributes="Bold"
                            HorizontalOptions="CenterAndExpand"
                            TextColor="Black"/>
-                    <Label Text="You can always change it in your profile page." 
+                    <Label Text="You can always change it in account page." 
                            HorizontalTextAlignment="Center"/>
 
                 </StackLayout>

@@ -12,6 +12,7 @@ namespace GetSanger.Models.chat
         private DateTime m_TimeSent;
         private bool m_MessageSent;
         private int m_MessageId;
+        private bool m_IsDateVisible;
 
         [PrimaryKey, AutoIncrement]
         public int MessageId
@@ -44,10 +45,30 @@ namespace GetSanger.Models.chat
             set => SetStructProperty(ref m_TimeSent, value);
         }
 
+        public string DateString
+        {
+            get
+            {
+                string ret = "";
+                if(TimeSent != null)
+                {
+                    ret = TimeSent.ToString("MMMM dd, yyyy HH:mm tt");
+                }
+
+                return ret;
+            }
+        }
+
         public bool MessageSent
         {
             get => m_MessageSent;
             set => SetStructProperty(ref m_MessageSent, value);
+        }
+
+        public bool IsDateVisible
+        {
+            get => m_IsDateVisible;
+            set => SetStructProperty(ref m_IsDateVisible, value);
         }
 
         public override bool Equals(object obj)
