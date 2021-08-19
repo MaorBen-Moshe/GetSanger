@@ -69,6 +69,7 @@
             </Grid.RowDefinitions>
             
             <controls:ExtendedListView Grid.Row="0" 
+                 SelectedItem="{Binding SelectedItem}"
                  ItemTemplate="{StaticResource MessageTemplateSelector}" 
                  ItemsSource="{Binding MessagesSource}" 
                  ItemAppearingCommand="{Binding MessageAppearingCommand}"

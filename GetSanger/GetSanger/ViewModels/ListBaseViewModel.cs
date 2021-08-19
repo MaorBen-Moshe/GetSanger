@@ -60,7 +60,10 @@ namespace GetSanger.ViewModels
         public T SelectedItem
         {
             get => m_SelectedItem;
-            set => SetClassProperty(ref m_SelectedItem, value);
+            set
+            {
+                SetClassProperty(ref m_SelectedItem, null);
+            }
         }
 
         public bool TimeSortFlag

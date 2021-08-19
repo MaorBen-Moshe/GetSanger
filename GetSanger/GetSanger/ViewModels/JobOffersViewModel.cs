@@ -27,6 +27,8 @@ namespace GetSanger.ViewModels
             get => m_IsSangerMode;
             set => SetStructProperty(ref m_IsSangerMode, value);
         }
+
+        
         
         #endregion
 

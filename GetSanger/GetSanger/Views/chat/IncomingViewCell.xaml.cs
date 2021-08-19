@@ -10,5 +10,11 @@ namespace GetSanger.Views.chat
         {
             InitializeComponent();
         }
+
+        protected override void OnTapped()
+        {
+            base.OnTapped();
+            ForceUpdateSize();
+        }
     }
 }

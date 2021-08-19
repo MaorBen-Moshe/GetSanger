@@ -1,4 +1,6 @@
-﻿using GetSanger.ViewModels;
+﻿using GetSanger.Interfaces;
+using GetSanger.Services;
+using GetSanger.ViewModels;
 using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms.Xaml;
 
@@ -27,7 +29,8 @@ namespace GetSanger.Views.popups
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            DisplayAlert("Note", "You must choose a mode to continue.", "OK");
+            IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+            service.DisplayAlert("Note", "You must choose a mode to continue.", "OK");
             (BindingContext as BaseViewModel).Appearing();
         }
 

@@ -10,7 +10,9 @@ namespace GetSanger.ViewModels
         #region ModelClass
         public class OnBoardingItem
         {
-            public string Text { get; set; }
+            public string Header { get; set; }
+
+            public string Body { get; set; }
 
             public bool IsLast { get; set; }
         }
@@ -65,25 +67,28 @@ namespace GetSanger.ViewModels
             {
                 new OnBoardingItem
                 {
-                    Text = "Welcome to Get Sanger.",
+                    Header = "Welcome to Get Sanger",
+                    Body = "a lot of opportunities are waiting for you.",
                     IsLast = false
                 },
                 new OnBoardingItem
                 {
-                    Text = "Start your journey to help others and benefit from it.",
+                    Header = "title here",
+                    Body = "start your journey to help others and benefit from it.",
                     IsLast = false
                 },
                 new OnBoardingItem
                 {
-                    Text = string.Format(@"Decide what type of person you are:
-Sanger
-Client
+                    Header = "Decide what type of person you are:",
+                    Body = string.Format(@" 1.Sanger
+2.Client
 Or you can be Both :)"),
                     IsLast = false
                 },
                 new OnBoardingItem
                 {
-                    Text = "Sign up and let's go.",
+                    Header = "title here",
+                    Body = "Sign up and let's go.",
                     IsLast = true
                 }
             };
