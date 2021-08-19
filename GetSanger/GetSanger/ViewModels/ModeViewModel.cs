@@ -2,6 +2,7 @@
 using GetSanger.Services;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -33,9 +34,9 @@ namespace GetSanger.ViewModels
         {
         }
 
-        public void SetBackBehavior()
+        public async void SetBackBehavior()
         {
-            if (AuthHelper.IsLoggedIn())
+            if (await AuthHelper.IsLoggedIn())
             {
                 AuthHelper.SignOut();
             }

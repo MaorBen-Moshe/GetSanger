@@ -26,7 +26,7 @@ namespace GetSanger.Services
             SetDependencies();
             try
             {
-                if (AuthHelper.IsLoggedIn())
+                if (await AuthHelper.IsLoggedIn())
                 {
                     string userId = AuthHelper.GetLoggedInUserId();
                     bool firstTime = await AuthHelper.IsFirstTimeLogIn();

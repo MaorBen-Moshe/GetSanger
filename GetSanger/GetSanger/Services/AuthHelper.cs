@@ -289,14 +289,21 @@ namespace GetSanger.Services
             }
         }
 
-        public static bool IsLoggedIn()
+        public static async Task<bool> IsLoggedIn()
         {
             try
             {
-                return sr_Auth.IsLoggedIn();
+                bool isLoggedIn = sr_Auth.IsLoggedIn();
+                if (isLoggedIn)
+                {
+                    await GetIdTokenAsync(); // intended, this will throw an exception if the user was deleted on the server, which will be caught below.
+                }
+
+                return isLoggedIn;
             }
             catch (Exception)
             {
+                SignOut();
                 return false;
             }
         }
