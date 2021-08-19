@@ -139,7 +139,7 @@ namespace GetSanger.Services
 
         private static async void handleSangerLocation()
         {
-            if (AuthHelper.IsLoggedIn())
+            if (await AuthHelper.IsLoggedIn())
             {
                 User user = await FireStoreHelper.GetUser(AuthHelper.GetLoggedInUserId());
                 ILocation locationService = AppManager.Instance.Services.GetService(typeof(LocationService)) as LocationService;
