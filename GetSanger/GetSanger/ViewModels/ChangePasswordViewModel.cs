@@ -72,6 +72,7 @@ namespace GetSanger.ViewModels
                         if (NewPassword.IsValidPassword())
                         {
                             await RunTaskWhileLoading(AuthHelper.ChangePassword(OldPassword, NewPassword));
+                            await RunTaskWhileLoading(AuthHelper.LoginViaEmail(AppManager.Instance.ConnectedUser.Email, NewPassword));
                             await sr_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
                             await PopupNavigation.Instance.PopAsync();
                             return;
