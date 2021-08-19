@@ -2,13 +2,13 @@
 using CoreGraphics;
 using Foundation;
 using GetSanger.Controls;
-using GetSanger.iOS.Rendrers;
+using GetSanger.iOS.Renderers;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(ExtendedEditorControl), typeof(CustomEditorRenderer))]
-namespace GetSanger.iOS.Rendrers
+namespace GetSanger.iOS.Renderers
 {
     public class CustomEditorRenderer : EditorRenderer
     {

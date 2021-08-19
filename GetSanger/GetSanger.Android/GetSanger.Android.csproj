@@ -171,7 +171,10 @@
     <Compile Include="Effects\AndroidLongPressedEffect.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Persistence\SQLiteDb.cs" />
-    <Compile Include="Rendrers\CustomEditorRendrer.cs" />
+    <Compile Include="Renderers\BorderDatePickerRenderer.cs" />
+    <Compile Include="Renderers\BorderEntryRenderer.cs" />
+    <Compile Include="Renderers\BorderPickerRenderer.cs" />
+    <Compile Include="Renderers\CustomEditorRendrer.cs" />
     <Compile Include="Services\BitmapConfig.cs" />
     <Compile Include="Services\Crashlytics.cs" />
     <Compile Include="Services\FCM\AndroidFirebaseMessagingService.cs" />
@@ -186,7 +189,6 @@
     <Compile Include="Services\WebAuthenticationCallbackActivity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\UIFontIcons.ttf" />
     <GoogleServicesJson Include="google-services.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -335,10 +337,16 @@
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\getSangerIconTransparent.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\visibility.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\noVisibility.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" TriggeredFromHotReload="False" />
+      <UserProperties TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

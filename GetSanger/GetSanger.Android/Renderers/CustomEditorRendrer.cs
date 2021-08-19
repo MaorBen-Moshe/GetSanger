@@ -2,12 +2,12 @@
 using Android.Content;
 using Android.Graphics.Drawables;
 using GetSanger.Controls;
-using GetSanger.Droid.Rendrers;
+using GetSanger.Droid.Renderers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(ExtendedEditorControl), typeof(CustomEditorRenderer))]
-namespace GetSanger.Droid.Rendrers
+namespace GetSanger.Droid.Renderers
 {
     public class CustomEditorRenderer : EditorRenderer
     {

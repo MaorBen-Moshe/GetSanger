@@ -6,7 +6,19 @@
              xmlns:Converters="clr-namespace:GetSanger.Converters"
              xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Name="PersonalDetails">
-            
+
+    <Shell.TitleView>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     BackgroundColor="Transparent">
+            <Label Text="New Profile"
+                   Margin="60,0,0,0"
+                   FontSize="20"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </Shell.TitleView>
+    
 
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackButtonBehaviorCommand}"/>
@@ -32,46 +44,65 @@
     <!--STYLE - test END -->
 
     <ContentPage.Content>
-        <StackLayout VerticalOptions="Center">
+        <StackLayout VerticalOptions="Center" Spacing="10" Margin="20">
 
             <controls:RoundedImage ImageSource="{Binding PersonalImage}" 
-                                   Radius="100" 
+                                   Radius="80" 
                                    IsCacheEnable="False"
                                    Command="{Binding ImagePickerCommand}"/>
-            <Entry Placeholder="Nick Name" 
-                   Keyboard="Text" 
-                   Text="{Binding CreatedUser.PersonalDetails.NickName}" x:Name="NameEntry">
+            <Label Text="Add Profile Picture"
+                   FontSize="12"
+                   TextColor="Gray"
+                   HorizontalOptions="CenterAndExpand">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ImagePickerCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <controls:EntryWithBorder Placeholder="Nick Name" 
+                                      CornerRadius="15"
+                                      Keyboard="Text" 
+                                      Text="{Binding CreatedUser.PersonalDetails.NickName}" x:Name="NameEntry">
                 <Entry.Behaviors>
                     <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
                 </Entry.Behaviors>
-            </Entry>
+            </controls:EntryWithBorder>
 
-            <Entry Placeholder="Phone Number" Keyboard="Telephone" Text="{Binding CreatedUser.PersonalDetails.Phone}" x:Name="PhoneEntry">
+            <controls:EntryWithBorder Placeholder="Phone Number" 
+                                      Keyboard="Telephone" 
+                                      CornerRadius="15"
+                                      Text="{Binding CreatedUser.PersonalDetails.Phone}" x:Name="PhoneEntry">
                 <Entry.Behaviors>
                     <behaviors:PhoneNumberMaskBehavior />
                     <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
                 </Entry.Behaviors>
-            </Entry>
-            <Picker SelectedIndex="1" 
-                    Title="Gender"
-                    ItemsSource="{Binding GenderItems}"
-                    SelectedItem="{Binding PickedGender}">
-            </Picker>
+            </controls:EntryWithBorder>
+            <controls:PickerWithBorder CornerRadius="15"
+                                       SelectedIndex="1" 
+                                       Title="Gender"
+                                       ItemsSource="{Binding GenderItems}"
+                                       SelectedItem="{Binding PickedGender}">
+            </controls:PickerWithBorder>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.2*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                
-                <Label Text="Birthday" Padding="3" Grid.Column="0" FontSize="15" />
-                <DatePicker Format="dd/MM/yyyy" MaximumDate="{Binding MaxDatePicker}" Date="{Binding CreatedUser.PersonalDetails.Birthday}" x:Name="DateEntry"  Grid.Column="1"/>
+                <Label Text="Birthday" Padding="3" Grid.Column="0" FontSize="15" Margin="0,5,0,0" />
+                <controls:DatePickerWithBorder CornerRadius="15"
+                                               Format="dd/MM/yyyy"
+                                               MaximumDate="{Binding MaxDatePicker}"
+                                               Date="{Binding CreatedUser.PersonalDetails.Birthday}" 
+                                               x:Name="DateEntry" 
+                                               Grid.Column="1"/>
             </Grid>
 
-            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="10">
-                <Button Text="Continue" 
-                        Padding="5" 
-                        HeightRequest="55" 
-                        WidthRequest="100"
+            <StackLayout HorizontalOptions="Center"
+                         VerticalOptions="Center" 
+                         Margin="10">
+                <Button Text="Add profile" 
+                        Padding="10" 
+                        BackgroundColor="Transparent"
                         Command="{Binding PersonalDetailPartCommand}" 
                         IsEnabled="{Binding IsEnabledsendBtn}">
                     <Button.Triggers>
