@@ -74,30 +74,33 @@
                    Margin="5"
                    BackgroundColor="Transparent"
                    FontSize="14" Padding="0"/>
-            <Grid Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-                <Label Text="Phone number:" Grid.Row="0" Grid.Column="0" FontSize="14"/>
-                <Label Text="{Binding Job.ClientPhoneNumber}"
-                       x:Name="Phone" Margin="15"
-                       Grid.Row="0" Grid.Column="1" FontSize="14" Padding="0"/>
-            </Grid>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.2*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Text="Job date:" Padding="10" Grid.Column="0" FontSize="14"/>
-                <StackLayout Orientation="Horizontal" 
+            <Frame Padding="0">
+                <Grid Margin="5" Padding="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Phone number:" Grid.Row="0" Grid.Column="0" FontSize="17"/>
+                    <Label Text="{Binding Job.ClientPhoneNumber}"
+                           x:Name="Phone" Margin="15"
+                           Grid.Row="0" Grid.Column="1" FontSize="17" Padding="0"/>
+                </Grid>
+            </Frame>
+            <Frame Padding="0">
+                <Grid Margin="5" Padding="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Job date:" Padding="10" Grid.Column="0" FontSize="17"/>
+                    <StackLayout Orientation="Horizontal" 
                              Spacing="20"
-                             Grid.Column="1">
-                    <Label Text="{Binding Job.Date, StringFormat={StaticResource formatdatetimewithoutseconds}}"
-                           Margin="10" FontSize="14"/>
-                </StackLayout>
-            </Grid>
-
+                             Grid.Column="1"
+                             >
+                        <Label Text="{Binding Job.Date, StringFormat={StaticResource formatdatetimewithoutseconds}}"
+                           Margin="10" FontSize="17"/>
+                    </StackLayout>
+                </Grid>
+            </Frame>
             <Frame
                    VerticalOptions="FillAndExpand"
                    HasShadow="True">
