@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using GetSanger.Extensions;
 using GetSanger.Interfaces;
+using GetSanger.Views;
 
 namespace GetSanger.ViewModels
 {
@@ -188,6 +189,7 @@ namespace GetSanger.ViewModels
                                                  {
                                                      if (answer)
                                                      {
+                                                         sr_LoadingService.ShowLoadingPage(new LoadingPage("Deleting..."));
                                                          IChatDb chat = await ChatDatabase.ChatDatabase.Instance;
                                                          chat.DeleteDb();
                                                          ConnectedUser.IsDeleted = true;
@@ -196,6 +198,7 @@ namespace GetSanger.ViewModels
                                                          await FireStoreHelper.DeleteUser(AppManager.Instance.ConnectedUser.UserId);
                                                          await sr_PageService.DisplayAlert("Note", "We hope you come back soon!", "Thanks!");
                                                          Application.Current.MainPage = new AuthShell();
+                                                         sr_LoadingService.HideLoadingPage();
                                                      }
                                                  });
             }

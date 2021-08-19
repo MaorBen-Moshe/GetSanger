@@ -71,10 +71,12 @@ namespace GetSanger.ViewModels
                     {
                         if (NewPassword.IsValidPassword())
                         {
-                            await RunTaskWhileLoading(AuthHelper.ChangePassword(OldPassword, NewPassword));
-                            await RunTaskWhileLoading(AuthHelper.LoginViaEmail(AppManager.Instance.ConnectedUser.Email, NewPassword));
+                            sr_LoadingService.ShowLoadingPage();
+                            await AuthHelper.ChangePassword(OldPassword, NewPassword);
+                            await AuthHelper.LoginViaEmail(AppManager.Instance.ConnectedUser.Email, NewPassword);
                             await sr_PageService.DisplayAlert("Success", "Password has changed successfully.", "Thanks");
                             await PopupNavigation.Instance.PopAsync();
+                            sr_LoadingService.HideLoadingPage();
                             return;
                         }
                         else
