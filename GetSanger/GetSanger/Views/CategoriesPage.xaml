@@ -4,7 +4,6 @@
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.CategoriesPage"
-             xmlns:prism="http://prismlibrary.com"
              Shell.NavBarIsVisible="False">
 
 
@@ -19,38 +18,60 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-
     <ContentPage.Content>
-
-
-        <StackLayout Orientation="Vertical" Spacing="20">
-            <Label 
-                   Margin="14,17,20,0" 
-                   HeightRequest="54"
-                   WidthRequest="350"
-                   HorizontalTextAlignment="Center" 
-                   Text="Choose Categories:" 
-                   FontSize="21"
-                   HorizontalOptions="CenterAndExpand" />
+        <StackLayout Orientation="Vertical" Spacing="0">
+            <Frame Padding="5"
+                   CornerRadius="15"
+                   Margin="10">
+                <StackLayout>
+                    <Label Margin="0, 10, 0, 0" 
+                           HorizontalTextAlignment="Center" 
+                           Text="Pick Job Category"
+                           FontAttributes="Bold, Italic"  
+                           FontSize="24"
+                           HorizontalOptions="CenterAndExpand" />
+                    <Label Margin="0,10,0,0" 
+                           HorizontalTextAlignment="Center" 
+                           Text="You are almost there to get your job done."
+                           FontAttributes="Italic"
+                           FontSize="13"
+                           HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+            </Frame>
             <CollectionView ItemsSource="{Binding CategoriesItems}"
                             SelectedItem="{Binding SelectedItem}"
-                            SelectionMode="Single">
+                            SelectionMode="Single"
+                            Margin="10, 2, 10, 5">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
-                        Span="3"
-                        VerticalItemSpacing="5"
-                        HorizontalItemSpacing="10" />
+                                     Span="2"
+                                     VerticalItemSpacing="20"
+                                     HorizontalItemSpacing="10" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-
-                        <StackLayout Orientation="Vertical">
-                            <Image Source="{Binding ImageUri}"
-                                   WidthRequest="90"/>
-                            <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
-                                   FontSize="14"
-                                   HorizontalOptions="CenterAndExpand"/>
-                        </StackLayout>
+                        <Frame Padding="1"
+                               IsClippedToBounds="True"
+                               CornerRadius="3"
+                               BackgroundColor="Transparent"
+                               BorderColor="DarkGray">
+                            <StackLayout Orientation="Vertical"
+                                         HorizontalOptions="FillAndExpand"
+                                         VerticalOptions="FillAndExpand"
+                                         Padding="5"
+                                         Spacing="10"
+                                         Margin="5">
+                                <Image Source="{Binding ImageUri}"
+                                       WidthRequest="70"
+                                       HorizontalOptions="CenterAndExpand"/>
+                                <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
+                                       FontSize="14"
+                                       FontAttributes="Italic"
+                                       CharacterSpacing="1"
+                                       HorizontalTextAlignment="Center"
+                                       HorizontalOptions="CenterAndExpand"/>
+                            </StackLayout>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
