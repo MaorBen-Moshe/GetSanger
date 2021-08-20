@@ -167,17 +167,22 @@ namespace GetSanger.ViewModels
                         TimeReportCreated = DateTime.Now
                     };
 
-                    string answer = await sr_PageService.DisplayPrompt("Write your details:", "please add info to contact with you", "text here..."); 
-                    if(answer != null)
-                    {
-                        m_CurrentReport.ReportMessage = answer;
-                        await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
-                        await sr_PageService.DisplayAlert("Note", "Your Report has been sent to admin.", "Thanks");
-                    }
-                    else
-                    {
-                        await sr_PageService.DisplayAlert("Note", "Please add details to send this report!", "OK");
-                    }
+                    sr_PageService.DisplayPrompt("Write Report Details", 
+                                                 $"please add info so we will be able to process your report about {CurrentUser.PersonalDetails.NickName}",
+                                                 "info here...",
+                                                 async (answer) => 
+                                                 {
+                                                     if (answer != null)
+                                                     {
+                                                         m_CurrentReport.ReportMessage = answer;
+                                                         await RunTaskWhileLoading(FireStoreHelper.AddReport(m_CurrentReport));
+                                                         await sr_PageService.DisplayAlert("Note", "Your Report has been sent to the admin.", "Thanks");
+                                                     }
+                                                     else
+                                                     {
+                                                         await sr_PageService.DisplayAlert("Note", "Please add details to send this report!", "OK");
+                                                     }
+                                                 }); 
                 }
                 catch (Exception e)
                 {
@@ -195,7 +200,7 @@ namespace GetSanger.ViewModels
                     return;
                 }
 
-                var ratingsPopup = new AddRatingPage(CurrentUser.UserId);
+                var ratingsPopup = new AddRatingPage(CurrentUser.UserId, CurrentUser.PersonalDetails.NickName);
                 (ratingsPopup.BindingContext as AddRatingViewModel).RatingAddedEvent += (RatingAdded) =>
                 {
                     CurrentUser.Ratings.Add(RatingAdded);

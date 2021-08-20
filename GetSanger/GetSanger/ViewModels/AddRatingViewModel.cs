@@ -9,6 +9,7 @@ using Xamarin.Forms;
 namespace GetSanger.ViewModels
 {
     [QueryProperty(nameof(RatedUserId), "ratedUserId")]
+    [QueryProperty(nameof(UserName), "ratedUserName")]
     public class AddRatingViewModel : BaseViewModel
     {
         #region Events
@@ -17,6 +18,8 @@ namespace GetSanger.ViewModels
 
         #region Fields
         private Rating m_NewRating;
+
+        private string m_UserName;
         #endregion
 
         #region Properties
@@ -26,6 +29,12 @@ namespace GetSanger.ViewModels
         {
             get => m_NewRating;
             set => SetClassProperty(ref m_NewRating, value);
+        }
+
+        public string UserName
+        {
+            get => m_UserName;
+            set => SetClassProperty(ref m_UserName, value);
         }
         #endregion
 
