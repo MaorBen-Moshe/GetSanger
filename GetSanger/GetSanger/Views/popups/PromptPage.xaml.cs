@@ -2,7 +2,6 @@
 using Rg.Plugins.Popup.Services;
 using System;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views.popups
@@ -21,26 +20,6 @@ namespace GetSanger.Views.popups
                 i_AfterSubmit.Invoke(editor.Text);
                 PopupNavigation.Instance.PopAsync();
             });
-        }
-
-        protected override void OnAppearing()
-        {
-            if (Device.RuntimePlatform.Equals(Device.Android))
-            {
-                Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
-            }
-
-            base.OnAppearing();
-        }
-
-        protected override void OnDisappearing()
-        {
-            if (Device.RuntimePlatform.Equals(Device.Android))
-            {
-                Xamarin.Forms.Application.Current.On<Xamarin.Forms.PlatformConfiguration.Android>().UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Pan);
-            }
-
-            base.OnDisappearing();
         }
     }
 }
