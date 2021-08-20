@@ -99,7 +99,7 @@ namespace GetSanger.Controls
             foreach (var categoryCell in Source)
             {
                 SwitchCell sc = new SwitchCell { BindingContext = categoryCell };
-                sc.SetBinding(SwitchCell.TextProperty, new Binding("Category"));
+                sc.SetBinding(SwitchCell.TextProperty, new Binding("CategoryString"));
                 sc.SetBinding(SwitchCell.OnProperty, new Binding("Checked"));
                 sc.OnChanged += CategoriesSwitchCell_OnChanged;
                 categoriesSection.Add(sc);
