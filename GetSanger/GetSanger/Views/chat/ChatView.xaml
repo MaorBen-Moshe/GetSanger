@@ -22,9 +22,9 @@
 
 
     <Shell.TitleView>
-        <StackLayout Orientation="Horizontal">
+        <StackLayout Orientation="Horizontal" BackgroundColor="Transparent">
             <StackLayout Orientation="Horizontal"
-                         IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}">
+                         IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Transparent">
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ClickProfileBarCommand}"/>
                 </StackLayout.GestureRecognizers>

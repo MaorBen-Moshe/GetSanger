@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:controls="clr-namespace:GetSanger.Controls"
              >
     <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
     <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
@@ -74,8 +75,10 @@
     <Color x:Key="PickerTextColorLight">Black</Color>
     <Color x:Key="TimePickerTextColorDark">White</Color>
     <Color x:Key="TimePickerTextColorLight">Black</Color>
-    
-    
+    <Color x:Key="EntryBorderColorDark">White</Color>
+    <Color x:Key="EntryBorderColorLight">Black</Color>
+
+
     <Style TargetType="Shell">
         <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}" />
         <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"/>
@@ -161,5 +164,8 @@
     <Style TargetType="TimePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TimePickerTextColorDark}, Light={StaticResource TimePickerTextColorLight}}"/>
     </Style>
-
+    <Style TargetType="controls:EntryWithBorder">
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource EntryBorderColorDark}, Light={StaticResource EntryBorderColorLight}}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
+    </Style>
 </ResourceDictionary>
