@@ -10,7 +10,7 @@
                HorizontalTextAlignment="End"
                HorizontalOptions="End"
                Margin="20, 0, 10, 0"
-               Rotation="180">s
+               Rotation="180">
         </Label>
         <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ChatIncomingBackgroundColorDark}, Light={StaticResource ChatIncomingBackgroundColorLight}}"
               Rotation="180"
