@@ -131,6 +131,7 @@ namespace GetSanger.ViewModels.chat
         public ICommand CallCommand { get; set; }
         public ICommand HandleMessageReceivedCommand { get; set; }
         public ICommand ClickProfileBarCommand { get; set; }
+        public ICommand DisplayDateCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -186,6 +187,15 @@ namespace GetSanger.ViewModels.chat
             CallCommand = new Command(call);
             HandleMessageReceivedCommand = new Command(handleMessageReceived);
             ClickProfileBarCommand = new Command(clickProfileBar);
+            DisplayDateCommand = new Command(displayDate);
+        }
+
+        private void displayDate(object i_Param)
+        {
+            if(i_Param is Message message)
+            {
+                SelectedItem = message;
+            }
         }
 
         private async void handleMessageReceived(object i_Param)

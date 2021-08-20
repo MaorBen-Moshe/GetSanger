@@ -44,7 +44,6 @@ namespace GetSanger.iOS.Renderers
 
                 Control.InputAccessoryView = new UIView(CGRect.Empty);
                 Control.ReloadInputViews();
-
             }
 
             if (e.OldElement != null)
@@ -52,8 +51,6 @@ namespace GetSanger.iOS.Renderers
 
             }
         }
-
-
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -108,7 +105,7 @@ namespace GetSanger.iOS.Renderers
                     Control.ScrollEnabled = true;
 
             }
-            else if (ExtendedEditorControl.HeightProperty.PropertyName == e.PropertyName)
+            else if (VisualElement.HeightProperty.PropertyName == e.PropertyName)
             {
                 if (customControl.IsExpandable)
                 {

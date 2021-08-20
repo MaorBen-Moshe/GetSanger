@@ -23,7 +23,11 @@
               BorderColor="Black"
               effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
               effects:LongPressedEffect.CommandParameter="{Binding .}">
-
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding DisplayDateCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
+                                      CommandParameter="{Binding .}"
+                                      Tapped="TapGestureRecognizer_Tapped" />
+            </Frame.GestureRecognizers>
             <Frame.Effects>
                 <effects:LongPressedEffect />
             </Frame.Effects>

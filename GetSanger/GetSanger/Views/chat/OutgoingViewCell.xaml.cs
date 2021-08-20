@@ -16,5 +16,10 @@ namespace GetSanger.Views.chat
             base.OnTapped();
             ForceUpdateSize();
         }
+
+        private void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
+        {
+            ForceUpdateSize();
+        }
     }
 }
