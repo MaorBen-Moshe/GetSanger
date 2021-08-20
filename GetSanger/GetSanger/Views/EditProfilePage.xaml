@@ -40,12 +40,24 @@
             <TableRoot>
                 <TableSection Title="Change Picture">
                     <ViewCell>
-                        <controls:RoundedImage ImageSource="{Binding ProfileImage}" 
-                                     Command="{Binding ImageChosenCommand}"
-                                     Radius="100"
-                                     BackgroundColor="Transparent"
-                                     HorizontalOptions="Center"
-                                     IsCacheEnable="False"/>
+                        <StackLayout HorizontalOptions="FillAndExpand"
+                                     VerticalOptions="FillAndExpand">
+                            <controls:RoundedImage ImageSource="{Binding ProfileImage}" 
+                                                   Command="{Binding ImageChosenCommand}"
+                                                   Radius="100"
+                                                   Margin="0,5,0,0"
+                                                   BackgroundColor="Transparent"
+                                                   HorizontalOptions="Center"
+                                                   IsCacheEnable="False"/>
+                            <Label Text="Add Profile Picture"
+                                   FontSize="12"
+                                   TextColor="Gray"
+                                   HorizontalOptions="CenterAndExpand">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ImageChosenCommand}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
                     </ViewCell>
                 </TableSection>
                 <TableSection Title="Details">

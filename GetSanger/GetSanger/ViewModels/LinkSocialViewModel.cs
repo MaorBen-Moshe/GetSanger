@@ -28,7 +28,7 @@ namespace GetSanger.ViewModels
         public SocialProviderCell SelectedItem
         {
             get => m_SelectedItem;
-            set => SetClassProperty(ref m_SelectedItem, value);
+            set => SetClassProperty(ref m_SelectedItem, null);
         }
 
         #endregion
@@ -89,10 +89,6 @@ namespace GetSanger.ViewModels
                 {
                     sr_LoadingService.HideLoadingPage();
                     await e.LogAndDisplayError($"{nameof(LinkSocialViewModel)}:providerSelected", "Error", e.Message);
-                }
-                finally
-                {
-                    SelectedItem = null;
                 }
             }
         }
