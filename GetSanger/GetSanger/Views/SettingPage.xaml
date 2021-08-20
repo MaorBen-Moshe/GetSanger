@@ -39,29 +39,38 @@
                                           ToggledCommand="{Binding ToggledCommand}"
                                           HasUnevenRows="True"
                                           VerticalOptions="Start" 
+                                          Margin="15, 2, 15, 0"
                                           IsVisible="{Binding IsSangerMode}"/>
-            <StackLayout Margin="20"
+            <Frame Padding="5"
+                   BorderColor="Gray"
+                   IsClippedToBounds="True"
+                   Margin="10, 5, 10, 20"
+                   CornerRadius="10">
+                <StackLayout Margin="0"
                          IsVisible="{Binding IsSangerMode}">
-                <Label Text="{Binding DistanceString}" HorizontalOptions="CenterAndExpand"/>
-                <StackLayout Orientation="Horizontal">
-                    <Slider Value="{Binding DistanceLimit}"
+                    <Label Text="{Binding DistanceString}"
+                           FontAttributes="Italic"
+                           HorizontalOptions="CenterAndExpand"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Slider Value="{Binding DistanceLimit}"
                             Maximum="400"
                             Minimum="1"
                             HorizontalOptions="FillAndExpand"
                             IsEnabled="{Binding InfinityChecked, Converter={StaticResource InverseBoolConverter}}">
-                        <Slider.Behaviors>
-                            <behaviors:EventToCommandBehavior EventName="ValueChanged"
+                            <Slider.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="ValueChanged"
                                                               Command="{Binding DistanceChangedCommand}"/>
-                        </Slider.Behaviors>
-                    </Slider>
-                    <CheckBox IsChecked="{Binding InfinityChecked, Mode=TwoWay}">
-                        <CheckBox.Behaviors>
-                            <behaviors:EventToCommandBehavior EventName="CheckedChanged"
+                            </Slider.Behaviors>
+                        </Slider>
+                        <CheckBox IsChecked="{Binding InfinityChecked, Mode=TwoWay}">
+                            <CheckBox.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="CheckedChanged"
                                                               Command ="{Binding InfinityCommand}" />
-                        </CheckBox.Behaviors>
-                    </CheckBox>
+                            </CheckBox.Behaviors>
+                        </CheckBox>
+                    </StackLayout>
                 </StackLayout>
-            </StackLayout>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

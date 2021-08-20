@@ -21,6 +21,19 @@
         <Converters:EntryLengthToBoolConverter x:Key="EntryLengthToBoolConverter"/>
     </ContentPage.Resources>
 
+    <Shell.TitleView>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     BackgroundColor="Transparent">
+            <Label Text="Edit Profile"
+                   Padding="20"
+                   FontSize="20"
+                   Margin="50, 0, 0, 0"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </Shell.TitleView>
+
     <ContentPage.Content>
         
         <TableView Intent="Form" HasUnevenRows="True">
@@ -37,50 +50,78 @@
                 </TableSection>
                 <TableSection Title="Details">
                     <ViewCell>
-                        <Entry Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" 
-                               Keyboard="Text" 
-                               Placeholder="Name"
-                               Margin="20"
-                               TextColor="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}">
-                            <Entry.Behaviors>
-                                <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
-                            </Entry.Behaviors>
-                        </Entry>
+                        <StackLayout>
+                            <Label Text="NickName" 
+                                   FontAttributes="Italic"
+                                   Margin="20, 10, 0, 5"/>
+                            <controls:EntryWithBorder Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" 
+                                                  Keyboard="Text" 
+                                                  Placeholder="Name"
+                                                  Margin="20, 0, 20, 5"
+                                                  TextColor="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}">
+                                <Entry.Behaviors>
+                                    <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
+                                </Entry.Behaviors>
+                            </controls:EntryWithBorder>
+                        </StackLayout>
                     </ViewCell>
                     <ViewCell>
-                        <Entry Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" 
-                               Keyboard="Telephone" 
-                               Placeholder="Phone number"
-                               Margin="20"
-                               TextColor="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}">
-                            <Entry.Behaviors>
-                                <behaviors:PhoneNumberMaskBehavior />
-                                <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
-                            </Entry.Behaviors>
-                        </Entry>
+                        <StackLayout>
+                            <Label Text="Phone number" 
+                                   FontAttributes="Italic"
+                                   Margin="20, 10, 0, 5"/> 
+                            <controls:EntryWithBorder Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" 
+                                                  Keyboard="Telephone" 
+                                                  Placeholder="Phone number"
+                                                  Margin="20, 0, 20, 5"
+                                                  TextColor="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}">
+                                <Entry.Behaviors>
+                                    <behaviors:PhoneNumberMaskBehavior />
+                                    <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
+                                </Entry.Behaviors>
+                            </controls:EntryWithBorder>
+                        </StackLayout>
                     </ViewCell>
                     <ViewCell>
-                        <DatePicker Format="dd/MM/yyyy" MaximumDate="{Binding MaxDate}" Date="{Binding ConnectedUser.PersonalDetails.Birthday}"/>
+                        <StackLayout>
+                            <Label Text="Birthday" 
+                                   FontAttributes="Italic"
+                                   Margin="20, 10, 0, 5"/>
+                            <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
+                                                           Margin="20, 0, 20, 5"
+                                                           MaximumDate="{Binding MaxDate}" 
+                                                           Date="{Binding ConnectedUser.PersonalDetails.Birthday}"/>
+                        </StackLayout>
                     </ViewCell>
                     <ViewCell>
-                        <Picker ItemsSource="{Binding GenderItems}" 
-                                SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
+                        <StackLayout>
+                            <Label Text="Gender" 
+                                   FontAttributes="Italic"
+                                   Margin="20, 10, 0, 5"/>
+
+                            <controls:PickerWithBorder ItemsSource="{Binding GenderItems}" 
+                                                       Margin="20, 0, 20, 0"
+                                                       SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
+                        </StackLayout>
                     </ViewCell>
                 </TableSection>
                 <TableSection Title="Change Password">
                     <ViewCell>
-                        <Button Text="Change password" Command="{Binding ChangePasswordCommand}" />
+                        <Button Text="Change password" 
+                                Margin="20"
+                                Command="{Binding ChangePasswordCommand}" />
                     </ViewCell>
                 </TableSection>
                 <TableSection Title="Delete Account">
                     <ViewCell>
                         <Button Text="Delete Account"
-                                    TextColor="Red"
-                                    Command="{Binding DeleteAccountCommand}"
-                                    VerticalOptions="End"
-                                    HorizontalOptions="FillAndExpand"
-                                    Padding="10"
-                                    FontAttributes="Bold"/>
+                                Margin="20"
+                                TextColor="Red"
+                                Command="{Binding DeleteAccountCommand}"
+                                VerticalOptions="End"
+                                HorizontalOptions="FillAndExpand"
+                                Padding="10"
+                                FontAttributes="Bold"/>
                     </ViewCell>
                 </TableSection>
             </TableRoot>

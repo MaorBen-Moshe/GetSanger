@@ -48,7 +48,8 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid HorizontalOptions="CenterAndExpand" BackgroundColor="{AppThemeBinding Dark=#002157, Light=WhiteSmoke}">
+                        <Grid HorizontalOptions="CenterAndExpand" 
+                              BackgroundColor="{AppThemeBinding Dark=#002157, Light=Transparent}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.5*"/>
                                 <ColumnDefinition Width="0.5*" />
