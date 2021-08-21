@@ -125,25 +125,7 @@
     <ImageAsset Include="Assets.xcassets\chatIcon.png.imageset\chatIcon.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\defaultAvatar.imageset\defaultAvatar.png.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\emailIcon.png.imageset\emailIcon.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\facebookIcon.png.imageset\facebookIcon.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon (1).png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon (2).png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\getSangerIcon.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\Contents.json">
@@ -170,49 +152,13 @@
     <ImageAsset Include="Assets.xcassets\googleIcon.png.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\googleIcon.png.imageset\googleIcon.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\IconArrangement.png.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconArrangement.png.imageset\IconArrangement.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\IconBeauty.png.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconBeauty.png.imageset\IconBeauty.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconCleaning.png.imageset\IconCleaning.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconComputersAndSmartphones.png.imageset\IconComputersAndSmartphones.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconDelivery.png.imageset\IconDelivery.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconElectician.png.imageset\IconElectician.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconGardening.png.imageset\IconGardening.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconHandiman.png.imageset\IconHandiman.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconHouseDevices.png.imageset\IconHouseDevices.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconPets.png.imageset\IconPets.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\IconStudies.png.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconStudies.png.imageset\IconStudies.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\IconVehicles.png.imageset\Contents.json">
@@ -242,9 +188,6 @@
     <ImageAsset Include="Assets.xcassets\IconPets.png.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\IconVehicles.png.imageset\IconVehicles.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\locationIcon.jpg.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -263,13 +206,7 @@
     <ImageAsset Include="Assets.xcassets\jobOfferIcon.png.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\phone.png.imageset\phone.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\PinIcon.jpeg.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\jobOfferIcon.png.imageset\jobOfferIcon.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\PinIcon.jpeg.imageset\PinIcon.jpeg">
@@ -282,9 +219,6 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\defaultAvatar.imageset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\whatsapp.png.imageset\whatsapp.png">
       <Visible>false</Visible>
     </ImageAsset>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -336,6 +270,94 @@
     <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon3x.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\visibility.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\visibility.png.imageset\visibility-32.png" />
+    <ImageAsset Include="Assets.xcassets\visibility.png.imageset\visibility-64.png" />
+    <ImageAsset Include="Assets.xcassets\visibility.png.imageset\visibility-128.png" />
+    <ImageAsset Include="Assets.xcassets\activityIcon.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\activityIcon.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\appleIcon.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\appleIcon.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\ascendingSort.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\ascendingSort.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\categoryIcon.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\categoryIcon.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\chatIcon.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\chatIcon.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\emailIcon.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\emailIcon.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\emailIcon.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\facebookIcon.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\facebookIcon.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\facebookIcon.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIcon.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconHD.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconHD.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconHD.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconHD.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconTransparent.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconTransparent.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconTransparent.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconTransparent.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\googleIcon.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\googleIcon.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\googleIcon.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\ic_scolldown.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ic_scolldown.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\ic_scolldown.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\ic_scolldown.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconArrangement.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconArrangement.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconArrangement.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconBeauty.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconBeauty.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconBeauty.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconCleaning.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconCleaning.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconCleaning.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconComputersAndSmartphones.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconComputersAndSmartphones.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconComputersAndSmartphones.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconDelivery.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconDelivery.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconDelivery.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconElectician.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconElectician.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconElectician.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconGardening.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconGardening.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconGardening.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconHandiman.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconHandiman.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconHandiman.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconHouseDevices.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconHouseDevices.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconHouseDevices.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconPets.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconPets.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconPets.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconStudies.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconStudies.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconStudies.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconVehicles.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconVehicles.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconVehicles.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\jobOfferIcon.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\jobOfferIcon.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\jobOfferIcon.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\ratingStarOn.imageset\ratingStarOn2x-1.png" />
+    <ImageAsset Include="Assets.xcassets\ratingStarOff.imageset\ratingStarOff.png" />
+    <ImageAsset Include="Assets.xcassets\phone.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\phone.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\phone.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\defaultAvatar.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\defaultAvatar.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\defaultAvatar.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\whatsapp.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\whatsapp.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\whatsapp.png.imageset\128x128.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -405,4 +427,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Assets.xcassets\visibility.png.imageset\" />
+    <Folder Include="Assets.xcassets\getSangerIconHD.png.imageset\" />
+    <Folder Include="Assets.xcassets\getSangerIconTransparent.png.imageset\" />
+    <Folder Include="Assets.xcassets\ic_scolldown.png.imageset\" />
+  </ItemGroup>
 </Project>
