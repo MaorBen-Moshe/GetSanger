@@ -20,6 +20,7 @@ namespace GetSanger.Views.chat
         public void Handle_Completed(object sender, EventArgs e)
         {
             chatTextInput.Focus();
+            (Parent.Parent as ChatView).ScrollCommand.Execute(null);
         }
 
         public void UnFocusEntry()

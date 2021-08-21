@@ -45,9 +45,9 @@
                        HasShadow="True">
                     <controls:ExtendedEditorControl IsSpellCheckEnabled="True"
                                                     IsTextPredictionEnabled="True"
-                                                    
                                                     IsExpandable="True"
                                                     Margin="1"
+                                                    VerticalOptions="FillAndExpand"
                                                     HorizontalOptions="FillAndExpand"
                                                     x:Name="editor">
                     </controls:ExtendedEditorControl>
