@@ -77,9 +77,9 @@
                              IsVisible="{Binding IsDeliveryCategory}">
                     <Label Text="From: "
                                 BackgroundColor="Transparent"
-                                FontSize="14"/>
+                                FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding FromLocation, Mode=OneWay}"
-                                              FontSize="14"
+                                              FontSize="Small"
                                               IsReadOnly="True"
                                               Placeholder="source">
                     </controls:EntryWithBorder>
@@ -92,9 +92,9 @@
                              Spacing="0">
                     <Label Text="Destination: "
                                 BackgroundColor="Transparent"
-                                FontSize="14"/>
+                                FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding DestinationLocation, Mode=OneWay}"
-                                              FontSize="14"
+                                              FontSize="Small"
                                               IsReadOnly="True"
                                               Placeholder="destination">
                     </controls:EntryWithBorder>
@@ -107,9 +107,9 @@
                              Spacing="0">
                     <Label Text="Client Phone: "
                                 BackgroundColor="Transparent"
-                                FontSize="14"/>
+                                FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding Job.ClientPhoneNumber, Mode=OneWay}"
-                                              FontSize="14"
+                                              FontSize="Small"
                                               IsReadOnly="True"
                                               Placeholder="phone">
                     </controls:EntryWithBorder>
@@ -122,7 +122,7 @@
                              Spacing="0">
                     <Label Text="Date and Time:"
                        BackgroundColor="Transparent"
-                       FontSize="14"/>
+                       FontSize="Small"/>
                     <StackLayout Orientation="Horizontal">
                         <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
                                                        Date="{Binding Job.Date}"
@@ -141,7 +141,7 @@
                          Spacing="0">
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
-                       FontSize="14"/>
+                       FontSize="Small"/>
                     <controls:EditorWithBorder 
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"

@@ -23,13 +23,12 @@
         <Frame HorizontalOptions="FillAndExpand"
                VerticalOptions="FillAndExpand"
                Margin="20, 160"
-               CornerRadius="20"
+               CornerRadius="15"
                Padding="0"
                HasShadow="True">
             <controls:EditorWithBorder IsSpellCheckEnabled="True"
                     IsTextPredictionEnabled="True"
                     VerticalOptions="FillAndExpand"
-                    Margin="15"
                     x:Name="editor"
                     IsReadOnly="True">
             </controls:EditorWithBorder>

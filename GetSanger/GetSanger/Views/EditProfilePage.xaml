@@ -27,7 +27,7 @@
                      BackgroundColor="Transparent">
             <Label Text="Edit Profile"
                    Padding="20"
-                   FontSize="20"
+                   FontSize="Large"
                    Margin="50, 0, 0, 0"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"/>
@@ -50,7 +50,7 @@
                                                    HorizontalOptions="Center"
                                                    IsCacheEnable="False"/>
                             <Label Text="Add Profile Picture"
-                                   FontSize="12"
+                                   FontSize="Small"
                                    TextColor="Gray"
                                    HorizontalOptions="CenterAndExpand">
                                 <Label.GestureRecognizers>

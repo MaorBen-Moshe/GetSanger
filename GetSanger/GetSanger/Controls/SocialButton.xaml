@@ -10,7 +10,7 @@
                 <Image x:Name="btnIcon" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start"
                        BackgroundColor="Transparent"/>
                 <Label x:Name="btnText" HorizontalOptions="Start" TextColor="#000" BackgroundColor="Transparent"
-                       FontSize="12"/>
+                       FontSize="Caption"/>
             </StackLayout>
         </Frame>
     </ContentView.Content>

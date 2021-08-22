@@ -56,7 +56,7 @@
                                 Command="{Binding UserCommand}"/>
                         <Label Text="(Offer jobs for others to apply to)" 
                                BackgroundColor="Transparent"
-                               FontSize="10"
+                               FontSize="Caption"
                                HorizontalTextAlignment="Center"/>
                         <Button Text="Sanger Mode" Margin="10" 
                                 BackgroundColor="Transparent"
@@ -64,7 +64,7 @@
                         <Label Text="(Apply to job offers)"
                                BackgroundColor="Transparent"
                                HorizontalTextAlignment="Center"
-                               FontSize="10"/>
+                               FontSize="Caption"/>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

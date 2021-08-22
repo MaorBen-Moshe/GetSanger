@@ -96,7 +96,7 @@
                 <StackLayout Spacing="3">
                     <Label Text="{Binding PendingMessageCount, Mode=TwoWay}"
                            HorizontalOptions="CenterAndExpand"
-                           FontSize="10"
+                           FontSize="Caption"
                            IsVisible="{Binding PendingMessageCountVisible}"
                            VerticalTextAlignment="Center"
                            TextColor="Red"

@@ -48,7 +48,7 @@
 
                     <Label VerticalOptions="StartAndExpand"
                        
-                       FontSize="15"
+                       FontSize="Medium"
                        BackgroundColor="Transparent"
                        HorizontalTextAlignment="Center"
                        MaxLines="40">

@@ -45,10 +45,10 @@
                            FontAttributes="Bold"
                            HorizontalOptions="Center"/>
                     <Label Text="Be the best Sanger you can!"
-                           FontSize="18"
+                           FontSize="Medium"
                            HorizontalOptions="Center" />
                     <Label Text="Treat the sangers well!" 
-                           FontSize="14"
+                           FontSize="Small"
                            HorizontalOptions="Center" 
                            Margin="0,0,0,10"/>
                 </StackLayout>
@@ -71,7 +71,7 @@
                    Margin="0,0,20,0"
                    VerticalOptions="EndAndExpand"
                    HorizontalOptions="EndAndExpand"
-                   FontSize="14">
+                   FontSize="Small">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"
                                       CommandParameter="{Binding Email}"/>

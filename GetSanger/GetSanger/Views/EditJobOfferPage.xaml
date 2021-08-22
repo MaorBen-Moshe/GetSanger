@@ -27,6 +27,7 @@
                      VerticalOptions="CenterAndExpand"
                      BackgroundColor="Transparent">
             <Label Text="{Binding NewJobOffer.Title}"
+                   FontSize="Large"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"
                    Margin="50,0,0,0"/>
@@ -63,7 +64,7 @@
                              VerticalOptions="Start">
                     <Label Text="Job name:" 
                            HorizontalOptions="Start"
-                               FontSize="14"
+                               FontSize="Small"
                                Padding="0"/>
                     <controls:EntryWithBorder Text="{Binding NewJobOffer.Title}" 
                                               Placeholder="Job Title" >
@@ -82,9 +83,9 @@
                     <Label Text="From: "
                                 
                                 BackgroundColor="Transparent"
-                                FontSize="14"/>
+                                FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding FromLocationString, Mode=OneWay}"
-                                              FontSize="14"
+                                              FontSize="Small"
                                               Placeholder="click to set location">
                         <controls:EntryWithBorder.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="Focused"
@@ -101,9 +102,9 @@
                              Spacing="0">
                     <Label Text="Destination: "
                                 BackgroundColor="Transparent"
-                                FontSize="14"/>
+                                FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding DestinationLocationString, Mode=OneWay}"
-                                              FontSize="14"
+                                              FontSize="Small"
                                               Placeholder="click to set location">
                         <controls:EntryWithBorder.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="Focused"
@@ -119,7 +120,7 @@
                              Spacing="0">
                     <Label Text="Date and Time:"
                        BackgroundColor="Transparent"
-                       FontSize="14"/>
+                       FontSize="Small"/>
                     <StackLayout Orientation="Horizontal">
                         <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
                                 MinimumDate="{x:Static system:DateTime.Now}" 
@@ -136,7 +137,7 @@
                          Spacing="0">
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
-                       FontSize="14"/>
+                       FontSize="Small"/>
                     <controls:EditorWithBorder 
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"

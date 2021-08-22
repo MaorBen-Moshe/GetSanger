@@ -74,7 +74,7 @@ namespace GetSanger.Controls
             /*PasswordText Label Part*/
             m_EmptyLabel = new Label
             {
-                FontSize = 20,
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 BackgroundColor = Color.Transparent,
             };
 
@@ -86,7 +86,7 @@ namespace GetSanger.Controls
                 Text = "Refresh list",
                 TextColor = Color.Red,
                 BackgroundColor = Color.Transparent,
-                FontSize = 14,
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextTransform = TextTransform.None,
                 HorizontalTextAlignment= TextAlignment.Center
             };

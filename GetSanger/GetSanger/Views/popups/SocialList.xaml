@@ -78,7 +78,7 @@
                                 <Label Text="{Binding SocialProvider}"
                                    BackgroundColor="Transparent"
                                    Grid.Column="2"
-                                   FontSize="20"
+                                   FontSize="Large"
                                    FontAttributes="Bold"
                                    Margin="0,5"
                                    Grid.ColumnSpan="2"
