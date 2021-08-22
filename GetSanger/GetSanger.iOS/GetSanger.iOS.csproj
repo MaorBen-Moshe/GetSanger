@@ -83,6 +83,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Persistence\SQLiteDb.cs" />
     <Compile Include="Renderers\BorderDatePickerRenderer.cs" />
+    <Compile Include="Renderers\BorderEditorRenderer.cs" />
     <Compile Include="Renderers\BorderEntryRenderer.cs" />
     <Compile Include="Renderers\BorderPickerRenderer.cs" />
     <Compile Include="Renderers\BorderTimePickerRenderer.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Renderers\CustomEditorRendrer.cs" />
     <Compile Include="Renderers\ExtendedListViewRenderer.cs" />
     <Compile Include="Renderers\UITextFieldPadding.cs" />
+    <Compile Include="Renderers\UITextViewPadding.cs" />
     <Compile Include="Services\AuthIOs.cs" />
     <Compile Include="Services\Crashlytics.cs" />
     <Compile Include="Services\LoadingServices.cs" />

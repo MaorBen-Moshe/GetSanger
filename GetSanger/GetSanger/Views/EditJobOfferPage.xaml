@@ -137,28 +137,24 @@
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
                        FontSize="14"/>
-                    <Frame VerticalOptions="FillAndExpand"
-                            Padding="10"
-                            Margin="5,5,5,20"
-                            HasShadow="True">
-                        <controls:ExtendedEditorControl 
+                    <controls:EditorWithBorder 
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="Job Description"
                                 VerticalOptions="FillAndExpand"
+                            Margin="5,5,5,20"
                                 MaxLength="255"
                                 HeightRequest="180"
                                 Text="{Binding NewJobOffer.Description}"
                                 PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
-                            <Editor.Keyboard>
-                                <Keyboard x:FactoryMethod="Create" >
-                                    <x:Arguments>
-                                        <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                                    </x:Arguments>
-                                </Keyboard>
-                            </Editor.Keyboard>
-                        </controls:ExtendedEditorControl>
-                    </Frame>
+                        <Editor.Keyboard>
+                            <Keyboard x:FactoryMethod="Create" >
+                                <x:Arguments>
+                                    <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                                </x:Arguments>
+                            </Keyboard>
+                        </Editor.Keyboard>
+                    </controls:EditorWithBorder>
                 </StackLayout>
 
                 <Button Text="Submit" 

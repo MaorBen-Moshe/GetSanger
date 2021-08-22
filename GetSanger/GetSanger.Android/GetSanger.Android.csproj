@@ -172,6 +172,7 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Persistence\SQLiteDb.cs" />
     <Compile Include="Renderers\BorderDatePickerRenderer.cs" />
+    <Compile Include="Renderers\BorderEditorRenderer.cs" />
     <Compile Include="Renderers\BorderEntryRenderer.cs" />
     <Compile Include="Renderers\BorderPickerRenderer.cs" />
     <Compile Include="Renderers\BorderTimePickerRenderer.cs" />

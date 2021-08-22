@@ -142,11 +142,7 @@
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
                        FontSize="14"/>
-                    <Frame VerticalOptions="FillAndExpand"
-                            Padding="10"
-                            Margin="5,5,5,20"
-                            HasShadow="True">
-                        <controls:ExtendedEditorControl 
+                    <controls:EditorWithBorder 
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="Job Description"
@@ -156,15 +152,7 @@
                                 HeightRequest="180"
                                 Text="{Binding Job.Description}"
                                 PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
-                            <Editor.Keyboard>
-                                <Keyboard x:FactoryMethod="Create" >
-                                    <x:Arguments>
-                                        <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                                    </x:Arguments>
-                                </Keyboard>
-                            </Editor.Keyboard>
-                        </controls:ExtendedEditorControl>
-                    </Frame>
+                    </controls:EditorWithBorder>
                 </StackLayout>
             </StackLayout>
         </ScrollView>
