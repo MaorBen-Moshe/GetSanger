@@ -5,7 +5,6 @@ using Xamarin.Forms;
 using System;
 using GetSanger.Models;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using GetSanger.Constants;
 using GetSanger.Converters;
 using System.Collections.Generic;

@@ -2,19 +2,19 @@
 
 namespace GetSanger.Controls
 {
-    public sealed class EntryWithBorder : Entry
+    public sealed class TimePickerWithBorder : TimePicker
     {
         public static BindableProperty CornerRadiusProperty =
-            BindableProperty.Create(nameof(CornerRadius), typeof(int), typeof(EntryWithBorder), 8);
+            BindableProperty.Create(nameof(CornerRadius), typeof(int), typeof(TimePickerWithBorder), 8);
 
         public static BindableProperty BorderThicknessProperty =
-            BindableProperty.Create(nameof(BorderThickness), typeof(int), typeof(EntryWithBorder), 1);
+            BindableProperty.Create(nameof(BorderThickness), typeof(int), typeof(TimePickerWithBorder), 1);
 
         public static BindableProperty PaddingProperty =
-            BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(EntryWithBorder), new Thickness(10));
+            BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(TimePickerWithBorder), new Thickness(10));
 
         public static BindableProperty BorderColorProperty =
-            BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(EntryWithBorder), Color.Gray);
+            BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(TimePickerWithBorder), Color.Gray);
 
         public int CornerRadius
         {
@@ -41,11 +41,6 @@ namespace GetSanger.Controls
         {
             get => (Thickness)GetValue(PaddingProperty);
             set => SetValue(PaddingProperty, value);
-        }
-
-        public EntryWithBorder()
-        {
-            this.ClearButtonVisibility = ClearButtonVisibility.WhileEditing;
         }
     }
 }
