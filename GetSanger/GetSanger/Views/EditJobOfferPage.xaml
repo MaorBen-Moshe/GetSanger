@@ -83,7 +83,7 @@
                                 
                                 BackgroundColor="Transparent"
                                 FontSize="14"/>
-                    <controls:EntryWithBorder Text="{Binding DestinationLocationString, Mode=OneWay}"
+                    <controls:EntryWithBorder Text="{Binding FromLocationString, Mode=OneWay}"
                                               FontSize="14"
                                               Placeholder="click to set location">
                         <controls:EntryWithBorder.Behaviors>

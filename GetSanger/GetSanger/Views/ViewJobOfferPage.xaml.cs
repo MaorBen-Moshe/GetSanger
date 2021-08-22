@@ -16,6 +16,10 @@ namespace GetSanger.Views
         {
             base.OnAppearing();
             (BindingContext as BaseViewModel).Appearing();
+            if (!(BindingContext as ViewJobOfferViewModel).IsDeliveryCategory)
+            {
+                mainStack.Children.Remove(fromStack);
+            }
         }
 
         protected override void OnDisappearing()
