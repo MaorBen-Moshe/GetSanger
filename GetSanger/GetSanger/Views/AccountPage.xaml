@@ -5,7 +5,7 @@
              xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              x:Class="GetSanger.Views.AccountPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="True">
 
     <ContentPage.BindingContext>
         <vm:AccountViewModel />
@@ -14,68 +14,69 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Button">
-                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="WhiteSmoke" />
+                <Setter Property="Padding" Value="10, 5" />
+                <Setter Property="TextTransform" Value="None" />
+                
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <AbsoluteLayout>
-            <StackLayout AbsoluteLayout.LayoutBounds="0, -0.05, 1, 0.35" 
-                         AbsoluteLayout.LayoutFlags="All"
-                         VerticalOptions="CenterAndExpand"
-                         HorizontalOptions="CenterAndExpand"
-                         >
-                <controls:RoundedImage ImageSource="{Binding UserImage}"
+        <ScrollView>
+            <StackLayout HorizontalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="CenterAndExpand">
+                    <controls:RoundedImage ImageSource="{Binding UserImage}"
                                        Radius="100"/>
-                <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat ='Hello, {0}'}"
+                    <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat ='Hello, {0}'}"
                        FontSize="Title" 
-                       FontAttributes="Italic"
-                       
-                       />
-            </StackLayout>
-            <Frame Padding="5"
-                   AbsoluteLayout.LayoutBounds="0.5,0.30, 0.57, 0.1" 
-                   AbsoluteLayout.LayoutFlags="All">
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="Client Mode" 
+                       FontAttributes="Italic"/>
+                </StackLayout>
+                <Frame Padding="20"
+                   HorizontalOptions="Center"
+                   BackgroundColor="WhiteSmoke">
+                    <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="CenterAndExpand"
+                             VerticalOptions="FillAndExpand"
+                             BackgroundColor="Transparent">
+                        <Label Text="Client Mode" 
                            HorizontalTextAlignment="Center"
                            VerticalOptions="Center"
                            x:Name="clientLabel"/>
-                    <Switch IsToggled="{Binding ModeIsToggled}">
-                        <Switch.Behaviors>
-                            <behaviors:EventToCommandBehavior EventName="Toggled"
+                        <Switch IsToggled="{Binding ModeIsToggled}">
+                            <Switch.Behaviors>
+                                <behaviors:EventToCommandBehavior EventName="Toggled"
                                                               Command="{Binding ChangeModeCommand}"/>
-                        </Switch.Behaviors>
-                    </Switch>
-                    <Label Text="Sanger Mode"
+                            </Switch.Behaviors>
+                        </Switch>
+                        <Label Text="Sanger Mode"
                            VerticalOptions="Center"
                            HorizontalTextAlignment="Center"
                            x:Name="SangerLabel"/>
+                    </StackLayout>
+                </Frame>
+
+                <StackLayout HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand"
+                         BackgroundColor="Transparent"
+                         Margin="15, 10">
+                    <Button Text="Edit Profile" Command="{Binding EditProfileCommand}"/>
+                    <Button Text="My Ratings" Command="{Binding MyRatingsCommand}"/>
+                    <Button Text="Settings" Command="{Binding SettingCommand}"/>
+                    <Button Text="Link Account" Command="{Binding LinkSocialCommand}" />
+                    <Button Text="About us" Command="{Binding AboutusCommand}" />
+                    <Button Text="Rate us" Command="{Binding RateUsCommand}"/>
+                    <Button Text="Terms Of Service" Command="{Binding TermOfServiceCommand}" />
                 </StackLayout>
-            </Frame>
 
-            <Grid AbsoluteLayout.LayoutBounds="0.6, 0.70, 1 , 0.46"
-                  AbsoluteLayout.LayoutFlags="All"
-                  BackgroundColor="Transparent"
-                  Margin="15">
-                <Button Text="Edit Profile" Command="{Binding EditProfileCommand}" Grid.Row="0"/>
-                <Button Text="My Ratings" Command="{Binding MyRatingsCommand}" Grid.Row="1"/>
-                <Button Text="Settings" Command="{Binding SettingCommand}" Grid.Row="2"/>
-                <Button Text="Link Account with Social Networks" Command="{Binding LinkSocialCommand}" Grid.Row="3"/>
-                <Button Text="About us" Command="{Binding AboutusCommand}" Grid.Row="4"/>
-                <Button Text="Rate us" Command="{Binding RateUsCommand}" Grid.Row="5"/>
-                <Button Text="Terms Of Service" Command="{Binding TermOfServiceCommand}" Grid.Row="6"/>
-            </Grid>
-
-            <Button Text="Logout" 
-                    FontSize="Large"
-                    CornerRadius="20" 
+                <Button Text="Logout" 
+                    FontSize="Large" 
                     Margin="15, 0, 15, 15"
-                    AbsoluteLayout.LayoutBounds="0.5, 0.99, 0.99, 0.08" 
-                    AbsoluteLayout.LayoutFlags="All"
                     Command="{Binding LogoutCommand}"
-                    />   
-        </AbsoluteLayout>
+                    />
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

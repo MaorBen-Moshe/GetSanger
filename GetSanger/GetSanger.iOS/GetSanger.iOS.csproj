@@ -85,6 +85,7 @@
     <Compile Include="Renderers\BorderDatePickerRenderer.cs" />
     <Compile Include="Renderers\BorderEntryRenderer.cs" />
     <Compile Include="Renderers\BorderPickerRenderer.cs" />
+    <Compile Include="Renderers\BorderTimePickerRenderer.cs" />
     <Compile Include="Renderers\ChatEntryRendrer.cs" />
     <Compile Include="Renderers\CustomEditorRendrer.cs" />
     <Compile Include="Renderers\ExtendedListViewRenderer.cs" />
@@ -429,9 +430,7 @@
       <Name>GetSanger</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Assets.xcassets\visibility.png.imageset\" />
     <Folder Include="Assets.xcassets\getSangerIconHD.png.imageset\" />
     <Folder Include="Assets.xcassets\getSangerIconTransparent.png.imageset\" />
     <Folder Include="Assets.xcassets\ic_scolldown.png.imageset\" />
@@ -439,5 +438,7 @@
     <Folder Include="Assets.xcassets\profile.png.imageset\" />
     <Folder Include="Assets.xcassets\noVisibility.png.imageset\" />
     <Folder Include="Assets.xcassets\miscellaneous.png.imageset\" />
+    <Folder Include="Assets.xcassets\visibility.png.imageset\" />
   </ItemGroup>
+  <ItemGroup />
 </Project>
