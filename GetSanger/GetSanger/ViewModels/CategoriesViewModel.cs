@@ -3,8 +3,6 @@ using GetSanger.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
-using Xamarin.Forms;
 using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels
@@ -27,14 +25,12 @@ namespace GetSanger.ViewModels
         public CategoryCell SelectedItem
         {
             get => m_SelectedItem;
-            set { SetClassProperty(ref m_SelectedItem, value); categorySelected(); }
+            set { SetClassProperty(ref m_SelectedItem, null); categorySelected(value); }
         }
 
         #endregion
 
         #region Commands
-        public ICommand CategorySelectedCommand { get; set; }
-
         #endregion
 
         #region Constructor
@@ -57,17 +53,15 @@ namespace GetSanger.ViewModels
 
         protected override void SetCommands()
         {
-            CategorySelectedCommand = new Command(categorySelected);
         }
 
-        private async void categorySelected()
+        private async void categorySelected(CategoryCell current)
         {
             try
             {
-                if (SelectedItem != null)
+                if (current != null)
                 {
-                    await sr_NavigationService.NavigateTo($"{ShellRoutes.EditJobOffer}?category={SelectedItem.Category}&isCreate={true}");
-                    SelectedItem = null;
+                    await sr_NavigationService.NavigateTo($"{ShellRoutes.EditJobOffer}?category={current.Category}&isCreate={true}");
                 }
             }
             catch(Exception e)

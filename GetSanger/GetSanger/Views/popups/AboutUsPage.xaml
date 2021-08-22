@@ -28,16 +28,25 @@
      
             <StackLayout HorizontalOptions="FillAndExpand"
                          VerticalOptions="FillAndExpand">
-                <Label Text="X" 
-                       BackgroundColor="Transparent"
-                       HorizontalOptions="EndAndExpand" 
-                       VerticalOptions="StartAndExpand">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
-                    </Label.GestureRecognizers>
-                </Label>
+                    <StackLayout HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="StartAndExpand">
+                        <Label Text="X" 
+                               BackgroundColor="Transparent"
+                               HorizontalOptions="EndAndExpand" 
+                               VerticalOptions="StartAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
 
-                <Label VerticalOptions="StartAndExpand"
+                        <Image Source="getSangerIconTransparent.png"
+                               HeightRequest="80"
+                               WidthRequest="80"
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="StartAndExpand"/>
+                    </StackLayout>
+
+                    <Label VerticalOptions="StartAndExpand"
                        
                        FontSize="15"
                        BackgroundColor="Transparent"

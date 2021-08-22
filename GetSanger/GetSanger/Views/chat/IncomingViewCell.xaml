@@ -5,12 +5,13 @@
           xmlns:effects="clr-namespace:GetSanger.Effects"
           x:Class="GetSanger.Views.chat.IncomingViewCell">
     <StackLayout>
+       
         <Label Text="{Binding DateString}"
                IsVisible="{Binding IsDateVisible}"
                HorizontalTextAlignment="End"
                HorizontalOptions="End"
                Margin="20, 0, 10, 0"
-               Rotation="180">s
+               Rotation="180">
         </Label>
         <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ChatIncomingBackgroundColorDark}, Light={StaticResource ChatIncomingBackgroundColorLight}}"
               Rotation="180"
@@ -23,13 +24,20 @@
               BorderColor="Black"
               effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
               effects:LongPressedEffect.CommandParameter="{Binding .}">
-
             <Frame.Effects>
                 <effects:LongPressedEffect />
             </Frame.Effects>
-            <Label Text="{Binding Text}" 
-               BackgroundColor="Transparent"
-               HorizontalOptions="StartAndExpand"/>
+            <StackLayout BackgroundColor="Transparent">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DisplayDateCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
+                                          CommandParameter="{Binding .}"
+                                          Tapped="TapGestureRecognizer_Tapped" />
+                </StackLayout.GestureRecognizers>
+                <Label Text="{Binding Text}" 
+                       BackgroundColor="Transparent"
+                       HorizontalOptions="FillAndExpand">
+                </Label>
+            </StackLayout>
         </Frame>
     </StackLayout>
 </ViewCell>

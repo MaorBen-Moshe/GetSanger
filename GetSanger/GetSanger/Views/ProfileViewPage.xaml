@@ -25,6 +25,7 @@
             <Label Text="Profile" 
                    FontSize="Title"
                    BackgroundColor="Transparent"
+                   Margin="50, 0, 0, 0"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"/>
         </StackLayout>
@@ -43,9 +44,9 @@
                     <TapGestureRecognizer Command="{Binding ReportUserCommand}"/>
                 </Frame.GestureRecognizers>
                 <Label Text="Report" 
-                    FontSize="Small"
-                    TextColor="Red"
-                    TextTransform="None"/>    
+                       FontSize="Small"
+                       TextColor="Red"
+                       TextTransform="None"/>    
             </Frame>
 
             <StackLayout VerticalOptions="Start"

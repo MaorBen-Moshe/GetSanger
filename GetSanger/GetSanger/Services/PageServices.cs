@@ -34,10 +34,9 @@ namespace GetSanger.Services
             return Application.Current.MainPage.DisplayActionSheet(i_Title, i_Cancel, i_Distruction, i_Buttons);
         }
 
-        public Task<string> DisplayPrompt(string i_Title, string i_Message, string i_PlaceHolder)
+        public void DisplayPrompt(string i_Title, string i_Message, string i_PlaceHolder, Action<string> i_RetAction)
         {
-            var keyboard = Keyboard.Create(KeyboardFlags.All);
-            return Application.Current.MainPage.DisplayPromptAsync(i_Title, i_Message, placeholder: i_PlaceHolder, keyboard:keyboard);
+            PopupNavigation.Instance.PushAsync(new PromptPage(i_Title, i_Message, i_PlaceHolder, i_RetAction));
         }
 
         public override void SetDependencies()

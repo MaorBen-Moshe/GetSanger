@@ -11,6 +11,14 @@
         <vm:AccountViewModel />
     </ContentPage.BindingContext>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button">
+                <Setter Property="CornerRadius" Value="20"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <AbsoluteLayout>
             <StackLayout AbsoluteLayout.LayoutBounds="0, -0.05, 1, 0.35" 
@@ -49,6 +57,7 @@
 
             <Grid AbsoluteLayout.LayoutBounds="0.6, 0.70, 1 , 0.46"
                   AbsoluteLayout.LayoutFlags="All"
+                  BackgroundColor="Transparent"
                   Margin="15">
                 <Button Text="Edit Profile" Command="{Binding EditProfileCommand}" Grid.Row="0"/>
                 <Button Text="My Ratings" Command="{Binding MyRatingsCommand}" Grid.Row="1"/>

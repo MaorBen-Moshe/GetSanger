@@ -9,7 +9,16 @@ namespace GetSanger.Models
         #region Fields
         private eCategory m_category;
         private bool m_Checked;
+        private string m_CategoryString;
         #endregion
+
+        public string CategoryString
+        {
+            get
+            {
+                return m_category.ToString().Replace("_", " ");
+            }
+        }
 
         public eCategory Category
         {

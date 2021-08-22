@@ -5,7 +5,7 @@
             xmlns:chat="clr-namespace:GetSanger.Views.chat"
             x:Class="GetSanger.AppShell.UserShell"
             FlowDirection="LeftToRight"
-            BackgroundColor="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}"
+            BackgroundColor="{AppThemeBinding Dark={StaticResource TitleViewThemeColorDark}, Light={StaticResource TitleViewThemeColorLight}}"
              ForegroundColor="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"
              TitleColor="{AppThemeBinding Dark={StaticResource ShellTitleColorDark}, Light={StaticResource ShellTitleColorLight}}"
              DisabledColor="#808080"
@@ -15,7 +15,11 @@
              TabBarUnselectedColor="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"
              TabBarTitleColor="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"
        >
-    
+    <Shell.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary Source="../Styles/ClientKeys.xaml" />
+        </ResourceDictionary>
+    </Shell.Resources>
     <TabBar>
         <Tab Title="Account"
              Route="account"

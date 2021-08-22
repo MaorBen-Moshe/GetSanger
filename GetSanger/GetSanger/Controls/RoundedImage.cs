@@ -122,7 +122,10 @@ namespace GetSanger.Controls
                     FadeAnimationEnabled = true,
                     BitmapOptimizations = true,
                     LoadingPlaceholder = ImageSource.FromFile("rolling.gif"),
-                    ErrorPlaceholder = ImageSource.FromFile("profile.jpg")
+                    ErrorPlaceholder = ImageSource.FromFile("profile.jpg"),
+                    RetryCount = 3,
+                    RetryDelay = 5,
+                    CacheType = CacheType.All  
                 }
             };
 

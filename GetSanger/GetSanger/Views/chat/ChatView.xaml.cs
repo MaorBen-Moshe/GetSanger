@@ -1,4 +1,5 @@
 ﻿using GetSanger.ViewModels.chat;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,6 +10,8 @@ namespace GetSanger.Views.chat
     {
         private static readonly object sr_ScrollLock;
 
+        public ICommand ScrollCommand;
+
         static ChatView()
         {
             sr_ScrollLock = new object();
@@ -17,6 +20,8 @@ namespace GetSanger.Views.chat
         public ChatView()
         {
             InitializeComponent();
+
+            ScrollCommand = new Command(() => ChatList?.ScrollToFirst());
         }
 
         protected override void OnAppearing()

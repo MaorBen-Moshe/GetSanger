@@ -168,7 +168,7 @@ namespace GetSanger.ViewModels
             {
                 if (IsFacebookGmail == false && InPersonalPage == true)
                 {
-                    await GoBack();
+                    await sr_NavigationService.NavigateTo("../..");
                 }
                 else
                 {

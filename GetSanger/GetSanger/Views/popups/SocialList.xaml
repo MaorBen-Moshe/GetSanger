@@ -34,32 +34,48 @@
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
-        <ListView ItemsSource="{Binding Socials}"
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     BackgroundColor="{AppThemeBinding Dark=#002157, Light=GhostWhite}">
+         
+            <Label Text="Link Account"
+                   FontSize="Title"
+                   Margin="5"
+                   FontAttributes="Bold,Italic"
+                   HorizontalOptions="CenterAndExpand"
+                   />
+            <Label Text="You now can link your account via one of the options below. Note: this operation is not reverse able."
+                   FontSize="Subtitle"
+                   FontAttributes="Italic"
+                   Margin="10,0"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="CenterAndExpand"/>
+            <ListView ItemsSource="{Binding Socials}"
                   HasUnevenRows="True"
-                  BackgroundColor="{AppThemeBinding Dark=#002157, Light=GhostWhite}"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                   HeightRequest="200"
                   SeparatorVisibility="None">
-            <ListView.Behaviors>
-                <behaviors:EventToCommandBehavior Command="{Binding LinkSocialCommand}" 
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior Command="{Binding LinkSocialCommand}" 
                                               EventName="ItemSelected"
                                               Converter="{StaticResource SelectedItemConverter}"/>
-            </ListView.Behaviors>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid HorizontalOptions="CenterAndExpand" BackgroundColor="{AppThemeBinding Dark=#002157, Light=WhiteSmoke}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.5*"/>
-                                <ColumnDefinition Width="0.5*" />
-                            </Grid.ColumnDefinitions>
-                            <Image Source="{Binding Image}" 
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid HorizontalOptions="CenterAndExpand" 
+                              BackgroundColor="{AppThemeBinding Dark=#002157, Light=Transparent}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="0.5*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Image}" 
                                    Grid.Column="1"
                                    Grid.ColumnSpan="1"
                                HorizontalOptions="CenterAndExpand"
                                WidthRequest="30"
                                HeightRequest="30"/>
-                            <Label Text="{Binding SocialProvider}"
+                                <Label Text="{Binding SocialProvider}"
                                    BackgroundColor="Transparent"
                                    Grid.Column="2"
                                    FontSize="20"
@@ -67,11 +83,12 @@
                                    Margin="0,5"
                                    Grid.ColumnSpan="2"
                                    HorizontalOptions="CenterAndExpand"/>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </Frame>
 
 </popup:PopupPage>
