@@ -2,7 +2,7 @@
 
 namespace GetSanger.Controls
 {
-    public class EditorWithBorder : ExtendedEditorControl
+    public class EditorWithBorder : Editor
     {
         public static BindableProperty CornerRadiusProperty =
         BindableProperty.Create(nameof(CornerRadius), typeof(int), typeof(EntryWithBorder), 8);
@@ -41,11 +41,6 @@ namespace GetSanger.Controls
         {
             get => (Thickness)GetValue(PaddingProperty);
             set => SetValue(PaddingProperty, value);
-        }
-
-        public EditorWithBorder()
-        {
-            IsExpandable = true;
         }
     }
 }

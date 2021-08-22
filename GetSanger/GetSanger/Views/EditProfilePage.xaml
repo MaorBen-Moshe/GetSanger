@@ -112,8 +112,34 @@
                                    Margin="20, 10, 0, 5"/>
 
                             <controls:PickerWithBorder ItemsSource="{Binding GenderItems}" 
-                                                       Margin="20, 0, 20, 0"
+                                                       Margin="20, 0, 20, 5"
                                                        SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout>
+                            <Label Text="About me"
+                   FontAttributes="Italic"
+                   Margin="20, 10, 0, 5"/>
+                            <controls:EditorWithBorder 
+                                IsSpellCheckEnabled="True"
+                                IsTextPredictionEnabled="True"
+                                Placeholder="About me"
+                                CornerRadius="15"
+                                VerticalOptions="FillAndExpand"
+                                Margin="20, 0, 20, 0"
+                                MaxLength="100"
+                                HeightRequest="200"
+                                Text="{Binding ConnectedUser.PersonalDetails.About, Mode=TwoWay}"
+                                PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
+                                <Editor.Keyboard>
+                                    <Keyboard x:FactoryMethod="Create" >
+                                        <x:Arguments>
+                                            <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                                        </x:Arguments>
+                                    </Keyboard>
+                                </Editor.Keyboard>
+                            </controls:EditorWithBorder>
                         </StackLayout>
                     </ViewCell>
                 </TableSection>

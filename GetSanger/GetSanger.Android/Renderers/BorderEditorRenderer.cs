@@ -38,11 +38,6 @@ namespace GetSanger.Droid.Renderers
             {
                 UpdateBackground();
             }
-            else if (e.PropertyName == EditorWithBorder.CharacterSpacingProperty.PropertyName ||
-                     e.PropertyName == EditorWithBorder.PlaceholderProperty.PropertyName)
-            {
-                return;
-            }
 
             base.OnElementPropertyChanged(sender, e);
         }

@@ -17,6 +17,18 @@
         <Converters:EmailEntryToBoolConverter x:Key="EmailEntryToBoolConverter" />
     </ContentPage.Resources>
 
+    <Shell.TitleView>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     BackgroundColor="Transparent">
+            <Label Text="Welcome"
+                   FontAttributes="Italic"
+                   FontSize="Title"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </Shell.TitleView>
+
     <StackLayout>
         <StackLayout  VerticalOptions="Center" 
                       Padding="5, 0, 5, 0" 
