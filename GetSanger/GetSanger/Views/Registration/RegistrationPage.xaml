@@ -24,6 +24,7 @@
             <Label Text="Welcome"
                    FontAttributes="Italic"
                    FontSize="Title"
+                   FontFamily="{StaticResource Key=MontserratSemiBold}"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"/>
         </StackLayout>
@@ -42,13 +43,15 @@
                 <StackLayout>
                     <Label Text="Get Sanger" 
                            FontSize="30"
-                           FontAttributes="Bold"
+                           FontFamily="{StaticResource Key=CaveatBold}"
                            HorizontalOptions="Center"/>
                     <Label Text="Be the best Sanger you can!"
                            FontSize="Medium"
+                           FontFamily="{StaticResource Key=MontserratSemiBold}"
                            HorizontalOptions="Center" />
                     <Label Text="Treat the sangers well!" 
                            FontSize="Small"
+                           FontFamily="{StaticResource Key=MontserratLight}"
                            HorizontalOptions="Center" 
                            Margin="0,0,0,10"/>
                 </StackLayout>
@@ -66,6 +69,7 @@
             <Label Text="Forgot password?" 
                    FontAttributes="Italic"
                    TextDecorations="Underline"
+                   FontFamily="{StaticResource Key=MontserratLight}"
                    CharacterSpacing="1"
                    BackgroundColor="Transparent" 
                    Margin="0,0,20,0"

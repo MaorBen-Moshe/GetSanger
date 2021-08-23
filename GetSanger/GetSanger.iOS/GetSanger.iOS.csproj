@@ -103,6 +103,16 @@
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <BundleResource Include="Resources\rolling.gif" />
+    <BundleResource Include="Resources\Montserrat-SemiBoldItalic.ttf" />
+    <BundleResource Include="Resources\Montserrat-LightItalic.ttf" />
+    <BundleResource Include="Resources\Montserrat-Bold.ttf" />
+    <BundleResource Include="Resources\Caveat-Bold.ttf" />
+    <BundleResource Include="Resources\Caveat-SemiBold.ttf" />
+    <BundleResource Include="Resources\Caveat-Regular.ttf" />
+    <BundleResource Include="Resources\OpenSans-SemiBoldItalic.ttf" />
+    <BundleResource Include="Resources\OpenSans-SemiBold.ttf" />
+    <BundleResource Include="Resources\OpenSans-Bold.ttf" />
+    <BundleResource Include="Resources\OpenSans-LightItalic.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\activityIcon.png.imageset\activityIcon.png">
@@ -633,12 +643,10 @@
   <ItemGroup>
     <Folder Include="Assets.xcassets\getSangerIconHD.png.imageset\" />
     <Folder Include="Assets.xcassets\getSangerIconTransparent.png.imageset\" />
-    <Folder Include="Assets.xcassets\ic_scolldown.png.imageset\" />
     <Folder Include="Assets.xcassets\IconElectrician.png.imageset\" />
+    <Folder Include="Assets.xcassets\ic_scolldown.png.imageset\" />
     <Folder Include="Assets.xcassets\profile.png.imageset\" />
-    <Folder Include="Assets.xcassets\noVisibility.png.imageset\" />
     <Folder Include="Assets.xcassets\visibility.png.imageset\" />
-    <Folder Include="Assets.xcassets\IconMiscellaneous.png.imageset\" />
   </ItemGroup>
   <ItemGroup />
 </Project>
