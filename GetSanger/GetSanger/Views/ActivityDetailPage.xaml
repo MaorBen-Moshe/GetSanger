@@ -93,15 +93,14 @@
                 </Frame>
 
                 <Frame HorizontalOptions="FillAndExpand"
-                   Margin="10,5,10,10"
-                   Padding="20"
-                   >
-                    <StackLayout Spacing="10">
+                       Margin="10,5,10,10"
+                       Padding="20">
+                    <StackLayout Spacing="10"
+                                 x:Name="locationStack">
                         <Label Text="Job Details:" 
                                FontSize="Medium"
                                TextDecorations="Underline"
                                HorizontalOptions="CenterAndExpand"/>
-                        
                         <StackLayout BackgroundColor="Transparent"
                              Margin="10, 5, 10, 0"
                              Spacing="0"
