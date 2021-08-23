@@ -17,6 +17,18 @@
         <Converters:EmailEntryToBoolConverter x:Key="EmailEntryToBoolConverter" />
     </ContentPage.Resources>
 
+    <Shell.TitleView>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     BackgroundColor="Transparent">
+            <Label Text="Welcome"
+                   FontAttributes="Italic"
+                   FontSize="Title"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
+    </Shell.TitleView>
+
     <StackLayout>
         <StackLayout  VerticalOptions="Center" 
                       Padding="5, 0, 5, 0" 
@@ -33,10 +45,10 @@
                            FontAttributes="Bold"
                            HorizontalOptions="Center"/>
                     <Label Text="Be the best Sanger you can!"
-                           FontSize="18"
+                           FontSize="Medium"
                            HorizontalOptions="Center" />
                     <Label Text="Treat the sangers well!" 
-                           FontSize="14"
+                           FontSize="Small"
                            HorizontalOptions="Center" 
                            Margin="0,0,0,10"/>
                 </StackLayout>
@@ -59,7 +71,7 @@
                    Margin="0,0,20,0"
                    VerticalOptions="EndAndExpand"
                    HorizontalOptions="EndAndExpand"
-                   FontSize="14">
+                   FontSize="Small">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"
                                       CommandParameter="{Binding Email}"/>

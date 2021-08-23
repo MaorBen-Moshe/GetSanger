@@ -27,6 +27,7 @@
                      VerticalOptions="CenterAndExpand"
                      BackgroundColor="Transparent">
             <Label Text="{Binding NewJobOffer.Title}"
+                   FontSize="Large"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"
                    Margin="50,0,0,0"/>
@@ -63,7 +64,7 @@
                              VerticalOptions="Start">
                     <Label Text="Job name:" 
                            HorizontalOptions="Start"
-                               FontSize="14"
+                               FontSize="Small"
                                Padding="0"/>
                     <controls:EntryWithBorder Text="{Binding NewJobOffer.Title}" 
                                               Placeholder="Job Title" >
@@ -82,9 +83,9 @@
                     <Label Text="From: "
                                 
                                 BackgroundColor="Transparent"
-                                FontSize="14"/>
-                    <controls:EntryWithBorder Text="{Binding DestinationLocationString, Mode=OneWay}"
-                                              FontSize="14"
+                                FontSize="Small"/>
+                    <controls:EntryWithBorder Text="{Binding FromLocationString, Mode=OneWay}"
+                                              FontSize="Small"
                                               Placeholder="click to set location">
                         <controls:EntryWithBorder.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="Focused"
@@ -101,9 +102,9 @@
                              Spacing="0">
                     <Label Text="Destination: "
                                 BackgroundColor="Transparent"
-                                FontSize="14"/>
+                                FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding DestinationLocationString, Mode=OneWay}"
-                                              FontSize="14"
+                                              FontSize="Small"
                                               Placeholder="click to set location">
                         <controls:EntryWithBorder.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="Focused"
@@ -119,7 +120,7 @@
                              Spacing="0">
                     <Label Text="Date and Time:"
                        BackgroundColor="Transparent"
-                       FontSize="14"/>
+                       FontSize="Small"/>
                     <StackLayout Orientation="Horizontal">
                         <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
                                 MinimumDate="{x:Static system:DateTime.Now}" 
@@ -136,29 +137,25 @@
                          Spacing="0">
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
-                       FontSize="14"/>
-                    <Frame VerticalOptions="FillAndExpand"
-                            Padding="10"
-                            Margin="5,5,5,20"
-                            HasShadow="True">
-                        <controls:ExtendedEditorControl 
+                       FontSize="Small"/>
+                    <controls:EditorWithBorder 
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="Job Description"
                                 VerticalOptions="FillAndExpand"
+                            Margin="5,5,5,20"
                                 MaxLength="255"
                                 HeightRequest="180"
                                 Text="{Binding NewJobOffer.Description}"
                                 PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
-                            <Editor.Keyboard>
-                                <Keyboard x:FactoryMethod="Create" >
-                                    <x:Arguments>
-                                        <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                                    </x:Arguments>
-                                </Keyboard>
-                            </Editor.Keyboard>
-                        </controls:ExtendedEditorControl>
-                    </Frame>
+                        <Editor.Keyboard>
+                            <Keyboard x:FactoryMethod="Create" >
+                                <x:Arguments>
+                                    <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                                </x:Arguments>
+                            </Keyboard>
+                        </Editor.Keyboard>
+                    </controls:EditorWithBorder>
                 </StackLayout>
 
                 <Button Text="Submit" 

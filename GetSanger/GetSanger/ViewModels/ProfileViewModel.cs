@@ -63,6 +63,8 @@ namespace GetSanger.ViewModels
 
         public ICommand ViewRatingsCommand { get; set; }
 
+        public ICommand AboutMeCommand { get; set; }
+
         #endregion
 
         #region Constructor
@@ -90,6 +92,7 @@ namespace GetSanger.ViewModels
             ReportUserCommand = new Command(reportUser);
             SendMessageCommand = new Command(sendMessageToUser);
             ViewRatingsCommand = new Command(viewRatings);
+            AboutMeCommand = new Command(aboutMe);
         }
 
         private async void setUser()
@@ -224,6 +227,18 @@ namespace GetSanger.ViewModels
             catch (Exception e)
             {
                 await e.LogAndDisplayError($"{nameof(ProfileViewModel)}:viewRatings", "Error", e.Message);
+            }
+        }
+
+        private async void aboutMe(object i_param)
+        {
+            try
+            {
+                await PopupNavigation.Instance.PushAsync(new EditorPopup(CurrentUser.PersonalDetails.About, "user has not fill a description"));
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(ProfileViewModel)}:aboutMe", "Error", e.Message);
             }
         }
 

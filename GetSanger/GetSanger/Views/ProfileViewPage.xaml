@@ -51,6 +51,7 @@
 
             <StackLayout VerticalOptions="Start"
                      HorizontalOptions="CenterAndExpand"
+                         BackgroundColor="Transparent"
                      Spacing="0">
                 <controls:RoundedImage ImageSource="{Binding UserImage}"
                                        Radius="64" 
@@ -104,7 +105,25 @@
                 </StackLayout>
             </Frame>
 
+            <Frame Padding="10"
+                   Margin="50, 10, 50, 0"
+                   BackgroundColor="Transparent">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AboutMeCommand}" />
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat='About {0}'}"  
+                           VerticalOptions="Center"
+                           HorizontalOptions="StartAndExpand"
+                           BackgroundColor="Transparent"/>
+                    <Label Text=">" 
+                           BackgroundColor="Transparent"
+                           HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+            </Frame>
+
             <StackLayout Orientation="Horizontal" 
+                         BackgroundColor="Transparent"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="EndAndExpand"
                          Padding="20">

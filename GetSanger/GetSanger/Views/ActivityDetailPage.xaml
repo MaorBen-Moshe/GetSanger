@@ -23,7 +23,7 @@
                      HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand">
             <Label Text="{Binding ConnectedActivity.JobDetails.Title}"
-                   FontSize="20"
+                   FontSize="Large"
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="CenterAndExpand"/>
         </StackLayout>
@@ -174,7 +174,7 @@
 
                 <StackLayout IsVisible="{Binding IsConfirmationStackVisible}">
                     <Button Text="Confirm"
-                        FontSize="12"
+                        FontSize="Caption"
                         FontAttributes="Bold"
                         BackgroundColor="Transparent"
                         Command="{Binding ConfirmActivityCommand}" 
@@ -184,7 +184,7 @@
                     <Button Text="Delete"
                         TextColor="Red"
                         BorderColor="Transparent"
-                        FontSize="12"
+                        FontSize="Caption"
                         BackgroundColor="Transparent"
                         Command="{Binding RejectActivityCommand}"
                         HorizontalOptions="CenterAndExpand"/>
