@@ -15,84 +15,143 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
+            <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-
-    <Shell.TitleView>
-        <StackLayout BackgroundColor="Transparent"
-                     HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand">
-            <Label Text="{Binding ConnectedActivity.JobDetails.Title}"
-                   FontSize="Large"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand"/>
-        </StackLayout>
-    </Shell.TitleView>
 
 
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Frame HorizontalOptions="Center"
-                   Margin="0,5,0,0"
-                   Padding="40, 30"
-                   >
-                    <StackLayout>
-                        <Label Text="{Binding ConnectedActivity.Status, StringFormat='Status: {0}'}"
-                           HorizontalOptions="CenterAndExpand"
-                           FontSize="Large"
-                           Margin="0,5,0,0"/>
-                        <Label Text="{Binding ConnectedActivity.JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, StringFormat='Job Category: {0}'}"
-                           HorizontalOptions="CenterAndExpand"
-                           Margin="0,0,0,5"
-                           VerticalOptions="Center"/>
-                        <Label Text="{Binding ProfileName, StringFormat='{0}\'s Profile'}" 
-                           TextTransform="None"
-                           TextColor="Blue"
-                           TextDecorations="Underline"
-                           HorizontalOptions="CenterAndExpand"
-                           VerticalOptions="Center"
-                           BackgroundColor="Transparent"
-                           Margin="0,5,0,0">
+                <Frame Margin="10">
+                    <StackLayout BackgroundColor="Transparent">
+                        <Label Text="{Binding ConnectedActivity.JobDetails.Title}" 
+                               FontSize="Title"
+                               FontAttributes="Italic"
+                               HorizontalTextAlignment="Center"/>
+
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="CenterAndExpand">
+                                <Ellipse Fill="{Binding ConnectedActivity.Status, Converter={StaticResource StatusToColorConverter}}"
+                                         WidthRequest="22"
+                                         HeightRequest="22"
+                                         Margin="5"/>
+
+                                <Label Text="{Binding ConnectedActivity.Status}"
+                                   FontSize="Medium"
+                                   FontAttributes="Italic"></Label>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="CenterAndExpand">
+                                <Ellipse Fill="Gray"
+                                         WidthRequest="22"
+                                         HeightRequest="22"
+                                         Margin="5"/>
+
+                                <Label Text="{Binding ConnectedActivity.JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
+                                   FontSize="Medium"
+                                   FontAttributes="Italic"/>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <Label FontSize="Large"
+                               FontAttributes="Italic"
+                               HorizontalTextAlignment="Center"
+                               Text="{Binding ProfileName, StringFormat='{0}\'s Profile'}"
+                               TextColor="Blue"
+                               TextDecorations="Underline"
+                               Padding="10"
+                               Margin="10, 5, 10, 5"
+                               BackgroundColor="{AppThemeBinding Dark=Gray, Light=Transparent}"
+                               HorizontalOptions="CenterAndExpand"
+                               IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
+                               IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ProfileCommand}">
-                                </TapGestureRecognizer>
+                                <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
                             </Label.GestureRecognizers>
                         </Label>
+
+                        <StackLayout IsVisible="{Binding IsConfirmationStackVisible}">
+                            <Button Text="Confirm"
+                        FontSize="Caption"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        Command="{Binding ConfirmActivityCommand}" 
+                        IsVisible="{Binding IsConfirmationButtonVisible}"
+                        BorderColor="Transparent"
+                        HorizontalOptions="CenterAndExpand"/>
+                            <Button Text="Delete"
+                        TextColor="Red"
+                        BorderColor="Transparent"
+                        FontSize="Caption"
+                        BackgroundColor="Transparent"
+                        Command="{Binding RejectActivityCommand}"
+                        HorizontalOptions="CenterAndExpand"/>
+                        </StackLayout>
                     </StackLayout>
                 </Frame>
 
-                <Frame HorizontalOptions="Center"
+                <Frame HorizontalOptions="FillAndExpand"
                    Margin="10,5,10,10"
                    Padding="20"
                    >
                     <StackLayout Spacing="10">
                         <Label Text="Job Details:" 
-                           TextDecorations="Underline"
-                           HorizontalOptions="CenterAndExpand"/>
-                        <Label Text="{Binding FromLocation, StringFormat=' From:&#x0a; {0}'}"
-                           Margin="5"
-                           IsVisible="{Binding IsFromLocationVisible}"
-                           BackgroundColor="Transparent"/>
-                        <Label Text="{Binding DestinationLocation, StringFormat=' Destination:&#x0a; {0}'}"
-                           Margin="5"
-                           BackgroundColor="Transparent"/>
-                        <Frame HorizontalOptions="FillAndExpand"
-                           Margin="12, 0"
-                           Padding="5"
-                           BorderColor="Black">
-                            <StackLayout Orientation="Horizontal" 
-                                 HorizontalOptions="FillAndExpand">
-                                <DatePicker Format="dd MMM yyyy" 
-                                    Date="{Binding ConnectedActivity.JobDetails.Date}" 
-                                    HorizontalOptions="FillAndExpand"
-                                    Margin="10,0,0,0"
-                                    IsEnabled="False"/>
-                                <TimePicker Time="{Binding ConnectedActivity.JobDetails.Time}"
-                                    Margin="0,0,10,0"
-                                    IsEnabled="False" />
+                               FontSize="Medium"
+                               TextDecorations="Underline"
+                               HorizontalOptions="CenterAndExpand"/>
+                        
+                        <StackLayout BackgroundColor="Transparent"
+                             Margin="10, 5, 10, 0"
+                             Spacing="0"
+                             VerticalOptions="Start"
+                             x:Name="fromStack"
+                             IsVisible="{Binding IsFromLocationVisible}">
+                            <Label Text="From: "
+                                BackgroundColor="Transparent"
+                                FontSize="Small"/>
+                            <controls:EntryWithBorder Text="{Binding FromLocation, Mode=OneWay}"
+                                              FontSize="Small"
+                                              IsReadOnly="True"
+                                              Placeholder="source">
+                            </controls:EntryWithBorder>
+
+                        </StackLayout>
+                        <StackLayout BackgroundColor="Transparent"
+                             VerticalOptions="Start"
+                             Margin="10, 5, 10, 0"
+                             Spacing="0">
+                            <Label Text="Destination: "
+                                BackgroundColor="Transparent"
+                                FontSize="Small"/>
+                            <controls:EntryWithBorder Text="{Binding DestinationLocation, Mode=OneWay}"
+                                              FontSize="Small"
+                                              IsReadOnly="True"
+                                              Placeholder="destination">
+                            </controls:EntryWithBorder>
+
+                        </StackLayout>
+                        <StackLayout BackgroundColor="Transparent"
+                         VerticalOptions="Start"
+                         Margin="10, 5, 10, 0"
+                             Spacing="0">
+                            <Label Text="Date and Time:"
+                       BackgroundColor="Transparent"
+                       FontSize="Small"/>
+                            <StackLayout Orientation="Horizontal">
+                                <controls:DatePickerWithBorder Format="dd MMMMM yyyy" 
+                                                       Date="{Binding ConnectedActivity.JobDetails.Date}"
+                                                       IsEnabled="False"
+                                                       HorizontalOptions="FillAndExpand"
+                                                       Visual="Material"
+                                                       />
+                                <controls:TimePickerWithBorder Time="{Binding ConnectedActivity.JobDetails.Time}"
+                                                               Format="HH:mm tt"
+                                                               IsEnabled="False"
+                                                               HorizontalOptions="End"/>
                             </StackLayout>
-                        </Frame>
+                        </StackLayout>
 
                         <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"
@@ -172,24 +231,6 @@
                         Command="{Binding EndActivityCommand}"/>
                 </StackLayout>
 
-                <StackLayout IsVisible="{Binding IsConfirmationStackVisible}">
-                    <Button Text="Confirm"
-                        FontSize="Caption"
-                        FontAttributes="Bold"
-                        BackgroundColor="Transparent"
-                        Command="{Binding ConfirmActivityCommand}" 
-                        IsVisible="{Binding IsConfirmationButtonVisible}"
-                        BorderColor="Transparent"
-                        HorizontalOptions="CenterAndExpand"/>
-                    <Button Text="Delete"
-                        TextColor="Red"
-                        BorderColor="Transparent"
-                        FontSize="Caption"
-                        BackgroundColor="Transparent"
-                        Command="{Binding RejectActivityCommand}"
-                        HorizontalOptions="CenterAndExpand"/>
-                </StackLayout>
-            
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
