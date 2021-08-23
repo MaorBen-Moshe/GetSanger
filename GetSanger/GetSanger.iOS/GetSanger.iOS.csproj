@@ -358,10 +358,10 @@
     <ImageAsset Include="Assets.xcassets\noVisibility.png.imageset\noVisibility-32.png.png" />
     <ImageAsset Include="Assets.xcassets\noVisibility.png.imageset\noVisibility-64.png.png" />
     <ImageAsset Include="Assets.xcassets\noVisibility.png.imageset\noVisibility-128.png.png" />
-    <ImageAsset Include="Assets.xcassets\miscellaneous.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\miscellaneous.png.imageset\32x32.png" />
-    <ImageAsset Include="Assets.xcassets\miscellaneous.png.imageset\64x64.png" />
-    <ImageAsset Include="Assets.xcassets\miscellaneous.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconMiscellaneous.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\IconMiscellaneous.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\IconMiscellaneous.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\IconMiscellaneous.png.imageset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -437,8 +437,8 @@
     <Folder Include="Assets.xcassets\IconElectrician.png.imageset\" />
     <Folder Include="Assets.xcassets\profile.png.imageset\" />
     <Folder Include="Assets.xcassets\noVisibility.png.imageset\" />
-    <Folder Include="Assets.xcassets\miscellaneous.png.imageset\" />
     <Folder Include="Assets.xcassets\visibility.png.imageset\" />
+    <Folder Include="Assets.xcassets\IconMiscellaneous.png.imageset\" />
   </ItemGroup>
   <ItemGroup />
 </Project>
