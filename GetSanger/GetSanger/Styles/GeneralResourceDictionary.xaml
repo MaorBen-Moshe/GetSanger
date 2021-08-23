@@ -77,6 +77,10 @@
     <Color x:Key="TimePickerTextColorLight">Black</Color>
     <Color x:Key="EntryBorderColorDark">White</Color>
     <Color x:Key="EntryBorderColorLight">Black</Color>
+    <Color x:Key="EntryPlaceholderColorDark">Gray</Color>
+    <Color x:Key="EntryPlaceholderColorLight">Gray</Color>
+    <Color x:Key="EditorPlaceholderColorDark">Gray</Color>
+    <Color x:Key="EditorPlaceholderColorLight">Gray</Color>
 
 
     <Style TargetType="Shell">
@@ -148,6 +152,7 @@
     </Style>
     <Style TargetType="Editor">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EditorBackgroundColorDark}, Light={StaticResource EditorBackgroundColorLight}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EditorPlaceholderColorDark}, Light={StaticResource EditorPlaceholderColorLight}}"/>
     </Style>
     <Style TargetType="TableView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TableViewBackgroundColorDark}, Light={StaticResource TableViewBackgroundColorLight}}"/>
@@ -167,5 +172,6 @@
     <Style TargetType="controls:EntryWithBorder">
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource EntryBorderColorDark}, Light={StaticResource EntryBorderColorLight}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EntryPlaceholderColorDark}, Light={StaticResource EntryPlaceholderColorLight}}"/>
     </Style>
 </ResourceDictionary>
