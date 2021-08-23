@@ -37,21 +37,21 @@
                        FontAttributes="Italic"
                        FontSize="Subtitle"
                        x:Name="subTitle"/>
-                <Frame HorizontalOptions="FillAndExpand"
-                       VerticalOptions="FillAndExpand"
-                       Margin="10"
-                       CornerRadius="20"
-                       Padding="10"
-                       HasShadow="True">
-                    <controls:ExtendedEditorControl IsSpellCheckEnabled="True"
-                                                    IsTextPredictionEnabled="True"
-                                                    
-                                                    IsExpandable="True"
-                                                    Margin="1"
-                                                    HorizontalOptions="FillAndExpand"
-                                                    x:Name="editor">
-                    </controls:ExtendedEditorControl>
-                </Frame>
+                <controls:EditorWithBorder IsSpellCheckEnabled="True"
+                                           IsTextPredictionEnabled="True"
+                                           Margin="0"
+                                           MaxLength="100"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="FillAndExpand"
+                                           x:Name="editor">
+                    <Editor.Keyboard>
+                        <Keyboard x:FactoryMethod="Create" >
+                            <x:Arguments>
+                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                            </x:Arguments>
+                        </Keyboard>
+                    </Editor.Keyboard>
+                </controls:EditorWithBorder>
 
                 <Button Text="Submit"
                         BackgroundColor="Transparent"

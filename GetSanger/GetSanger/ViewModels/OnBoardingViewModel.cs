@@ -73,22 +73,22 @@ namespace GetSanger.ViewModels
                 },
                 new OnBoardingItem
                 {
-                    Header = "title here",
+                    Header = "Advantage and Support",
                     Body = "start your journey to help others and benefit from it.",
                     IsLast = false
                 },
                 new OnBoardingItem
                 {
                     Header = "Decide what type of person you are:",
-                    Body = string.Format(@" 1.Sanger
+                    Body = string.Format(@"1.Sanger
 2.Client
 Or you can be Both :)"),
                     IsLast = false
                 },
                 new OnBoardingItem
                 {
-                    Header = "title here",
-                    Body = "Sign up and let's go.",
+                    Header = "Sign up",
+                    Body = "You are one step away from creating new opportunities.",
                     IsLast = true
                 }
             };

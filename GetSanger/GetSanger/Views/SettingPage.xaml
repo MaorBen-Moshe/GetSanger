@@ -45,9 +45,9 @@
                    BorderColor="Gray"
                    IsClippedToBounds="True"
                    Margin="10, 5, 10, 20"
-                   CornerRadius="10">
-                <StackLayout Margin="0"
-                         IsVisible="{Binding IsSangerMode}">
+                   CornerRadius="10"
+                   IsVisible="{Binding IsSangerMode}">
+                <StackLayout Margin="0">
                     <Label Text="{Binding DistanceString}"
                            FontAttributes="Italic"
                            HorizontalOptions="CenterAndExpand"/>

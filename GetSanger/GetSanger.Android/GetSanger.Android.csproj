@@ -172,8 +172,10 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Persistence\SQLiteDb.cs" />
     <Compile Include="Renderers\BorderDatePickerRenderer.cs" />
+    <Compile Include="Renderers\BorderEditorRenderer.cs" />
     <Compile Include="Renderers\BorderEntryRenderer.cs" />
     <Compile Include="Renderers\BorderPickerRenderer.cs" />
+    <Compile Include="Renderers\BorderTimePickerRenderer.cs" />
     <Compile Include="Renderers\CustomEditorRendrer.cs" />
     <Compile Include="Services\BitmapConfig.cs" />
     <Compile Include="Services\Crashlytics.cs" />
@@ -190,6 +192,16 @@
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services.json" />
+    <AndroidAsset Include="Assets\Montserrat-Bold.ttf" />
+    <AndroidAsset Include="Assets\Montserrat-LightItalic.ttf" />
+    <AndroidAsset Include="Assets\Montserrat-SemiBoldItalic.ttf" />
+    <AndroidAsset Include="Assets\Caveat-Bold.ttf" />
+    <AndroidAsset Include="Assets\Caveat-SemiBold.ttf" />
+    <AndroidAsset Include="Assets\Caveat-Regular.ttf" />
+    <AndroidAsset Include="Assets\OpenSans-SemiBoldItalic.ttf" />
+    <AndroidAsset Include="Assets\OpenSans-SemiBold.ttf" />
+    <AndroidAsset Include="Assets\OpenSans-Bold.ttf" />
+    <AndroidAsset Include="Assets\OpenSans-LightItalic.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -342,6 +354,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\noVisibility.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconMiscellaneous.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

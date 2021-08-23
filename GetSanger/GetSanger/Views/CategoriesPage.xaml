@@ -28,13 +28,13 @@
                            HorizontalTextAlignment="Center" 
                            Text="Pick Job Category"
                            FontAttributes="Bold, Italic"  
-                           FontSize="24"
+                           FontSize="Title"
                            HorizontalOptions="CenterAndExpand" />
                     <Label Margin="0,10,0,0" 
                            HorizontalTextAlignment="Center" 
                            Text="You are almost there to get your job done."
                            FontAttributes="Italic"
-                           FontSize="13"
+                           FontSize="Small"
                            HorizontalOptions="CenterAndExpand" />
                 </StackLayout>
             </Frame>
@@ -65,7 +65,7 @@
                                        WidthRequest="70"
                                        HorizontalOptions="CenterAndExpand"/>
                                 <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
-                                       FontSize="14"
+                                       FontSize="Small"
                                        FontAttributes="Italic"
                                        CharacterSpacing="1"
                                        HorizontalTextAlignment="Center"

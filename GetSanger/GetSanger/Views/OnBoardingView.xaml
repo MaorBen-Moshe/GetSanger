@@ -73,7 +73,7 @@
                                     <Label Text="{Binding Body}"
                                            HorizontalTextAlignment="Center"
                                            FontAttributes="Italic"
-                                           FontSize="15"
+                                           FontSize="Medium"
                                            Margin="10,0"  
                                            BackgroundColor="Transparent"/>
 
@@ -88,7 +88,7 @@
                                             BackgroundColor="Transparent"/>
                                     <Label Text="skip"
                                            FontAttributes="Italic"
-                                           FontSize="14"
+                                           FontSize="Small"
                                            IsVisible="{Binding IsLast, Converter={StaticResource InverseBoolConverter}}"
                                            HorizontalOptions="CenterAndExpand"
                                            VerticalOptions="CenterAndExpand"

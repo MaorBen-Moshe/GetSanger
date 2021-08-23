@@ -42,5 +42,10 @@ namespace GetSanger.Controls
             get => (Thickness)GetValue(PaddingProperty);
             set => SetValue(PaddingProperty, value);
         }
+
+        public EntryWithBorder()
+        {
+            this.ClearButtonVisibility = ClearButtonVisibility.WhileEditing;
+        }
     }
 }

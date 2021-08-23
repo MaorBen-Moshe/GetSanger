@@ -27,130 +27,146 @@
                      VerticalOptions="CenterAndExpand"
                      BackgroundColor="Transparent">
             <Label Text="{Binding NewJobOffer.Title}"
+                   FontSize="Large"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"
-                   Margin="20,0,0,0"/>
+                   Margin="50,0,0,0"/>
         </StackLayout>
     </Shell.TitleView>
 
     <ContentPage.Content>
-        <StackLayout Margin="10">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="2*"/>
-                </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="3*" />
-                            <RowDefinition Height="3*" />
-                            <RowDefinition Height="3*" />
-                        </Grid.RowDefinitions>
-                        <Label Text="Job name:" 
-                               Grid.Row="0" 
-                               Grid.Column="0"
-                               FontSize="10"
-                               Padding="0"/>
-                        <Label Text="Category:" 
-                               Grid.Row="0" 
-                               Grid.Column="3"
-                               FontSize="10"
-                               Padding="0"/>
-                        <Entry Text="{Binding NewJobOffer.Title}" 
-                                   Placeholder="Job Title" 
-                                   Grid.Column="0"
-                               Grid.Row="1"
-                               Grid.ColumnSpan="3">
-                            <Entry.Behaviors>
-                                <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
-                            </Entry.Behaviors>
-                        </Entry>
+        <ScrollView Padding="0">
+            <StackLayout HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand"
+                         x:Name="mainStack">
+                <Frame Margin="10">
+                    <StackLayout BackgroundColor="Transparent">
+                        <Label Text="Creating New Offer" 
+                               FontSize="Title"
+                               FontAttributes="Italic"
+                               HorizontalTextAlignment="Center"/>
                         <Label Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
-                               Grid.Column="3"
-                               Grid.Row="1"
                                TextColor="Red"
-                               Grid.ColumnSpan="1"
+                               FontSize="Large"
+                               HorizontalTextAlignment="Center"
                                Padding="0"/>
+                        <Label FontSize="Subtitle"
+                               FontAttributes="Italic"
+                               HorizontalTextAlignment="Center"
+                               Text="Please fill all the fields in the form to ensure that you will find the right sanger."></Label>
+                    </StackLayout>
+                </Frame>
+                <StackLayout Orientation="Vertical"
+                             Margin="10, 5, 10,0"
+                             Spacing="0"
+                             BackgroundColor="Transparent"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Start">
+                    <Label Text="Job name:" 
+                           HorizontalOptions="Start"
+                               FontSize="Small"
+                               Padding="0"/>
+                    <controls:EntryWithBorder Text="{Binding NewJobOffer.Title}" 
+                                              Placeholder="Job Title" >
+                        <controls:EntryWithBorder.Behaviors>
+                            <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
+                        </controls:EntryWithBorder.Behaviors>
+                    </controls:EntryWithBorder>
+                </StackLayout>
 
-                        <Label IsVisible="{Binding IsDeliveryCategory}"
-                                Text="{Binding FromLocationString, Mode=OneWay, StringFormat='From: {0}'}"
-                                Margin="5"
-                                Grid.Column="0" 
-                                Grid.Row="2"
-                                Grid.ColumnSpan="3"
+                <StackLayout BackgroundColor="Transparent"
+                             Margin="10, 5, 10, 0"
+                             Spacing="0"
+                             VerticalOptions="Start"
+                             x:Name="fromStack"
+                             IsVisible="{Binding IsDeliveryCategory}">
+                    <Label Text="From: "
+                                
                                 BackgroundColor="Transparent"
-                                HeightRequest="100"
-                                FontSize="14"/>
-                        <Button IsVisible="{Binding IsDeliveryCategory}" Text="Get Location" Grid.Column="3" Command="{Binding FromLocationCommand}"
-                                FontSize="14"
-                                Grid.Row="2"
-                                Grid.ColumnSpan="1"/>
+                                FontSize="Small"/>
+                    <controls:EntryWithBorder Text="{Binding FromLocationString, Mode=OneWay}"
+                                              FontSize="Small"
+                                              Placeholder="click to set location">
+                        <controls:EntryWithBorder.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="Focused"
+                                                              Command="{Binding FromLocationCommand}"/>
+                        </controls:EntryWithBorder.Behaviors>
+                    </controls:EntryWithBorder>
 
-                        <Label Text="{Binding DestinationLocationString, Mode=OneWay, StringFormat='Destination: {0}'}"
-                               Margin="5"
-                               Grid.Column="0"
-                               Grid.Row="3"
-                               Grid.ColumnSpan="3"
-                               BackgroundColor="Transparent"
-                               HeightRequest="100"
-                               FontSize="14"/>
-                    <Button Text="Get Location" Grid.Column="3" Command="{Binding DestinationLocationCommand}"
-                                FontSize="14"
-                                Grid.Row="3"
-                                Grid.ColumnSpan="1"/>
+                </StackLayout>
 
-                </Grid>
-                <StackLayout Grid.Row="1">
-                    <StackLayout Orientation="Horizontal" 
-                                HorizontalOptions="StartAndExpand"
-                                Spacing="20"
-                                >
-                    <Label Text="Job date:" Padding="0" Margin="0,20,0,0"/>
-                
-                    <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
+
+                <StackLayout BackgroundColor="Transparent"
+                             VerticalOptions="Start"
+                             Margin="10, 5, 10, 0"
+                             Spacing="0">
+                    <Label Text="Destination: "
+                                BackgroundColor="Transparent"
+                                FontSize="Small"/>
+                    <controls:EntryWithBorder Text="{Binding DestinationLocationString, Mode=OneWay}"
+                                              FontSize="Small"
+                                              Placeholder="click to set location">
+                        <controls:EntryWithBorder.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="Focused"
+                                                              Command="{Binding DestinationLocationCommand}"/>
+                        </controls:EntryWithBorder.Behaviors>
+                    </controls:EntryWithBorder>
+
+                </StackLayout>
+
+                <StackLayout BackgroundColor="Transparent"
+                         VerticalOptions="Start"
+                         Margin="10, 5, 10, 0"
+                             Spacing="0">
+                    <Label Text="Date and Time:"
+                       BackgroundColor="Transparent"
+                       FontSize="Small"/>
+                    <StackLayout Orientation="Horizontal">
+                        <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
                                 MinimumDate="{x:Static system:DateTime.Now}" 
                                 Date="{Binding NewJobOffer.Date}"
+                                                       HorizontalOptions="FillAndExpand"
                                 Visual="Material"/>
-                    <TimePicker Time="{Binding NewJobOffer.Time}"/>
+                        <controls:TimePickerWithBorder Time="{Binding NewJobOffer.Time}"
+                                                       HorizontalOptions="End"/>
                     </StackLayout>
-                    <Frame 
-                            VerticalOptions="FillAndExpand"
-                            Padding="10"
-                            Margin="5,5,5,20"
-                            HasShadow="True">
-                        <Editor IsSpellCheckEnabled="True"
+                </StackLayout>
+                <StackLayout BackgroundColor="Transparent"
+                         VerticalOptions="Start"
+                         Margin="10, 5, 10, 0"
+                         Spacing="0">
+                    <Label Text="Description:"
+                       BackgroundColor="Transparent"
+                       FontSize="Small"/>
+                    <controls:EditorWithBorder 
+                                IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="Job Description"
                                 VerticalOptions="FillAndExpand"
+                            Margin="5,5,5,20"
                                 MaxLength="255"
                                 HeightRequest="180"
                                 Text="{Binding NewJobOffer.Description}"
-                            PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
-                            <Editor.Keyboard>
-                                <Keyboard x:FactoryMethod="Create" >
-                                    <x:Arguments>
-                                        <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                                    </x:Arguments>
-                                </Keyboard>
-                            </Editor.Keyboard>
-                        </Editor>
-                    </Frame>
-                    <Button Text="Send" 
-                                HorizontalOptions="CenterAndExpand"
-                                VerticalOptions="EndAndExpand"
-                                CornerRadius="20"
-                                Margin="5"
-                                Command="{Binding SendJobCommand}"/>
+                                PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
+                        <Editor.Keyboard>
+                            <Keyboard x:FactoryMethod="Create" >
+                                <x:Arguments>
+                                    <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                                </x:Arguments>
+                            </Keyboard>
+                        </Editor.Keyboard>
+                    </controls:EditorWithBorder>
                 </StackLayout>
-            </Grid>
-        </StackLayout>
 
+                <Button Text="Submit" 
+                        TextTransform="None"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="EndAndExpand"
+                        CornerRadius="10"
+                        Padding="10"
+                        Margin="0, 10"
+                        Command="{Binding SendJobCommand}"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

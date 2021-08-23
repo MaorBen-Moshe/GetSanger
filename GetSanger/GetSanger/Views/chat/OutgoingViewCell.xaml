@@ -5,7 +5,6 @@
           xmlns:effects="clr-namespace:GetSanger.Effects"
           x:Class="GetSanger.Views.chat.OutgoingViewCell">
     <StackLayout>
-
         <Label Text="{Binding DateString}"
                IsVisible="{Binding IsDateVisible}"
                HorizontalOptions="Start"
@@ -25,11 +24,6 @@
             BorderColor="Black"
             effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
             effects:LongPressedEffect.CommandParameter="{Binding .}">
-            <Frame.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding DisplayDateCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
-                                      CommandParameter="{Binding .}"
-                                      Tapped="TapGestureRecognizer_Tapped" />
-            </Frame.GestureRecognizers>
             <Frame.Effects>
                 <effects:LongPressedEffect />
             </Frame.Effects>
@@ -37,17 +31,24 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
+                
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DisplayDateCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
+                                          CommandParameter="{Binding .}"
+                                          Tapped="TapGestureRecognizer_Tapped" />
+                </Grid.GestureRecognizers>
+
                 <Label Text="{Binding Text}"
                    BackgroundColor="Transparent"
-                   HorizontalOptions="StartAndExpand"
+                   HorizontalOptions="Start"
                    Grid.Column="0"/>
                 <Label Text="!"
                    TextColor="Red"
                    BackgroundColor="Transparent"
                    IsVisible="{Binding MessageSent, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
                    Grid.Column="1"
-                   HorizontalOptions="EndAndExpand"
-                   VerticalOptions="EndAndExpand"/>
+                   HorizontalOptions="End"
+                   VerticalOptions="End"/>
             </Grid>
         </Frame>
     </StackLayout>

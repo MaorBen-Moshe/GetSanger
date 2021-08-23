@@ -67,5 +67,18 @@
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
+  <key>UIAppFonts</key>
+  <array>
+    <string>Montserrat-Bold.ttf</string>
+    <string>Montserrat-SemiBoldItalic.ttf</string>
+    <string>Montserrat-LightItalic.ttf</string>
+    <string>Caveat-Bold.ttf</string>
+    <string>Caveat-Regular.ttf</string>
+    <string>Caveat-SemiBold.ttf</string>
+    <string>OpenSans-Bold.ttf</string>
+    <string>OpenSans-SemiBoldItalic.ttf</string>
+    <string>OpenSans-SemiBold.ttf</string>
+    <string>OpenSans-LightItalic.ttf</string>
+  </array>
 </dict>
 </plist>

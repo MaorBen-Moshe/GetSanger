@@ -145,7 +145,7 @@ namespace GetSanger.ViewModels
                 sr_CrashlyticsService.LogPageEntrance(nameof(ActivityViewModel));
                 setLocationsLabels();
                 ProfileName = setProfileName();
-                IsActivatedLocationButton = ConnectedActivity.Status.Equals(eActivityStatus.Active) && ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery);
+                IsActivatedLocationButton = ConnectedActivity.Status.Equals(eActivityStatus.Active);
                 IsActivatedEndButton = AppManager.Instance.ConnectedUser.UserId.Equals(ConnectedActivity.SangerID) &&
                                        AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger) &&
                                        ConnectedActivity.Status.Equals(eActivityStatus.Active) == true;
