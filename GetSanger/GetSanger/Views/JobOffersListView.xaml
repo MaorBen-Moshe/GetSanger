@@ -89,7 +89,8 @@
                                                FontAttributes="Bold" 
                                                HorizontalOptions="CenterAndExpand"
                                                VerticalOptions="Start"
-                                               BackgroundColor="Transparent"/>
+                                               BackgroundColor="Transparent"
+                                               FontFamily="{StaticResource MontserratSemiBold}"/>
                                         <Label Text="{Binding Description}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"

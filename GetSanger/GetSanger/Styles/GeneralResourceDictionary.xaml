@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                    xmlns:controls="clr-namespace:GetSanger.Controls"
+                    xmlns:controls="clr-namespace:GetSanger.Controls;assembly=GetSanger"
              >
     <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
     <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
@@ -171,12 +171,13 @@
         <Setter Property="Padding" Value="5"/>
         <Setter Property="LineBreakMode" Value="TailTruncation" />
         <Setter Property="MaxLines" Value="7" />
-
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="Entry">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EntryBackgroundColorDark}, Light={StaticResource EntryBackgroundColorLight}}" />
         <Setter Property="FontSize" Value="Medium"/>
         <Setter Property="Margin" Value="1,1,1,0"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="Grid">
         <Setter Property="VerticalOptions" Value ="Center"/>
@@ -200,6 +201,7 @@
     <Style TargetType="Editor">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EditorBackgroundColorDark}, Light={StaticResource EditorBackgroundColorLight}}"/>
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EditorPlaceholderColorDark}, Light={StaticResource EditorPlaceholderColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="TableView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TableViewBackgroundColorDark}, Light={StaticResource TableViewBackgroundColorLight}}"/>
@@ -209,16 +211,23 @@
     </Style>
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="TimePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TimePickerTextColorDark}, Light={StaticResource TimePickerTextColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="controls:EntryWithBorder">
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource EntryBorderColorDark}, Light={StaticResource EntryBorderColorLight}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EntryPlaceholderColorDark}, Light={StaticResource EntryPlaceholderColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
+    </Style>
+    <Style TargetType="controls:EditorWithBorder">
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
 </ResourceDictionary>

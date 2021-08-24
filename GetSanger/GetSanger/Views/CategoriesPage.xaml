@@ -69,7 +69,8 @@
                                        FontAttributes="Italic"
                                        CharacterSpacing="1"
                                        HorizontalTextAlignment="Center"
-                                       HorizontalOptions="CenterAndExpand"/>
+                                       HorizontalOptions="CenterAndExpand"
+                                       FontFamily="{StaticResource MontserratSemiBold}"/>
                             </StackLayout>
                         </Frame>
                     </DataTemplate>

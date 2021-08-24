@@ -29,9 +29,10 @@
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="FillAndExpand">
                         <Label Text="Client Mode" 
-                           HorizontalTextAlignment="Center"
-                           VerticalOptions="Center"
-                           x:Name="clientLabel"/>
+                               HorizontalTextAlignment="Center"
+                               VerticalOptions="Center"
+                               x:Name="clientLabel"
+                               FontFamily="{StaticResource MontserratSemiBold}"/>
                         <Switch IsToggled="{Binding ModeIsToggled}">
                             <Switch.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="Toggled"
@@ -39,9 +40,10 @@
                             </Switch.Behaviors>
                         </Switch>
                         <Label Text="Sanger Mode"
-                           VerticalOptions="Center"
-                           HorizontalTextAlignment="Center"
-                           x:Name="SangerLabel"/>
+                               VerticalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               x:Name="SangerLabel"
+                               FontFamily="{StaticResource MontserratSemiBold}"/>
                     </StackLayout>
                 </Frame>
 

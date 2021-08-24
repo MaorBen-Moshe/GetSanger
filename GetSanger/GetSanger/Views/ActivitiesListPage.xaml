@@ -80,8 +80,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame BorderColor="WhiteSmoke" 
-                                       Padding="0"
+                                <Frame Padding="0"
                                        Margin="10">
                                     <StackLayout Padding="20">
                                         <StackLayout Orientation="Horizontal"
@@ -105,10 +104,10 @@
                                         </StackLayout>
 
                                         <Label Text="{Binding JobDetails.Title}" 
-                                               FontAttributes="Bold" 
                                                HorizontalOptions="CenterAndExpand"
                                                VerticalOptions="Start"
-                                               BackgroundColor="Transparent"/>
+                                               BackgroundColor="Transparent"
+                                               FontFamily="{StaticResource MontserratSemiBold}"/>
                                         <Label Text="{Binding JobDetails.Description}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
@@ -117,7 +116,8 @@
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Path=IsClientMode}"
-                                               VerticalOptions="Start"/>
+                                               VerticalOptions="Start"
+                                               FontSize="Small"/>
                                         <Label Text="{Binding JobDetails.ClientName, StringFormat='Client Name: {0}'}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
