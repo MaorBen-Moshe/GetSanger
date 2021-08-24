@@ -51,7 +51,6 @@
                                                    IsCacheEnable="False"/>
                             <Label Text="Add Profile Picture"
                                    FontSize="Small"
-                                   TextColor="Gray"
                                    HorizontalOptions="CenterAndExpand">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding ImageChosenCommand}"/>

@@ -49,7 +49,8 @@
                                TextColor="Red"
                                FontSize="Large"
                                HorizontalTextAlignment="Center"
-                               Padding="0"/>
+                               Padding="0"
+                               FontFamily="{StaticResource MontserratSemiBold}"/>
                         <Label FontSize="Subtitle"
                                FontAttributes="Italic"
                                HorizontalTextAlignment="Center"

@@ -11,8 +11,6 @@
                      BackgroundColor="Transparent">
             <Frame CornerRadius="10"
                    Padding="30"
-                   BorderColor="Black"
-                   BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
                 <StackLayout BackgroundColor="Transparent">

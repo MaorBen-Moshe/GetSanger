@@ -11,17 +11,6 @@
         <vm:AccountViewModel />
     </ContentPage.BindingContext>
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Button">
-                <Setter Property="CornerRadius" Value="5"/>
-                <Setter Property="BackgroundColor" Value="WhiteSmoke" />
-                <Setter Property="Padding" Value="10, 5" />
-                <Setter Property="TextTransform" Value="None" />
-                
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <ContentPage.Content>
         <ScrollView>
@@ -35,16 +24,15 @@
                        FontAttributes="Italic"/>
                 </StackLayout>
                 <Frame Padding="20"
-                   HorizontalOptions="Center"
-                   BackgroundColor="WhiteSmoke">
+                   HorizontalOptions="Center">
                     <StackLayout Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand"
-                             VerticalOptions="FillAndExpand"
-                             BackgroundColor="Transparent">
+                             VerticalOptions="FillAndExpand">
                         <Label Text="Client Mode" 
-                           HorizontalTextAlignment="Center"
-                           VerticalOptions="Center"
-                           x:Name="clientLabel"/>
+                               HorizontalTextAlignment="Center"
+                               VerticalOptions="Center"
+                               x:Name="clientLabel"
+                               FontFamily="{StaticResource MontserratSemiBold}"/>
                         <Switch IsToggled="{Binding ModeIsToggled}">
                             <Switch.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="Toggled"
@@ -52,9 +40,10 @@
                             </Switch.Behaviors>
                         </Switch>
                         <Label Text="Sanger Mode"
-                           VerticalOptions="Center"
-                           HorizontalTextAlignment="Center"
-                           x:Name="SangerLabel"/>
+                               VerticalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               x:Name="SangerLabel"
+                               FontFamily="{StaticResource MontserratSemiBold}"/>
                     </StackLayout>
                 </Frame>
 

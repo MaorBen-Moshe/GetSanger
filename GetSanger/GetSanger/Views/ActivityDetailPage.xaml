@@ -27,8 +27,8 @@
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="{Binding ConnectedActivity.JobDetails.Title}" 
                                FontSize="Title"
-                               FontAttributes="Italic"
-                               HorizontalTextAlignment="Center"/>
+                               HorizontalTextAlignment="Center"
+                               FontFamily="{StaticResource MontserratSemiBold}"/>
 
                         <StackLayout Orientation="Horizontal">
                             <StackLayout Orientation="Horizontal"
@@ -100,7 +100,8 @@
                         <Label Text="Job Details:" 
                                FontSize="Medium"
                                TextDecorations="Underline"
-                               HorizontalOptions="CenterAndExpand"/>
+                               HorizontalOptions="CenterAndExpand"
+                               FontFamily="{StaticResource MontserratSemiBold}"/>
                         <StackLayout BackgroundColor="Transparent"
                              Margin="10, 5, 10, 0"
                              Spacing="0"
