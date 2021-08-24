@@ -9,7 +9,7 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer(typeof(EditorWithBorder), typeof(BorderEditorRenderer))]
 namespace GetSanger.Droid.Renderers
 {
-    public class BorderEditorRenderer : EditorRenderer
+    public class BorderEditorRenderer : CustomEditorRenderer
     {
         public EditorWithBorder ElementV2 => Element as EditorWithBorder;
 

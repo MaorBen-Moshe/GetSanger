@@ -17,7 +17,6 @@ namespace GetSanger.ViewModels
         #region Fields
 
         private JobOffer m_JobOffer;
-        private string m_ProfileText;
         private string m_MyLocation;
         private string m_JobLocation;
         private bool m_IsMyJobOffer;
@@ -49,12 +48,6 @@ namespace GetSanger.ViewModels
         {
             get => m_IsMyJobOffer;
             set => SetStructProperty(ref m_IsMyJobOffer, value);
-        }
-
-        public string ProfileText
-        {
-            get => m_ProfileText;
-            set => SetClassProperty(ref m_ProfileText, value);
         }
 
         public string FromLocation
@@ -124,8 +117,6 @@ namespace GetSanger.ViewModels
             try
             {
                 IsDeliveryCategory = Job.Category.Equals(eCategory.Delivery);
-                ProfileText ??= string.Format(@"Go to {0}'s profile", Job.ClientName);
-
                 if (Job.FromLocation != null)
                 {
                     Placemark myPlace = await sr_LocationService.GetPickedLocation(Job.FromLocation);

@@ -35,7 +35,8 @@
                 </StackLayout.GestureRecognizers>
                 <Label Text="{Binding Text}" 
                        BackgroundColor="Transparent"
-                       HorizontalOptions="FillAndExpand">
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
                 </Label>
             </StackLayout>
         </Frame>

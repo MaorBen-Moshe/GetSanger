@@ -76,7 +76,7 @@ namespace GetSanger.Droid.Renderers
                 }
                 else
                 {
-                    this.Control.Background = originalBackground;
+                    Control.Background = originalBackground;
                 }
             }
         }

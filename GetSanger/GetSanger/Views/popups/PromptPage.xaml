@@ -40,7 +40,7 @@
                 <controls:EditorWithBorder IsSpellCheckEnabled="True"
                                            IsTextPredictionEnabled="True"
                                            Margin="0"
-                                           MaxLength="100"
+                                           MaxLength="255"
                                            VerticalOptions="FillAndExpand"
                                            HorizontalOptions="FillAndExpand"
                                            x:Name="editor">
