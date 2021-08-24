@@ -37,7 +37,8 @@
                       Grid.RowSpan="1" 
                       Margin="0, 10, 0, 0">
             <Frame BackgroundColor="White"
-                   Padding="1"
+                   Padding="10"
+                   
                    Margin="20, 10, 20, 10"
                    HasShadow="True">
                 <StackLayout>

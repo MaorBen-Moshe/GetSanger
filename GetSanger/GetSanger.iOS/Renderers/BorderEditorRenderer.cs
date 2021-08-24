@@ -9,7 +9,7 @@ using Xamarin.Forms.Platform.iOS;
 [assembly: ExportRenderer(typeof(EditorWithBorder), typeof(BorderEditorRenderer))]
 namespace GetSanger.iOS.Renderers
 {
-    public class BorderEditorRenderer : EditorRenderer
+    public class BorderEditorRenderer : CustomEditorRenderer
     {
         public EditorWithBorder ElementV2 => Element as EditorWithBorder;
 

@@ -38,7 +38,7 @@
                         <Label FontSize="Subtitle"
                                FontAttributes="Italic"
                                HorizontalTextAlignment="Center"
-                               Text="{Binding ProfileText}"
+                               Text="{Binding Job.ClientName, StringFormat='{0}\'s Profile'}"
                                TextColor="Blue"
                                TextDecorations="Underline"
                                Padding="10"

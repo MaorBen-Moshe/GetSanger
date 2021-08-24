@@ -143,7 +143,7 @@
                                 IsTextPredictionEnabled="True"
                                 Placeholder="Job Description"
                                 VerticalOptions="FillAndExpand"
-                            Margin="5,5,5,20"
+                                Margin="5,5,5,20"
                                 MaxLength="255"
                                 HeightRequest="180"
                                 Text="{Binding NewJobOffer.Description}"

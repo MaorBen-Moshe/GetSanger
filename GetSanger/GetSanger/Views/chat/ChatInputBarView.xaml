@@ -6,6 +6,7 @@
     <ContentView.Content>
         <Grid RowSpacing="0" 
               ColumnSpacing="0"
+              Margin="0,0,0,10"
               x:Name="grid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -14,32 +15,27 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Frame Grid.Row="0" 
-                   Grid.Column="0"
-                   IsClippedToBounds="True"
-                   Margin="10,0,10,10"
-                   Padding="10,5"
-                   CornerRadius="30"
-                   BackgroundColor="{AppThemeBinding Dark=Black, Light=WhiteSmoke}"
-                   BorderColor="Black"
-                   IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}">
-                <controls:ExtendedEditorControl x:Name="chatTextInput" 
-                          Text="{Binding TextToSend}" 
-                          Margin="1"  
-                          TextColor="{AppThemeBinding Dark=White, Light=Black}" 
-                          Keyboard="Chat"  
-                          HorizontalOptions="FillAndExpand" 
-                          PlaceholderColor="{AppThemeBinding Dark=Gray, Light=LightGray}"
-                          Placeholder="Type your message here..."
-                          Grid.Row="0" 
-                          Grid.Column="0"
-                          IsExpandable="True"
-                          IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
-                          Completed="Handle_Completed"/>
-            </Frame>
+            <controls:EditorWithBorder x:Name="chatTextInput" 
+                                           Grid.Row="0" 
+                                           Grid.Column="0"
+                                           Margin="10,0,10,10"
+                                           Text="{Binding TextToSend}" 
+                                           CornerRadius="30"  
+                                           TextColor="{AppThemeBinding Dark=White, Light=Black}" 
+                                           Keyboard="Chat"  
+                                           HorizontalOptions="FillAndExpand" 
+                                           PlaceholderColor="{AppThemeBinding Dark=Gray, Light=LightGray}"
+                                           Placeholder="Type your message here..."
+                                           IsExpandable="True"
+                                           BackgroundColor="{AppThemeBinding Dark=Black, Light=WhiteSmoke}"
+                                           IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
+                                           Completed="Handle_Completed"
+                                           BorderColor="Black"/>
             <Label Text="Send"
+                   FontFamily="{StaticResource OpenSansBold}"
                    Grid.Row="0"
                    Grid.Column="1"
+                   Margin="0,0,0,10"
                    IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
                    BackgroundColor="Transparent"
                    VerticalTextAlignment="Center">

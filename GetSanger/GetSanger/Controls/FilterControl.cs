@@ -13,8 +13,8 @@ namespace GetSanger.Controls
         private StackLayout m_Layout;
         private Label m_FilterLabel;
         private ImageButton m_SortButton;
-        private Picker m_CategoryPicker;
-        private Picker m_StatusPicker;
+        private PickerWithBorder m_CategoryPicker;
+        private PickerWithBorder m_StatusPicker;
         #endregion
 
         #region TimeBindings
@@ -250,9 +250,9 @@ namespace GetSanger.Controls
             setLayout();
         }
 
-        private Picker createPicker(string i_Title)
+        private PickerWithBorder createPicker(string i_Title)
         {
-            return new Picker
+            return new PickerWithBorder
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -261,14 +261,14 @@ namespace GetSanger.Controls
             };
         }
 
-        private void setPickerBindings(Picker i_Picker, string i_Source, string i_Index, ICommand i_Command)
+        private void setPickerBindings(PickerWithBorder i_Picker, string i_Source, string i_Index, ICommand i_Command)
         {
             i_Picker.SetBinding(Picker.ItemsSourceProperty, new Binding(i_Source, source:this));
             i_Picker.SetBinding(Picker.SelectedIndexProperty, new Binding(i_Index, source: this));
             setCommand(i_Picker, i_Command);
         }
 
-        private void setCommand(Picker i_Picker, ICommand i_Command)
+        private void setCommand(PickerWithBorder i_Picker, ICommand i_Command)
         {
             i_Picker.Behaviors.Clear();
             i_Picker.Behaviors.Add(new EventToCommandBehavior

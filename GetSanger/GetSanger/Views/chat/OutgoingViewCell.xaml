@@ -14,20 +14,22 @@
 
         </Label>
         <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ChatOutgoingBackgroundColorDark}, Light={StaticResource ChatOutgoingBackgroundColorLight}}"
-            Rotation="180"
-            FlowDirection="LeftToRight"
-            Padding="10"
-            HasShadow="false"
-            Margin="80,10,10,10"
-            IsClippedToBounds="True"
-            CornerRadius="30"
-            BorderColor="Black"
-            effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
-            effects:LongPressedEffect.CommandParameter="{Binding .}">
+               Rotation="180"
+               FlowDirection="LeftToRight"
+               Padding="10"
+               HasShadow="false"
+               Margin="80,10,10,10"
+               IsClippedToBounds="True"
+               CornerRadius="30"
+               HorizontalOptions="Center"
+               BorderColor="Black"
+               effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
+               effects:LongPressedEffect.CommandParameter="{Binding .}">
             <Frame.Effects>
                 <effects:LongPressedEffect />
             </Frame.Effects>
-            <Grid BackgroundColor="Transparent">
+            <Grid BackgroundColor="Transparent"
+                  VerticalOptions="FillAndExpand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
@@ -39,16 +41,18 @@
                 </Grid.GestureRecognizers>
 
                 <Label Text="{Binding Text}"
-                   BackgroundColor="Transparent"
-                   HorizontalOptions="Start"
-                   Grid.Column="0"/>
+                       BackgroundColor="Transparent"
+                       HorizontalOptions="Start"
+                       Grid.Column="0"
+                       VerticalOptions="FillAndExpand"/>
                 <Label Text="!"
-                   TextColor="Red"
-                   BackgroundColor="Transparent"
-                   IsVisible="{Binding MessageSent, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
-                   Grid.Column="1"
-                   HorizontalOptions="End"
-                   VerticalOptions="End"/>
+                       TextColor="Red"
+                       BackgroundColor="Transparent"
+                       IsVisible="{Binding MessageSent, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
+                       Grid.Column="1"
+                       LineBreakMode="NoWrap"
+                       HorizontalOptions="End"
+                       VerticalOptions="End"/>
             </Grid>
         </Frame>
     </StackLayout>
