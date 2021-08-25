@@ -7,7 +7,9 @@
     <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
     <Color x:Key="ClientButtonColor">#91abfa</Color>
     <Color x:Key="SangerButtonColor">#7bcc54</Color>
-
+    <Color x:Key="DarkBackground">#3d3d3d</Color>
+    
+    
     <Color x:Key="ColorsGray">Gray</Color>
     <Color x:Key="ColorsTransparent">Transparent</Color>
 
@@ -15,8 +17,8 @@
     <Color x:Key="LabelTextColorLight">#000000</Color>
     <Color x:Key="LabelBackgroundColorDark">#00000000</Color>
     <Color x:Key="LabelBackgroundColorLight">#00FFFFFF</Color>
-    <Color x:Key="StackLayoutBackgroundColorDark">#3d3d3d</Color>
-    <Color x:Key="StackLayoutBackgroundColorLight">White</Color>
+    <Color x:Key="StackLayoutBackgroundColorDark">Transparent</Color>
+    <Color x:Key="StackLayoutBackgroundColorLight">Transparent</Color>
     <Color x:Key="FrameBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FrameBackgroundColorLight">White</Color>
     <Color x:Key="ListViewBackgroundColorDark">#3d3d3d</Color>
@@ -47,8 +49,8 @@
     <Color x:Key="TabBarBackgroundColorLight">White</Color>
     <Color x:Key="TabBarForegroundColorLight">Gray</Color>
     <Color x:Key="TabBarForegroundColorDark">Gray</Color>
-    <Color x:Key="TabBarTitleColorDark">#910000</Color>
-    <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>
+    <!--<Color x:Key="TabBarTitleColorDark">#910000</Color>
+    <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>-->
     <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
     <Color x:Key="TabBarUnselectedColorLight">Black</Color>
     <Color x:Key="EditorBackgroundColorDark">#3d3d3d</Color>
@@ -81,7 +83,24 @@
     <Color x:Key="EntryPlaceholderColorLight">Gray</Color>
     <Color x:Key="EditorPlaceholderColorDark">Gray</Color>
     <Color x:Key="EditorPlaceholderColorLight">Gray</Color>
-
+    
+    
+    <LinearGradientBrush x:Key="GradientDark" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#242424" Offset="0.1"/>
+        <GradientStop Color="Black" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GradientLight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="White" Offset="0.1"/>
+        <GradientStop Color="#81aef7" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ButtonGradientDark" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#002857" Offset="0.1"/>
+        <GradientStop Color="#00142b" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ButtonGradientLight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="White" Offset="0.1"/>
+        <GradientStop Color="#c9c9c9" Offset="1.0"/>
+    </LinearGradientBrush>
 
     <!--fonts here-->
     <OnPlatform x:TypeArguments="x:String" x:Key="MontserratBold">
@@ -136,7 +155,7 @@
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"/>
         <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"/>
-        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>
+        <!--<Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>-->
     </Style>
     <Style TargetType="TabBar">
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
@@ -162,7 +181,7 @@
         <Setter Property="BorderColor" Value="Black"/>
         <Setter Property="TextTransform" Value="None" />
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratSemiBold}"/>
-        
+        <Setter Property="Background" Value="{AppThemeBinding Dark={StaticResource ButtonGradientDark}, Light={StaticResource ButtonGradientLight}}"/>
     </Style>
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource LabelTextColorDark}, Light={StaticResource LabelTextColorLight}}"/>
@@ -206,8 +225,9 @@
     <Style TargetType="TableView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TableViewBackgroundColorDark}, Light={StaticResource TableViewBackgroundColorLight}}"/>
     </Style>
-    <Style TargetType="ContentPage">
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ContentPageBackgroundColorDark},Light={StaticResource ContentPageBackgroundColorLight}}"/>
+        <Setter Property="Background" Value="{AppThemeBinding Dark={StaticResource GradientDark}, Light={StaticResource GradientLight}}"/>
     </Style>
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
@@ -230,4 +250,11 @@
     <Style TargetType="controls:EditorWithBorder">
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
+    <Style TargetType="ScrollView">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+    </Style>
+    <Style x:Key="StackLayoutGradient" TargetType="StackLayout" BasedOn="StackLayout">
+        <Setter Property="Background" Value="{AppThemeBinding Dark={StaticResource GradientDark}, Light={StaticResource GradientLight}}"/>
+    </Style>
+
 </ResourceDictionary>
