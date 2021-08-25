@@ -18,7 +18,7 @@
     <Color x:Key="LabelBackgroundColorDark">#00000000</Color>
     <Color x:Key="LabelBackgroundColorLight">#00FFFFFF</Color>
     <Color x:Key="StackLayoutBackgroundColorDark">Transparent</Color>
-    <Color x:Key="StackLayoutBackgroundColorLight">White</Color>
+    <Color x:Key="StackLayoutBackgroundColorLight">Transparent</Color>
     <Color x:Key="FrameBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FrameBackgroundColorLight">White</Color>
     <Color x:Key="ListViewBackgroundColorDark">#3d3d3d</Color>
