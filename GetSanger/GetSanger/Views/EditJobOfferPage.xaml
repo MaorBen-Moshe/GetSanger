@@ -39,7 +39,9 @@
             <StackLayout HorizontalOptions="FillAndExpand"
                          VerticalOptions="FillAndExpand"
                          x:Name="mainStack">
-                <Frame Margin="10">
+                <controls:FrameWithShadow Margin="10" 
+                                          BackgroundColor="White"
+                                          CornerRadius="3">
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="Creating New Offer" 
                                FontSize="Title"
@@ -56,7 +58,7 @@
                                HorizontalTextAlignment="Center"
                                Text="Please fill all the fields in the form to ensure that you will find the right sanger."></Label>
                     </StackLayout>
-                </Frame>
+                </controls:FrameWithShadow>
                 <StackLayout Orientation="Vertical"
                              Margin="10, 5, 10,0"
                              Spacing="0"

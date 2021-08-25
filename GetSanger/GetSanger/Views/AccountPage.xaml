@@ -20,8 +20,8 @@
                     <controls:RoundedImage ImageSource="{Binding UserImage}"
                                        Radius="100"/>
                     <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat ='Hello, {0}'}"
-                       FontSize="Title" 
-                       FontAttributes="Italic"/>
+                           FontSize="Title"   
+                           FontAttributes="Italic, Bold"/>
                 </StackLayout>
                 <Frame Padding="20"
                    HorizontalOptions="Center">

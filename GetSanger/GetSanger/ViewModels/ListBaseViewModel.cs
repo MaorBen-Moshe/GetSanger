@@ -108,7 +108,7 @@ namespace GetSanger.ViewModels
         public ListBaseViewModel()
         {
             SelectedItem = null;
-            CategoriesFilterList = typeof(eCategory).GetListOfEnumNames().ToList();
+            CategoriesFilterList = typeof(eCategory).GetListOfEnumNames().Select(item => item.Replace("_", " ")).ToList();
             setFilterIndices();
         }
         #endregion

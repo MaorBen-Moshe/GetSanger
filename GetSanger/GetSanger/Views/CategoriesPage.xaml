@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:converters="clr-namespace:GetSanger.Converters"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.CategoriesPage"
              Shell.NavBarIsVisible="False">
 
@@ -27,6 +28,7 @@
                     <Label Margin="0, 10, 0, 0" 
                            HorizontalTextAlignment="Center" 
                            Text="Pick Job Category"
+                           FontFamily="{StaticResource MontserratBold}"
                            FontAttributes="Bold, Italic"  
                            FontSize="Title"
                            HorizontalOptions="CenterAndExpand" />
@@ -50,11 +52,10 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="1"
-                               IsClippedToBounds="True"
-                               CornerRadius="3"
-                               BackgroundColor="Transparent"
-                               BorderColor="DarkGray">
+                        <controls:FrameWithShadow Padding="1"
+                                                  IsClippedToBounds="True"
+                                                  CornerRadius="10"
+                                                  BackgroundColor="Gray">
                             <StackLayout Orientation="Vertical"
                                          HorizontalOptions="FillAndExpand"
                                          VerticalOptions="FillAndExpand"
@@ -72,7 +73,7 @@
                                        HorizontalOptions="CenterAndExpand"
                                        FontFamily="{StaticResource MontserratSemiBold}"/>
                             </StackLayout>
-                        </Frame>
+                        </controls:FrameWithShadow>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
