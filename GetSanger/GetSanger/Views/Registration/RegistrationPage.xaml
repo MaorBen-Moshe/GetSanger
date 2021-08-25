@@ -29,112 +29,114 @@
                    VerticalOptions="CenterAndExpand"/>
         </StackLayout>
     </Shell.TitleView>
-
-    <StackLayout>
-        <StackLayout  VerticalOptions="Center" 
-                      Padding="5, 0, 5, 0" 
-                      Grid.Row="0" 
-                      Grid.RowSpan="1" 
-                      Margin="0, 10, 0, 0">
-            <Frame BackgroundColor="White"
-                   Padding="10"
+    <ScrollView>
+        <StackLayout>
+            <StackLayout  VerticalOptions="Center" 
+                          Padding="5, 0, 5, 0" 
+                          Grid.Row="0" 
+                          Grid.RowSpan="1" 
+                          Margin="0, 10, 0, 0">
+                <Frame BackgroundColor="White"
+                       Padding="10"
                    
-                   Margin="20, 10, 20, 10"
-                   HasShadow="True">
-                <StackLayout>
-                    <Label Text="Get Sanger" 
-                           FontSize="30"
-                           FontFamily="{StaticResource Key=CaveatBold}"
-                           HorizontalOptions="Center"/>
-                    <Label Text="Be the best Sanger you can!"
-                           FontSize="Medium"
-                           FontFamily="{StaticResource Key=MontserratSemiBold}"
-                           HorizontalOptions="Center" />
-                    <Label Text="Treat the sangers well!" 
-                           FontSize="Small"
-                           FontFamily="{StaticResource Key=MontserratLight}"
-                           HorizontalOptions="Center" 
-                           Margin="0,0,0,10"/>
-                </StackLayout>
-            </Frame>
-            <Frame BorderColor="Transparent">
-                <StackLayout Spacing="20">
-                    <controls:EntryWithBorder Keyboard="Email" 
-                                              Placeholder="Email" 
-                                              Text="{Binding Email, Mode=TwoWay}" x:Name="EmailEntry" />
-                    <controls:VisibiltyPasswordControl PasswordText="{Binding Password, Mode=TwoWay}" 
-                                                       PasswordPlaceHolder="Password"
-                                                       x:Name="PasswordControl"/>
-                </StackLayout>
-            </Frame>
-            <Label Text="Forgot password?" 
-                   FontAttributes="Italic"
-                   TextDecorations="Underline"
-                   FontFamily="{StaticResource Key=MontserratLight}"
-                   CharacterSpacing="1"
-                   BackgroundColor="Transparent" 
-                   Margin="0,0,20,0"
-                   VerticalOptions="EndAndExpand"
-                   HorizontalOptions="EndAndExpand"
-                   FontSize="Small">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"
-                                      CommandParameter="{Binding Email}"/>
-                </Label.GestureRecognizers>
-            </Label>
+                       Margin="20, 10, 20, 10"
+                       HasShadow="True">
+                    <StackLayout>
+                        <Label Text="Get Sanger" 
+                               FontSize="30"
+                               FontFamily="{StaticResource Key=CaveatBold}"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Be the best Sanger you can!"
+                               FontSize="Medium"
+                               FontFamily="{StaticResource Key=MontserratSemiBold}"
+                               HorizontalOptions="Center" />
+                        <Label Text="Treat the sangers well!" 
+                               FontSize="Small"
+                               FontFamily="{StaticResource Key=MontserratLight}"
+                               HorizontalOptions="Center" 
+                               Margin="0,0,0,10"/>
+                    </StackLayout>
+                </Frame>
+                <Frame BorderColor="Transparent">
+                    <StackLayout Spacing="20">
+                        <controls:EntryWithBorder Keyboard="Email" 
+                                                  Placeholder="Email" 
+                                                  Text="{Binding Email, Mode=TwoWay}" x:Name="EmailEntry" />
+                        <controls:VisibiltyPasswordControl PasswordText="{Binding Password, Mode=TwoWay}" 
+                                                           PasswordPlaceHolder="Password"
+                                                           x:Name="PasswordControl"/>
+                    </StackLayout>
+                </Frame>
+                <Label Text="Forgot password?" 
+                       FontAttributes="Italic"
+                       TextDecorations="Underline"
+                       FontFamily="{StaticResource Key=MontserratLight}"
+                       CharacterSpacing="1"
+                       BackgroundColor="Transparent" 
+                       Margin="0,0,20,0"
+                       VerticalOptions="EndAndExpand"
+                       HorizontalOptions="EndAndExpand"
+                       FontSize="Small">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"
+                                          CommandParameter="{Binding Email}"/>
+                    </Label.GestureRecognizers>
+                </Label>
 
-            <Button Text="Login" Margin="20" CornerRadius="20"
-                    Command="{Binding LoginCommand}" IsEnabled="{Binding IsEnabledsendBtn}">
-                <Button.Triggers>
-                    <MultiTrigger TargetType="Button">
-                        <MultiTrigger.Conditions>
+                <Button Text="Login" Margin="20" CornerRadius="20"
+                        Command="{Binding LoginCommand}" IsEnabled="{Binding IsEnabledsendBtn}">
+                    <Button.Triggers>
+                        <MultiTrigger TargetType="Button">
+                            <MultiTrigger.Conditions>
 
-                            <BindingCondition Binding="{Binding Source = {x:Reference EmailEntry}, 
-                                Path = Text, Converter={StaticResource EmailEntryToBoolConverter}}" Value="True"/>
+                                <BindingCondition Binding="{Binding Source = {x:Reference EmailEntry}, 
+                                    Path = Text, Converter={StaticResource EmailEntryToBoolConverter}}" Value="True"/>
 
-                            <BindingCondition Binding="{Binding Source = {x:Reference PasswordControl}, 
-                                Path = PasswordEntry.Text, Converter={StaticResource PasswordEntryToBoolConverter}}" Value="True"/>
+                                <BindingCondition Binding="{Binding Source = {x:Reference PasswordControl}, 
+                                    Path = PasswordEntry.Text, Converter={StaticResource PasswordEntryToBoolConverter}}" Value="True"/>
 
-                        </MultiTrigger.Conditions>
-                        <Setter Property="IsEnabled" Value="True"/>
-                    </MultiTrigger>
-                </Button.Triggers>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </MultiTrigger>
+                    </Button.Triggers>
 
-            </Button>
+                </Button>
 
 
-            <BoxView HeightRequest="1" 
-                     Color="Gray" 
-                     IsVisible="true" />
+                <BoxView HeightRequest="1" 
+                         Color="Gray" 
+                         IsVisible="true" />
 
-        </StackLayout>
-        <StackLayout Grid.Row="3" Orientation="Horizontal"
-                     Margin="0,10,0,0"
-                     HorizontalOptions="CenterAndExpand">
+            </StackLayout>
+            <StackLayout Grid.Row="3" Orientation="Horizontal"
+                         Margin="0,10,0,0"
+                         HorizontalOptions="CenterAndExpand">
             
-            <controls:SocialButton Text="Facebook"
-                    Image="facebookIcon.png"
-                    Command="{Binding SocialLoginCommand}"
-                    CommandParameter="Facebook" />
-            <controls:SocialButton Text="Google" 
-                    Image= "googleIcon.png"
-                    Command="{Binding SocialLoginCommand}"
-                    CommandParameter="Google"/>
-            <controls:SocialButton Text="Apple" 
-                    Image= "appleIcon.png"
-                    Command="{Binding SocialLoginCommand}"
-                    CommandParameter="Apple"/>
-        </StackLayout>
+                <controls:SocialButton Text="Facebook"
+                        Image="facebookIcon.png"
+                        Command="{Binding SocialLoginCommand}"
+                        CommandParameter="Facebook" />
+                <controls:SocialButton Text="Google" 
+                        Image= "googleIcon.png"
+                        Command="{Binding SocialLoginCommand}"
+                        CommandParameter="Google"/>
+                <controls:SocialButton Text="Apple" 
+                        Image= "appleIcon.png"
+                        Command="{Binding SocialLoginCommand}"
+                        CommandParameter="Apple"/>
+            </StackLayout>
 
 
-        <StackLayout VerticalOptions="EndAndExpand" 
-                     Padding="5" 
-                     Grid.Row="3">
-            <Button Text="Sign up" 
-                    VerticalOptions="EndAndExpand"
-                    CornerRadius="20"
-                    Command="{Binding SignUpCommand}"
-                    Margin="10"/>
+            <StackLayout VerticalOptions="EndAndExpand" 
+                         Padding="5" 
+                         Grid.Row="3">
+                <Button Text="Sign up" 
+                        VerticalOptions="EndAndExpand"
+                        CornerRadius="20"
+                        Command="{Binding SignUpCommand}"
+                        Margin="10"/>
+            </StackLayout>
+        
         </StackLayout>
-    </StackLayout>
+    </ScrollView>
 </ContentPage>
