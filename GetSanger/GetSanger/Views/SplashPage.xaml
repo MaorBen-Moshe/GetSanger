@@ -13,7 +13,7 @@
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand"
                      BackgroundColor="Transparent">
-            <Image Source="getSangerIconHD.png"
+            <Image Source="getSangerIconTransparent.png"
                    WidthRequest="150"
                    HeightRequest="150"
                    BackgroundColor="Transparent">

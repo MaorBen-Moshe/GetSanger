@@ -93,8 +93,8 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
-                if(SelectedStatusFilterIndex == 0) // all status
+                eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex].Trim().Replace(" ", "_"));
+                if (SelectedStatusFilterIndex == 0) // all status
                 {
                     filterByCategory(activity => activity.JobDetails.Category.Equals(category));
                 }

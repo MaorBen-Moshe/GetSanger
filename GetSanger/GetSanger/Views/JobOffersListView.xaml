@@ -89,7 +89,8 @@
                                                FontAttributes="Bold" 
                                                HorizontalOptions="CenterAndExpand"
                                                VerticalOptions="Start"
-                                               BackgroundColor="Transparent"/>
+                                               BackgroundColor="Transparent"
+                                               FontFamily="{StaticResource MontserratSemiBold}"/>
                                         <Label Text="{Binding Description}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
@@ -101,7 +102,7 @@
                                                VerticalOptions="Start"/>
 
                                         <Button Text="Confirm"
-                                                    FontSize="12"
+                                                    FontSize="Small"
                                                     FontAttributes="Bold"
                                                     BackgroundColor="Transparent"
                                                     IsVisible ="{Binding IsSangerMode, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}}" 
@@ -112,7 +113,7 @@
                                         <Button Text="Delete"
                                                     TextColor="Red"
                                                     BorderColor="Transparent"
-                                                    FontSize="12"
+                                                    FontSize="Small"
                                                     BackgroundColor="Transparent"
                                                     IsVisible ="{Binding IsSangerMode, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}, Converter={StaticResource InverseBoolConverter}}" 
                                                     Command="{Binding DeleteMyJobOfferCommand, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}}" 

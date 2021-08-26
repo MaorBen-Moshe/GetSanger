@@ -1,13 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                    xmlns:controls="clr-namespace:GetSanger.Controls"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:controls="clr-namespace:GetSanger.Controls;assembly=GetSanger"
+                    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
              >
     <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
     <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
     <Color x:Key="ClientButtonColor">#91abfa</Color>
     <Color x:Key="SangerButtonColor">#7bcc54</Color>
-
+    <Color x:Key="DarkBackground">#3d3d3d</Color>
+    
+    
     <Color x:Key="ColorsGray">Gray</Color>
     <Color x:Key="ColorsTransparent">Transparent</Color>
 
@@ -15,14 +18,14 @@
     <Color x:Key="LabelTextColorLight">#000000</Color>
     <Color x:Key="LabelBackgroundColorDark">#00000000</Color>
     <Color x:Key="LabelBackgroundColorLight">#00FFFFFF</Color>
-    <Color x:Key="StackLayoutBackgroundColorDark">#3d3d3d</Color>
-    <Color x:Key="StackLayoutBackgroundColorLight">White</Color>
+    <Color x:Key="StackLayoutBackgroundColorDark">Transparent</Color>
+    <Color x:Key="StackLayoutBackgroundColorLight">Transparent</Color>
     <Color x:Key="FrameBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FrameBackgroundColorLight">White</Color>
     <Color x:Key="ListViewBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="ListViewBackgroundColorLight">White</Color>
     <Color x:Key="ButtonBackgroundColorDark">#3d4aA3</Color>
-    <Color x:Key="ButtonBackgroundColorLight">#91abfa</Color>
+    <Color x:Key="ButtonBackgroundColorLight">WhiteSmoke</Color>
     <Color x:Key="ButtonTextColorDark">White</Color>
     <Color x:Key="ButtonTextColorLight">#000000</Color>
     <Color x:Key="EntryTextColorDark">White</Color>
@@ -32,7 +35,7 @@
     <Color x:Key="FrameBorderColorDark">#000000</Color>
     <Color x:Key="FrameBorderColorLight">#000000</Color>
     <Color x:Key="FramBackgroundColorDark">#3d3d3d</Color>
-    <Color x:Key="FramBackgroundColorLight">White</Color>
+    <Color x:Key="FramBackgroundColorLight">WhiteSmoke</Color>
     <Color x:Key="GridBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="GridBackgroundColorLight">White</Color>
     <Color x:Key="ShellBackgroundColorDark">Black</Color>
@@ -47,8 +50,8 @@
     <Color x:Key="TabBarBackgroundColorLight">White</Color>
     <Color x:Key="TabBarForegroundColorLight">Gray</Color>
     <Color x:Key="TabBarForegroundColorDark">Gray</Color>
-    <Color x:Key="TabBarTitleColorDark">#910000</Color>
-    <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>
+    <!--<Color x:Key="TabBarTitleColorDark">#910000</Color>
+    <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>-->
     <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
     <Color x:Key="TabBarUnselectedColorLight">Black</Color>
     <Color x:Key="EditorBackgroundColorDark">#3d3d3d</Color>
@@ -77,8 +80,73 @@
     <Color x:Key="TimePickerTextColorLight">Black</Color>
     <Color x:Key="EntryBorderColorDark">White</Color>
     <Color x:Key="EntryBorderColorLight">Black</Color>
+    <Color x:Key="EntryPlaceholderColorDark">Gray</Color>
+    <Color x:Key="EntryPlaceholderColorLight">Gray</Color>
+    <Color x:Key="EditorPlaceholderColorDark">Gray</Color>
+    <Color x:Key="EditorPlaceholderColorLight">Gray</Color>
+    
+    
+    <LinearGradientBrush x:Key="GradientDark" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#242424" Offset="0.1"/>
+        <GradientStop Color="Black" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GradientLight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="White" Offset="0.1"/>
+        <GradientStop Color="#81aef7" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ButtonGradientDark" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#002857" Offset="0.1"/>
+        <GradientStop Color="#00142b" Offset="1.0"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ButtonGradientLight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="White" Offset="0.1"/>
+        <GradientStop Color="#c9c9c9" Offset="1.0"/>
+    </LinearGradientBrush>
 
+    <!--fonts here-->
+    <OnPlatform x:TypeArguments="x:String" x:Key="MontserratBold">
+        <On Platform="Android" Value="Montserrat-Bold.ttf#Montserrat" />
+        <On Platform="iOS" Value="Montserrat-Bold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="MontserratSemiBold">
+        <On Platform="Android" Value="Montserrat-SemiBoldItalic.ttf#Montserrat" />
+        <On Platform="iOS" Value="Montserrat-SemiBoldItalic" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="MontserratLight">
+        <On Platform="Android" Value="Montserrat-LightItalic.ttf#Montserrat" />
+        <On Platform="iOS" Value="Montserrat-LightItalic" />
+    </OnPlatform>
 
+    <OnPlatform x:TypeArguments="x:String" x:Key="CaveatBold">
+        <On Platform="Android" Value="Caveat-Bold.ttf#Caveat" />
+        <On Platform="iOS" Value="Caveat-Bold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="CaveatSemiBold">
+        <On Platform="Android" Value="Caveat-SemiBold.ttf#Caveat" />
+        <On Platform="iOS" Value="Caveat-SemiBold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="CaveatRegular">
+        <On Platform="Android" Value="Caveat-Regular.ttf#Caveat" />
+        <On Platform="iOS" Value="Caveat-Regular" />
+    </OnPlatform>
+
+    <OnPlatform x:TypeArguments="x:String" x:Key="OpenSansBold">
+        <On Platform="Android" Value="OpenSans-Bold.ttf#Open Sans" />
+        <On Platform="iOS" Value="OpenSans-Bold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="OpenSansSemiBoldItalic">
+        <On Platform="Android" Value="OpenSans-SemiBoldItalic.ttf#Open Sans" />
+        <On Platform="iOS" Value="OpenSans-SemiBoldItalic" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="OpenSansSemiBold">
+        <On Platform="Android" Value="OpenSans-SemiBold.ttf#Open Sans" />
+        <On Platform="iOS" Value="OpenSans-SemiBold" />
+    </OnPlatform>
+    <OnPlatform x:TypeArguments="x:String" x:Key="OpenSansLight">
+        <On Platform="Android" Value="OpenSans-LightItalic.ttf#Open Sans" />
+        <On Platform="iOS" Value="OpenSans-LightItalic" />
+    </OnPlatform>
+    
     <Style TargetType="Shell">
         <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}" />
         <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"/>
@@ -88,13 +156,12 @@
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"/>
         <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"/>
-        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>
+        <!--<Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>-->
     </Style>
     <Style TargetType="TabBar">
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"/>
         <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"/>
-        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>
     </Style>
     <Style TargetType="NavigationPage" ApplyToDerivedTypes="true">
         <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
@@ -106,26 +173,30 @@
     <Style TargetType="Button">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource ButtonTextColorDark}, Light={StaticResource ButtonTextColorLight}}" />
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundColorDark}, Light={StaticResource ButtonBackgroundColorLight}}" />
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontSize" Value="Medium"/>
         <Setter Property="Margin" Value="1,1,1,0"/>
-        <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Padding" Value="5"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Padding" Value="10, 5" />
         <Setter Property="BorderWidth" Value="1"/>
         <Setter Property="BorderColor" Value="Black"/>
+        <Setter Property="TextTransform" Value="None" />
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratSemiBold}"/>
+        <Setter Property="Background" Value="{AppThemeBinding Dark={StaticResource ButtonGradientDark}, Light={StaticResource ButtonGradientLight}}"/>
     </Style>
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource LabelTextColorDark}, Light={StaticResource LabelTextColorLight}}"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource LabelBackgroundColorDark}, Light={StaticResource LabelBackgroundColorLight}}" />
-        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="FontSize" Value="Medium"/>
         <Setter Property="Padding" Value="5"/>
         <Setter Property="LineBreakMode" Value="TailTruncation" />
         <Setter Property="MaxLines" Value="7" />
-
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="Entry">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EntryBackgroundColorDark}, Light={StaticResource EntryBackgroundColorLight}}" />
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontSize" Value="Medium"/>
         <Setter Property="Margin" Value="1,1,1,0"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="Grid">
         <Setter Property="VerticalOptions" Value ="Center"/>
@@ -148,24 +219,40 @@
     </Style>
     <Style TargetType="Editor">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EditorBackgroundColorDark}, Light={StaticResource EditorBackgroundColorLight}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EditorPlaceholderColorDark}, Light={StaticResource EditorPlaceholderColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="TableView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource TableViewBackgroundColorDark}, Light={StaticResource TableViewBackgroundColorLight}}"/>
     </Style>
-    <Style TargetType="ContentPage">
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ContentPageBackgroundColorDark},Light={StaticResource ContentPageBackgroundColorLight}}"/>
+        <Setter Property="Background" Value="{AppThemeBinding Dark={StaticResource GradientDark}, Light={StaticResource GradientLight}}"/>
     </Style>
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="TimePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TimePickerTextColorDark}, Light={StaticResource TimePickerTextColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="controls:EntryWithBorder">
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource EntryBorderColorDark}, Light={StaticResource EntryBorderColorLight}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EntryPlaceholderColorDark}, Light={StaticResource EntryPlaceholderColorLight}}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
+    <Style TargetType="controls:EditorWithBorder">
+        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
+    </Style>
+    <Style TargetType="ScrollView">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+    </Style>
+
+
 </ResourceDictionary>

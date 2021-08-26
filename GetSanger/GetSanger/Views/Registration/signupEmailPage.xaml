@@ -32,7 +32,7 @@
         <StackLayout VerticalOptions="Center" Padding="5" Margin="10" Spacing="10">
             <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 0, 0, 10">
                 <Label Text="Sign Up" FontSize="Title" HorizontalOptions="CenterAndExpand"/>
-                <Label Text="Create an account to start doing more" HorizontalOptions="CenterAndExpand" FontSize="14"/>
+                <Label Text="Create an account to start doing more" HorizontalOptions="CenterAndExpand" FontSize="Small"/>
             </StackLayout>
             <controls:EntryWithBorder Placeholder="Email" Keyboard="Email" Text="{Binding CreatedUser.Email}" CornerRadius="20" x:Name="EmailEntry" />
             <controls:VisibiltyPasswordControl PasswordPlaceHolder="Password" CornerRadius="20"

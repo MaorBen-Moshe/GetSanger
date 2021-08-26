@@ -25,7 +25,7 @@
                    HorizontalTextAlignment="Center" 
                    Text="Choose Categories:" 
                    
-                   FontSize="21"
+                   FontSize="Large"
                    TextColor="Black"
                    HorizontalOptions="CenterAndExpand" />
 
@@ -41,7 +41,7 @@
                           BackgroundColor="Transparent"
                           HasUnevenRows="True"
                           SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
-                          
+
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -50,7 +50,7 @@
                                         <StackLayout WidthRequest="327" Orientation="Horizontal" Spacing="5">
                                             <Label HeightRequest="40" 
                                                    WidthRequest="120" 
-                                                   FontSize="20" Margin="22,0,0,0" 
+                                                   FontSize="Large" Margin="22,0,0,0" 
                                                    Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray" 
                                                    VerticalOptions="CenterAndExpand" 
                                                    HorizontalOptions="StartAndExpand" />
@@ -87,57 +87,4 @@
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
-
-
-    <!--<ContentPage.Content>
-        <StackLayout HorizontalOptions="Center"
-                     VerticalOptions="Center"
-                     Padding="5">
-            <Grid HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-                <ListView Grid.Row="1"
-                          Grid.Column="1"
-                          HasUnevenRows="true"
-                          ItemsSource="{Binding CategoriesItems}">
-                    <ListView.Header>
-                        <Label Text="Choose Categories:" />
-                    </ListView.Header>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="10">
-                                    <Label Text="{Binding}" HorizontalOptions="StartAndExpand"/>
-                                    <CheckBox>
-                                        <CheckBox.Behaviors>
-                                            <behaviors:EventToCommandBehavior Command="{Binding CategoryCheckedCommand}"
-                                                                              CommandParameter="{x:StaticResource CheckBoxConverter}"
-                                                                              EventName="CheckedChanged"/>
-                                        </CheckBox.Behaviors>
-                                    </CheckBox>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-            <StackLayout HorizontalOptions="Center" 
-                         VerticalOptions="Center" 
-                         Margin="10">
-                <Button Text="Continue" 
-                        Padding="5"
-                        HeightRequest="55" 
-                        WidthRequest="90"
-                        Command="{Binding CategoriesPartCommand}"/>
-            </StackLayout>
-        </StackLayout>
-
-    </ContentPage.Content>-->
 </ContentPage>

@@ -22,8 +22,11 @@
 
 
     <Shell.TitleView>
-        <StackLayout Orientation="Horizontal" BackgroundColor="Transparent">
+        <StackLayout Orientation="Horizontal" 
+                     HorizontalOptions="FillAndExpand"
+                     BackgroundColor="Transparent">
             <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Start"
                          IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Transparent">
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ClickProfileBarCommand}"/>
@@ -40,22 +43,23 @@
                    HorizontalOptions="StartAndExpand" 
                    Margin="5,10,0,10"/>
             </StackLayout>
-            <ImageButton Source="whatsapp.png"
-                         BackgroundColor="Transparent" 
+            <StackLayout Orientation="Horizontal"
                          HorizontalOptions="EndAndExpand"
+                         BackgroundColor="Transparent"
+                         Spacing="15">
+                <ImageButton Source="whatsapp.png"
+                         BackgroundColor="Transparent" 
                          WidthRequest="20"
                          HeightRequest="20"
-                         Margin="90, 0, 0, 0"
                          IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                          Command="{Binding SendWhatsappCommand}"/>
-            <ImageButton Source="phone.png"
+                <ImageButton Source="phone.png"
                          BackgroundColor="Transparent" 
-                         HorizontalOptions="EndAndExpand"
                          WidthRequest="20"
                          HeightRequest="20"
-                         Margin="0,0,0,0"
                          IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                          Command="{Binding CallCommand}"/>
+            </StackLayout>
         </StackLayout>
     </Shell.TitleView>
 
@@ -75,7 +79,7 @@
                  ItemAppearingCommand="{Binding MessageAppearingCommand}"
                  ItemDisappearingCommand="{Binding MessageDisappearingCommand}"  
                  ItemTapped="OnListTapped"
-                 Margin="0" 
+                 Margin="0"                 
                  Rotation="180" 
                  FlowDirection="RightToLeft"
                  HasUnevenRows="True" 
@@ -84,7 +88,7 @@
                  x:Name="ChatList">
             </controls:ExtendedListView>
             <Frame HorizontalOptions="EndAndExpand" 
-                                 Margin="0,0,2,15"
+                                 Margin="0,0,7,15"
                                  VerticalOptions="End"
                                  HasShadow="false" 
                                  Grid.Row="0"  
@@ -93,10 +97,12 @@
                                  Padding="1"
                                  BackgroundColor="Transparent"   
                                  IsVisible="{Binding ShowScrollTap,Mode=TwoWay}">
-                <StackLayout Spacing="3">
+                <StackLayout Spacing="3" 
+                             
+                             BackgroundColor="Transparent">
                     <Label Text="{Binding PendingMessageCount, Mode=TwoWay}"
                            HorizontalOptions="CenterAndExpand"
-                           FontSize="10"
+                           FontSize="Caption"
                            IsVisible="{Binding PendingMessageCountVisible}"
                            VerticalTextAlignment="Center"
                            TextColor="Red"

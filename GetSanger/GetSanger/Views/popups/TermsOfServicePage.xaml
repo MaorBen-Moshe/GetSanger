@@ -30,7 +30,7 @@
                 </Label.GestureRecognizers>
             </Label>
             <Label Text="Empty !"
-                   FontSize="20"
+                   FontSize="Large"
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"

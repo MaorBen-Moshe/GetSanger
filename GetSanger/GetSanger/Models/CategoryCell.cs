@@ -2,14 +2,13 @@
 
 namespace GetSanger.Models
 {
-    public enum eCategory { All, Delivery, Errands, House_Devices, Studies, Computers_And_Smartphones, Cleaning, Handiman, Electrician, Gardening, Pets, Vehicle, Beauty }; // all categories are here
+    public enum eCategory { All, Delivery, Errands, House_Devices, Studies, Computers_And_Smartphones, Cleaning, Handiman, Electrician, Gardening, Pets, Vehicle, Beauty, Miscellaneous }; // all categories are here
 
     public class CategoryCell : PropertySetter
     {
         #region Fields
         private eCategory m_category;
         private bool m_Checked;
-        private string m_CategoryString;
         #endregion
 
         public string CategoryString
@@ -56,6 +55,7 @@ namespace GetSanger.Models
                 eCategory.Pets => "IconPets.png",
                 eCategory.Studies => "IconStudies.png",
                 eCategory.Vehicle => "IconVehicles.png",
+                eCategory.Miscellaneous => "IconMiscellaneous.png",
                 eCategory.All => "",
                 _ => "",
             };

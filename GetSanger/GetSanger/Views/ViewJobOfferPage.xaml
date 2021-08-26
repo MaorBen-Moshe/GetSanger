@@ -3,9 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:GetSanger.Converters"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
-             xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.ViewJobOfferPage"             
-             Title="{Binding Job.Title}"
              Shell.TabBarIsVisible="False">
 
     <ContentPage.BindingContext>
@@ -17,120 +16,146 @@
         <ResourceDictionary>
             <converters:CategoryToStringConverter x:Key="CategoryToStringConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
-            <x:String x:Key="formattimewithoutseconds">{0:h:mm tt}</x:String>
-            <x:String x:Key="formatdatetimewithoutseconds">{0:d/M/yy h:mm tt}</x:String>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout Spacing="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="1*" />
-                </Grid.RowDefinitions>
-                
-                <Label Text="{Binding Job.Title}"
-                       FontSize="Title"
-                       VerticalOptions="StartAndExpand"
-                       HorizontalOptions="CenterAndExpand"
-                       Padding="4"
-                       Grid.Row="0"
-                       Grid.Column="0"
-                       />
-                <Label Text="{Binding ProfileText}"
-                       TextColor="Blue"
-                       TextDecorations="Underline"
-                       Padding="10"
-                       Margin="10"
-                       BackgroundColor="{AppThemeBinding Dark=Gray, Light=Transparent}"
-                       HorizontalOptions="CenterAndExpand"
-                       IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
-                       IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
-                       Grid.Row="1"
-                       Grid.Column="0">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <StackLayout Grid.Row="0" Grid.Column="1" Spacing="0">
-                    <Label Text="Category:" FontSize="13"/>
-                    <Label Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
-                       IsEnabled="False"
-                       FontSize="13"/>
-                </StackLayout>
-            </Grid>
-            <Label Text="{Binding FromLocation, Mode=OneWay, StringFormat=' From:&#x0a; {0}'}"
-                   Margin="5"
-                   IsVisible="{Binding IsDeliveryCategory}"
-                   BackgroundColor="Transparent"
-                   FontSize="14" Padding="0"
-                   />
-            <Label Text="{Binding DestinationLocation,Mode=OneWay, StringFormat=' Destination:&#x0a; {0}'}"
-                   Margin="5"
-                   BackgroundColor="Transparent"
-                   FontSize="14" Padding="0"/>
-            <Frame Padding="0">
-                <Grid Margin="5" Padding="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="3*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Text="Phone number:" Grid.Row="0" Grid.Column="0" FontSize="17"/>
-                    <Label Text="{Binding Job.ClientPhoneNumber}"
-                           x:Name="Phone" Margin="15"
-                           Grid.Row="0" Grid.Column="1" FontSize="17" Padding="0"/>
-                </Grid>
-            </Frame>
-            <Frame Padding="0">
-                <Grid Margin="5" Padding="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Text="Job date:" Padding="10" Grid.Column="0" FontSize="17"/>
-                    <StackLayout Orientation="Horizontal" 
-                             Spacing="20"
-                             Grid.Column="1"
-                             >
-                        <Label Text="{Binding Job.Date, StringFormat={StaticResource formatdatetimewithoutseconds}}"
-                           Margin="10" FontSize="17"/>
+        <ScrollView Padding="0">
+            <StackLayout HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand"
+                         x:Name="mainStack">
+                <Frame Margin="10">
+                    <StackLayout BackgroundColor="Transparent">
+                        <Label Text="{Binding Job.Title}" 
+                               FontSize="Title"
+                               FontAttributes="Italic"
+                               HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
+                               TextColor="Red"
+                               FontSize="Large"
+                               HorizontalTextAlignment="Center"
+                               Padding="0"/>
+                        <Label FontSize="Subtitle"
+                               FontAttributes="Italic"
+                               HorizontalTextAlignment="Center"
+                               Text="{Binding Job.ClientName, StringFormat='{0}\'s Profile'}"
+                               TextColor="Blue"
+                               TextDecorations="Underline"
+                               Padding="10"
+                               Margin="10"
+                               BackgroundColor="{AppThemeBinding Dark=Gray, Light=Transparent}"
+                               HorizontalOptions="CenterAndExpand"
+                               IsVisible="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}"
+                               IsEnabled="{Binding IsMyjobOffer, Converter={StaticResource InverseBoolConverter}}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Button Text="Confirm"
+                                FontSize="Small"
+                                FontAttributes="Bold"
+                                IsVisible="{Binding IsSangerMode}"
+                                BackgroundColor="Transparent"
+                                Command="{Binding ConfirmJobOfferCommand}" 
+                                HorizontalOptions="CenterAndExpand"/>
+                        <Button Text="Delete"
+                                TextColor="Red"
+                                IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}"
+                                FontSize="Small"
+                                BackgroundColor="Transparent"
+                                Command="{Binding DeleteMyJobOfferCommand}"
+                                HorizontalOptions="CenterAndExpand"/>
                     </StackLayout>
-                </Grid>
-            </Frame>
-            <Frame
-                   VerticalOptions="FillAndExpand"
-                   HasShadow="True">
-                <Editor IsSpellCheckEnabled="True"
-                            IsTextPredictionEnabled="True"
-                            Placeholder="Job Description"
-                            VerticalOptions="FillAndExpand"
-                            Text="{Binding Job.Description}"
-                            IsEnabled="False">
-                </Editor>
-            </Frame>
+                </Frame>
 
-            <Button Text="Confirm"
-                        FontSize="12"
-                        FontAttributes="Bold"
-                        IsVisible="{Binding IsSangerMode}"
-                        BackgroundColor="Transparent"
-                        Command="{Binding ConfirmJobOfferCommand}" 
-                        BorderColor="Transparent"
-                        HorizontalOptions="CenterAndExpand"/>
-            <Button Text="Delete"
-                        TextColor="Red"
-                        BorderColor="Transparent"
-                        IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}"
-                        FontSize="12"
-                        BackgroundColor="Transparent"
-                        Command="{Binding DeleteMyJobOfferCommand}"
-                        HorizontalOptions="CenterAndExpand"/>
+                <StackLayout BackgroundColor="Transparent"
+                             Margin="10, 5, 10, 0"
+                             Spacing="0"
+                             VerticalOptions="Start"
+                             x:Name="fromStack"
+                             IsVisible="{Binding IsDeliveryCategory}">
+                    <Label Text="From: "
+                                BackgroundColor="Transparent"
+                                FontSize="Small"/>
+                    <controls:EntryWithBorder Text="{Binding FromLocation, Mode=OneWay}"
+                                              FontSize="Small"
+                                              IsReadOnly="True"
+                                              Placeholder="source">
+                    </controls:EntryWithBorder>
 
-        </StackLayout>
+                </StackLayout>
+
+                <StackLayout BackgroundColor="Transparent"
+                             VerticalOptions="Start"
+                             Margin="10, 5, 10, 0"
+                             Spacing="0">
+                    <Label Text="Destination: "
+                                BackgroundColor="Transparent"
+                                FontSize="Small"/>
+                    <controls:EntryWithBorder Text="{Binding DestinationLocation, Mode=OneWay}"
+                                              FontSize="Small"
+                                              IsReadOnly="True"
+                                              Placeholder="destination">
+                    </controls:EntryWithBorder>
+
+                </StackLayout>
+
+                <StackLayout BackgroundColor="Transparent"
+                             VerticalOptions="Start"
+                             Margin="10, 5, 10, 0"
+                             Spacing="0">
+                    <Label Text="Client Phone: "
+                                BackgroundColor="Transparent"
+                                FontSize="Small"/>
+                    <controls:EntryWithBorder Text="{Binding Job.ClientPhoneNumber, Mode=OneWay}"
+                                              FontSize="Small"
+                                              IsReadOnly="True"
+                                              Placeholder="phone">
+                    </controls:EntryWithBorder>
+
+                </StackLayout>
+
+                <StackLayout BackgroundColor="Transparent"
+                         VerticalOptions="Start"
+                         Margin="10, 5, 10, 0"
+                             Spacing="0">
+                    <Label Text="Date and Time:"
+                       BackgroundColor="Transparent"
+                       FontSize="Small"/>
+                    <StackLayout Orientation="Horizontal">
+                        <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
+                                                       Date="{Binding Job.Date}"
+                                                       IsEnabled="False"
+                                                       HorizontalOptions="FillAndExpand"
+                                                       Visual="Material"
+                                                       />
+                        <controls:TimePickerWithBorder Time="{Binding Job.Time}"
+                                                       IsEnabled="False"
+                                                       HorizontalOptions="End"/>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout BackgroundColor="Transparent"
+                         VerticalOptions="Start"
+                         Margin="10, 5, 10, 0"
+                         Spacing="0">
+                    <Label Text="Description:"
+                       BackgroundColor="Transparent"
+                       FontSize="Small"/>
+                    <controls:EditorWithBorder 
+                                IsSpellCheckEnabled="True"
+                                IsTextPredictionEnabled="True"
+                                Placeholder="Job Description"
+                                VerticalOptions="FillAndExpand"
+                                MaxLength="255"
+                                IsReadOnly="True"
+                                HeightRequest="180"
+                                Text="{Binding Job.Description}"
+                                PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
+                    </controls:EditorWithBorder>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
 
     </ContentPage.Content>
 </ContentPage>
