@@ -116,7 +116,7 @@ namespace GetSanger.Controls
             SwitchCell current = sender as SwitchCell;
             CategoryCell newCell = new CategoryCell
             {
-                Category = (eCategory)Enum.Parse(typeof(eCategory), current.Text),
+                Category = (eCategory)Enum.Parse(typeof(eCategory), current.Text.Trim().Replace(" ", "_")),
                 Checked = current.On
             };
 

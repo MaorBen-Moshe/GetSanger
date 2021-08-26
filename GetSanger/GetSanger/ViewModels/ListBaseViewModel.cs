@@ -147,7 +147,7 @@ namespace GetSanger.ViewModels
 
         protected void filterByCategory(Predicate<T> predicate)
         {
-            eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
+            eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex].Trim().Replace(" ", "_"));
             if (category.Equals(eCategory.All))
             {
                 FilteredCollection = new ObservableCollection<T>(AllCollection);

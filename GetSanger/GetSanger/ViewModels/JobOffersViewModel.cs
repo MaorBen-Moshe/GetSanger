@@ -68,14 +68,13 @@ namespace GetSanger.ViewModels
             ConfirmJobOfferCommand = new Command(confirmJobOffer);
             SelectedJobOfferCommand = new Command(selectedJobOffer);
             DeleteMyJobOfferCommand = new Command(deleteMyJobOfferCommand);
-            FilterSelectedCommand = new Command(filterSelected);
         }
 
         protected async override void filterSelected(object i_Param)
         {
             try
             {
-                eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex]);
+                eCategory category = (eCategory)Enum.Parse(typeof(eCategory), CategoriesFilterList[SelectedCategoryFilterIndex].Trim().Replace(" ", "_"));
                 filterByCategory(job => job.Category.Equals(category));
                 sortByTime(job => job.Date);
                 IsVisibleViewList = FilteredCollection.Count > 0;
