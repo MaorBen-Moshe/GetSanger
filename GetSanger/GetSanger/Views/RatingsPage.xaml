@@ -6,7 +6,8 @@
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converters="clr-namespace:GetSanger.Converters"
              x:Class="GetSanger.Views.RatingsPage"
-             Shell.TabBarIsVisible="False">
+             Shell.TabBarIsVisible="False"
+             Background="{StaticResource GradientDark}">
 
     <ContentPage.BindingContext>
         <vm:RatingsViewModel />
