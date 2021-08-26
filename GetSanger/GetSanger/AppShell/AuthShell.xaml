@@ -13,7 +13,7 @@
              TabBarBackgroundColor="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}"
              TabBarForegroundColor="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"
              TabBarUnselectedColor="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"
-             TabBarTitleColor="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}">
+             >
 
     <TabBar>
         <ShellContent ContentTemplate="{DataTemplate Page:RegistrationPage}"></ShellContent>
