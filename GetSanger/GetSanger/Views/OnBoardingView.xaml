@@ -36,32 +36,20 @@
                         <StackLayout HorizontalOptions="Center"
                                      VerticalOptions="Center"
                                      Margin="50">
-                            <Frame HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="CenterAndExpand"
-                                   Margin="0, 0"
-                                   BackgroundColor="Transparent"
-                                   CornerRadius="70"
-                                   HeightRequest="140"
-                                   WidthRequest="140"
-                                   IsClippedToBounds="True"
-                                   BorderColor="Transparent"
-                                   HasShadow="False"
-                                   Padding="0">
-                                <Image Source="getSangerIconTransparent.png"
+                            <Image Source="getSangerIconTransparent.png"
                                        WidthRequest="140"
                                        HeightRequest="140"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center"
-                                       Aspect="AspectFill"
-                                       />
-                            </Frame>
-                            <controls:FrameWithShadow HorizontalOptions="CenterAndExpand"
-                                                      VerticalOptions="CenterAndExpand"
-                                                      BackgroundColor="LightGray"
-                                                      BorderColor="White"
-                                                      HasShadow="True"
-                                                      Margin="10"
-                                                      Padding="10">
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="CenterAndExpand"
+                                       Aspect="AspectFill"/>
+                            
+                            <Frame HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand"
+                                   Background ="{AppThemeBinding Dark={StaticResource ButtonGradientDark}, Light={StaticResource ButtonGradientLight}}"
+                                   BorderColor="White"
+                                   HasShadow="True"
+                                   Margin="10"
+                                   Padding="10">
                                 <StackLayout HorizontalOptions="FillAndExpand"
                                              VerticalOptions="FillAndExpand"
                                              BackgroundColor="Transparent">
@@ -83,7 +71,6 @@
                                             IsVisible="{Binding IsLast}"
                                             HorizontalOptions="CenterAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            BorderColor="LightGray"
                                             BorderWidth="1"
                                             TextColor="Black"
                                             Command="{Binding StartCommand, Source={RelativeSource AncestorType={x:Type vm:OnBoardingViewModel}}}"
@@ -101,7 +88,7 @@
                                         </Label.GestureRecognizers>
                                     </Label>
                                 </StackLayout>
-                            </controls:FrameWithShadow>
+                            </Frame>
                         </StackLayout>
                         
                     </DataTemplate>
