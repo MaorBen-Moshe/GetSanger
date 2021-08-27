@@ -12,16 +12,15 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
-            MainPage = new OnBoardingView();
-            //VersionTracking.Track();
-            //if (VersionTracking.IsFirstLaunchEver)
-            //{
-            //    MainPage = new OnBoardingView();
-            //}
-            //else
-            //{
-            //    MainPage = new SplashPage();
-            //}
+            VersionTracking.Track();
+            if (VersionTracking.IsFirstLaunchEver)
+            {
+                MainPage = new OnBoardingView();
+            }
+            else
+            {
+                MainPage = new SplashPage();
+            }
         }
 
         protected override void OnStart()
