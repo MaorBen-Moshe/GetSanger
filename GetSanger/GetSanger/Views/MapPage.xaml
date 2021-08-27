@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:GetSanger.Controls"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:behaviors="clr-namespace:GetSanger.Behaviors"
              xmlns:converter="clr-namespace:GetSanger.Converters"
@@ -38,7 +39,7 @@
                 </controls:BindableMap.Behaviors>
             </controls:BindableMap>
 
-            <Frame BackgroundColor="Transparent"
+            <Frame
                BorderColor="Gray"
                HeightRequest="20"
                WidthRequest="300"
@@ -54,51 +55,46 @@
                    SearchCommand="{Binding SearchCommand}"
                    SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
             </Frame>
-
-            <StackLayout Orientation="Horizontal"
-                         VerticalOptions="EndAndExpand"
-                         HorizontalOptions="CenterAndExpand"
-                         Margin="0, 0, 0, 120"
-                         IsVisible="{Binding IsTrip}"
-                         Padding="10">
+            <StackLayout VerticalOptions="EndAndExpand"
+                         HorizontalOptions="CenterAndExpand">
                 
-                <Button Text="Call Sanger" 
-                    BackgroundColor="Transparent"
-                    CornerRadius="20"
-                    Padding="10"
-                    Command="{Binding CallTripCommand}"/>
+                <StackLayout Orientation="Horizontal"
+                             VerticalOptions="StartAndExpand"
+                             HorizontalOptions="CenterAndExpand"
+                             Padding="10"
+                             IsVisible="{Binding IsTrip}">
 
-                <Button Text="Focus Sanger" 
-                    BackgroundColor="Transparent"
-                    CornerRadius="20"
-                    Padding="10"
-                    Command="{Binding FocusSangerLocationCommand}"/>
+                    <Button Text="Call Sanger" 
+                            Padding="10"
+                            Command="{Binding CallTripCommand}"/>
+
+                    <Button Text="Focus Sanger" 
+                            Padding="10"
+                            Command="{Binding FocusSangerLocationCommand}"/>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="End"
+                         HorizontalOptions="CenterAndExpand"
+                         Orientation="Horizontal">
+                    <Button Text="Focus" 
+                        Margin="10"
+                        Command="{Binding FocusMyLocationCommand}"/>
+                    <Frame VerticalOptions="EndAndExpand"
+                                      HorizontalOptions="CenterAndExpand"
+                                      HasShadow="True"
+                                      Padding="10,5"
+                                      Margin="10">
+                        <Label Text="Exit" 
+                           TextColor="Red"
+                           FontSize="Large"
+                           BackgroundColor="Transparent">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExitCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Frame>
+                </StackLayout>
             </StackLayout>
-
-            <Button Text="Focus" 
-                    BackgroundColor="Transparent"
-                    VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
-                    CornerRadius="20"
-                    Padding="10, 10"
-                    Margin="70"
-                    Command="{Binding FocusMyLocationCommand}"/>
-            <Frame BackgroundColor="Transparent"
-                   VerticalOptions="EndAndExpand"
-                   HorizontalOptions="CenterAndExpand"
-                   HasShadow="True"
-                   Padding="10,5"
-                   Margin="10">
-
-                <Label Text="Exit" 
-                       TextColor="Red"
-                       FontSize="Large"
-                       BackgroundColor="Transparent">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ExitCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>
-            </Frame>
 
         </Grid>
     </ContentPage.Content>

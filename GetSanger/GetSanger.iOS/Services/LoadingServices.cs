@@ -12,9 +12,8 @@ namespace GetSanger.iOS.Services
     {
         private UIView _nativeView;
         private bool _isInitialized = false;
-        private bool _isLoading = false;
 
-        public bool IsLoading => _isLoading;
+        public bool IsLoading { get; private set; } = false;
 
         public void InitLoadingPage(ContentPage i_Page = null)
         {
@@ -38,24 +37,24 @@ namespace GetSanger.iOS.Services
         public void ShowLoadingPage()
         {
             // check if the user has set the page or not
-            if(_isLoading == false)
+            if(IsLoading == false)
             {
                 if (!_isInitialized)
                     InitLoadingPage(new LoadingPage()); // set the default page
 
                 // showing the native loading page
                 UIApplication.SharedApplication.KeyWindow.AddSubview(_nativeView);
-                _isLoading = true;
+                IsLoading = true;
             }
         }
 
         public void HideLoadingPage()
         {
-            if (_isInitialized && _isLoading)
+            if (_isInitialized && IsLoading)
             {
                 // Hide the page
                 _nativeView.RemoveFromSuperview();
-                _isLoading = false;
+                IsLoading = false;
                 _isInitialized = false;
             }
         }

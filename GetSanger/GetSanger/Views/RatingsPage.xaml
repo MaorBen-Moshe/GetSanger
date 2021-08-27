@@ -38,17 +38,16 @@
     </Shell.SearchHandler>
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <controls:FilterControl HorizontalOptions="FillAndExpand"
+        <StackLayout>
+            <controls:FilterControl HorizontalOptions="FillAndExpand"
                                         IsVisible="{Binding IsVisibleViewList}"
                                         VerticalOptions="Start"
                                         Margin="10"
                                         TimeSortFlag="{Binding TimeSortFlag}"
                                         TimeSortCommand="{Binding SortCommand}" 
                                         BackgroundColor="{AppThemeBinding Dark={StaticResource FilterBackgroundColorDark}, Light={StaticResource FilterBackgroundColorLight}}"/>
-               
-                <ListView x:Name="m_ListView" 
+
+            <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding FilteredCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                           IsRefreshing="{Binding IsListRefreshing}"
@@ -57,52 +56,51 @@
                           RefreshCommand="{Binding RefreshingCommand}"
                           SeparatorVisibility="None"
                           HasUnevenRows="true">
-                    <ListView.Behaviors>
-                        <behaviors:EventToCommandBehavior Command="{Binding SelectedRatingCommand}" 
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior Command="{Binding SelectedRatingCommand}" 
                                                           EventName="ItemSelected"
                                                           Converter="{StaticResource SelectedItemConverter}"/>
-                    </ListView.Behaviors>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame BorderColor="DarkSlateGray" 
-                                       BackgroundColor="Transparent"
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame
+                                       BorderColor="DarkSlateGray" 
                                        Padding="0"
                                        Margin="10">
-                                    <StackLayout Orientation="Horizontal"
+                                <StackLayout Orientation="Horizontal"
                                                  Padding="20"
                                                  VerticalOptions="StartAndExpand">
-                                        <StackLayout HorizontalOptions="StartAndExpand"
+                                    <StackLayout HorizontalOptions="StartAndExpand"
                                                      Spacing="5">
-                                            <Label Text="{Binding RatingWriterName}" 
+                                        <Label Text="{Binding RatingWriterName}" 
                                                FontAttributes="Bold" 
                                                BackgroundColor="Transparent" 
                                                
                                                HorizontalOptions="Start"/>
-                                            <Label Text="{Binding Description}" />
-                                        </StackLayout>
-                                        <StackLayout HorizontalOptions="EndAndExpand"
+                                        <Label Text="{Binding Description}" />
+                                    </StackLayout>
+                                    <StackLayout HorizontalOptions="EndAndExpand"
                                                      Spacing="5">
-                                            <controls:RatingStars Rating="{Binding Score}" 
+                                        <controls:RatingStars Rating="{Binding Score}" 
                                                               Review=""
                                                               BackgroundColor="Transparent" 
                                                               VerticalOptions="Start"
                                                               Margin="5"/>
-                                            <Label Text="{Binding TimeAdded, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                                        <Label Text="{Binding TimeAdded, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
                                                    VerticalOptions="End"/>
-                                        </StackLayout>
                                     </StackLayout>
-                                </Frame>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-                <controls:NoItemsInListTemplate Text="{Binding NoItemsText}" 
+            <controls:NoItemsInListTemplate Text="{Binding NoItemsText}" 
                                                 TextColor="{Binding NoItemsTextColor}"
                                                 RefreshListCommand="{Binding RefreshingCommand}"
                                                 IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
-            </StackLayout>
-        </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

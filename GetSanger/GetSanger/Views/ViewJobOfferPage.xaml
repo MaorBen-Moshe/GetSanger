@@ -56,14 +56,12 @@
                                 FontSize="Small"
                                 FontAttributes="Bold"
                                 IsVisible="{Binding IsSangerMode}"
-                                BackgroundColor="Transparent"
                                 Command="{Binding ConfirmJobOfferCommand}" 
                                 HorizontalOptions="CenterAndExpand"/>
                         <Button Text="Delete"
                                 TextColor="Red"
                                 IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}"
                                 FontSize="Small"
-                                BackgroundColor="Transparent"
                                 Command="{Binding DeleteMyJobOfferCommand}"
                                 HorizontalOptions="CenterAndExpand"/>
                     </StackLayout>
@@ -127,11 +125,13 @@
                         <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
                                                        Date="{Binding Job.Date}"
                                                        IsEnabled="False"
+                                                       BorderColor="Black"
                                                        HorizontalOptions="FillAndExpand"
                                                        Visual="Material"
                                                        />
                         <controls:TimePickerWithBorder Time="{Binding Job.Time}"
                                                        IsEnabled="False"
+                                                       BorderColor="Black"
                                                        HorizontalOptions="End"/>
                     </StackLayout>
                 </StackLayout>
@@ -142,7 +142,7 @@
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
                        FontSize="Small"/>
-                    <controls:EditorWithBorder 
+                    <controls:EditorWithBorder BorderColor="Black"
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="Job Description"

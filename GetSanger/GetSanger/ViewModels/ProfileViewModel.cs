@@ -234,7 +234,7 @@ namespace GetSanger.ViewModels
         {
             try
             {
-                await PopupNavigation.Instance.PushAsync(new EditorPopup(CurrentUser.PersonalDetails.About, "user has not fill a description"));
+                await PopupNavigation.Instance.PushAsync(new EditorPopup(CurrentUser.PersonalDetails.About ?? "user has not fill a description", $"About {CurrentUser.PersonalDetails.NickName}"));
             }
             catch (Exception e)
             {

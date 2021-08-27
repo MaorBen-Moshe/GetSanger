@@ -22,8 +22,8 @@
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Spacing="0">
             <Frame Padding="5"
-                   CornerRadius="15"
-                   Margin="10">
+                                       CornerRadius="15"
+                                       Margin="10">
                 <StackLayout>
                     <Label Margin="0, 10, 0, 0" 
                            HorizontalTextAlignment="Center" 
@@ -52,10 +52,10 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <controls:FrameWithShadow Padding="1"
-                                                  IsClippedToBounds="True"
-                                                  CornerRadius="10"
-                                                  BackgroundColor="Gray">
+                        <Frame Padding="1"
+                               IsClippedToBounds="True"
+                               HasShadow="True"
+                               CornerRadius="10">
                             <StackLayout Orientation="Vertical"
                                          HorizontalOptions="FillAndExpand"
                                          VerticalOptions="FillAndExpand"
@@ -68,12 +68,12 @@
                                 <Label Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}"
                                        FontSize="Small"
                                        FontAttributes="Italic"
-                                       CharacterSpacing="1"
+                                       CharacterSpacing="2"
                                        HorizontalTextAlignment="Center"
                                        HorizontalOptions="CenterAndExpand"
                                        FontFamily="{StaticResource MontserratSemiBold}"/>
                             </StackLayout>
-                        </controls:FrameWithShadow>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

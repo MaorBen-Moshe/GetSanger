@@ -30,7 +30,7 @@
                                HorizontalTextAlignment="Center"
                                FontFamily="{StaticResource MontserratSemiBold}"/>
 
-                        <StackLayout Orientation="Horizontal">
+                        <StackLayout Orientation="Vertical">
                             <StackLayout Orientation="Horizontal"
                                      HorizontalOptions="CenterAndExpand">
                                 <Ellipse Fill="{Binding ConnectedActivity.Status, Converter={StaticResource StatusToColorConverter}}"
@@ -42,18 +42,14 @@
                                    FontSize="Medium"
                                    FontAttributes="Italic"></Label>
                             </StackLayout>
-                            <StackLayout Orientation="Horizontal"
-                                     HorizontalOptions="CenterAndExpand">
-                                <Ellipse Fill="Gray"
-                                         WidthRequest="22"
-                                         HeightRequest="22"
-                                         Margin="5"/>
-
-                                <Label Text="{Binding ConnectedActivity.JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
-                                   FontSize="Medium"
-                                   FontAttributes="Italic"/>
-                            </StackLayout>
                         </StackLayout>
+
+
+                        <Label Text="{Binding ConnectedActivity.JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay, StringFormat='Category: {0}'}" 
+                               FontSize="Medium"
+                               HorizontalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               FontAttributes="Italic"/>
 
                         <Label FontSize="Large"
                                FontAttributes="Italic"
@@ -92,9 +88,9 @@
                     </StackLayout>
                 </Frame>
 
-                <Frame HorizontalOptions="FillAndExpand"
-                       Margin="10,5,10,10"
-                       Padding="20">
+                <Frame HorizontalOptions="FillAndExpand"      
+                                          Margin="10,5,10,10"
+                                          Padding="20">
                     <StackLayout Spacing="10"
                                  x:Name="locationStack">
                         <Label Text="Job Details:" 
@@ -143,12 +139,14 @@
                                 <controls:DatePickerWithBorder Format="dd MMMMM yyyy" 
                                                        Date="{Binding ConnectedActivity.JobDetails.Date}"
                                                        IsEnabled="False"
+                                                               BorderColor="Black"
                                                        HorizontalOptions="FillAndExpand"
                                                        Visual="Material"
                                                        />
                                 <controls:TimePickerWithBorder Time="{Binding ConnectedActivity.JobDetails.Time}"
                                                                Format="HH:mm tt"
                                                                IsEnabled="False"
+                                                               BorderColor="Black"
                                                                HorizontalOptions="End"/>
                             </StackLayout>
                         </StackLayout>

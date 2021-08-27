@@ -46,9 +46,8 @@
     </Shell.SearchHandler>
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <controls:FilterControl HorizontalOptions="FillAndExpand"
+        <StackLayout>
+            <controls:FilterControl HorizontalOptions="FillAndExpand"
                                         VerticalOptions="Start"
                                         Margin="10"
                                         IsVisible="{Binding IsVisibleViewList}"
@@ -63,8 +62,8 @@
                                         StatusFilterSource="{Binding StatusFilterList}"
                                         StatusFilterCommand="{Binding FilterSelectedCommand}"
                                         BackgroundColor="{AppThemeBinding Dark={StaticResource FilterBackgroundColorDark}, Light={StaticResource FilterBackgroundColorLight}}"/>
-                
-                <ListView x:Name="m_ListView" 
+
+            <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding FilteredCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                           IsRefreshing="{Binding IsListRefreshing}"
@@ -73,65 +72,64 @@
                           RefreshCommand="{Binding RefreshingCommand}"
                           SeparatorVisibility="None"
                           HasUnevenRows="True">
-                    <ListView.Behaviors>
-                        <behaviors:EventToCommandBehavior Command="{Binding SelectedActivityCommand}" 
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior Command="{Binding SelectedActivityCommand}" 
                                                           EventName="ItemSelected"
                                                           Converter="{StaticResource SelectedItemConverter}"/>
-                    </ListView.Behaviors>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame Padding="0"
-                                       Margin="10">
-                                    <StackLayout Padding="15">
-                                        <StackLayout Orientation="Horizontal"
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Margin="10">
+                                <StackLayout Padding="15">
+                                    <StackLayout Orientation="Horizontal"
                                                      HorizontalOptions="FillAndExpand"
                                                      VerticalOptions="Start" >
-                                            <StackLayout Orientation="Horizontal"
+                                        <StackLayout Orientation="Horizontal"
                                                          HorizontalOptions="FillAndExpand"
                                                          VerticalOptions="Start">
-                                                <Ellipse Fill="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                            <Ellipse Fill="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
                                                          WidthRequest="22"
                                                          HeightRequest="22"
                                                          HorizontalOptions="Start"
                                                          Margin="5"
                                                          VerticalOptions="Start"/>
 
-                                                <Label Text="{Binding Status}"
+                                            <Label Text="{Binding Status}"
                                                    HorizontalTextAlignment="Start"></Label>
-                                            </StackLayout>
-
                                         </StackLayout>
 
-                                        <Label Text="{Binding JobDetails.Title}" 
+                                    </StackLayout>
+
+                                    <Label Text="{Binding JobDetails.Title}" 
                                                HorizontalOptions="CenterAndExpand"
                                                VerticalOptions="Start"
                                                BackgroundColor="Transparent"
                                                FontFamily="{StaticResource MontserratSemiBold}"/>
-                                        <Label Text="{Binding JobDetails.Description}"
+                                    <Label Text="{Binding JobDetails.Description}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
                                                VerticalOptions="Start"/>
-                                        <Label Text="{Binding SangerName, StringFormat='Sanger Name: {0}'}"
+                                    <Label Text="{Binding SangerName, StringFormat='Sanger Name: {0}'}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Path=IsClientMode}"
                                                VerticalOptions="Start"
                                                FontSize="Small"/>
-                                        <Label Text="{Binding JobDetails.ClientName, StringFormat='Client Name: {0}'}"
+                                    <Label Text="{Binding JobDetails.ClientName, StringFormat='Client Name: {0}'}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Path=IsClientMode, Converter={StaticResource InverseBoolConverter}}"
                                                VerticalOptions="Start"/>
 
-                                        <Label Text="{Binding JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, StringFormat='Category: {0}'}"
+                                    <Label Text="{Binding JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, StringFormat='Category: {0}'}"
                                                        VerticalOptions="Start"
                                                HorizontalTextAlignment="Center"
                                                        HorizontalOptions="CenterAndExpand"></Label>
 
-                                        <StackLayout Orientation="Horizontal"
+                                    <StackLayout Orientation="Horizontal"
                                                      IsVisible="{Binding IsClientMode, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}}">
-                                            <Button Text="Confirm"
+                                        <Button Text="Confirm"
                                                     FontSize="Caption"
                                                     FontAttributes="Bold"
                                                     BackgroundColor="Transparent"
@@ -139,7 +137,7 @@
                                                     CommandParameter="{Binding .}"
                                                     BorderColor="Transparent"
                                                     HorizontalOptions="CenterAndExpand"/>
-                                            <Button Text="Delete"
+                                        <Button Text="Delete"
                                                     TextColor="Red"
                                                     BorderColor="Transparent"
                                                     FontSize="Caption"
@@ -147,9 +145,9 @@
                                                     Command="{Binding RejectActivityCommand, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}}"
                                                     CommandParameter="{Binding .}"
                                                     HorizontalOptions="CenterAndExpand"/>
-                                        </StackLayout>
+                                    </StackLayout>
 
-                                        <Button Text="Delete"
+                                    <Button Text="Delete"
                                                 TextColor="Red"
                                                 BorderColor="Transparent"
                                                 FontSize="Caption"
@@ -158,18 +156,17 @@
                                                 CommandParameter="{Binding .}"
                                                 IsVisible="{Binding IsClientMode, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Converter={StaticResource InverseBoolConverter}}"
                                                 HorizontalOptions="CenterAndExpand"/>
-                                    </StackLayout>
-                                </Frame>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-                <controls:NoItemsInListTemplate Text="{Binding NoItemsText}" 
+            <controls:NoItemsInListTemplate Text="{Binding NoItemsText}" 
                                                 TextColor="{Binding NoItemsTextColor}"
                                                 RefreshListCommand="{Binding RefreshingCommand}"
                                                 IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}" />
-            </StackLayout>
-        </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

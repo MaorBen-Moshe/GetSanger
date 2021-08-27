@@ -42,6 +42,7 @@
                                           Margin="15, 2, 15, 0"
                                           IsVisible="{Binding IsSangerMode}"/>
             <Frame Padding="5"
+                   HasShadow="False"
                    BorderColor="Gray"
                    IsClippedToBounds="True"
                    Margin="10, 5, 10, 20"

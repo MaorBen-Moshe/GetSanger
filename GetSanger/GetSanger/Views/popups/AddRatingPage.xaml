@@ -50,6 +50,7 @@
                 <Label Text="{Binding UserName, StringFormat='Rate {0}'}"
                        Margin="0, 10"
                        FontSize="Title"
+                       FontFamily="{StaticResource OpenSansSemiBoldItalic}"
                        TextTransform="Uppercase"
                        FontAttributes="Italic, Bold" 
                        HorizontalOptions="CenterAndExpand"/>
@@ -65,32 +66,27 @@
                                   Scale="1.8" 
                                   HorizontalOptions="Center"
                                   BackgroundColor="Transparent"/>
-                <Frame VerticalOptions="FillAndExpand"
-                       BackgroundColor="Transparent"
-                       Margin="10"
-                       HasShadow="True">
-                    <Editor IsSpellCheckEnabled="True"
-                            IsTextPredictionEnabled="True"
-                            Placeholder="Add description"
-                            VerticalOptions="FillAndExpand"
-                            MaxLength="255"
-                            HeightRequest="200"
-                            WidthRequest="300"
-                            Text="{Binding NewRating.Description, Mode=TwoWay}" x:Name="EditorDescription">
-                        <Editor.Keyboard>
-                            <Keyboard x:FactoryMethod="Create" >
-                                <x:Arguments>
-                                    <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                                </x:Arguments>
-                            </Keyboard>
-                        </Editor.Keyboard>
-                    </Editor>
-                </Frame>
+                <controls:EditorWithBorder IsSpellCheckEnabled="True"
+                                           IsTextPredictionEnabled="True"
+                                           Placeholder="Add description"
+                                           VerticalOptions="FillAndExpand"
+                                           MaxLength="255"
+                                           Margin="10"
+                                           HeightRequest="300"
+                                           WidthRequest="400"
+                                           Text="{Binding NewRating.Description, Mode=TwoWay}" x:Name="EditorDescription">
+                    <Editor.Keyboard>
+                        <Keyboard x:FactoryMethod="Create" >
+                            <x:Arguments>
+                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                            </x:Arguments>
+                        </Keyboard>
+                    </Editor.Keyboard>
+                </controls:EditorWithBorder>
                 <Button Text="Submit" 
                         Command="{Binding AddRatingCommand}" 
                         IsEnabled="{Binding IsEnabledsendBtn}" 
                         HorizontalOptions="CenterAndExpand"
-                        BackgroundColor="Transparent"
                         Margin="15">
                     <Button.Triggers>
                         <MultiTrigger TargetType="Button">

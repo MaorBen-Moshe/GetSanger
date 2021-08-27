@@ -47,5 +47,11 @@ namespace GetSanger.Controls
         {
             this.ClearButtonVisibility = ClearButtonVisibility.WhileEditing;
         }
+
+        protected override void OnTextChanged(string oldValue, string newValue)
+        {
+            base.OnTextChanged(oldValue, newValue);
+            if (string.IsNullOrWhiteSpace(newValue)) Text = Text?.Trim();
+        }
     }
 }

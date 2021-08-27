@@ -19,13 +19,15 @@
                          HorizontalOptions="CenterAndExpand"
                              BackgroundColor="Transparent">
                     <controls:RoundedImage ImageSource="{Binding UserImage}"
+                                           Margin="0,5,0,0"
                                        Radius="100"/>
                     <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat ='Hello, {0}'}"
                            FontSize="Title"   
+                           FontFamily="{StaticResource OpenSansSemiBoldItalic}"
                            FontAttributes="Italic, Bold"/>
                 </StackLayout>
                 <Frame Padding="20"
-                   HorizontalOptions="Center">
+                       HorizontalOptions="Center">
                     <StackLayout Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="FillAndExpand">

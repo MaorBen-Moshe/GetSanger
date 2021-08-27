@@ -43,9 +43,8 @@
     </Shell.SearchHandler>
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <controls:FilterControl HorizontalOptions="FillAndExpand"
+        <StackLayout>
+            <controls:FilterControl HorizontalOptions="FillAndExpand"
                                         VerticalOptions="Start"
                                         Margin="10"
                                         IsVisible="{Binding IsVisibleViewList}"
@@ -57,7 +56,7 @@
                                         CategoryFilterCommand="{Binding FilterSelectedCommand}" 
                                         BackgroundColor="{AppThemeBinding Dark={StaticResource FilterBackgroundColorDark}, Light={StaticResource FilterBackgroundColorLight}}"/>
 
-                <ListView x:Name="m_ListView" 
+            <ListView x:Name="m_ListView" 
                           ItemsSource="{Binding FilteredCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                           IsRefreshing="{Binding IsListRefreshing}"
@@ -66,43 +65,43 @@
                           RefreshCommand="{Binding RefreshingCommand}"
                           SeparatorVisibility="None"
                           HasUnevenRows="true">
-                    <ListView.Behaviors>
-                        <behaviors:EventToCommandBehavior Command="{Binding SelectedJobOfferCommand}" 
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior Command="{Binding SelectedJobOfferCommand}" 
                                                           EventName="ItemSelected"
                                                           Converter="{StaticResource SelectedItemConverter}"/>
-                    </ListView.Behaviors>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Frame Padding="0"
-                                       Margin="10">
-                                    <StackLayout Padding="20">
-                                        <StackLayout Orientation="Horizontal"
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Padding="0"
+                                                      Margin="10">
+                                <StackLayout Padding="20">
+                                    <StackLayout Orientation="Horizontal"
                                                      HorizontalOptions="StartAndExpand"
                                                      VerticalOptions="StartAndExpand" >
-                                            <Ellipse Fill="Gray"
+                                        <Ellipse Fill="Gray"
                                                      WidthRequest="22"
                                                      HeightRequest="22"
                                                      Margin="5"/>
-                                            <Label Text="{Binding Category, Converter={StaticResource CategoryToStringConverter}}" />
-                                        </StackLayout>
-                                        <Label Text="{Binding Title}" 
+                                        <Label Text="{Binding Category, Converter={StaticResource CategoryToStringConverter}}" />
+                                    </StackLayout>
+                                    <Label Text="{Binding Title}" 
                                                FontAttributes="Bold" 
                                                HorizontalOptions="CenterAndExpand"
                                                VerticalOptions="Start"
                                                BackgroundColor="Transparent"
                                                FontFamily="{StaticResource MontserratSemiBold}"/>
-                                        <Label Text="{Binding Description}"
+                                    <Label Text="{Binding Description}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
                                                VerticalOptions="Start"/>
-                                        <Label Text="{Binding ClientName, StringFormat='Client Name: {0}'}"
+                                    <Label Text="{Binding ClientName, StringFormat='Client Name: {0}'}"
                                                BackgroundColor="Transparent" 
                                                HorizontalOptions="CenterAndExpand"
                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}, Path=IsSangerMode}"
                                                VerticalOptions="Start"/>
 
-                                        <Button Text="Confirm"
+                                    <Button Text="Confirm"
                                                     FontSize="Small"
                                                     FontAttributes="Bold"
                                                     BackgroundColor="Transparent"
@@ -111,7 +110,7 @@
                                                     CommandParameter="{Binding .}"
                                                     BorderColor="Transparent"
                                                     HorizontalOptions="CenterAndExpand"/>
-                                        <Button Text="Delete"
+                                    <Button Text="Delete"
                                                     TextColor="Red"
                                                     BorderColor="Transparent"
                                                     FontSize="Small"
@@ -120,18 +119,17 @@
                                                     Command="{Binding DeleteMyJobOfferCommand, Source={RelativeSource AncestorType={x:Type vm:JobOffersViewModel}}}" 
                                                     CommandParameter="{Binding .}"
                                                     HorizontalOptions="CenterAndExpand"/>
-                                    </StackLayout>
-                                </Frame>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-                <controls:NoItemsInListTemplate Text="{Binding NoItemsText}" 
+            <controls:NoItemsInListTemplate Text="{Binding NoItemsText}" 
                                                 TextColor="{Binding NoItemsTextColor}"
                                                 RefreshListCommand="{Binding RefreshingCommand}"
                                                 IsVisible="{Binding IsVisibleViewList, Converter={StaticResource InverseBoolConverter}}"/>
-            </StackLayout>
-        </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -33,7 +33,7 @@
     <Color x:Key="EntryBackgroundColorDark">#3d4aA3</Color>
     <Color x:Key="EntryBackgroundColorLight">#91abfa</Color>
     <Color x:Key="FrameBorderColorDark">#000000</Color>
-    <Color x:Key="FrameBorderColorLight">#000000</Color>
+    <Color x:Key="FrameBorderColorLight">White</Color>
     <Color x:Key="FramBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FramBackgroundColorLight">WhiteSmoke</Color>
     <Color x:Key="GridBackgroundColorDark">#3d3d3d</Color>

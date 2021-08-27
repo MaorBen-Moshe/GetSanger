@@ -23,7 +23,7 @@
         <Frame HorizontalOptions="FillAndExpand"
                VerticalOptions="FillAndExpand"
                Margin="20, 100"
-               CornerRadius="20"
+               CornerRadius="10"
                Padding="10"
                HasShadow="True">
             <StackLayout Spacing="15">

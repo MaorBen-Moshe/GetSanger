@@ -13,7 +13,7 @@ namespace GetSanger
         {
             InitializeComponent();
             VersionTracking.Track();
-            if(VersionTracking.IsFirstLaunchEver)
+            if (VersionTracking.IsFirstLaunchEver)
             {
                 MainPage = new OnBoardingView();
             }
