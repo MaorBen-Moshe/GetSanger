@@ -34,6 +34,8 @@ namespace GetSanger.ViewModels
 
         #region Command
         public ICommand SendCommand { get; set; }
+
+        public ICommand ExitCommand { get; set; }
         #endregion
 
         #region Methods
@@ -51,6 +53,7 @@ namespace GetSanger.ViewModels
         {
             base.SetCommands();
             SendCommand = new Command(SendClicked);
+            ExitCommand = new Command(async () => await PopupNavigation.Instance.PopAsync());
         }
 
         private async void SendClicked()

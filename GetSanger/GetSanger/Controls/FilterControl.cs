@@ -5,13 +5,13 @@ using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
-    public class FilterControl : Frame
+    public class FilterControl : StackLayout
     {
         #region Fields
         private const string k_Filter = "Filter by:";
         private const string k_PickerEventName = "SelectedIndexChanged";
-        private StackLayout m_Layout;
         private Label m_FilterLabel;
+        private StackLayout m_PickersStack;
         private ImageButton m_SortButton;
         private PickerWithBorder m_CategoryPicker;
         private PickerWithBorder m_StatusPicker;
@@ -217,18 +217,19 @@ namespace GetSanger.Controls
         #region Methods
         private void setView()
         {
-            BorderColor = Color.Red;
-            Padding = 10;
-            m_Layout = new StackLayout
+            Orientation = StackOrientation.Horizontal;
+            Spacing = 2;
+
+            m_PickersStack = new StackLayout
             {
-                Orientation = StackOrientation.Horizontal,
-                Spacing = 5
+                Spacing = 5,
+                Orientation = StackOrientation.Vertical
             };
 
             m_FilterLabel = new Label
             {
                 Text = k_Filter,
-                VerticalOptions = LayoutOptions.CenterAndExpand
+                VerticalOptions = LayoutOptions.Center
             };
 
             m_SortButton = new ImageButton
@@ -257,7 +258,6 @@ namespace GetSanger.Controls
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
                 Title = i_Title,
-                Margin = new Thickness(10, 5)
             };
         }
 
@@ -280,30 +280,26 @@ namespace GetSanger.Controls
 
         private void setLayout()
         {
-            m_Layout.Children.Clear();
-            m_Layout.Children.Add(m_SortButton);
+            Children.Clear();
+            Children.Add(m_SortButton);
 
             if(IsCategoryFilterEnabled || IsStatusFilterEnabled)
             {
-                m_Layout.Children.Add(m_FilterLabel);
+                m_PickersStack.Children.Clear();
+                Children.Add(m_FilterLabel);
                 if (IsCategoryFilterEnabled)
                 {
-                    m_Layout.Children.Add(m_CategoryPicker);
+                    m_PickersStack.Children.Add(m_CategoryPicker);
                 }
 
                 if (IsStatusFilterEnabled)
                 {
-                    m_Layout.Children.Add(m_StatusPicker);
+                    m_PickersStack.Children.Add(m_StatusPicker);
                 }
 
-                BorderColor = Color.Red;
-            }
-            else
-            {
-                BorderColor = Color.Transparent;
-            }
 
-            Content = m_Layout;
+                Children.Add(m_PickersStack);
+            }
         }
 
         #endregion

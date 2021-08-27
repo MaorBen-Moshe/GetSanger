@@ -20,18 +20,41 @@
     </popup:PopupPage.Animation>
 
     <popup:PopupPage.Content>
-        <Frame HorizontalOptions="FillAndExpand"
-               VerticalOptions="FillAndExpand"
-               Margin="20, 160"
-               CornerRadius="15"
-               Padding="0"
-               HasShadow="True">
-            <controls:EditorWithBorder IsSpellCheckEnabled="True"
-                    IsTextPredictionEnabled="True"
-                    VerticalOptions="FillAndExpand"
-                    x:Name="editor"
-                    IsReadOnly="True">
-            </controls:EditorWithBorder>
+        <Frame HorizontalOptions="CenterAndExpand"
+               VerticalOptions="CenterAndExpand"
+               BackgroundColor="{AppThemeBinding Dark=#1A1A1A, Light=#FFFFFF}"
+               Padding="5"
+               HasShadow="True"
+               Margin="10">
+            <StackLayout Padding="20"
+                         Spacing="10"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand">
+                <Label  Text="X" 
+                        FontSize="Large"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="EndAndExpand" 
+                        VerticalOptions="StartAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label x:Name="title"
+                       FontSize="Title"
+                       HorizontalOptions="CenterAndExpand"
+                       FontFamily="{StaticResource MontserratSemiBold}">
+                    
+                </Label>
+                <controls:EditorWithBorder IsSpellCheckEnabled="True"
+                                           IsTextPredictionEnabled="True"
+                                           HeightRequest="400"
+                                           WidthRequest="500"
+                                           VerticalOptions="FillAndExpand"
+                                           x:Name="editor"
+                                           IsReadOnly="True">
+                </controls:EditorWithBorder>
+            </StackLayout>
         </Frame>
     </popup:PopupPage.Content>
 </popup:PopupPage>

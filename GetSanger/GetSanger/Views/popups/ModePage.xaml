@@ -38,33 +38,43 @@
                Padding="10">
             <StackLayout VerticalOptions="CenterAndExpand"
                          HorizontalOptions="CenterAndExpand"
-                         Padding="20">
+                         Padding="15"
+                         Spacing="10">
+                <Label  Text="X" 
+                        FontSize="Large"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="EndAndExpand" 
+                        VerticalOptions="StartAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ExitCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <StackLayout HorizontalOptions="Center">
                     <Label Text="Choose your mode" 
                            FontSize="Title"
+                           FontFamily="{StaticResource OpenSansSemiBoldItalic}"
                            FontAttributes="Bold"
                            HorizontalOptions="CenterAndExpand"
                            TextColor="Black"/>
-                    <Label Text="You can always change it in account page." 
+                    <Label Text="You can always change it in your account page." 
                            HorizontalTextAlignment="Center"/>
 
                 </StackLayout>
                 <StackLayout Padding="20">
                     <StackLayout>
-                        <Button Text="User Mode" Margin="10" 
-                                BackgroundColor="Transparent"
+                        <Button Text="User Mode" 
+                                Margin="10,10,10,0" 
                                 Command="{Binding UserCommand}"/>
                         <Label Text="(Offer jobs for others to apply to)" 
-                               BackgroundColor="Transparent"
-                               FontSize="Caption"
+                               FontSize="Small"
                                HorizontalTextAlignment="Center"/>
-                        <Button Text="Sanger Mode" Margin="10" 
-                                BackgroundColor="Transparent"
+                        <Button Text="Sanger Mode" 
+                                Margin="10,10,10,0"  
                                 Command="{Binding SangerCommand}"/>
                         <Label Text="(Apply to job offers)"
-                               BackgroundColor="Transparent"
                                HorizontalTextAlignment="Center"
-                               FontSize="Caption"/>
+                               FontSize="Small"/>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>

@@ -22,11 +22,21 @@
     <popup:PopupPage.Content>
         <Frame HorizontalOptions="FillAndExpand"
                VerticalOptions="FillAndExpand"
-               Margin="20, 160"
+               Margin="20, 100"
                CornerRadius="20"
                Padding="10"
                HasShadow="True">
-            <StackLayout>
+            <StackLayout Spacing="15">
+                <Label  Text="X" 
+                        FontSize="Large"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="EndAndExpand" 
+                        VerticalOptions="Start">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label HorizontalOptions="CenterAndExpand"
                        HorizontalTextAlignment="Center"
                        FontAttributes="Bold, Italic"
@@ -54,7 +64,6 @@
                 </controls:EditorWithBorder>
 
                 <Button Text="Submit"
-                        BackgroundColor="Transparent"
                         HorizontalOptions="CenterAndExpand"
                         x:Name="submit"/>
             </StackLayout>

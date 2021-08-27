@@ -10,7 +10,7 @@ namespace GetSanger.ViewModels
 {
     [QueryProperty(nameof(RatedUserId), "ratedUserId")]
     [QueryProperty(nameof(UserName), "ratedUserName")]
-    public class AddRatingViewModel : BaseViewModel
+    public class AddRatingViewModel : PopupBaseViewModel
     {
         #region Events
         public event Action<Rating> RatingAddedEvent;

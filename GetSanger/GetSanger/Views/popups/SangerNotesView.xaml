@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-             xmlns:animation="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
-             x:Class="GetSanger.Views.popups.SangerNotesView">
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:animation="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:controls="clr-namespace:GetSanger.Controls"
+                 x:Class="GetSanger.Views.popups.SangerNotesView">
 
     <popup:PopupPage.Animation>
         <animation:ScaleAnimation PositionIn="Center"
@@ -18,44 +19,49 @@
     </popup:PopupPage.Animation>
 
     <popup:PopupPage.Content>
-        <Frame Padding="5"
-               Margin="20"
+        <Frame Padding="10"
+               Margin="10"
                BorderColor="Black"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
                HasShadow="True">
-            <StackLayout>
+            <StackLayout Padding="10"
+                         Spacing="10">
+                <Label  Text="X" 
+                        FontSize="Large"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="EndAndExpand" 
+                        VerticalOptions="StartAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ExitCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Text="Add Notes"
                        TextDecorations="Underline"
                        TextTransform="Uppercase"
+                       FontFamily="{StaticResource MontserratSemiBold}"
                        FontSize="Title"
                        HorizontalOptions="CenterAndExpand"/>
-                <Frame VerticalOptions="FillAndExpand"
-                       BackgroundColor="Transparent"
-                       HasShadow="True"
-                       Padding="20">
-                    <Editor IsSpellCheckEnabled="True"
-                            IsTextPredictionEnabled="True"
-                            Placeholder="Your notes here..."
-                            Margin="0"
-                            MaxLength="255"
-                            HeightRequest="200"
-                            WidthRequest="300"
-                            VerticalOptions="FillAndExpand"
-                            Text="{Binding Notes}">
-                        <Editor.Keyboard>
-                            <Keyboard x:FactoryMethod="Create" >
-                                <x:Arguments>
-                                    <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
-                                </x:Arguments>
-                            </Keyboard>
-                        </Editor.Keyboard>
-                    </Editor>
-                </Frame>
+                <controls:EditorWithBorder IsSpellCheckEnabled="True"
+                                           IsTextPredictionEnabled="True"
+                                           Placeholder="Your notes here..."
+                                           MaxLength="255"
+                                           HeightRequest="300"
+                                           WidthRequest="400"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="FillAndExpand"
+                                           Text="{Binding Notes}">
+                    <controls:EditorWithBorder.Keyboard>
+                        <Keyboard x:FactoryMethod="Create" >
+                            <x:Arguments>
+                                <KeyboardFlags>Suggestions,CapitalizeSentence</KeyboardFlags>
+                            </x:Arguments>
+                        </Keyboard>
+                    </controls:EditorWithBorder.Keyboard>
+                </controls:EditorWithBorder>
                 <Button Text="Send"
-                        Margin="5"
                         HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="CenterAndExpand"
                         Command="{Binding SendNotesCommand}"/>
             </StackLayout>
         </Frame>

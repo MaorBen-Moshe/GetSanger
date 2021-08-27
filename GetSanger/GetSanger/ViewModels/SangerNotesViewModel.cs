@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public class SangerNotesViewModel : BaseViewModel
+    public class SangerNotesViewModel : PopupBaseViewModel
     {
         #region Fields
         string m_Notes;
