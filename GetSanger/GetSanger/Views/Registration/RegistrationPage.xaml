@@ -59,7 +59,8 @@
                            Margin="0,0,0,10"/>
                         </StackLayout>
                     </controls:FrameWithShadow>
-                    <Frame BorderColor="Transparent">
+                    <Frame BorderColor="Transparent"
+                           BackgroundColor="Transparent">
                         <StackLayout Spacing="20">
                             <controls:EntryWithBorder Keyboard="Email" 
                                               Placeholder="Email" 

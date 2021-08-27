@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public class ChangePasswordViewModel : BaseViewModel
+    public class ChangePasswordViewModel : PopupBaseViewModel
     {
         #region Fields
         private string m_OldPassword;

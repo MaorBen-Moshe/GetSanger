@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public class LinkSocialViewModel : BaseViewModel
+    public class LinkSocialViewModel : PopupBaseViewModel
     {
         #region Fields
         private List<SocialProviderCell> m_Socials;

@@ -19,12 +19,10 @@
     </popup:PopupPage.Animation>
 
     <popup:PopupPage.Content>
-        <Frame 
-               CornerRadius="20"
+        <Frame CornerRadius="20"
                IsClippedToBounds="True"
                Padding="10"
-               Margin="10"
-               >
+               Margin="10">
             <ScrollView>
      
             <StackLayout HorizontalOptions="FillAndExpand"

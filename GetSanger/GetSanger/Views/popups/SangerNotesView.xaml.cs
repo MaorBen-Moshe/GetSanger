@@ -20,5 +20,10 @@ namespace GetSanger.Views.popups
             base.OnAppearing();
             (BindingContext as BaseViewModel).Appearing();
         }
+
+        private void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }

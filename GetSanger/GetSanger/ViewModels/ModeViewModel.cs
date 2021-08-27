@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public class ModeViewModel : BaseViewModel
+    public class ModeViewModel : PopupBaseViewModel
     {
         #region Commands
         public ICommand UserCommand { get; private set; }

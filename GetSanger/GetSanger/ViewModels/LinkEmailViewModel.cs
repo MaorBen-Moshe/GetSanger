@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
-    public class LinkEmailViewModel : BaseViewModel
+    public class LinkEmailViewModel : PopupBaseViewModel
     {
         #region Fields
         private string m_Email;

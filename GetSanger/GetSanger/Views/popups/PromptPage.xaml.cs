@@ -21,5 +21,10 @@ namespace GetSanger.Views.popups
                 PopupNavigation.Instance.PopAsync();
             });
         }
+
+        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            await PopupNavigation.Instance.PopAsync();
+        }
     }
 }
