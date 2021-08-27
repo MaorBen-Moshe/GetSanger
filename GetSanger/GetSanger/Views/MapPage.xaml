@@ -39,7 +39,7 @@
                 </controls:BindableMap.Behaviors>
             </controls:BindableMap>
 
-            <controls:FrameWithShadow
+            <Frame
                BorderColor="Gray"
                HeightRequest="20"
                WidthRequest="300"
@@ -54,7 +54,7 @@
                    IsEnabled="{Binding IsSearch}"
                    SearchCommand="{Binding SearchCommand}"
                    SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
-            </controls:FrameWithShadow>
+            </Frame>
             <StackLayout VerticalOptions="EndAndExpand"
                          HorizontalOptions="CenterAndExpand">
                 
@@ -79,7 +79,7 @@
                     <Button Text="Focus" 
                         Margin="10"
                         Command="{Binding FocusMyLocationCommand}"/>
-                    <controls:FrameWithShadow VerticalOptions="EndAndExpand"
+                    <Frame VerticalOptions="EndAndExpand"
                                       HorizontalOptions="CenterAndExpand"
                                       HasShadow="True"
                                       Padding="10,5"
@@ -92,7 +92,7 @@
                                 <TapGestureRecognizer Command="{Binding ExitCommand}"/>
                             </Label.GestureRecognizers>
                         </Label>
-                    </controls:FrameWithShadow>
+                    </Frame>
                 </StackLayout>
             </StackLayout>
 

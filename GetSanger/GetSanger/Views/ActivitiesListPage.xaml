@@ -80,7 +80,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <controls:FrameWithShadow Margin="10">
+                            <Frame Margin="10">
                                 <StackLayout Padding="15">
                                     <StackLayout Orientation="Horizontal"
                                                      HorizontalOptions="FillAndExpand"
@@ -157,7 +157,7 @@
                                                 IsVisible="{Binding IsClientMode, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Converter={StaticResource InverseBoolConverter}}"
                                                 HorizontalOptions="CenterAndExpand"/>
                                 </StackLayout>
-                            </controls:FrameWithShadow>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

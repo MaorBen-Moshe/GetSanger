@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GetSanger.Views.LoadingPage"
-             BackgroundColor="#80000000"
+             BackgroundColor="Transparent"
              Title="Loading Screen">
 
     <ContentPage.Content>
@@ -10,13 +10,14 @@
                      VerticalOptions="FillAndExpand"
                      BackgroundColor="Transparent">
             <Frame CornerRadius="10"
+                   BorderColor="Black"
                    Padding="30"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
                 <StackLayout BackgroundColor="Transparent">
                     <ActivityIndicator IsRunning="True"
                                        BackgroundColor="Transparent"/>
-                    <Label
+                    <Label BackgroundColor="Transparent"
                            HorizontalTextAlignment="Center"
                            HorizontalOptions="CenterAndExpand"
                            x:Name="label">

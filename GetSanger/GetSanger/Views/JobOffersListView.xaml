@@ -73,7 +73,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <controls:FrameWithShadow Padding="0"
+                            <Frame Padding="0"
                                                       Margin="10">
                                 <StackLayout Padding="20">
                                     <StackLayout Orientation="Horizontal"
@@ -120,7 +120,7 @@
                                                     CommandParameter="{Binding .}"
                                                     HorizontalOptions="CenterAndExpand"/>
                                 </StackLayout>
-                            </controls:FrameWithShadow>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -23,7 +23,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <controls:FrameWithShadow Margin="10">
+                <Frame Margin="10">
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="{Binding ConnectedActivity.JobDetails.Title}" 
                                FontSize="Title"
@@ -86,9 +86,9 @@
                         HorizontalOptions="CenterAndExpand"/>
                         </StackLayout>
                     </StackLayout>
-                </controls:FrameWithShadow>
+                </Frame>
 
-                <controls:FrameWithShadow HorizontalOptions="FillAndExpand"      
+                <Frame HorizontalOptions="FillAndExpand"      
                                           Margin="10,5,10,10"
                                           Padding="20">
                     <StackLayout Spacing="10"
@@ -188,7 +188,7 @@
                             </StackLayout>
                         </Frame>
                     </StackLayout>
-                </controls:FrameWithShadow>
+                </Frame>
 
                 <StackLayout
                          HorizontalOptions="CenterAndExpand"
