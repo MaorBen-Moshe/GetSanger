@@ -38,7 +38,7 @@
                    BackgroundColor="Transparent"
                    Margin="0,10,10,10"
                    Padding="7"
-                   CornerRadius="20"
+                   CornerRadius="10"
                    BorderColor="Red">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ReportUserCommand}"/>
@@ -60,6 +60,7 @@
                                        BackgroundColor="Transparent"/>
                 <Label Text="{Binding CurrentUser.PersonalDetails.NickName}"
                    FontSize="Title"
+                       FontFamily="{StaticResource OpenSansSemiBoldItalic}"
                    BackgroundColor="Transparent"
                    Margin="0,5"
                    HorizontalOptions="CenterAndExpand"
@@ -72,10 +73,11 @@
                                           IsImageEnabled="False"
                                           HorizontalOptions="CenterAndExpand"/>
 
-            <Frame Padding="0"
-                   Margin="50,20,50,0">
+            <Frame BackgroundColor="Transparent"
+                                      Padding="0"
+                                      Margin="50,20,50,0">
                 <TableView VerticalOptions="Center"
-                           
+                           BackgroundColor="Transparent"
                            HeightRequest="136">
                     <TableRoot>
                         <TableSection Title="Details" TextColor="{AppThemeBinding Dark={StaticResource TableViewTextColorDark}, Light={StaticResource TableViewTextColorLight}}">
@@ -128,10 +130,8 @@
                          VerticalOptions="EndAndExpand"
                          Padding="20">
                 <Button Text="Send Message" 
-                        BackgroundColor="Transparent"
                         Command="{Binding SendMessageCommand}" />
                 <Button Text="Add Rating" 
-                        BackgroundColor="Transparent"
                         Command="{Binding AddRatingCommand}"/>
             </StackLayout>
            

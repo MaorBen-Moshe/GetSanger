@@ -24,7 +24,7 @@
             <StackLayout HorizontalOptions="FillAndExpand"
                          VerticalOptions="FillAndExpand"
                          x:Name="mainStack">
-                <Frame Margin="10">
+                <controls:FrameWithShadow Margin="10">
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="{Binding Job.Title}" 
                                FontSize="Title"
@@ -56,18 +56,16 @@
                                 FontSize="Small"
                                 FontAttributes="Bold"
                                 IsVisible="{Binding IsSangerMode}"
-                                BackgroundColor="Transparent"
                                 Command="{Binding ConfirmJobOfferCommand}" 
                                 HorizontalOptions="CenterAndExpand"/>
                         <Button Text="Delete"
                                 TextColor="Red"
                                 IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}"
                                 FontSize="Small"
-                                BackgroundColor="Transparent"
                                 Command="{Binding DeleteMyJobOfferCommand}"
                                 HorizontalOptions="CenterAndExpand"/>
                     </StackLayout>
-                </Frame>
+                </controls:FrameWithShadow>
 
                 <StackLayout BackgroundColor="Transparent"
                              Margin="10, 5, 10, 0"
@@ -127,11 +125,13 @@
                         <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
                                                        Date="{Binding Job.Date}"
                                                        IsEnabled="False"
+                                                       BorderColor="Black"
                                                        HorizontalOptions="FillAndExpand"
                                                        Visual="Material"
                                                        />
                         <controls:TimePickerWithBorder Time="{Binding Job.Time}"
                                                        IsEnabled="False"
+                                                       BorderColor="Black"
                                                        HorizontalOptions="End"/>
                     </StackLayout>
                 </StackLayout>
@@ -142,7 +142,7 @@
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
                        FontSize="Small"/>
-                    <controls:EditorWithBorder 
+                    <controls:EditorWithBorder BorderColor="Black"
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="Job Description"

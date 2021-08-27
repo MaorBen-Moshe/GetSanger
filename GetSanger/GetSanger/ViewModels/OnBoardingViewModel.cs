@@ -1,7 +1,9 @@
 ﻿using GetSanger.AppShell;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
+using GetSanger.Extensions;
 
 namespace GetSanger.ViewModels
 {
@@ -55,9 +57,17 @@ namespace GetSanger.ViewModels
 
         protected override void SetCommands()
         {
-            StartCommand = new Command(() =>
-            {                
-                Application.Current.MainPage = new AuthShell();
+            StartCommand = new Command(async () =>
+            {
+                try
+                {
+                    Application.Current.MainPage = new AuthShell();
+                }
+                catch(Exception e)
+                {
+                    await e.LogAndDisplayError($"{typeof(OnBoardingViewModel).Name}:startCommand", "Error", e.Message);
+                }
+                
             });
         }
 
@@ -80,7 +90,7 @@ namespace GetSanger.ViewModels
                 new OnBoardingItem
                 {
                     Header = "Decide what type of person you are:",
-                    Body = string.Format(@"1.Sanger
+                    Body = string.Format(@"  1.Sanger
 2.Client
 Or you can be Both :)"),
                     IsLast = false

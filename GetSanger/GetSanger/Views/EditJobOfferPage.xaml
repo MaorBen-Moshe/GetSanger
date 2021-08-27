@@ -40,11 +40,11 @@
                          VerticalOptions="FillAndExpand"
                          x:Name="mainStack">
                 <controls:FrameWithShadow Margin="10" 
-                                          BackgroundColor="White"
                                           CornerRadius="3">
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="Creating New Offer" 
                                FontSize="Title"
+                               FontFamily="{StaticResource MontserratSemiBold}"
                                FontAttributes="Italic"
                                HorizontalTextAlignment="Center"/>
                         <Label Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
@@ -126,12 +126,14 @@
                        FontSize="Small"/>
                     <StackLayout Orientation="Horizontal">
                         <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
-                                MinimumDate="{x:Static system:DateTime.Now}" 
-                                Date="{Binding NewJobOffer.Date}"
+                                                       MinimumDate="{x:Static system:DateTime.Now}" 
+                                                       Date="{Binding NewJobOffer.Date}"
                                                        HorizontalOptions="FillAndExpand"
-                                Visual="Material"/>
+                                                       Visual="Material"
+                                                       BorderColor="Black"/>
                         <controls:TimePickerWithBorder Time="{Binding NewJobOffer.Time}"
-                                                       HorizontalOptions="End"/>
+                                                       HorizontalOptions="End"
+                                                       BorderColor="Black"/>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout BackgroundColor="Transparent"
@@ -141,16 +143,16 @@
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
                        FontSize="Small"/>
-                    <controls:EditorWithBorder 
-                                IsSpellCheckEnabled="True"
-                                IsTextPredictionEnabled="True"
-                                Placeholder="Job Description"
-                                VerticalOptions="FillAndExpand"
-                                Margin="5,5,5,20"
-                                MaxLength="255"
-                                HeightRequest="180"
-                                Text="{Binding NewJobOffer.Description}"
-                                PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
+                    <controls:EditorWithBorder BorderColor="Black"
+                                               IsSpellCheckEnabled="True"
+                                               IsTextPredictionEnabled="True"
+                                               Placeholder="Job Description"
+                                               VerticalOptions="FillAndExpand"
+                                               Margin="5,5,5,20"
+                                               MaxLength="255"
+                                               HeightRequest="220"
+                                               Text="{Binding NewJobOffer.Description}"
+                                               PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >
                                 <x:Arguments>

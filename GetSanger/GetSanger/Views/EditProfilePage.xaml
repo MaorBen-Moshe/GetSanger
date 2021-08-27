@@ -36,7 +36,7 @@
 
     <ContentPage.Content>
         
-        <TableView Intent="Form" HasUnevenRows="True">
+        <TableView Intent="Form" HasUnevenRows="True" BackgroundColor="Transparent">
             <TableRoot>
                 <TableSection Title="Change Picture">
                     <ViewCell>
@@ -44,8 +44,8 @@
                                      VerticalOptions="FillAndExpand">
                             <controls:RoundedImage ImageSource="{Binding ProfileImage}" 
                                                    Command="{Binding ImageChosenCommand}"
-                                                   Radius="100"
-                                                   Margin="0,5,0,0"
+                                                   Radius="120"
+                                                   Margin="0,10,0,0"
                                                    BackgroundColor="Transparent"
                                                    HorizontalOptions="Center"
                                                    IsCacheEnable="False"/>
@@ -99,6 +99,7 @@
                                    FontAttributes="Italic"
                                    Margin="20, 10, 0, 5"/>
                             <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
+                                                           BorderColor="Black"
                                                            Margin="20, 0, 20, 5"
                                                            MaximumDate="{Binding MaxDate}" 
                                                            Date="{Binding ConnectedUser.PersonalDetails.Birthday}"/>
@@ -112,6 +113,7 @@
 
                             <controls:PickerWithBorder ItemsSource="{Binding GenderItems}" 
                                                        Margin="20, 0, 20, 5"
+                                                       BorderColor="Black"
                                                        SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
                         </StackLayout>
                     </ViewCell>
@@ -120,7 +122,7 @@
                             <Label Text="About me"
                    FontAttributes="Italic"
                    Margin="20, 10, 0, 5"/>
-                            <controls:EditorWithBorder 
+                            <controls:EditorWithBorder BorderColor="Black"
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="About me"

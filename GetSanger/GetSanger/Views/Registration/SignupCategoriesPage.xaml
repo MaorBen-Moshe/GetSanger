@@ -22,6 +22,7 @@
                    Margin="14,17,20,0" 
                    HeightRequest="54"
                    WidthRequest="350"
+                   FontFamily="{StaticResource OpenSansSemiBoldItalic}"
                    HorizontalTextAlignment="Center" 
                    Text="Choose Categories:" 
                    
@@ -39,24 +40,23 @@
                           Margin="5"
                           ItemsSource="{Binding CategoriesItems}"
                           BackgroundColor="Transparent"
+                          SelectionMode="None"
                           HasUnevenRows="True"
                           SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame WidthRequest="327" Padding="1" CornerRadius="7" HasShadow="false" BackgroundColor="Silver" Margin="24,10,34,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
-                                    <Frame WidthRequest="327" Padding="0" CornerRadius="07" HasShadow="false" OutlineColor="Transparent">
-                                        <StackLayout WidthRequest="327" Orientation="Horizontal" Spacing="5">
+                                <Frame WidthRequest="350" Padding="1" CornerRadius="7" HasShadow="false" BackgroundColor="Silver" Margin="24,10,34,0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+                                    <Frame WidthRequest="350" Padding="0" CornerRadius="07" HasShadow="false" OutlineColor="Transparent">
+                                        <StackLayout WidthRequest="350" Orientation="Horizontal" Spacing="5">
                                             <Label HeightRequest="40" 
-                                                   WidthRequest="120" 
-                                                   FontSize="Large" Margin="22,0,0,0" 
+                                                   FontSize="Medium" Margin="5,0,0,0" 
                                                    Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray" 
                                                    VerticalOptions="CenterAndExpand" 
-                                                   HorizontalOptions="StartAndExpand" />
-                                            <CheckBox HeightRequest="27" 
-                                                      WidthRequest="31" 
-                                                      Margin="24,0,0,0" 
+                                                   HorizontalOptions="FillAndExpand" />
+                                            <CheckBox  
+                                                      Margin="5,0,0,0" 
                                                       VerticalOptions="CenterAndExpand" 
                                                       HorizontalOptions="End"
                                                       IsChecked="{Binding Checked}">

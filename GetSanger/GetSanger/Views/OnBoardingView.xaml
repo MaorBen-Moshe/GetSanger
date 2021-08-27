@@ -4,6 +4,7 @@
              xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:converters="clr-namespace:GetSanger.Converters"
+             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.OnBoardingView">
 
     <ContentPage.BindingContext>
@@ -18,7 +19,8 @@
     
     <ContentPage.Content>
         <Grid HorizontalOptions="FillAndExpand"
-              VerticalOptions="FillAndExpand">
+              VerticalOptions="FillAndExpand"
+              BackgroundColor="Transparent">
             <cv:CarouselViewControl ItemsSource="{Binding Items}"
                                     IndicatorsTintColor="LightGray"
                                     CurrentPageIndicatorTintColor="#FF0088"
@@ -33,7 +35,6 @@
                     <DataTemplate>
                         <StackLayout HorizontalOptions="Center"
                                      VerticalOptions="Center"
-                                     BackgroundColor="#FFFFF1"
                                      Margin="50">
                             <Frame HorizontalOptions="CenterAndExpand"
                                    VerticalOptions="CenterAndExpand"
@@ -54,18 +55,19 @@
                                        Aspect="AspectFill"
                                        />
                             </Frame>
-                            <Frame HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="CenterAndExpand"
-                                   BackgroundColor="Transparent"
-                                   HasShadow="True"
-                                   Margin="10"
-                                   Padding="10"
-                                   BorderColor="LightSlateGray">
+                            <controls:FrameWithShadow HorizontalOptions="CenterAndExpand"
+                                                      VerticalOptions="CenterAndExpand"
+                                                      BackgroundColor="LightGray"
+                                                      BorderColor="White"
+                                                      HasShadow="True"
+                                                      Margin="10"
+                                                      Padding="10">
                                 <StackLayout HorizontalOptions="FillAndExpand"
                                              VerticalOptions="FillAndExpand"
                                              BackgroundColor="Transparent">
                                     <Label Text="{Binding Header}"
                                            HorizontalTextAlignment="Center"
+                                           FontFamily="{StaticResource MontserratBold}"
                                            FontSize="25"
                                            FontAttributes="Bold"
                                            Margin="10, 0"
@@ -99,7 +101,7 @@
                                         </Label.GestureRecognizers>
                                     </Label>
                                 </StackLayout>
-                            </Frame>
+                            </controls:FrameWithShadow>
                         </StackLayout>
                         
                     </DataTemplate>

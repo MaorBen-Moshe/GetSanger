@@ -250,6 +250,10 @@
     <Style TargetType="controls:EditorWithBorder">
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
+    <Style TargetType="controls:FrameWithShadow">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColorLight}}"/>
+        <Setter Property="HasShadow" Value="True" />
+    </Style>
     <Style TargetType="ScrollView">
         <Setter Property="BackgroundColor" Value="Transparent"/>
     </Style>

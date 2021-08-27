@@ -79,27 +79,32 @@
             <controls:PickerWithBorder CornerRadius="15"
                                        SelectedIndex="1" 
                                        Title="Gender"
+                                       BorderColor="Black"
                                        ItemsSource="{Binding GenderItems}"
                                        SelectedItem="{Binding PickedGender}">
             </controls:PickerWithBorder>
-            <Grid>
+            <Grid BackgroundColor="Transparent">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="0.3*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Birthday" Padding="3" Grid.Column="0" FontSize="Small" Margin="0,5,0,0" />
+                <Label Text="Birthday:" Padding="3" Grid.Column="0" 
+                       VerticalTextAlignment="Center"
+                       FontSize="Small" />
                 <controls:DatePickerWithBorder CornerRadius="15"
                                                Format="dd/MM/yyyy"
                                                MaximumDate="{Binding MaxDatePicker}"
                                                Date="{Binding CreatedUser.PersonalDetails.Birthday}" 
                                                x:Name="DateEntry" 
+                                               BorderColor="Black"
                                                Grid.Column="1"/>
             </Grid>
             <controls:EditorWithBorder 
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="About me"
+                                BorderColor="Black"
                                 CornerRadius="15"
                                 VerticalOptions="FillAndExpand"
                                 MaxLength="100"
@@ -120,7 +125,6 @@
                          Margin="10">
                 <Button Text="Add profile" 
                         Padding="10" 
-                        BackgroundColor="Transparent"
                         Command="{Binding PersonalDetailPartCommand}" 
                         IsEnabled="{Binding IsEnabledsendBtn}">
                     <Button.Triggers>
