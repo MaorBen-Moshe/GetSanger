@@ -51,6 +51,7 @@
                 <controls:FilterControl HorizontalOptions="FillAndExpand"
                                         VerticalOptions="Start"
                                         Margin="10"
+                                        IsVisible="{Binding IsVisibleViewList}"
                                         TimeSortFlag="{Binding TimeSortFlag}"
                                         TimeSortCommand="{Binding SortCommand}"
                                         IsCategoryFilterEnabled="True"
@@ -82,25 +83,24 @@
                             <ViewCell>
                                 <Frame Padding="0"
                                        Margin="10">
-                                    <StackLayout Padding="20">
+                                    <StackLayout Padding="15">
                                         <StackLayout Orientation="Horizontal"
                                                      HorizontalOptions="FillAndExpand"
-                                                     VerticalOptions="StartAndExpand" >
-                                            <Ellipse Fill="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                                     VerticalOptions="Start" >
+                                            <StackLayout Orientation="Horizontal"
+                                                         HorizontalOptions="FillAndExpand"
+                                                         VerticalOptions="Start">
+                                                <Ellipse Fill="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
                                                          WidthRequest="22"
                                                          HeightRequest="22"
                                                          HorizontalOptions="Start"
-                                                         Margin="5"/>
+                                                         Margin="5"
+                                                         VerticalOptions="Start"/>
 
-                                            <Label Text="{Binding Status}"></Label>
-                                            
-                                            <Ellipse Fill="Gray"
-                                                     WidthRequest="22"
-                                                     HeightRequest="22"
-                                                     HorizontalOptions="EndAndExpand"
-                                                     Margin="5"/>
+                                                <Label Text="{Binding Status}"
+                                                   HorizontalTextAlignment="Start"></Label>
+                                            </StackLayout>
 
-                                            <Label Text="{Binding JobDetails.Category, Converter={StaticResource CategoryToStringConverter}}"></Label>
                                         </StackLayout>
 
                                         <Label Text="{Binding JobDetails.Title}" 
@@ -123,6 +123,11 @@
                                                HorizontalOptions="CenterAndExpand"
                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}, Path=IsClientMode, Converter={StaticResource InverseBoolConverter}}"
                                                VerticalOptions="Start"/>
+
+                                        <Label Text="{Binding JobDetails.Category, Converter={StaticResource CategoryToStringConverter}, StringFormat='Category: {0}'}"
+                                                       VerticalOptions="Start"
+                                               HorizontalTextAlignment="Center"
+                                                       HorizontalOptions="CenterAndExpand"></Label>
 
                                         <StackLayout Orientation="Horizontal"
                                                      IsVisible="{Binding IsClientMode, Source={RelativeSource AncestorType={x:Type vm:ActivitiesListViewModel}}}">

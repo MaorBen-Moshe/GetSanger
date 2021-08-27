@@ -48,6 +48,7 @@
                 <controls:FilterControl HorizontalOptions="FillAndExpand"
                                         VerticalOptions="Start"
                                         Margin="10"
+                                        IsVisible="{Binding IsVisibleViewList}"
                                         TimeSortFlag="{Binding TimeSortFlag}"
                                         TimeSortCommand="{Binding SortCommand}"
                                         IsCategoryFilterEnabled="True"

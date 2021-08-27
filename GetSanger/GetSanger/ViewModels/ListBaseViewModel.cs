@@ -14,7 +14,7 @@ namespace GetSanger.ViewModels
     {
         #region Fields
         private bool m_IsListRefreshing;
-        private bool m_IsVisibleEmptyListLabel;
+        private bool m_IsVisibleViewList;
         private ObservableCollection<T> m_AllCollection;
         private ObservableCollection<T> m_FilteredCollection;
         private ObservableCollection<T> m_SearchCollection;
@@ -35,8 +35,8 @@ namespace GetSanger.ViewModels
 
         public bool IsVisibleViewList
         {
-            get => m_IsVisibleEmptyListLabel;
-            set => SetStructProperty(ref m_IsVisibleEmptyListLabel, value);
+            get => m_IsVisibleViewList;
+            set => SetStructProperty(ref m_IsVisibleViewList, value);
         }
 
         public ObservableCollection<T> AllCollection
@@ -135,13 +135,16 @@ namespace GetSanger.ViewModels
 
         protected void sortByTime(Func<T, DateTime> lambda)
         {
-            if (TimeSortFlag == false)
+            if(FilteredCollection != null)
             {
-                FilteredCollection = new ObservableCollection<T>(FilteredCollection.OrderByDescending(lambda));
-            }
-            else 
-            {
-                FilteredCollection = new ObservableCollection<T>(FilteredCollection.OrderBy(lambda));
+                if (TimeSortFlag == false)
+                {
+                    FilteredCollection = new ObservableCollection<T>(FilteredCollection.OrderByDescending(lambda));
+                }
+                else
+                {
+                    FilteredCollection = new ObservableCollection<T>(FilteredCollection.OrderBy(lambda));
+                }
             }
         }
 
