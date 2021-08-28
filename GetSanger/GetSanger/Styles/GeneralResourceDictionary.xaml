@@ -53,7 +53,7 @@
     <!--<Color x:Key="TabBarTitleColorDark">#910000</Color>
     <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>-->
     <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
-    <Color x:Key="TabBarUnselectedColorLight">Black</Color>
+    <Color x:Key="TabBarUnselectedColorLight">DimGray</Color>
     <Color x:Key="EditorBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="EditorBackgroundColorLight">White</Color>
     <Color x:Key="TableViewBackgroundColorDark">#3d3d3d</Color>
@@ -81,10 +81,12 @@
     <Color x:Key="EntryBorderColorDark">White</Color>
     <Color x:Key="EntryBorderColorLight">Black</Color>
     <Color x:Key="EntryPlaceholderColorDark">Gray</Color>
-    <Color x:Key="EntryPlaceholderColorLight">Gray</Color>
+    <Color x:Key="EntryPlaceholderColorLight">Black</Color>
     <Color x:Key="EditorPlaceholderColorDark">Gray</Color>
-    <Color x:Key="EditorPlaceholderColorLight">Gray</Color>
-
+    <Color x:Key="EditorPlaceholderColorLight">Black</Color>
+    <Color x:Key="BorderColorDark">White</Color>
+    <Color x:Key="BorderColorLight">Black</Color>
+    
 
     <LinearGradientBrush x:Key="GradientDark" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#242424" Offset="0.1"/>
@@ -192,11 +194,13 @@
         <Setter Property="MaxLines" Value="7" />
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
-    <Style TargetType="Entry">
+    
+    <Style TargetType="Entry" ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EntryBackgroundColorDark}, Light={StaticResource EntryBackgroundColorLight}}" />
         <Setter Property="FontSize" Value="Medium"/>
         <Setter Property="Margin" Value="1,1,1,0"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
     </Style>
     <Style TargetType="Grid">
         <Setter Property="VerticalOptions" Value ="Center"/>
@@ -217,7 +221,7 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColorLight}}"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColorLight}}"/>
     </Style>
-    <Style TargetType="Editor">
+    <Style TargetType="Editor" ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EditorBackgroundColorDark}, Light={StaticResource EditorBackgroundColorLight}}"/>
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EditorPlaceholderColorDark}, Light={StaticResource EditorPlaceholderColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
@@ -233,9 +237,10 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
-    <Style TargetType="Picker">
+    <Style TargetType="Picker" ApplyToDerivedTypes="True">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
     </Style>
     <Style TargetType="TimePicker">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TimePickerTextColorDark}, Light={StaticResource TimePickerTextColorLight}}"/>
@@ -247,12 +252,10 @@
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EntryPlaceholderColorDark}, Light={StaticResource EntryPlaceholderColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
-    <Style TargetType="controls:EditorWithBorder">
-        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
-    </Style>
     <Style TargetType="ScrollView">
         <Setter Property="BackgroundColor" Value="Transparent"/>
     </Style>
-
-
+    <Style TargetType="controls:EditorWithBorder">
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
+    </Style>
 </ResourceDictionary>
