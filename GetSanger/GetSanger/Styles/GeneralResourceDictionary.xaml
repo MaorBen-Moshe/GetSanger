@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                    xmlns:controls="clr-namespace:GetSanger.Controls;assembly=GetSanger"
-                    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-             >
+                    xmlns:controls="clr-namespace:GetSanger.Controls;assembly=GetSanger">
     <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
     <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
     <Color x:Key="ClientButtonColor">#91abfa</Color>
@@ -46,14 +44,14 @@
     <Color x:Key="NavBarTextColorLight">White</Color>
     <Color x:Key="TabBarTextColorDark">#000000</Color>
     <Color x:Key="TabBarTextColorLight">White</Color>
-    <Color x:Key="TabBarBackgroundColorDark">#3d3d3d</Color>
-    <Color x:Key="TabBarBackgroundColorLight">White</Color>
+    <Color x:Key="TabBarBackgroundColorDark">Black</Color>
+    <Color x:Key="TabBarBackgroundColorLight">#81aef7</Color>
     <Color x:Key="TabBarForegroundColorLight">Gray</Color>
     <Color x:Key="TabBarForegroundColorDark">Gray</Color>
     <!--<Color x:Key="TabBarTitleColorDark">#910000</Color>
     <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>-->
     <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
-    <Color x:Key="TabBarUnselectedColorLight">Black</Color>
+    <Color x:Key="TabBarUnselectedColorLight">DimGray</Color>
     <Color x:Key="EditorBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="EditorBackgroundColorLight">White</Color>
     <Color x:Key="TableViewBackgroundColorDark">#3d3d3d</Color>
@@ -68,6 +66,8 @@
     <Color x:Key="ShellTitleColorLight">Black</Color>
     <Color x:Key="TableViewTextColorDark">White</Color>
     <Color x:Key="TableViewTextColorLight">Black</Color>
+    <Color x:Key="PickerPlaceholderColorLight">Gray</Color>
+    <Color x:Key="PickerPlaceholderColorDark">WhiteSmoke</Color>
     <Color x:Key="DatePickerTextColorDark">White</Color>
     <Color x:Key="DatePickerTextColorLight">Black</Color>
     <Color x:Key="ChatIncomingBackgroundColorDark">#163375</Color>
@@ -81,26 +81,39 @@
     <Color x:Key="EntryBorderColorDark">White</Color>
     <Color x:Key="EntryBorderColorLight">Black</Color>
     <Color x:Key="EntryPlaceholderColorDark">Gray</Color>
-    <Color x:Key="EntryPlaceholderColorLight">Gray</Color>
+    <Color x:Key="EntryPlaceholderColorLight">Black</Color>
     <Color x:Key="EditorPlaceholderColorDark">Gray</Color>
-    <Color x:Key="EditorPlaceholderColorLight">Gray</Color>
+    <Color x:Key="EditorPlaceholderColorLight">Black</Color>
+    <Color x:Key="BorderColorDark">White</Color>
+    <Color x:Key="BorderColorLight">Black</Color>
+    <Color x:Key="SwitchColorDark">#406b2c</Color>
+    <Color x:Key="SwitchColorLight">#7bcc54</Color>
+    <Color x:Key="SwitchThumbColorDark">#00142b</Color>
+    <Color x:Key="SwitchThumbColorLight">#002857</Color>
+    <Color x:Key="CheckboxColorDark">#00142b</Color>
+    <Color x:Key="CheckboxColorLight">#002857</Color>
+
+    <Color x:Key="ButtonGradientStartDark">#002857</Color>
+    <Color x:Key="ButtonGradientStartLight">White</Color>
+    <Color x:Key="ButtonGradientEndDark">#00142b</Color>
+    <Color x:Key="ButtonGradientEndLight">#c9c9c9</Color>
     
-    
-    <LinearGradientBrush x:Key="GradientDark" StartPoint="0,0" EndPoint="1,1">
+
+    <LinearGradientBrush x:Key="GradientDark" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#242424" Offset="0.1"/>
         <GradientStop Color="Black" Offset="1.0"/>
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="GradientLight" StartPoint="0,0" EndPoint="1,1">
+    <LinearGradientBrush x:Key="GradientLight" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="White" Offset="0.1"/>
-        <GradientStop Color="#81aef7" Offset="1.0"/>
+        <GradientStop Color="#81aef7" Offset="0.9"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="ButtonGradientDark" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#002857" Offset="0.1"/>
-        <GradientStop Color="#00142b" Offset="1.0"/>
+        <GradientStop Color="{StaticResource ButtonGradientStartDark}" Offset="0.1"/>
+        <GradientStop Color="{StaticResource ButtonGradientEndDark}" Offset="1.0"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="ButtonGradientLight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="White" Offset="0.1"/>
-        <GradientStop Color="#c9c9c9" Offset="1.0"/>
+        <GradientStop Color="{StaticResource ButtonGradientStartLight}" Offset="0.1"/>
+        <GradientStop Color="{StaticResource ButtonGradientEndLight}" Offset="1.0"/>
     </LinearGradientBrush>
 
     <!--fonts here-->
@@ -192,11 +205,14 @@
         <Setter Property="MaxLines" Value="7" />
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
-    <Style TargetType="Entry">
+    
+    <Style TargetType="Entry" ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EntryBackgroundColorDark}, Light={StaticResource EntryBackgroundColorLight}}" />
         <Setter Property="FontSize" Value="Medium"/>
         <Setter Property="Margin" Value="1,1,1,0"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EntryPlaceholderColorDark}, Light={StaticResource EntryPlaceholderColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
     </Style>
     <Style TargetType="Grid">
         <Setter Property="VerticalOptions" Value ="Center"/>
@@ -217,7 +233,8 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroundColorDark}, Light={StaticResource FrameBackgroundColorLight}}"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColorLight}}"/>
     </Style>
-    <Style TargetType="Editor">
+    <Style TargetType="Editor" ApplyToDerivedTypes="True">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark=White, Light=Black}"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EditorBackgroundColorDark}, Light={StaticResource EditorBackgroundColorLight}}"/>
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EditorPlaceholderColorDark}, Light={StaticResource EditorPlaceholderColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
@@ -233,7 +250,8 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource DatePickerTextColorDark}, Light={StaticResource DatePickerTextColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
-    <Style TargetType="Picker">
+    <Style TargetType="Picker" ApplyToDerivedTypes="True">
+        <Setter Property="TitleColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
@@ -244,15 +262,29 @@
     <Style TargetType="controls:EntryWithBorder">
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource EntryBorderColorDark}, Light={StaticResource EntryBorderColorLight}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EntryPlaceholderColorDark}, Light={StaticResource EntryPlaceholderColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
-    <Style TargetType="controls:EditorWithBorder">
-        <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
+    <Style TargetType="controls:TimePickerWithBorder">
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
+    </Style>
+    <Style TargetType="controls:DatePickerWithBorder">
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
+    </Style>
+    <Style TargetType="controls:PickerWithBorder">
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
     </Style>
     <Style TargetType="ScrollView">
         <Setter Property="BackgroundColor" Value="Transparent"/>
     </Style>
-
-
+    <Style TargetType="controls:EditorWithBorder">
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
+    </Style>
+    <Style TargetType="Switch">
+        <Setter Property="OnColor" Value="{AppThemeBinding Dark={StaticResource SwitchColorDark}, Light={StaticResource SwitchColorLight}}"/>
+        <Setter Property="ThumbColor" Value="{AppThemeBinding Dark={StaticResource SwitchThumbColorDark}, Light={StaticResource SwitchThumbColorLight}}"/>
+    </Style>
+    <Style TargetType="CheckBox">
+        <Setter Property="Color" Value="{AppThemeBinding Dark={StaticResource CheckboxColorDark}, Light={StaticResource CheckboxColorLight}}"/>
+    </Style>
 </ResourceDictionary>

@@ -1,5 +1,5 @@
-﻿using Rg.Plugins.Popup.Pages;
-using Rg.Plugins.Popup.Services;
+﻿using GetSanger.ViewModels;
+using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views.popups
@@ -10,11 +10,20 @@ namespace GetSanger.Views.popups
         public AboutUsPage()
         {
             InitializeComponent();
+
+            Background = null;
         }
 
-        private async void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
+        protected override void OnAppearing()
         {
-            await PopupNavigation.Instance.PopAsync();
+            base.OnAppearing();
+            (BindingContext as PopupBaseViewModel).Appearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            (BindingContext as PopupBaseViewModel).Disappearing();
         }
     }
 }

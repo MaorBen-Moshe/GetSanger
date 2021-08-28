@@ -41,7 +41,7 @@ namespace GetSanger.Behaviors
                     }
                     else
                     {
-                        entry.TextColor = Color.Black;
+                        entry.SetAppThemeColor(Entry.TextColorProperty, Color.Black, Color.White);
                     }
                 }
             }

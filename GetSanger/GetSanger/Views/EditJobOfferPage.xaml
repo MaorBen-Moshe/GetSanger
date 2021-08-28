@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.EditJobOfferPage"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="{AppThemeBinding Dark={StaticResource ContentPageBackgroundColorDark},Light={StaticResource ContentPageBackgroundColorLight}}">
+            >
 
     <ContentPage.BindingContext>
         <vm:EditJobOfferViewModel />
@@ -70,7 +70,7 @@
                                FontSize="Small"
                                Padding="0"/>
                     <controls:EntryWithBorder Text="{Binding NewJobOffer.Title}" 
-                                              Placeholder="Job Title" >
+                                              Placeholder="Job Title">
                         <controls:EntryWithBorder.Behaviors>
                             <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
                         </controls:EntryWithBorder.Behaviors>
@@ -130,10 +130,10 @@
                                                        Date="{Binding NewJobOffer.Date}"
                                                        HorizontalOptions="FillAndExpand"
                                                        Visual="Material"
-                                                       BorderColor="Black"/>
+                                                       />
                         <controls:TimePickerWithBorder Time="{Binding NewJobOffer.Time}"
                                                        HorizontalOptions="End"
-                                                       BorderColor="Black"/>
+                                                       />
                     </StackLayout>
                 </StackLayout>
                 <StackLayout BackgroundColor="Transparent"
@@ -143,16 +143,14 @@
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
                        FontSize="Small"/>
-                    <controls:EditorWithBorder BorderColor="Black"
-                                               IsSpellCheckEnabled="True"
+                    <controls:EditorWithBorder IsSpellCheckEnabled="True"
                                                IsTextPredictionEnabled="True"
                                                Placeholder="Job Description"
                                                VerticalOptions="FillAndExpand"
                                                Margin="5,5,5,20"
                                                MaxLength="255"
                                                HeightRequest="220"
-                                               Text="{Binding NewJobOffer.Description}"
-                                               PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
+                                               Text="{Binding NewJobOffer.Description}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >
                                 <x:Arguments>

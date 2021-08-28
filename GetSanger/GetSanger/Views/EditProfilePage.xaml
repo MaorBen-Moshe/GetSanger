@@ -97,7 +97,6 @@
                                    FontAttributes="Italic"
                                    Margin="20, 10, 0, 5"/>
                             <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
-                                                           BorderColor="Black"
                                                            Margin="20, 0, 20, 5"
                                                            MaximumDate="{Binding MaxDate}" 
                                                            Date="{Binding ConnectedUser.PersonalDetails.Birthday}"/>
@@ -111,7 +110,7 @@
 
                             <controls:PickerWithBorder ItemsSource="{Binding GenderItems}" 
                                                        Margin="20, 0, 20, 5"
-                                                       BorderColor="Black"
+                                                       BorderColor="{AppThemeBinding Dark=White, Light=Black}"
                                                        SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
                         </StackLayout>
                     </ViewCell>
@@ -120,7 +119,7 @@
                             <Label Text="About me"
                    FontAttributes="Italic"
                    Margin="20, 10, 0, 5"/>
-                            <controls:EditorWithBorder BorderColor="Black"
+                            <controls:EditorWithBorder
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="About me"

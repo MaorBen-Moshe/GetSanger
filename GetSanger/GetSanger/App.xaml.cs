@@ -1,7 +1,6 @@
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using GetSanger.Views;
-using GetSanger.Services;
 
 namespace GetSanger
 {

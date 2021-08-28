@@ -11,6 +11,7 @@ namespace GetSanger.Views.popups
         {
             InitializeComponent();
 
+            Background = null;
             (BindingContext as AddRatingViewModel).RatedUserId = i_RatedUserId;
             (BindingContext as AddRatingViewModel).UserName = i_RatedUserName;
         }

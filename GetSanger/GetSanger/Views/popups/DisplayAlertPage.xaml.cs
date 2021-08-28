@@ -1,5 +1,5 @@
-﻿using Rg.Plugins.Popup.Pages;
-using Rg.Plugins.Popup.Services;
+﻿using GetSanger.ViewModels;
+using Rg.Plugins.Popup.Pages;
 using System;
 using Xamarin.Forms.Xaml;
 
@@ -8,8 +8,6 @@ namespace GetSanger.Views.popups
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DisplayAlertPage : PopupPage
     {
-        private readonly Action<bool> r_UserChoseOptionAction;
-
         public DisplayAlertPage(string header, 
                          string message,
                          string okText = "OK",
@@ -18,30 +16,20 @@ namespace GetSanger.Views.popups
         {
             InitializeComponent();
 
-            CloseWhenBackgroundIsClicked = false;
-            headerLabel.Text = header ?? "Error";
-            textLabel.Text = message ?? "Something went wrong! :(";
-            okLabel.IsVisible = okText != null;
-            okLabel.Text = okText;
-            cancelLabel.Text = cancelText;
-            cancelLabel.IsVisible = cancelText != null;
-            r_UserChoseOptionAction = action;
+            Background = null;
+            BindingContext = new DisplayAlertViewModel(header, message, okText, cancelText, action);
         }
 
-        private void OkTapGestureRecognizer_Tapped(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            tapHelper(true);
+            base.OnAppearing();
+            (BindingContext as PopupBaseViewModel).Appearing();
         }
 
-        private void CancelTapGestureRecognizer_Tapped(object sender, EventArgs e)
+        protected override void OnDisappearing()
         {
-            tapHelper(false);
-        }
-
-        private async void tapHelper(bool okClicked)
-        {
-            await PopupNavigation.Instance.PopAsync();
-            r_UserChoseOptionAction?.Invoke(okClicked);
+            base.OnDisappearing();
+            (BindingContext as PopupBaseViewModel).Disappearing();
         }
     }
 }

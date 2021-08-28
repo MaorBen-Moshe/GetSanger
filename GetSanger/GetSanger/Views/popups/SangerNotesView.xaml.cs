@@ -12,6 +12,7 @@ namespace GetSanger.Views.popups
         {
             BindingContext = new SangerNotesViewModel(i_JobOffer);
 
+            Background = null;
             InitializeComponent();
         }
 
@@ -21,9 +22,10 @@ namespace GetSanger.Views.popups
             (BindingContext as BaseViewModel).Appearing();
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
+        protected override void OnDisappearing()
         {
-
+            base.OnDisappearing();
+            (BindingContext as BaseViewModel).Appearing();
         }
     }
 }

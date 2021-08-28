@@ -92,6 +92,7 @@
 
             <Frame Padding="10"
                    Margin="50, 10, 50, 0"
+                   BorderColor="Black"
                    BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ViewRatingsCommand}" />
@@ -109,6 +110,7 @@
 
             <Frame Padding="10"
                    Margin="50, 10, 50, 0"
+                   BorderColor="Black"
                    BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding AboutMeCommand}" />

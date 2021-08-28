@@ -1,12 +1,8 @@
 ﻿using GetSanger.Constants;
-using GetSanger.Models;
-using GetSanger.Services;
 using GetSanger.Views;
 using GetSanger.Views.chat;
-using GetSanger.Views.popups;
 using System;
 using System.Collections.Generic;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
