@@ -23,7 +23,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <controls:FrameWithShadow Margin="10">
+                <Frame Margin="10">
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="{Binding ConnectedActivity.JobDetails.Title}" 
                                FontSize="Title"
@@ -86,9 +86,9 @@
                         HorizontalOptions="CenterAndExpand"/>
                         </StackLayout>
                     </StackLayout>
-                </controls:FrameWithShadow>
+                </Frame>
 
-                <controls:FrameWithShadow HorizontalOptions="FillAndExpand"      
+                <Frame HorizontalOptions="FillAndExpand"      
                                           Margin="10,5,10,10"
                                           Padding="20">
                     <StackLayout Spacing="10"
@@ -154,6 +154,7 @@
                         <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"
                            Padding="5"
+                               BorderColor="Black"
                            >
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding NotesCommand}"
@@ -170,6 +171,7 @@
                         </Frame>
 
                         <Frame HorizontalOptions="FillAndExpand"
+                               BorderColor="Black"
                            Margin="12, 0"
                            Padding="5"
                            IsVisible="{Binding IsSangerNotesVisible}"
@@ -188,7 +190,7 @@
                             </StackLayout>
                         </Frame>
                     </StackLayout>
-                </controls:FrameWithShadow>
+                </Frame>
 
                 <StackLayout
                          HorizontalOptions="CenterAndExpand"

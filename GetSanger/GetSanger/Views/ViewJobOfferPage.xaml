@@ -24,7 +24,7 @@
             <StackLayout HorizontalOptions="FillAndExpand"
                          VerticalOptions="FillAndExpand"
                          x:Name="mainStack">
-                <controls:FrameWithShadow Margin="10">
+                <Frame Margin="10">
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="{Binding Job.Title}" 
                                FontSize="Title"
@@ -65,7 +65,7 @@
                                 Command="{Binding DeleteMyJobOfferCommand}"
                                 HorizontalOptions="CenterAndExpand"/>
                     </StackLayout>
-                </controls:FrameWithShadow>
+                </Frame>
 
                 <StackLayout BackgroundColor="Transparent"
                              Margin="10, 5, 10, 0"

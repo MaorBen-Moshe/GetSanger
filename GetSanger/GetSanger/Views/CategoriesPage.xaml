@@ -21,7 +21,7 @@
 
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Spacing="0">
-            <controls:FrameWithShadow Padding="5"
+            <Frame Padding="5"
                                        CornerRadius="15"
                                        Margin="10">
                 <StackLayout>
@@ -39,10 +39,11 @@
                            FontSize="Small"
                            HorizontalOptions="CenterAndExpand" />
                 </StackLayout>
-            </controls:FrameWithShadow>
+            </Frame>
             <CollectionView ItemsSource="{Binding CategoriesItems}"
                             SelectedItem="{Binding SelectedItem}"
                             SelectionMode="Single"
+                            ItemSizingStrategy="MeasureFirstItem"
                             Margin="10, 2, 10, 5">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
@@ -52,10 +53,10 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <controls:FrameWithShadow Padding="1"
-                                                  IsClippedToBounds="True"
-                                                  HasShadow="True"
-                                                  CornerRadius="10">
+                        <Frame Padding="1"
+                               IsClippedToBounds="True"
+                               HasShadow="True"
+                               CornerRadius="10">
                             <StackLayout Orientation="Vertical"
                                          HorizontalOptions="FillAndExpand"
                                          VerticalOptions="FillAndExpand"
@@ -69,11 +70,12 @@
                                        FontSize="Small"
                                        FontAttributes="Italic"
                                        CharacterSpacing="2"
+                                       Margin="0,0,0,5"
                                        HorizontalTextAlignment="Center"
                                        HorizontalOptions="CenterAndExpand"
                                        FontFamily="{StaticResource MontserratSemiBold}"/>
                             </StackLayout>
-                        </controls:FrameWithShadow>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

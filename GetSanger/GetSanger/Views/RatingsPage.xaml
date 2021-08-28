@@ -64,7 +64,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <controls:FrameWithShadow
+                            <Frame
                                        BorderColor="DarkSlateGray" 
                                        Padding="0"
                                        Margin="10">
@@ -91,7 +91,7 @@
                                                    VerticalOptions="End"/>
                                     </StackLayout>
                                 </StackLayout>
-                            </controls:FrameWithShadow>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

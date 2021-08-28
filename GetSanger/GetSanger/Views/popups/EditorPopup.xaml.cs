@@ -1,5 +1,5 @@
-﻿using Rg.Plugins.Popup.Pages;
-using Rg.Plugins.Popup.Services;
+﻿using GetSanger.ViewModels;
+using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views.popups
@@ -11,14 +11,19 @@ namespace GetSanger.Views.popups
         {
             InitializeComponent();
 
-            editor.Text = i_Description;
-            editor.Placeholder = i_PlaceHolder ?? "details here...";
-            title.Text = i_PlaceHolder ?? "Details:";
+            BindingContext = new EditorViewModel(i_PlaceHolder, i_Description, i_PlaceHolder);
         }
 
-        private async void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
+        protected override void OnAppearing()
         {
-            await PopupNavigation.Instance.PopAsync();
+            base.OnAppearing();
+            (BindingContext as PopupBaseViewModel).Appearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            (BindingContext as PopupBaseViewModel).Disappearing();
         }
     }
 }

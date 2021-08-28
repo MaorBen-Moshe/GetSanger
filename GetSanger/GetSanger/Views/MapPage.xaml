@@ -39,29 +39,29 @@
                 </controls:BindableMap.Behaviors>
             </controls:BindableMap>
 
-            <controls:FrameWithShadow
-               BorderColor="Gray"
-               HeightRequest="20"
-               WidthRequest="300"
-               HorizontalOptions="Center"
-               VerticalOptions="Start"
-               Margin="0, 20, 0, 0"
-               IsVisible="{Binding IsSearch}"
-               IsEnabled="{Binding IsSearch}">
+            <Frame BorderColor="{AppThemeBinding Dark=Black, Light=White}"
+                   HeightRequest="20"
+                   WidthRequest="300"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   Margin="0, 20, 0, 0"
+                   IsVisible="{Binding IsSearch}"
+                   IsEnabled="{Binding IsSearch}">
                 <SearchBar x:Name="AddressSearchBar" 
                    Placeholder="כתובת"
                    IsVisible="{Binding IsSearch}"
                    IsEnabled="{Binding IsSearch}"
                    SearchCommand="{Binding SearchCommand}"
                    SearchCommandParameter="{Binding Source={x:Reference AddressSearchBar}, Path=Text}"/>
-            </controls:FrameWithShadow>
+            </Frame>
             <StackLayout VerticalOptions="EndAndExpand"
                          HorizontalOptions="CenterAndExpand">
                 
                 <StackLayout Orientation="Horizontal"
-                         VerticalOptions="StartAndExpand"
-                         HorizontalOptions="CenterAndExpand"
-                         Padding="10">
+                             VerticalOptions="StartAndExpand"
+                             HorizontalOptions="CenterAndExpand"
+                             Padding="10"
+                             IsVisible="{Binding IsTrip}">
 
                     <Button Text="Call Sanger" 
                             Padding="10"
@@ -78,7 +78,7 @@
                     <Button Text="Focus" 
                         Margin="10"
                         Command="{Binding FocusMyLocationCommand}"/>
-                    <controls:FrameWithShadow VerticalOptions="EndAndExpand"
+                    <Frame VerticalOptions="EndAndExpand"
                                       HorizontalOptions="CenterAndExpand"
                                       HasShadow="True"
                                       Padding="10,5"
@@ -91,7 +91,7 @@
                                 <TapGestureRecognizer Command="{Binding ExitCommand}"/>
                             </Label.GestureRecognizers>
                         </Label>
-                    </controls:FrameWithShadow>
+                    </Frame>
                 </StackLayout>
             </StackLayout>
 

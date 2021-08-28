@@ -68,8 +68,7 @@
                             <controls:EntryWithBorder Text="{Binding ConnectedUser.PersonalDetails.NickName, Mode=TwoWay}" 
                                                   Keyboard="Text" 
                                                   Placeholder="Name"
-                                                  Margin="20, 0, 20, 5"
-                                                  TextColor="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}">
+                                                  Margin="20, 0, 20, 5">
                                 <Entry.Behaviors>
                                     <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
                                 </Entry.Behaviors>
@@ -84,8 +83,7 @@
                             <controls:EntryWithBorder Text="{Binding ConnectedUser.PersonalDetails.Phone, Mode=TwoWay}" 
                                                   Keyboard="Telephone" 
                                                   Placeholder="Phone number"
-                                                  Margin="20, 0, 20, 5"
-                                                  TextColor="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}">
+                                                  Margin="20, 0, 20, 5">
                                 <Entry.Behaviors>
                                     <behaviors:PhoneNumberMaskBehavior />
                                     <behaviors:EntryLengthValidator MinLength="11" MaxLength="11"/>
@@ -131,8 +129,7 @@
                                 Margin="20, 0, 20, 0"
                                 MaxLength="100"
                                 HeightRequest="200"
-                                Text="{Binding ConnectedUser.PersonalDetails.About, Mode=TwoWay}"
-                                PlaceholderColor="{AppThemeBinding Dark=Gray, Light=Gray}">
+                                Text="{Binding ConnectedUser.PersonalDetails.About, Mode=TwoWay}">
                                 <Editor.Keyboard>
                                     <Keyboard x:FactoryMethod="Create" >
                                         <x:Arguments>

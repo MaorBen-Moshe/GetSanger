@@ -177,7 +177,6 @@
     <Compile Include="Renderers\BorderPickerRenderer.cs" />
     <Compile Include="Renderers\BorderTimePickerRenderer.cs" />
     <Compile Include="Renderers\CustomEditorRendrer.cs" />
-    <Compile Include="Renderers\ShadowFrameRenderer.cs" />
     <Compile Include="Services\BitmapConfig.cs" />
     <Compile Include="Services\Crashlytics.cs" />
     <Compile Include="Services\FCM\AndroidFirebaseMessagingService.cs" />

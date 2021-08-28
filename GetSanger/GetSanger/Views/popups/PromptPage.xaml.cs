@@ -1,7 +1,6 @@
-﻿using Rg.Plugins.Popup.Pages;
-using Rg.Plugins.Popup.Services;
+﻿using GetSanger.ViewModels;
+using Rg.Plugins.Popup.Pages;
 using System;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views.popups
@@ -12,19 +11,20 @@ namespace GetSanger.Views.popups
         public PromptPage(string i_Title, string i_Subtitle, string i_PlaceHolder, Action<string> i_AfterSubmit)
         {
             InitializeComponent();
-            title.Text = i_Title;
-            subTitle.Text = i_Subtitle;
-            editor.Placeholder = i_PlaceHolder;
-            submit.Command = new Command(() => 
-            {
-                i_AfterSubmit.Invoke(editor.Text);
-                PopupNavigation.Instance.PopAsync();
-            });
+
+            BindingContext = new PromptViewModel(i_Title, i_Subtitle, i_PlaceHolder, i_AfterSubmit);
         }
 
-        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            await PopupNavigation.Instance.PopAsync();
+            base.OnAppearing();
+            (BindingContext as PopupBaseViewModel).Appearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            (BindingContext as PopupBaseViewModel).Disappearing();
         }
     }
 }

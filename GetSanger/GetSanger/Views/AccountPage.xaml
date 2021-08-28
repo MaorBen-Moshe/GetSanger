@@ -26,8 +26,8 @@
                            FontFamily="{StaticResource OpenSansSemiBoldItalic}"
                            FontAttributes="Italic, Bold"/>
                 </StackLayout>
-                <controls:FrameWithShadow Padding="20"
-                                          HorizontalOptions="Center">
+                <Frame Padding="20"
+                       HorizontalOptions="Center">
                     <StackLayout Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="FillAndExpand">
@@ -48,7 +48,7 @@
                                x:Name="SangerLabel"
                                FontFamily="{StaticResource MontserratSemiBold}"/>
                     </StackLayout>
-                </controls:FrameWithShadow>
+                </Frame>
 
                 <StackLayout HorizontalOptions="FillAndExpand"
                          VerticalOptions="FillAndExpand"
