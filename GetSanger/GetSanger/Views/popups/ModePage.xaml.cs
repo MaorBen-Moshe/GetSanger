@@ -12,6 +12,8 @@ namespace GetSanger.Views.popups
         public ModePage()
         {
             InitializeComponent();
+
+            Background = null;
         }
 
         protected override bool OnBackButtonPressed()

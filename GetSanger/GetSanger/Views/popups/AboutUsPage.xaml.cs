@@ -10,6 +10,8 @@ namespace GetSanger.Views.popups
         public AboutUsPage()
         {
             InitializeComponent();
+
+            Background = null;
         }
 
         protected override void OnAppearing()

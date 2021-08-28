@@ -9,6 +9,8 @@ namespace GetSanger.Views.popups
         public LinkEmailPage()
         {
             InitializeComponent();
+
+            Background = null;
         }
 
         protected override void OnAppearing()

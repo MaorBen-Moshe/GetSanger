@@ -16,6 +16,7 @@ namespace GetSanger.Views.popups
         {
             InitializeComponent();
 
+            Background = null;
             BindingContext = new DisplayAlertViewModel(header, message, okText, cancelText, action);
         }
 

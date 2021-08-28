@@ -9,6 +9,20 @@ namespace GetSanger.Views.popups
         public SocialList()
         {
             InitializeComponent();
+
+            Background = null;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            (BindingContext as PopupBaseViewModel).Appearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            (BindingContext as PopupBaseViewModel).Disappearing();
         }
     }
 }

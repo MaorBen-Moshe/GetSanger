@@ -11,6 +11,7 @@ namespace GetSanger.Views.popups
         {
             InitializeComponent();
 
+            Background = null;
             BindingContext = new EditorViewModel(i_PlaceHolder, i_Description, i_PlaceHolder);
         }
 
