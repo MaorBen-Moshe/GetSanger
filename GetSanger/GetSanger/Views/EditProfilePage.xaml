@@ -97,7 +97,6 @@
                                    FontAttributes="Italic"
                                    Margin="20, 10, 0, 5"/>
                             <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
-                                                           BorderColor="Black"
                                                            Margin="20, 0, 20, 5"
                                                            MaximumDate="{Binding MaxDate}" 
                                                            Date="{Binding ConnectedUser.PersonalDetails.Birthday}"/>
@@ -111,7 +110,6 @@
 
                             <controls:PickerWithBorder ItemsSource="{Binding GenderItems}" 
                                                        Margin="20, 0, 20, 5"
-                                                       BorderColor="Black"
                                                        SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
                         </StackLayout>
                     </ViewCell>
@@ -120,7 +118,7 @@
                             <Label Text="About me"
                    FontAttributes="Italic"
                    Margin="20, 10, 0, 5"/>
-                            <controls:EditorWithBorder BorderColor="Black"
+                            <controls:EditorWithBorder
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="About me"
@@ -129,7 +127,8 @@
                                 Margin="20, 0, 20, 0"
                                 MaxLength="100"
                                 HeightRequest="200"
-                                Text="{Binding ConnectedUser.PersonalDetails.About, Mode=TwoWay}">
+                                Text="{Binding ConnectedUser.PersonalDetails.About, Mode=TwoWay}"
+                                PlaceholderColor="Gray">
                                 <Editor.Keyboard>
                                     <Keyboard x:FactoryMethod="Create" >
                                         <x:Arguments>
