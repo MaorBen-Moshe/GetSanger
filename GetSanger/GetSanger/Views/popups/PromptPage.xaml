@@ -34,26 +34,27 @@
                         HorizontalOptions="EndAndExpand" 
                         VerticalOptions="Start">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                        <TapGestureRecognizer Command="{Binding ExitCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
                 <Label HorizontalOptions="CenterAndExpand"
                        HorizontalTextAlignment="Center"
                        FontAttributes="Bold, Italic"
                        FontSize="Title"
-                       x:Name="title"/>
+                       Text="{Binding Title}"/>
                 <Label HorizontalOptions="CenterAndExpand"
                        HorizontalTextAlignment="Center"
                        FontAttributes="Italic"
                        FontSize="Subtitle"
-                       x:Name="subTitle"/>
+                       Text="{Binding SubTitle}"/>
                 <controls:EditorWithBorder IsSpellCheckEnabled="True"
                                            IsTextPredictionEnabled="True"
                                            Margin="0"
                                            MaxLength="255"
                                            VerticalOptions="FillAndExpand"
                                            HorizontalOptions="FillAndExpand"
-                                           x:Name="editor">
+                                           Placeholder="{Binding Placeholder}"
+                                           Text="{Binding PromptText, Mode=TwoWay}">
                     <Editor.Keyboard>
                         <Keyboard x:FactoryMethod="Create" >
                             <x:Arguments>
@@ -65,7 +66,7 @@
 
                 <Button Text="Submit"
                         HorizontalOptions="CenterAndExpand"
-                        x:Name="submit"/>
+                        Command="{Binding SubmitCommand}"/>
             </StackLayout>
         </Frame>
     </popup:PopupPage.Content>

@@ -37,10 +37,10 @@
                         HorizontalOptions="EndAndExpand" 
                         VerticalOptions="StartAndExpand">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                        <TapGestureRecognizer Command="{Binding ExitCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label x:Name="title"
+                <Label Text ="{Binding Title}"
                        FontSize="Title"
                        HorizontalOptions="CenterAndExpand"
                        FontFamily="{StaticResource MontserratSemiBold}">
@@ -51,7 +51,8 @@
                                            HeightRequest="400"
                                            WidthRequest="500"
                                            VerticalOptions="FillAndExpand"
-                                           x:Name="editor"
+                                           Text="{Binding Description}"
+                                           Placeholder ="{Binding Placeholder}"
                                            IsReadOnly="True">
                 </controls:EditorWithBorder>
             </StackLayout>

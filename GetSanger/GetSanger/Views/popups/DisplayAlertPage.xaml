@@ -28,14 +28,13 @@
                VerticalOptions="CenterAndExpand">
             <StackLayout Padding="50" 
                          BackgroundColor="Transparent">
-                <Label Text="Error!"
-                       x:Name="headerLabel"
+                <Label Text="{Binding Header}"
                        VerticalOptions="StartAndExpand" 
                        Margin="0,0,0,20"
                        HorizontalOptions="CenterAndExpand" 
                        BackgroundColor="Transparent"/>
 
-                <Label Text="This is a generic error message!"
+                <Label Text="{Binding Message}"
                        x:Name="textLabel"
                        HorizontalTextAlignment="Center"
                        LineBreakMode="TailTruncation"
@@ -46,25 +45,25 @@
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand">
-                    <Label Text="OK" 
+                    <Label Text="{Binding OkText}" 
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand" 
                        BackgroundColor="Transparent"
                        Margin="0,20,0,0"
-                       x:Name="okLabel">
+                       IsVisible="{Binding OkVisible}">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OkTapGestureRecognizer_Tapped"/>
+                            <TapGestureRecognizer Command="{Binding OkCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
 
-                    <Label 
+                    <Label Text="{Binding CancelText}"
                            HorizontalOptions="CenterAndExpand"
                            VerticalOptions="CenterAndExpand" 
                            BackgroundColor="Transparent"
                            Margin="0,20,0,0"
-                           x:Name="cancelLabel">
+                           IsVisible="{Binding CancelVisible}">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="CancelTapGestureRecognizer_Tapped"/>
+                            <TapGestureRecognizer Command="{Binding CancelCommand}"/>
                         </Label.GestureRecognizers>
                     </Label>
                 </StackLayout>
