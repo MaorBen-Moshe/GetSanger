@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                    xmlns:controls="clr-namespace:GetSanger.Controls;assembly=GetSanger"
-                    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-             >
+                    xmlns:controls="clr-namespace:GetSanger.Controls;assembly=GetSanger">
     <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
     <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
     <Color x:Key="ClientButtonColor">#91abfa</Color>
@@ -68,6 +66,8 @@
     <Color x:Key="ShellTitleColorLight">Black</Color>
     <Color x:Key="TableViewTextColorDark">White</Color>
     <Color x:Key="TableViewTextColorLight">Black</Color>
+    <Color x:Key="PickerPlaceholderColorLight">Gray</Color>
+    <Color x:Key="PickerPlaceholderColorDark">WhiteSmoke</Color>
     <Color x:Key="DatePickerTextColorDark">White</Color>
     <Color x:Key="DatePickerTextColorLight">Black</Color>
     <Color x:Key="ChatIncomingBackgroundColorDark">#163375</Color>
@@ -239,6 +239,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="Picker" ApplyToDerivedTypes="True">
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
@@ -253,15 +254,22 @@
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="controls:TimePickerWithBorder">
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
     </Style>
     <Style TargetType="controls:DatePickerWithBorder">
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
+    </Style>
+    <Style TargetType="controls:PickerWithBorder">
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
     </Style>
     <Style TargetType="ScrollView">
         <Setter Property="BackgroundColor" Value="Transparent"/>
     </Style>
     <Style TargetType="controls:EditorWithBorder">
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
     </Style>
 </ResourceDictionary>
