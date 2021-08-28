@@ -46,8 +46,8 @@
     <Color x:Key="NavBarTextColorLight">White</Color>
     <Color x:Key="TabBarTextColorDark">#000000</Color>
     <Color x:Key="TabBarTextColorLight">White</Color>
-    <Color x:Key="TabBarBackgroundColorDark">#3d3d3d</Color>
-    <Color x:Key="TabBarBackgroundColorLight">White</Color>
+    <Color x:Key="TabBarBackgroundColorDark">Black</Color>
+    <Color x:Key="TabBarBackgroundColorLight">#81aef7</Color>
     <Color x:Key="TabBarForegroundColorLight">Gray</Color>
     <Color x:Key="TabBarForegroundColorDark">Gray</Color>
     <!--<Color x:Key="TabBarTitleColorDark">#910000</Color>
@@ -84,15 +84,15 @@
     <Color x:Key="EntryPlaceholderColorLight">Gray</Color>
     <Color x:Key="EditorPlaceholderColorDark">Gray</Color>
     <Color x:Key="EditorPlaceholderColorLight">Gray</Color>
-    
-    
-    <LinearGradientBrush x:Key="GradientDark" StartPoint="0,0" EndPoint="1,1">
+
+
+    <LinearGradientBrush x:Key="GradientDark" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#242424" Offset="0.1"/>
         <GradientStop Color="Black" Offset="1.0"/>
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="GradientLight" StartPoint="0,0" EndPoint="1,1">
+    <LinearGradientBrush x:Key="GradientLight" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="White" Offset="0.1"/>
-        <GradientStop Color="#81aef7" Offset="1.0"/>
+        <GradientStop Color="#81aef7" Offset="0.9"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="ButtonGradientDark" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#002857" Offset="0.1"/>
