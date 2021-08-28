@@ -27,7 +27,7 @@
                    Text="Choose Categories:" 
                    
                    FontSize="Large"
-                   TextColor="Black"
+                   TextColor="{AppThemeBinding Dark=White, Light=Black}"
                    HorizontalOptions="CenterAndExpand" />
 
             <StackLayout  
@@ -52,7 +52,7 @@
                                         <StackLayout WidthRequest="350" Orientation="Horizontal" Spacing="5">
                                             <Label HeightRequest="40" 
                                                    FontSize="Medium" Margin="5,0,0,0" 
-                                                   Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="Gray" 
+                                                   Text="{Binding Path=Category, Converter={StaticResource CategoryToStringConverter}}" TextColor="{AppThemeBinding Dark=White, Light=Gray}" 
                                                    VerticalOptions="CenterAndExpand" 
                                                    HorizontalOptions="FillAndExpand" />
                                             <CheckBox  

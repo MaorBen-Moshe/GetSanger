@@ -12,6 +12,7 @@ namespace GetSanger.Views.popups
         {
             InitializeComponent();
 
+            Background = null;
             BindingContext = new PromptViewModel(i_Title, i_Subtitle, i_PlaceHolder, i_AfterSubmit);
         }
 

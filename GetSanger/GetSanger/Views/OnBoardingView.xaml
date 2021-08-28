@@ -72,7 +72,7 @@
                                             HorizontalOptions="CenterAndExpand"
                                             VerticalOptions="CenterAndExpand"
                                             BorderWidth="1"
-                                            TextColor="Black"
+                                            TextColor="{AppThemeBinding Dark=White, Light=Black}"
                                             Command="{Binding StartCommand, Source={RelativeSource AncestorType={x:Type vm:OnBoardingViewModel}}}"
                                             BackgroundColor="Transparent"/>
                                     <Label Text="skip"
@@ -81,7 +81,7 @@
                                            IsVisible="{Binding IsLast, Converter={StaticResource InverseBoolConverter}}"
                                            HorizontalOptions="CenterAndExpand"
                                            VerticalOptions="CenterAndExpand"
-                                           TextColor="Black"
+                                           TextColor="{AppThemeBinding Dark=White, Light=Black}"
                                            BackgroundColor="Transparent">
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding StartCommand, Source={RelativeSource AncestorType={x:Type vm:OnBoardingViewModel}}}" />

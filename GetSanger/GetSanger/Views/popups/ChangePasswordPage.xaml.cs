@@ -10,6 +10,8 @@ namespace GetSanger.Views.popups
         public ChangePasswordPage()
         {
             InitializeComponent();
+
+            Background = null;
         }
 
         protected override void OnAppearing()

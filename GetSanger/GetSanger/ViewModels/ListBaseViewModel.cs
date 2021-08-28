@@ -171,7 +171,11 @@ namespace GetSanger.ViewModels
             IsVisibleViewList = false;
             NoItemsText = "Fetching items...";
             await func?.Invoke();
-            NoItemsTextColor = Color.DarkGray;
+            NoItemsTextColor = Application.Current.RequestedTheme switch
+            {
+                OSAppTheme.Dark => Color.WhiteSmoke,
+                _ => Color.DarkGray,
+            };
         }
         #endregion
     }
