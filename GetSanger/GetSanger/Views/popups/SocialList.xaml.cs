@@ -1,4 +1,5 @@
-﻿using Rg.Plugins.Popup.Pages;
+﻿using GetSanger.ViewModels;
+using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms.Xaml;
 
 namespace GetSanger.Views.popups
