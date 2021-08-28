@@ -8,11 +8,6 @@
              BackgroundColor="{AppThemeBinding Dark={StaticResource SangerTitleViewThemeColorDark}, Light={StaticResource SangerTitleViewThemeColorLight}}"
              ForegroundColor="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"
              TitleColor="{AppThemeBinding Dark={StaticResource ShellTitleColorDark}, Light={StaticResource ShellTitleColorLight}}"
-             DisabledColor="#808080"
-             UnselectedColor="#616161"
-             TabBarBackgroundColor="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}"
-             TabBarForegroundColor="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"
-             TabBarUnselectedColor="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"
              TabBarTitleColor="{AppThemeBinding Dark={StaticResource SangerTabBarTitleColorDark}, Light={StaticResource SangerTabBarTitleColorLight}}"
              >
     <Shell.Resources>

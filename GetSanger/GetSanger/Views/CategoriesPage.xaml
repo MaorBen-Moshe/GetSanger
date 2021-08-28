@@ -43,6 +43,7 @@
             <CollectionView ItemsSource="{Binding CategoriesItems}"
                             SelectedItem="{Binding SelectedItem}"
                             SelectionMode="Single"
+                            ItemSizingStrategy="MeasureFirstItem"
                             Margin="10, 2, 10, 5">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
@@ -69,6 +70,7 @@
                                        FontSize="Small"
                                        FontAttributes="Italic"
                                        CharacterSpacing="2"
+                                       Margin="0,0,0,5"
                                        HorizontalTextAlignment="Center"
                                        HorizontalOptions="CenterAndExpand"
                                        FontFamily="{StaticResource MontserratSemiBold}"/>
