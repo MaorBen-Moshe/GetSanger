@@ -110,6 +110,7 @@
 
                             <controls:PickerWithBorder ItemsSource="{Binding GenderItems}" 
                                                        Margin="20, 0, 20, 5"
+                                                       BorderColor="{AppThemeBinding Dark=White, Light=Black}"
                                                        SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
                         </StackLayout>
                     </ViewCell>
@@ -127,8 +128,7 @@
                                 Margin="20, 0, 20, 0"
                                 MaxLength="100"
                                 HeightRequest="200"
-                                Text="{Binding ConnectedUser.PersonalDetails.About, Mode=TwoWay}"
-                                PlaceholderColor="Gray">
+                                Text="{Binding ConnectedUser.PersonalDetails.About, Mode=TwoWay}">
                                 <Editor.Keyboard>
                                     <Keyboard x:FactoryMethod="Create" >
                                         <x:Arguments>

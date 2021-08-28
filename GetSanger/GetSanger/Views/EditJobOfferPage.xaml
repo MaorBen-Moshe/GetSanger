@@ -70,9 +70,7 @@
                                FontSize="Small"
                                Padding="0"/>
                     <controls:EntryWithBorder Text="{Binding NewJobOffer.Title}" 
-                                              Placeholder="Job Title"
-                                              TextColor="Purple"
-                                              >
+                                              Placeholder="Job Title">
                         <controls:EntryWithBorder.Behaviors>
                             <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
                         </controls:EntryWithBorder.Behaviors>
@@ -152,8 +150,7 @@
                                                Margin="5,5,5,20"
                                                MaxLength="255"
                                                HeightRequest="220"
-                                               Text="{Binding NewJobOffer.Description}"
-                                               PlaceholderColor="Gray">
+                                               Text="{Binding NewJobOffer.Description}">
                         <Editor.Keyboard>
                             <Keyboard x:FactoryMethod="Create" >
                                 <x:Arguments>

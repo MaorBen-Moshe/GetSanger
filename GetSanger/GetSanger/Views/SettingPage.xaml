@@ -25,7 +25,8 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <TableView IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}">
+            <TableView IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}"
+                       BackgroundColor="Transparent">
                 <TableRoot>
                     <TableSection Title="Generic Notifications">
                         <SwitchCell Text="Notifications" 

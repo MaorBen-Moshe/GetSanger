@@ -30,7 +30,7 @@
 
     <popup:PopupPage.Content>
         
-        <Frame BackgroundColor="White"
+        <Frame 
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
                BorderColor="Black"
@@ -56,7 +56,7 @@
                            FontFamily="{StaticResource OpenSansSemiBoldItalic}"
                            FontAttributes="Bold"
                            HorizontalOptions="CenterAndExpand"
-                           TextColor="Black"/>
+                           TextColor="{AppThemeBinding Dark=White, Light=Black}"/>
                     <Label Text="You can always change it in your account page." 
                            HorizontalTextAlignment="Center"/>
 

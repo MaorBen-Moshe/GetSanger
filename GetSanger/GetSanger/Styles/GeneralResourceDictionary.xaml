@@ -222,6 +222,7 @@
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource FrameBorderColorDark}, Light={StaticResource FrameBorderColorLight}}"/>
     </Style>
     <Style TargetType="Editor" ApplyToDerivedTypes="True">
+        <Setter Property="TextColor" Value="{AppThemeBinding Dark=White, Light=Black}"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EditorBackgroundColorDark}, Light={StaticResource EditorBackgroundColorLight}}"/>
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EditorPlaceholderColorDark}, Light={StaticResource EditorPlaceholderColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>

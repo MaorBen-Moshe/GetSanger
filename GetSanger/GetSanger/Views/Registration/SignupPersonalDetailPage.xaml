@@ -52,7 +52,7 @@
                                    Command="{Binding ImagePickerCommand}"/>
             <Label Text="Add Profile Picture"
                    FontSize="Caption"
-                   TextColor="Gray"
+                   TextColor="{AppThemeBinding Dark=White, Light=Gray}"
                    HorizontalOptions="CenterAndExpand">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ImagePickerCommand}"/>
