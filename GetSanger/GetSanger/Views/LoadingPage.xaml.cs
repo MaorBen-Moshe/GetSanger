@@ -10,6 +10,7 @@ namespace GetSanger.Views
         {
             InitializeComponent();
 
+            Background = null;
             label.Text = text;
         }
     }
