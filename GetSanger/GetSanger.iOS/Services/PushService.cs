@@ -56,14 +56,14 @@ namespace GetSanger.iOS.Services
             if (message.ContainsKey(new NSString("aps")))
             {
                 var apsDictionary = message["aps"] as NSDictionary;
-                string title, body;
-                if (apsDictionary["alert"] is NSDictionary alertDictionary)
+                string title = null, body = null;
+                if (apsDictionary.ContainsKey(new NSString("alert")) && apsDictionary["alert"] is NSDictionary alertDictionary)
                 {
                     title = alertDictionary["title"].ToString();
                     body = alertDictionary["body"].ToString();
-
-                    MainThread.BeginInvokeOnMainThread(async () => await PushServices.HandleMessageReceived(title, body, backgroundPushData));
                 }
+
+                MainThread.BeginInvokeOnMainThread(async () => await PushServices.HandleMessageReceived(title, body, backgroundPushData));
             }
         }
     }
