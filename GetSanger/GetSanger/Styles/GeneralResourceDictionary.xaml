@@ -199,6 +199,7 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource EntryBackgroundColorDark}, Light={StaticResource EntryBackgroundColorLight}}" />
         <Setter Property="FontSize" Value="Medium"/>
         <Setter Property="Margin" Value="1,1,1,0"/>
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EntryPlaceholderColorDark}, Light={StaticResource EntryPlaceholderColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
     </Style>
@@ -239,7 +240,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="Picker" ApplyToDerivedTypes="True">
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
+        <Setter Property="TitleColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource PickerTextColorDark}, Light={StaticResource PickerTextColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
@@ -250,19 +251,15 @@
     <Style TargetType="controls:EntryWithBorder">
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource EntryBorderColorDark}, Light={StaticResource EntryBorderColorLight}}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource EntryTextColorDark}, Light={StaticResource EntryTextColorLight}}"/>
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource EntryPlaceholderColorDark}, Light={StaticResource EntryPlaceholderColorLight}}"/>
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
     </Style>
     <Style TargetType="controls:TimePickerWithBorder">
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
     </Style>
     <Style TargetType="controls:DatePickerWithBorder">
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
     </Style>
     <Style TargetType="controls:PickerWithBorder">
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PickerPlaceholderColorDark}, Light={StaticResource PickerPlaceholderColorLight}}"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource BorderColorDark}, Light={StaticResource BorderColorLight}}"/>
     </Style>
     <Style TargetType="ScrollView">
