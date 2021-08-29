@@ -46,7 +46,7 @@ namespace GetSanger.iOS.Renderers
                 {
                     Text = TitleForHeader(tableView, section),
                     TextColor = _coloredTableView.GroupHeaderColor.ToUIColor(),
-                    TextAlignment = UITextAlignment.Center
+                    TextAlignment = UITextAlignment.Left
                 };
             }
         }

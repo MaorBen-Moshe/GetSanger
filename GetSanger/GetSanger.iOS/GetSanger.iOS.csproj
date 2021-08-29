@@ -88,6 +88,7 @@
     <Compile Include="Renderers\BorderPickerRenderer.cs" />
     <Compile Include="Renderers\BorderTimePickerRenderer.cs" />
     <Compile Include="Renderers\ChatEntryRendrer.cs" />
+    <Compile Include="Renderers\ColoredTableViewRenderer.cs" />
     <Compile Include="Renderers\CustomEditorRendrer.cs" />
     <Compile Include="Renderers\ExtendedListViewRenderer.cs" />
     <Compile Include="Renderers\UITextFieldPadding.cs" />
