@@ -11,7 +11,7 @@ namespace GetSanger.Interfaces
         Task SignInWithCustomToken(string i_Token);
         bool IsAnonymousUser();
         Task SignInAnonymouslyAsync();
-        Task LoginViaFacebook();
+        void LoginViaFacebook();
         string GetFacebookAccessToken();
     }
 }

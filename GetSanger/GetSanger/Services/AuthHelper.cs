@@ -14,6 +14,7 @@ namespace GetSanger.Services
     public static class AuthHelper
     {
         private static readonly IAuth sr_Auth;
+        public static TaskCompletionSource<bool> FacebookLoginCompletion;
 
         static AuthHelper()
         {
@@ -134,9 +135,11 @@ namespace GetSanger.Services
                 switch (i_Provider)
                 {
                     case eSocialProvider.Facebook:
-                        //await sr_Auth.LoginViaFacebook();
-                        //string facebookAccessToken = sr_Auth.GetFacebookAccessToken();
-                        string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+                        FacebookLoginCompletion = new TaskCompletionSource<bool>();
+                        sr_Auth.LoginViaFacebook();
+                        await FacebookLoginCompletion.Task;
+                        string facebookAccessToken = sr_Auth.GetFacebookAccessToken();
+                        //string facebookAccessToken = await getSocialAuthIdToken("Facebook");
                         requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
                         requestDictionary["ProviderId"] = "facebook.com";
                         break;

@@ -6,6 +6,7 @@ using Android.Gms.Extensions;
 using Android.Runtime;
 using Firebase.Auth;
 using GetSanger.Droid.Services;
+using GetSanger.Services;
 using Plugin.CurrentActivity;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
@@ -77,26 +78,48 @@ namespace GetSanger.Droid.Services
             await FirebaseAuth.Instance.SignInAnonymouslyAsync();
         }
 
-        public async Task LoginViaFacebook()
+        public void LoginViaFacebook()
         {
             LoginManager.Instance.LogOut();
             LoginManager.Instance.RegisterCallback(FacebookCallbackManager, new FacebookCallback<LoginResult>()
             {
-                HandleError = (exception => throw new Exception("Login failed.")),
-                HandleCancel = (() => throw new Exception("Login cancelled.")),
-                HandleSuccess = (result => AccessToken.CurrentAccessToken = result.AccessToken)
+                HandleError = (exception =>
+                {
+                    AuthHelper.FacebookLoginCompletion?.TrySetResult(true);
+                }),
+                HandleCancel = (() =>
+                {
+                    AuthHelper.FacebookLoginCompletion?.TrySetResult(true);
+                }),
+                HandleSuccess = (result =>
+                {
+                    AccessToken.CurrentAccessToken = result.AccessToken;
+                    AuthHelper.FacebookLoginCompletion?.TrySetResult(true);
+                })
             });
 
             LoginManager.Instance.SetLoginBehavior(LoginBehavior.NativeWithFallback);
-            //LoginManager.Instance.LogIn(CrossCurrentActivity.Current.Activity, new List<string> { "public_profile", "email" });
-            await Task.Run(() => LoginManager.Instance.LogInWithReadPermissions(CrossCurrentActivity.Current.Activity,
-                new List<string> { "public_profile", "email" }));
+            LoginManager.Instance.LogInWithReadPermissions(CrossCurrentActivity.Current.Activity,
+                new List<string> { "public_profile", "email" });
         }
 
         public string GetFacebookAccessToken()
         {
-            //return AccessToken.CurrentAccessToken.Token;
-            return "";
+            try
+            {
+                string accessToken = AccessToken.CurrentAccessToken.Token;
+
+                if (accessToken == null)
+                {
+                    throw new Exception();
+                }
+
+                return accessToken;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Login failed.");
+            }
         }
 
         private FirebaseUser getUser()

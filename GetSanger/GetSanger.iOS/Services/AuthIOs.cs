@@ -6,6 +6,7 @@ using Facebook.LoginKit;
 using Firebase.Auth;
 using GetSanger.Interfaces;
 using GetSanger.iOS.Services;
+using GetSanger.Services;
 using UIKit;
 using Xamarin.Forms;
 
@@ -78,28 +79,41 @@ namespace GetSanger.iOS.Services
             await Auth.DefaultInstance.SignInAnonymouslyAsync();
         }
 
-        public async Task LoginViaFacebook()
+        public void LoginViaFacebook()
         {
             var window = UIApplication.SharedApplication.KeyWindow;
             var vc = window.RootViewController;
 
             LoginManager manager = new LoginManager();
             manager.LogOut();
-            await Task.Run(() =>
+            manager.LogIn(new[] { "public_profile", "email" }, vc, ((result, error) =>
             {
-                manager.LogIn(new[] { "public_profile", "email" }, vc, ((result, error) =>
+                if (result is { IsCancelled: false })
                 {
-                    if (error != null || result == null || result.IsCancelled)
-                    {
-                        throw new Exception("Login cancelled.");
-                    }
-                }));
-            });
+                    AccessToken.CurrentAccessToken = result.Token;
+                }
+
+                AuthHelper.FacebookLoginCompletion?.TrySetResult(true);
+            }));
         }
 
         public string GetFacebookAccessToken()
         {
-            return AccessToken.CurrentAccessToken.TokenString;
+            try
+            {
+                string accessToken = AccessToken.CurrentAccessToken.TokenString;
+
+                if (accessToken == null)
+                {
+                    throw new Exception();
+                }
+
+                return accessToken;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Login failed.");
+            }
         }
     }
 }
