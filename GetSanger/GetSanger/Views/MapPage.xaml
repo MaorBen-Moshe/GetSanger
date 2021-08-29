@@ -39,7 +39,7 @@
                 </controls:BindableMap.Behaviors>
             </controls:BindableMap>
 
-            <Frame BorderColor="{AppThemeBinding Dark=Black, Light=White}"
+            <Frame BorderColor="Transparent"
                    HeightRequest="20"
                    WidthRequest="300"
                    HorizontalOptions="Center"

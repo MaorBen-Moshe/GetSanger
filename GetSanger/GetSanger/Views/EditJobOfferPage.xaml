@@ -44,7 +44,7 @@
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="Creating New Offer" 
                                FontSize="Title"
-                               FontFamily="{StaticResource MontserratSemiBold}"
+                               Style="{StaticResource TitleStyle}"
                                FontAttributes="Italic"
                                HorizontalTextAlignment="Center"/>
                         <Label Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 

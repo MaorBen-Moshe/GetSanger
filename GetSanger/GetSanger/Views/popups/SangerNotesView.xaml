@@ -21,7 +21,7 @@
     <popup:PopupPage.Content>
         <Frame Padding="10"
                Margin="10"
-               BorderColor="Black"
+               BorderColor="Transparent"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
                HasShadow="True">
@@ -38,9 +38,8 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <Label Text="Add Notes"
-                       TextDecorations="Underline"
+                       Style="{StaticResource TitleStyle}"
                        TextTransform="Uppercase"
-                       FontFamily="{StaticResource MontserratSemiBold}"
                        FontSize="Title"
                        HorizontalOptions="CenterAndExpand"/>
                 <controls:EditorWithBorder IsSpellCheckEnabled="True"

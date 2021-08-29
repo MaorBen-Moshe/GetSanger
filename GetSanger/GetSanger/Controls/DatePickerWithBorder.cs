@@ -14,7 +14,7 @@ namespace GetSanger.Controls
             BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(DatePickerWithBorder), new Thickness(10));
 
         public static BindableProperty BorderColorProperty =
-            BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(DatePickerWithBorder), Color.Gray);
+            BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(DatePickerWithBorder));
 
         public int CornerRadius
         {

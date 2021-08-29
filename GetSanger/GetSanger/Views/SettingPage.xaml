@@ -29,9 +29,8 @@
                        BackgroundColor="Transparent">
                 <TableRoot>
                     <TableSection Title="Generic Notifications">
-                        <SwitchCell Text="Notifications" 
-                                    On="{Binding IsGenericNotificatons}" />
-
+                        <controls:CustomSwitchCell Text="Notifications" 
+                                                   On="{Binding IsGenericNotificatons}" />
                     </TableSection>
                 </TableRoot>
             </TableView>
@@ -44,7 +43,6 @@
                                           IsVisible="{Binding IsSangerMode}"/>
             <Frame Padding="5"
                    HasShadow="False"
-                   BorderColor="Gray"
                    IsClippedToBounds="True"
                    Margin="10, 5, 10, 20"
                    CornerRadius="10"

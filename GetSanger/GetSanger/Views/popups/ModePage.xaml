@@ -33,7 +33,7 @@
         <Frame 
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
-               BorderColor="Black"
+               BorderColor="Transparent"
                Margin="15,10,15,10"
                Padding="10">
             <StackLayout VerticalOptions="CenterAndExpand"
@@ -53,7 +53,7 @@
                 <StackLayout HorizontalOptions="Center">
                     <Label Text="Choose your mode" 
                            FontSize="Title"
-                           FontFamily="{StaticResource OpenSansSemiBoldItalic}"
+                           Style="{StaticResource TitleStyle}"
                            FontAttributes="Bold"
                            HorizontalOptions="CenterAndExpand"
                            TextColor="{AppThemeBinding Dark=White, Light=Black}"/>

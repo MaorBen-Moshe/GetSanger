@@ -23,23 +23,31 @@
     </popup:PopupPage.Animation>
 
     <popup:PopupPage.Content>
-        <StackLayout Margin="20"
-                     >
-            <Label Text="X" 
+        <Frame CornerRadius="20"
+               IsClippedToBounds="True"
+               Padding="10"
+               Margin="10"
+               BorderColor="Transparent">
+            <ScrollView>
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand">
+                    <Label Text="X" 
                    BackgroundColor="Transparent"
                    HorizontalOptions="EndAndExpand" 
                    VerticalOptions="Start"
                    Margin="5">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ExitCommand}"/>
-                </Label.GestureRecognizers>
-            </Label>
-            <Label Text="{Binding Text}"
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ExitCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="{Binding Text}"
                    FontSize="Large"
                    BackgroundColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"
                    HorizontalTextAlignment="Center"/>
-        </StackLayout>
+                </StackLayout>
+            </ScrollView>
+        </Frame>
     </popup:PopupPage.Content>
 </popup:PopupPage>

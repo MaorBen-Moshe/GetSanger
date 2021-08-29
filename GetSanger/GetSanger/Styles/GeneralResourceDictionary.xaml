@@ -2,16 +2,7 @@
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     xmlns:controls="clr-namespace:GetSanger.Controls;assembly=GetSanger">
-    <Color x:Key="ClientBackgroundThemeColor">#b3ecff</Color>
-    <Color x:Key="SangerBackgroundThemeColor">#ccffb3</Color>
-    <Color x:Key="ClientButtonColor">#91abfa</Color>
-    <Color x:Key="SangerButtonColor">#7bcc54</Color>
     <Color x:Key="DarkBackground">#3d3d3d</Color>
-    
-    
-    <Color x:Key="ColorsGray">Gray</Color>
-    <Color x:Key="ColorsTransparent">Transparent</Color>
-
     <Color x:Key="LabelTextColorDark">White</Color>
     <Color x:Key="LabelTextColorLight">#000000</Color>
     <Color x:Key="LabelBackgroundColorDark">#00000000</Color>
@@ -30,14 +21,14 @@
     <Color x:Key="EntryTextColorLight">#000000</Color>
     <Color x:Key="EntryBackgroundColorDark">#3d4aA3</Color>
     <Color x:Key="EntryBackgroundColorLight">#91abfa</Color>
-    <Color x:Key="FrameBorderColorDark">#000000</Color>
-    <Color x:Key="FrameBorderColorLight">White</Color>
+    <Color x:Key="FrameBorderColorDark">White</Color>
+    <Color x:Key="FrameBorderColorLight">Black</Color>
     <Color x:Key="FramBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FramBackgroundColorLight">WhiteSmoke</Color>
     <Color x:Key="GridBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="GridBackgroundColorLight">White</Color>
     <Color x:Key="ShellBackgroundColorDark">Black</Color>
-    <Color x:Key="ShellBackgroundColorLight">WhiteSmoke</Color>
+    <Color x:Key="ShellBackgroundColorLight">#81aef7</Color>
     <Color x:Key="ShellForegroundColorDark">White</Color>
     <Color x:Key="ShellForegroundColorLight">#000000</Color>
     <Color x:Key="NavBarTextColorDark">#3d3d3d</Color>
@@ -48,10 +39,10 @@
     <Color x:Key="TabBarBackgroundColorLight">#81aef7</Color>
     <Color x:Key="TabBarForegroundColorLight">Gray</Color>
     <Color x:Key="TabBarForegroundColorDark">Gray</Color>
-    <!--<Color x:Key="TabBarTitleColorDark">#910000</Color>
-    <Color x:Key="TabBarTitleColorLight">DeepSkyBlue</Color>-->
-    <Color x:Key="TabBarUnselectedColorDark">Gray</Color>
-    <Color x:Key="TabBarUnselectedColorLight">DimGray</Color>
+    <Color x:Key="TabBarTitleColorDark">#155BAB</Color>
+    <Color x:Key="TabBarTitleColorLight">White</Color>
+    <Color x:Key="TabBarUnselectedColorDark">White</Color>
+    <Color x:Key="TabBarUnselectedColorLight">Black</Color>
     <Color x:Key="EditorBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="EditorBackgroundColorLight">White</Color>
     <Color x:Key="TableViewBackgroundColorDark">#3d3d3d</Color>
@@ -86,9 +77,9 @@
     <Color x:Key="EditorPlaceholderColorLight">Black</Color>
     <Color x:Key="BorderColorDark">White</Color>
     <Color x:Key="BorderColorLight">Black</Color>
-    <Color x:Key="SwitchColorDark">#406b2c</Color>
-    <Color x:Key="SwitchColorLight">#7bcc54</Color>
-    <Color x:Key="SwitchThumbColorDark">#00142b</Color>
+    <Color x:Key="SwitchColorDark">#DCDCDC</Color>
+    <Color x:Key="SwitchColorLight">#4479D4</Color>
+    <Color x:Key="SwitchThumbColorDark">Gray</Color>
     <Color x:Key="SwitchThumbColorLight">#002857</Color>
     <Color x:Key="CheckboxColorDark">#00142b</Color>
     <Color x:Key="CheckboxColorLight">#002857</Color>
@@ -160,20 +151,18 @@
         <On Platform="iOS" Value="OpenSans-LightItalic" />
     </OnPlatform>
     
-    <Style TargetType="Shell">
+    <Style TargetType="Shell" ApplyToDerivedTypes="True">
         <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}" />
         <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"/>
         <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Dark={StaticResource ShellTitleColorDark}, Light={StaticResource ShellTitleColorLight}}" />
-        <Setter Property="Shell.DisabledColor" Value="#808080" />
-        <Setter Property="Shell.UnselectedColor" Value="#616161" />
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"/>
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark=#616161, Light=White}"/>
         <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"/>
-        <!--<Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>-->
     </Style>
     <Style TargetType="TabBar">
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarForegroundColorDark}, Light={StaticResource TabBarForegroundColorLight}}"/>
+        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource TabBarTitleColorDark}, Light={StaticResource TabBarTitleColorLight}}"/>
         <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource TabBarUnselectedColorDark}, Light={StaticResource TabBarUnselectedColorLight}}"/>
     </Style>
     <Style TargetType="NavigationPage" ApplyToDerivedTypes="true">
@@ -201,9 +190,10 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource LabelBackgroundColorDark}, Light={StaticResource LabelBackgroundColorLight}}" />
         <Setter Property="FontSize" Value="Medium"/>
         <Setter Property="Padding" Value="5"/>
-        <Setter Property="LineBreakMode" Value="TailTruncation" />
-        <Setter Property="MaxLines" Value="7" />
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratLight}"/>
+    </Style>
+    <Style TargetType="Label" x:Key="TitleStyle">
+        <Setter Property="FontFamily" Value="{StaticResource Key=CaveatBold}"/>
     </Style>
     
     <Style TargetType="Entry" ApplyToDerivedTypes="True">

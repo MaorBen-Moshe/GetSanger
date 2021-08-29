@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:converters="clr-namespace:GetSanger.Converters"
-             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.CategoriesPage"
              Shell.NavBarIsVisible="False">
 
@@ -28,7 +27,7 @@
                     <Label Margin="0, 10, 0, 0" 
                            HorizontalTextAlignment="Center" 
                            Text="Pick Job Category"
-                           FontFamily="{StaticResource MontserratBold}"
+                           Style="{StaticResource TitleStyle}"
                            FontAttributes="Bold, Italic"  
                            FontSize="Title"
                            HorizontalOptions="CenterAndExpand" />

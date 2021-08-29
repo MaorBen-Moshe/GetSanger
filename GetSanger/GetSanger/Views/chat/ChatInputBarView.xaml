@@ -29,8 +29,7 @@
                                            IsExpandable="True"
                                            BackgroundColor="{AppThemeBinding Dark=Black, Light=WhiteSmoke}"
                                            IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
-                                           Completed="Handle_Completed"
-                                           BorderColor="Black"/>
+                                           Completed="Handle_Completed"/>
             <Label Text="Send"
                    FontFamily="{StaticResource OpenSansBold}"
                    Grid.Row="0"
