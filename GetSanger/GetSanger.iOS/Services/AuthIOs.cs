@@ -47,8 +47,7 @@ namespace GetSanger.iOS.Services
         {
             if (getUser() != null)
             {
-                NSError? error;
-                Auth.DefaultInstance.SignOut(out error);
+                Auth.DefaultInstance.SignOut(out _);
             }
         }
 
