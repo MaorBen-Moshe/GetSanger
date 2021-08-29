@@ -25,15 +25,15 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <TableView IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}"
-                       BackgroundColor="Transparent">
+            <controls:ColoredTableView IsVisible="{Binding IsSangerMode, Converter={StaticResource InverseBoolConverter}}"
+                                       BackgroundColor="Transparent">
                 <TableRoot>
                     <TableSection Title="Generic Notifications">
                         <controls:CustomSwitchCell Text="Notifications" 
                                                    On="{Binding IsGenericNotificatons}" />
                     </TableSection>
                 </TableRoot>
-            </TableView>
+            </controls:ColoredTableView>
             <controls:CategoriesTableView Source="{Binding CategoriesItems}" 
                                           IsGenericNotifications="{Binding IsGenericNotificatons}" 
                                           ToggledCommand="{Binding ToggledCommand}"

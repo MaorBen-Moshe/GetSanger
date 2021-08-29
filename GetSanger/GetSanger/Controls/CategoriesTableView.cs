@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
-    public class CategoriesTableView : TableView
+    public class CategoriesTableView : ColoredTableView
     {
         #region BindableProperties
         public static BindableProperty SourceProperty

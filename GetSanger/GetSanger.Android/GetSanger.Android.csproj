@@ -176,6 +176,7 @@
     <Compile Include="Renderers\BorderEntryRenderer.cs" />
     <Compile Include="Renderers\BorderPickerRenderer.cs" />
     <Compile Include="Renderers\BorderTimePickerRenderer.cs" />
+    <Compile Include="Renderers\ColoredTableViewRenderer.cs" />
     <Compile Include="Renderers\CustomEditorRendrer.cs" />
     <Compile Include="Services\BitmapConfig.cs" />
     <Compile Include="Services\Crashlytics.cs" />
@@ -361,7 +362,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" TriggeredFromHotReload="False" />
+      <UserProperties TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
