@@ -21,7 +21,6 @@
               Margin="10,10,80,10"
               IsClippedToBounds="True"
               CornerRadius="30"
-              BorderColor="Black"
               effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
               effects:LongPressedEffect.CommandParameter="{Binding .}">
             <Frame.Effects>

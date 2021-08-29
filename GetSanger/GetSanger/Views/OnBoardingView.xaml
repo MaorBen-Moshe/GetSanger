@@ -46,7 +46,7 @@
                             <Frame HorizontalOptions="CenterAndExpand"
                                    VerticalOptions="CenterAndExpand"
                                    Background ="{AppThemeBinding Dark={StaticResource ButtonGradientDark}, Light={StaticResource ButtonGradientLight}}"
-                                   BorderColor="White"
+                                   BorderColor="Transparent"
                                    HasShadow="True"
                                    Margin="10"
                                    Padding="10">
@@ -55,7 +55,7 @@
                                              BackgroundColor="Transparent">
                                     <Label Text="{Binding Header}"
                                            HorizontalTextAlignment="Center"
-                                           FontFamily="{StaticResource MontserratBold}"
+                                           Style="{StaticResource TitleStyle}"
                                            FontSize="25"
                                            FontAttributes="Bold"
                                            Margin="10, 0"
@@ -73,8 +73,7 @@
                                             VerticalOptions="CenterAndExpand"
                                             BorderWidth="1"
                                             TextColor="{AppThemeBinding Dark=White, Light=Black}"
-                                            Command="{Binding StartCommand, Source={RelativeSource AncestorType={x:Type vm:OnBoardingViewModel}}}"
-                                            BackgroundColor="Transparent"/>
+                                            Command="{Binding StartCommand, Source={RelativeSource AncestorType={x:Type vm:OnBoardingViewModel}}}"/>
                                     <Label Text="skip"
                                            FontAttributes="Italic"
                                            FontSize="Small"

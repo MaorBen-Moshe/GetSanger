@@ -22,8 +22,8 @@
     <popup:PopupPage.Content>
         <Frame HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
-               BackgroundColor="{AppThemeBinding Dark=#1A1A1A, Light=#FFFFFF}"
                Padding="5"
+               BorderColor="Transparent"
                HasShadow="True"
                Margin="10">
             <StackLayout Padding="20"
@@ -43,7 +43,7 @@
                 <Label Text ="{Binding Title}"
                        FontSize="Title"
                        HorizontalOptions="CenterAndExpand"
-                       FontFamily="{StaticResource MontserratSemiBold}">
+                       Style="{StaticResource TitleStyle}">
                     
                 </Label>
                 <controls:EditorWithBorder IsSpellCheckEnabled="True"

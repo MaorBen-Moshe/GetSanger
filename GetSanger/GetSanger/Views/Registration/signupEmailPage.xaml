@@ -33,7 +33,7 @@
             <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 0, 0, 10">
                 <Label Text="Sign Up" 
                        FontSize="Title" 
-                       FontFamily="{StaticResource OpenSansSemiBoldItalic}"
+                       Style="{StaticResource TitleStyle}"
                        HorizontalOptions="CenterAndExpand"/>
                 <Label Text="Create an account to start doing more" HorizontalOptions="CenterAndExpand" FontSize="Small"/>
             </StackLayout>

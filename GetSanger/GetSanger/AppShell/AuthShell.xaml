@@ -4,11 +4,7 @@
              xmlns:Page="clr-namespace:GetSanger.Views.Registration"
              x:Class="GetSanger.AppShell.AuthShell"
              FlyoutBehavior="Disabled"
-             FlowDirection="LeftToRight"
-             BackgroundColor="{AppThemeBinding Dark={StaticResource ShellBackgroundColorDark}, Light={StaticResource ShellBackgroundColorLight}}"
-             ForegroundColor="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"
-             TitleColor="{AppThemeBinding Dark={StaticResource ShellTitleColorDark}, Light={StaticResource ShellTitleColorLight}}"
-             >
+             FlowDirection="LeftToRight">
 
     <TabBar>
         <ShellContent ContentTemplate="{DataTemplate Page:RegistrationPage}"></ShellContent>

@@ -79,7 +79,6 @@
             <controls:PickerWithBorder CornerRadius="15"
                                        SelectedIndex="1" 
                                        Title="Gender"
-                                       BorderColor="Black"
                                        ItemsSource="{Binding GenderItems}"
                                        SelectedItem="{Binding PickedGender}">
             </controls:PickerWithBorder>
@@ -97,14 +96,12 @@
                                                MaximumDate="{Binding MaxDatePicker}"
                                                Date="{Binding CreatedUser.PersonalDetails.Birthday}" 
                                                x:Name="DateEntry" 
-                                               BorderColor="Black"
                                                Grid.Column="1"/>
             </Grid>
             <controls:EditorWithBorder 
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="About me"
-                                BorderColor="Black"
                                 CornerRadius="15"
                                 VerticalOptions="FillAndExpand"
                                 MaxLength="100"

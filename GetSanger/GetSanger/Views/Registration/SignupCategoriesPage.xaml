@@ -22,10 +22,9 @@
                    Margin="14,17,20,0" 
                    HeightRequest="54"
                    WidthRequest="350"
-                   FontFamily="{StaticResource OpenSansSemiBoldItalic}"
+                   Style="{StaticResource TitleStyle}"
                    HorizontalTextAlignment="Center" 
                    Text="Choose Categories:" 
-                   
                    FontSize="Large"
                    TextColor="{AppThemeBinding Dark=White, Light=Black}"
                    HorizontalOptions="CenterAndExpand" />

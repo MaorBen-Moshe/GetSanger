@@ -60,7 +60,7 @@
                                        BackgroundColor="Transparent"/>
                 <Label Text="{Binding CurrentUser.PersonalDetails.NickName}"
                    FontSize="Title"
-                       FontFamily="{StaticResource OpenSansSemiBoldItalic}"
+                   Style="{StaticResource TitleStyle}"
                    BackgroundColor="Transparent"
                    Margin="0,5"
                    HorizontalOptions="CenterAndExpand"
@@ -92,7 +92,6 @@
 
             <Frame Padding="10"
                    Margin="50, 10, 50, 0"
-                   BorderColor="Black"
                    BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ViewRatingsCommand}" />
@@ -110,7 +109,6 @@
 
             <Frame Padding="10"
                    Margin="50, 10, 50, 0"
-                   BorderColor="Black"
                    BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding AboutMeCommand}" />

@@ -33,13 +33,14 @@
     <popup:PopupPage.Content>
         <Frame Padding="5"
                HorizontalOptions="CenterAndExpand"
+               BorderColor="Transparent"
                VerticalOptions="CenterAndExpand"
                Margin="10">
             <StackLayout HorizontalOptions="FillAndExpand"
                          VerticalOptions="FillAndExpand">
                 <Label Text="X" 
                        FontAttributes="Bold"
-                       FontSize="Medium"
+                       FontSize="Large"
                                BackgroundColor="Transparent"
                                HorizontalOptions="EndAndExpand" 
                                VerticalOptions="StartAndExpand">
@@ -48,12 +49,13 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <Label Text="{Binding UserName, StringFormat='Rate {0}'}"
-                       Margin="0, 10"
+                       Margin="0, 0"
+                       Padding="5"
+                       Style="{StaticResource TitleStyle}"
                        FontSize="Title"
-                       FontFamily="{StaticResource OpenSansSemiBoldItalic}"
                        TextTransform="Uppercase"
                        FontAttributes="Italic, Bold" 
-                       HorizontalOptions="CenterAndExpand"/>
+                       HorizontalOptions="Center"/>
                 <Label Text="{Binding UserName, StringFormat='Describe your thoughts about {0}.'}"
                        FontSize="Subtitle"
                        FontAttributes="Italic"

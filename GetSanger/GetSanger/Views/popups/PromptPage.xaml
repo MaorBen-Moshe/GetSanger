@@ -24,6 +24,7 @@
                VerticalOptions="FillAndExpand"
                Margin="20, 100"
                CornerRadius="10"
+               BorderColor="Transparent"
                Padding="10"
                HasShadow="True">
             <StackLayout Spacing="15">
@@ -41,6 +42,7 @@
                        HorizontalTextAlignment="Center"
                        FontAttributes="Bold, Italic"
                        FontSize="Title"
+                       Style="{StaticResource TitleStyle}"
                        Text="{Binding Title}"/>
                 <Label HorizontalOptions="CenterAndExpand"
                        HorizontalTextAlignment="Center"
