@@ -52,6 +52,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame Padding="1"
+                               Style="{StaticResource CategoryCellStyle}"
                                IsClippedToBounds="True"
                                HasShadow="True"
                                CornerRadius="10">

@@ -11,6 +11,8 @@
     <Color x:Key="StackLayoutBackgroundColorLight">Transparent</Color>
     <Color x:Key="FrameBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FrameBackgroundColorLight">White</Color>
+    <Color x:Key="CategoryCellBackgroundLight">White</Color>
+    <Color x:Key="CategoryCellBackgroundDark">#6F6F6F</Color>
     <Color x:Key="ListViewBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="ListViewBackgroundColorLight">White</Color>
     <Color x:Key="ButtonBackgroundColorDark">#3d4aA3</Color>
@@ -283,5 +285,8 @@
     <Style TargetType="controls:ColoredTableView" ApplyToDerivedTypes="True">
         <Setter Property="GroupHeaderColor" Value="{AppThemeBinding Dark={StaticResource TableViewHeaderDark}, Light={StaticResource TableViewHeaderLight}}"/>
         <Setter Property="SeparatorColor" Value="{AppThemeBinding Dark={StaticResource TableViewSeperatorDark}, Light={StaticResource TableViewSeperatorLight}}" />
+    </Style>
+    <Style TargetType="Frame" x:Key="CategoryCellStyle">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource CategoryCellBackgroundDark}, Light={StaticResource CategoryCellBackgroundLight}}"/>
     </Style>
 </ResourceDictionary>
