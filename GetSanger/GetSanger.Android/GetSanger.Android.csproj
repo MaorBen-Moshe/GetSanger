@@ -360,23 +360,49 @@
     <AndroidResource Include="Resources\Drawable\IconMiscellaneous.png" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\noVisibilityDarkMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\visibilityDarkMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\ascendingSortDarkMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconElectricianDark.png" />
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\Drawable\IconHandimanDark.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\IconArrangementDark.png" />
-    <AndroidResource Include="Resources\Drawable\ascendingSortDarkMode.png" />
-    <AndroidResource Include="Resources\Drawable\IconGardeningDark.png" />
-    <AndroidResource Include="Resources\Drawable\IconVehiclesDark.png" />
-    <AndroidResource Include="Resources\Drawable\IconStudiesDark.png" />
-    <AndroidResource Include="Resources\Drawable\IconElectricianDark.png" />
     <AndroidResource Include="Resources\Drawable\IconMiscellaneousDark.png" />
-    <AndroidResource Include="Resources\Drawable\IconDeliveryDark.png" />
-    <AndroidResource Include="Resources\Drawable\IconPetsDark.png" />
-    <AndroidResource Include="Resources\Drawable\IconComputersAndSmartphonesDark.png" />
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\Drawable\IconHouseDevicesDark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconArrangementDark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconVehiclesDark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconDeliveryDark.png" />
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\Drawable\IconCleaningDark.png" />
-    <AndroidResource Include="Resources\Drawable\noVisibilityDarkMode.png" />
-    <AndroidResource Include="Resources\Drawable\visibilityDarkMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconPetsDark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconComputersAndSmartphonesDark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconStudiesDark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\IconGardeningDark.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\IconBeautyDark.png" />
