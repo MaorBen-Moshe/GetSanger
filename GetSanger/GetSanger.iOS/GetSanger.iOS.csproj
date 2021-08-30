@@ -222,48 +222,6 @@
       <Visible>false</Visible>
     </ImageAsset>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon1024.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon180.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon167.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon152.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon120.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon87.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon80.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon76.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon58.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon29.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\accountIcon.png.imageset\accountIcon2x.png">
       <Visible>false</Visible>
     </ImageAsset>
@@ -573,6 +531,29 @@
     <ImageAsset Include="Assets.xcassets\IconMiscellaneous.png.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Notification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40.png" />
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\87x87-1.png" />
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\64x64-1.png" />
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\32x32-1.png" />
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\87x87-1.png" />
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\64x64-1.png" />
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\32x32-1.png" />
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\87x87-2.png" />
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\64x64-2.png" />
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\32x32-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -648,6 +629,10 @@
     <Folder Include="Assets.xcassets\ic_scolldown.png.imageset\" />
     <Folder Include="Assets.xcassets\profile.png.imageset\" />
     <Folder Include="Assets.xcassets\visibility.png.imageset\" />
+    <Folder Include="Assets.xcassets\visibilityDarkMode.png.imageset\" />
+    <Folder Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\" />
+    <Folder Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\" />
+    <Folder Include="Assets.xcassets\AppIcon.appiconset\" />
   </ItemGroup>
   <ItemGroup />
 </Project>
