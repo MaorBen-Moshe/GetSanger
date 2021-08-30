@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GetSanger.Extensions;
+using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {
@@ -38,6 +39,7 @@ namespace GetSanger.ViewModels
         {
             CategoriesItems = typeof(eCategory).GetListOfEnumNames().Select(name => new CategoryCell { Category = (eCategory)Enum.Parse(typeof(eCategory), name) }).ToList();
             CategoriesItems = CategoriesItems.Where(categoryCell => categoryCell.Category.Equals(eCategory.All) == false).ToList();
+            themeModeHelper(Application.Current.RequestedTheme);
         }
         #endregion
 
@@ -45,14 +47,32 @@ namespace GetSanger.ViewModels
         public override void Appearing()
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(CategoriesViewModel));
+            Application.Current.RequestedThemeChanged += Current_RequestedThemeChanged;
         }
 
         public override void Disappearing()
         {
+            Application.Current.RequestedThemeChanged -= Current_RequestedThemeChanged;
         }
 
         protected override void SetCommands()
         {
+        }
+
+        private void Current_RequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+        {
+            themeModeHelper(e.RequestedTheme);
+        }
+
+        private void themeModeHelper(OSAppTheme current)
+        {
+            foreach (CategoryCell cell in CategoriesItems)
+            {
+                string uri = cell.ImageUri.Replace(".png", "");
+                uri = uri.Replace("Dark", "");
+                if (current.Equals(OSAppTheme.Dark)) uri += "Dark";
+                cell.ImageUri = uri + ".png";
+            }
         }
 
         private async void categorySelected(CategoryCell current)

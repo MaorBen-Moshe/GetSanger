@@ -72,12 +72,16 @@ namespace GetSanger.Controls
         {
             if (PasswordEntry.IsPassword)
             {
-                visibilityImage.Source = ImageSource.FromFile("visibility.png");
+                visibilityImage.Source = Application.Current.RequestedTheme.Equals(OSAppTheme.Dark) ?
+                                                                                                      ImageSource.FromFile("visibilityDarkMode.png") 
+                                                                                                    : ImageSource.FromFile("visibility.png");
                 PasswordEntry.IsPassword = false;
             }
             else
             {
-                visibilityImage.Source = ImageSource.FromFile("noVisibility.png");
+                visibilityImage.Source = Application.Current.RequestedTheme.Equals(OSAppTheme.Dark) ?
+                                                                                                      ImageSource.FromFile("noVisibilityDarkMode.png")
+                                                                                                    : ImageSource.FromFile("noVisibility.png");
                 PasswordEntry.IsPassword = true;
             }
         }
