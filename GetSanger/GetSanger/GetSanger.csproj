@@ -44,9 +44,6 @@
     <Compile Update="AppShell\UserShell.xaml.cs">
       <DependentUpon>UserShell.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Styles\SignStyles.xaml.cs">
-      <DependentUpon>SignStyles.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\ActivityDetailPage.xaml.cs">
       <DependentUpon>ActivityDetailPage.xaml</DependentUpon>
     </Compile>
@@ -84,9 +81,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Controls\VisibiltyPasswordControl.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Styles\GeneralResourceDictionary.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="UI pages\common\ActivitiesMasterPage.xaml">
@@ -184,9 +178,6 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Registration\SignupPersonalDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Styles\SignStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\SplashPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

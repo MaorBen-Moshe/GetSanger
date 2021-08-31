@@ -10,16 +10,5 @@ namespace GetSanger.Views.chat
         {
             InitializeComponent();
         }
-
-        protected override void OnTapped()
-        {
-            base.OnTapped();
-            ForceUpdateSize();
-        }
-
-        private void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
-        {
-            ForceUpdateSize();
-        }
     }
 }

@@ -64,9 +64,9 @@
     <Color x:Key="DatePickerTextColorDark">White</Color>
     <Color x:Key="DatePickerTextColorLight">Black</Color>
     <Color x:Key="ChatIncomingBackgroundColorDark">#163375</Color>
-    <Color x:Key="ChatIncomingBackgroundColorLight">LightBlue</Color>
-    <Color x:Key="ChatOutgoingBackgroundColorDark">Black</Color>
-    <Color x:Key="ChatOutgoingBackgroundColorLight">Gray</Color>
+    <Color x:Key="ChatIncomingBackgroundColorLight">#81aef7</Color>
+    <Color x:Key="ChatOutgoingBackgroundColorDark">#3d3d3d</Color>
+    <Color x:Key="ChatOutgoingBackgroundColorLight">white</Color>
     <Color x:Key="PickerTextColorDark">White</Color>
     <Color x:Key="PickerTextColorLight">Black</Color>
     <Color x:Key="TimePickerTextColorDark">White</Color>

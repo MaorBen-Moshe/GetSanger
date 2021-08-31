@@ -21,7 +21,6 @@ namespace GetSanger.ViewModels
         private Report m_CurrentReport;
         private int m_AverageRating;
         private ImageSource m_UserImage;
-        private string m_Location;
         #endregion
 
         #region Properties
@@ -43,12 +42,6 @@ namespace GetSanger.ViewModels
         {
             get => m_UserImage;
             set => SetClassProperty(ref m_UserImage, value);
-        }
-
-        public string UserLocation
-        {
-            get => m_Location;
-            set => SetClassProperty(ref m_Location, value);
         }
 
         #endregion
@@ -104,6 +97,7 @@ namespace GetSanger.ViewModels
                 {
                     throw new ArgumentException("User details aren't available.");
                 }
+
                 CurrentUser = await FireStoreHelper.GetUser(UserId);
                 if (CurrentUser == null)
                 {
@@ -111,15 +105,6 @@ namespace GetSanger.ViewModels
                 }
 
                 UserImage = sr_PhotoDisplay.DisplayPicture(CurrentUser.ProfilePictureUri);
-                await Task.Run(async () =>
-                {
-                    Placemark placemark = await sr_LocationService.GetPickedLocation(CurrentUser.UserLocation);
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        UserLocation = $"{placemark.Locality}, {placemark.CountryName}";
-                    });
-                });
-
                 AverageRating = CurrentUser.Ratings?.Count > 0 ? (int)CurrentUser.Ratings.Average(rating => rating.Score) : 1;
             }
             catch(Exception e)

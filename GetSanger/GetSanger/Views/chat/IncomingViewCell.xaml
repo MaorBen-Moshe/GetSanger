@@ -4,40 +4,41 @@
           xmlns:vm="clr-namespace:GetSanger.ViewModels.chat"
           xmlns:effects="clr-namespace:GetSanger.Effects"
           x:Class="GetSanger.Views.chat.IncomingViewCell">
-    <StackLayout>
-       
-        <Label Text="{Binding DateString}"
-               IsVisible="{Binding IsDateVisible}"
-               HorizontalTextAlignment="End"
-               HorizontalOptions="End"
-               Margin="20, 0, 10, 0"
-               Rotation="180">
-        </Label>
-        <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ChatIncomingBackgroundColorDark}, Light={StaticResource ChatIncomingBackgroundColorLight}}"
-              Rotation="180"
-              FlowDirection="RightToLeft"
-              Padding="10"
-              HasShadow="false"
-              Margin="10,10,80,10"
-              IsClippedToBounds="True"
-              CornerRadius="30"
-              effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
-              effects:LongPressedEffect.CommandParameter="{Binding .}">
-            <Frame.Effects>
+
+    <Frame BackgroundColor="{AppThemeBinding Dark={StaticResource ChatIncomingBackgroundColorDark}, Light={StaticResource ChatIncomingBackgroundColorLight}}"
+               Rotation="180"
+               FlowDirection="LeftToRight"
+               Padding="10"
+               HasShadow="False"
+               Margin="10"
+               IsClippedToBounds="True"
+               CornerRadius="25"
+               HorizontalOptions="EndAndExpand"
+               effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
+               effects:LongPressedEffect.CommandParameter="{Binding .}">
+        <Frame.Effects>
+            <effects:LongPressedEffect />
+        </Frame.Effects>
+
+        <StackLayout effects:LongPressedEffect.Command="{Binding DeleteMessageCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
+                     effects:LongPressedEffect.CommandParameter="{Binding .}"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+            <StackLayout.Effects>
                 <effects:LongPressedEffect />
-            </Frame.Effects>
-            <StackLayout BackgroundColor="Transparent">
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding DisplayDateCommand, Source={RelativeSource AncestorType={x:Type vm:ChatPageViewModel}}}"
-                                          CommandParameter="{Binding .}"
-                                          Tapped="TapGestureRecognizer_Tapped" />
-                </StackLayout.GestureRecognizers>
-                <Label Text="{Binding Text}" 
-                       BackgroundColor="Transparent"
-                       HorizontalOptions="FillAndExpand"
-                       VerticalOptions="FillAndExpand">
-                </Label>
-            </StackLayout>
-        </Frame>
-    </StackLayout>
+            </StackLayout.Effects>
+            
+            <Label Text="{Binding Text}"
+                   Margin="2"
+                   Padding="5"
+                   HorizontalOptions="Start"
+                   VerticalOptions="FillAndExpand"/>
+
+            <Label Text="{Binding DateString}"
+                   HorizontalOptions="Start"
+                   FontSize="Micro"
+                   HorizontalTextAlignment="Start"
+                   Margin="2,2,2,2"/>
+        </StackLayout>
+    </Frame>
 </ViewCell>
