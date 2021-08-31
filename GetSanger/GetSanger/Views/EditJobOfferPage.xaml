@@ -44,7 +44,7 @@
                     <StackLayout BackgroundColor="Transparent">
                         <Label Text="Creating New Offer" 
                                FontSize="Title"
-                               FontFamily="{StaticResource MontserratSemiBold}"
+                               Style="{StaticResource TitleStyle}"
                                FontAttributes="Italic"
                                HorizontalTextAlignment="Center"/>
                         <Label Text="{Binding NewJobOffer.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
@@ -103,7 +103,7 @@
                              VerticalOptions="Start"
                              Margin="10, 5, 10, 0"
                              Spacing="0">
-                    <Label Text="Destination: "
+                    <Label Text="{Binding DestString}"
                                 BackgroundColor="Transparent"
                                 FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding DestinationLocationString, Mode=OneWay}"

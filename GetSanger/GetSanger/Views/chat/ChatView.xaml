@@ -6,7 +6,6 @@
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
              x:Class="GetSanger.Views.chat.ChatView"
              x:Name="chatView"
-             
              Shell.NavBarHasShadow="False"
              Shell.TabBarIsVisible="False">
 
@@ -23,8 +22,7 @@
 
     <Shell.TitleView>
         <StackLayout Orientation="Horizontal" 
-                     HorizontalOptions="FillAndExpand"
-                     BackgroundColor="Transparent">
+                     HorizontalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Start"
                          IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Transparent">
@@ -47,13 +45,13 @@
                          HorizontalOptions="EndAndExpand"
                          BackgroundColor="Transparent"
                          Spacing="15">
-                <ImageButton Source="whatsapp.png"
+                <ImageButton Source="{AppThemeBinding Dark=whatsappDark.png, Light=whatsapp.png}"
                          BackgroundColor="Transparent" 
                          WidthRequest="20"
                          HeightRequest="20"
                          IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                          Command="{Binding SendWhatsappCommand}"/>
-                <ImageButton Source="phone.png"
+                <ImageButton Source="{AppThemeBinding Dark=phoneDark.png, Light=phone.png}"
                          BackgroundColor="Transparent" 
                          WidthRequest="20"
                          HeightRequest="20"
@@ -64,41 +62,30 @@
     </Shell.TitleView>
 
     <ContentPage.Content>
-        <Grid RowSpacing="0" 
-           ColumnSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <!--<RowDefinition Height="1" />-->
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            
-            <controls:ExtendedListView Grid.Row="0" 
-                 SelectedItem="{Binding SelectedItem}"
-                 ItemTemplate="{StaticResource MessageTemplateSelector}" 
-                 ItemsSource="{Binding MessagesSource}" 
-                 ItemAppearingCommand="{Binding MessageAppearingCommand}"
-                 ItemDisappearingCommand="{Binding MessageDisappearingCommand}"  
-                 ItemTapped="OnListTapped"
-                 Margin="0"                 
-                 Rotation="180" 
-                 FlowDirection="RightToLeft"
-                 HasUnevenRows="True" 
-                 VerticalOptions="FillAndExpand" 
-                 SeparatorColor="Transparent"
-                 x:Name="ChatList">
+        <StackLayout>
+            <controls:ExtendedListView SelectedItem="{Binding SelectedItem}"
+                                       ItemTemplate="{StaticResource MessageTemplateSelector}" 
+                                       ItemsSource="{Binding MessagesSource}" 
+                                       ItemAppearingCommand="{Binding MessageAppearingCommand}"
+                                       ItemDisappearingCommand="{Binding MessageDisappearingCommand}"  
+                                       ItemTapped="OnListTapped"
+                                       Margin="0"  
+                                       Rotation="180" 
+                                       FlowDirection="RightToLeft"
+                                       HasUnevenRows="True" 
+                                       VerticalOptions="FillAndExpand" 
+                                       SeparatorColor="Transparent"
+                                       x:Name="ChatList">
             </controls:ExtendedListView>
             <Frame HorizontalOptions="EndAndExpand" 
                                  Margin="0,0,7,15"
                                  VerticalOptions="End"
                                  HasShadow="false" 
-                                 Grid.Row="0"  
                                  HeightRequest="50" WidthRequest="50"
                                  CornerRadius="25"
-                                 Padding="1"
-                                 BackgroundColor="Transparent"   
+                                 Padding="1"  
                                  IsVisible="{Binding ShowScrollTap,Mode=TwoWay}">
                 <StackLayout Spacing="3" 
-                             
                              BackgroundColor="Transparent">
                     <Label Text="{Binding PendingMessageCount, Mode=TwoWay}"
                            HorizontalOptions="CenterAndExpand"
@@ -117,11 +104,10 @@
                     <TapGestureRecognizer Tapped="ScrollTap"/>
                 </Frame.GestureRecognizers>
             </Frame>
-            
-            <chat:ChatInputBarView Grid.Row="1"
-                                   Margin="0,0,10,0"
+
+            <chat:ChatInputBarView Margin="0,0,10,0"
                                    IsEnabled="{Binding IsDeletedUser, Converter={StaticResource InverseBoolConverter}}"
                                    x:Name="chatInput"/>
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

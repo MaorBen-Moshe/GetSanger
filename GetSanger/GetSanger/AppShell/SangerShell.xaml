@@ -4,17 +4,9 @@
              xmlns:chat="clr-namespace:GetSanger.Views.chat"
              xmlns:views="clr-namespace:GetSanger.Views"
              x:Class="GetSanger.AppShell.SangerShell"
-             FlowDirection="LeftToRight"
-             BackgroundColor="{AppThemeBinding Dark={StaticResource SangerTitleViewThemeColorDark}, Light={StaticResource SangerTitleViewThemeColorLight}}"
-             ForegroundColor="{AppThemeBinding Dark={StaticResource ShellForegroundColorDark}, Light={StaticResource ShellForegroundColorLight}}"
-             TitleColor="{AppThemeBinding Dark={StaticResource ShellTitleColorDark}, Light={StaticResource ShellTitleColorLight}}"
-             TabBarTitleColor="{AppThemeBinding Dark={StaticResource SangerTabBarTitleColorDark}, Light={StaticResource SangerTabBarTitleColorLight}}"
-             >
-    <Shell.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary Source="../Styles/SangerKeys.xaml" />
-        </ResourceDictionary>
-    </Shell.Resources>
+             Background="{AppThemeBinding Dark=Black, Light=White}"
+             FlowDirection="LeftToRight">
+
     <TabBar>
         <Tab Title="Account"
              Route="account"

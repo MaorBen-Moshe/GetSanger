@@ -236,12 +236,13 @@ namespace GetSanger.Controls
             {
                 Margin = new Thickness(10, 5),
                 BackgroundColor = Color.Transparent,
-                Source = ImageSource.FromFile("ascendingSort.png"),
                 Command = TimeSortCommand,
                 WidthRequest = 32,
                 HeightRequest = 32
             };
 
+            setImageSource();
+            Application.Current.RequestedThemeChanged += Current_RequestedThemeChanged;
             m_CategoryPicker = createPicker("Category");
             m_StatusPicker = createPicker("Status");
 
@@ -249,6 +250,22 @@ namespace GetSanger.Controls
             setPickerBindings(m_StatusPicker, nameof(StatusFilterSource), nameof(StatusSelectedIndex), StatusFilterCommand);
 
             setLayout();
+        }
+
+        private void Current_RequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+        {
+            setImageSource();
+        }
+
+        private void setImageSource()
+        {
+            string source = Application.Current.RequestedTheme switch
+            {
+                OSAppTheme.Dark => "ascendingSortDarkMode.png",
+                _ => "ascendingSort.png",
+            };
+
+            m_SortButton.Source = ImageSource.FromFile(source);
         }
 
         private PickerWithBorder createPicker(string i_Title)

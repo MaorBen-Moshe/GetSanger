@@ -22,10 +22,16 @@ namespace GetSanger.ViewModels
         private bool m_IsMyJobOffer;
         private bool m_IsDeliveryCategory;
         private bool m_IsSangerMode;
-
+        private string m_DestString;
         #endregion
 
         #region Properties
+
+        public string DestString
+        {
+            get => m_DestString;
+            set => SetClassProperty(ref m_DestString, value);
+        }
 
         public JobOffer Job
         {
@@ -117,6 +123,7 @@ namespace GetSanger.ViewModels
             try
             {
                 IsDeliveryCategory = Job.Category.Equals(eCategory.Delivery);
+                DestString = IsDeliveryCategory ? "Destination: " : "Location: ";
                 if (Job.FromLocation != null)
                 {
                     Placemark myPlace = await sr_LocationService.GetPickedLocation(Job.FromLocation);

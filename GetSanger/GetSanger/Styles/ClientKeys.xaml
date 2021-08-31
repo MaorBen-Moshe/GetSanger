@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             >
-    <Color x:Key="ClientTitleViewThemeColorLight">#91abfa</Color>
-    <Color x:Key="ClientTitleViewThemeColorDark">#1d2b54</Color>
-    <Color x:Key="ClientTabBarTitleColorLight">#1d2b54</Color>
-    <Color x:Key="ClientTabBarTitleColorDark">#91abfa</Color>
-</ResourceDictionary>

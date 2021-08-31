@@ -39,8 +39,8 @@
                       Grid.RowSpan="1" 
                       Margin="0, 10, 0, 0">
                     <Frame Padding="10"
-                                              Margin="20, 10, 20, 10"
-                                              HasShadow="True">
+                           Margin="20, 10, 20, 10"
+                           HasShadow="True">
                         <StackLayout>
                             <Label Text="Get Sanger" 
                            FontSize="30"
@@ -50,11 +50,7 @@
                            FontSize="Medium"
                            FontFamily="{StaticResource Key=MontserratSemiBold}"
                            HorizontalOptions="Center" />
-                            <Label Text="Treat the sangers well!" 
-                           FontSize="Small"
-                           FontFamily="{StaticResource Key=MontserratLight}"
-                           HorizontalOptions="Center" 
-                           Margin="0,0,0,10"/>
+                            <Image Source="getSangerIconTransparent.png" />
                         </StackLayout>
                     </Frame>
                     <Frame BorderColor="Transparent"

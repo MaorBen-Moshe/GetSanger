@@ -7,17 +7,14 @@
 
     <ContentPage.Content>
         <StackLayout HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand"
-                     BackgroundColor="Transparent">
+                     VerticalOptions="FillAndExpand">
             <Frame CornerRadius="10"
-                   BorderColor="Black"
                    Padding="30"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
                 <StackLayout BackgroundColor="Transparent">
-                    <ActivityIndicator IsRunning="True"
-                                       BackgroundColor="Transparent"/>
-                    <Label BackgroundColor="Transparent"
+                    <ActivityIndicator IsRunning="True"/>
+                    <Label 
                            HorizontalTextAlignment="Center"
                            HorizontalOptions="CenterAndExpand"
                            x:Name="label">

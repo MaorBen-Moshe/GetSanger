@@ -26,6 +26,7 @@ namespace GetSanger.ViewModels
         private string m_DestinationLocationString;
         private bool m_IsFromLocation = true;
         private bool m_IsDeliveryCategory;
+        private string m_DestString;
         #endregion
 
         #region Commands
@@ -38,7 +39,12 @@ namespace GetSanger.ViewModels
 
         #region Properties
 
-        // if IsCreate == true than the job offer is sent from the previews page
+        public string DestString
+        {
+            get => m_DestString;
+            set => SetClassProperty(ref m_DestString, value);
+        }
+
         public JobOffer NewJobOffer 
         {
             get => m_NewJobOffer;
@@ -124,6 +130,7 @@ namespace GetSanger.ViewModels
         {
             sr_CrashlyticsService.LogPageEntrance(nameof(EditJobOfferViewModel));
             IsDeliveryCategory = NewJobOffer.Category.Equals(eCategory.Delivery);
+            DestString = IsDeliveryCategory ? "Destination: " : "Location: "; 
             InitialCurrentLocation();
             MessagingCenter.Subscribe<MapViewModel, Placemark>(this,Constants.Constants.LocationMessage, (sender, args) =>
             {
@@ -227,7 +234,7 @@ namespace GetSanger.ViewModels
                     string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
                     sr_LoadingService.HideLoadingPage();
                     await GoBack();
-                    await RunTaskWhileLoading(sr_NavigationService.NavigateTo($"////{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
+                    await RunTaskWhileLoading(sr_NavigationService.NavigateTo($"///{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
                 }
                 else
                 {

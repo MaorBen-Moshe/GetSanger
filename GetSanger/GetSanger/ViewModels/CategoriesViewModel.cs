@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GetSanger.Extensions;
+using Xamarin.Forms;
 
 namespace GetSanger.ViewModels
 {

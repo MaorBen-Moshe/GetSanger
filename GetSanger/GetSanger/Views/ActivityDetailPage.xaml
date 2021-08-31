@@ -28,7 +28,7 @@
                         <Label Text="{Binding ConnectedActivity.JobDetails.Title}" 
                                FontSize="Title"
                                HorizontalTextAlignment="Center"
-                               FontFamily="{StaticResource MontserratSemiBold}"/>
+                               Style="{StaticResource TitleStyle}"/>
 
                         <StackLayout Orientation="Vertical">
                             <StackLayout Orientation="Horizontal"
@@ -118,7 +118,7 @@
                              VerticalOptions="Start"
                              Margin="10, 5, 10, 0"
                              Spacing="0">
-                            <Label Text="Destination: "
+                            <Label Text="{Binding DestString}"
                                 BackgroundColor="Transparent"
                                 FontSize="Small"/>
                             <controls:EntryWithBorder Text="{Binding DestinationLocation, Mode=OneWay}"
@@ -139,14 +139,12 @@
                                 <controls:DatePickerWithBorder Format="dd MMMMM yyyy" 
                                                        Date="{Binding ConnectedActivity.JobDetails.Date}"
                                                        IsEnabled="False"
-                                                               BorderColor="Black"
                                                        HorizontalOptions="FillAndExpand"
                                                        Visual="Material"
                                                        />
                                 <controls:TimePickerWithBorder Time="{Binding ConnectedActivity.JobDetails.Time}"
                                                                Format="HH:mm tt"
                                                                IsEnabled="False"
-                                                               BorderColor="Black"
                                                                HorizontalOptions="End"/>
                             </StackLayout>
                         </StackLayout>
@@ -154,7 +152,6 @@
                         <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"
                            Padding="5"
-                               BorderColor="Black"
                            >
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding NotesCommand}"
@@ -171,7 +168,6 @@
                         </Frame>
 
                         <Frame HorizontalOptions="FillAndExpand"
-                               BorderColor="Black"
                            Margin="12, 0"
                            Padding="5"
                            IsVisible="{Binding IsSangerNotesVisible}"

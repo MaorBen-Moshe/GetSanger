@@ -26,6 +26,7 @@
 
     <popup:PopupPage.Content>
         <Frame CornerRadius="20"
+               BorderColor="Transparent"
                IsClippedToBounds="True"
                Padding="10"
                Margin="10">

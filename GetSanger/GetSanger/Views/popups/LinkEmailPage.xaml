@@ -25,9 +25,9 @@
     </popup:PopupPage.Animation>
     <Frame HorizontalOptions="CenterAndExpand"
            VerticalOptions="CenterAndExpand"
-           BackgroundColor="{AppThemeBinding Dark=#1A1A1A, Light=#FFFFFF}"
            Padding="5"
            HasShadow="True"
+           BorderColor="Transparent"
            Margin="10">
         <StackLayout VerticalOptions="FillAndExpand"
                      HorizontalOptions="FillAndExpand"
@@ -44,6 +44,7 @@
                 </Label.GestureRecognizers>
             </Label>
             <Label Text="Link Your Account Via Email"
+                   Style="{StaticResource TitleStyle}"
                HorizontalOptions="CenterAndExpand"
                    HorizontalTextAlignment="Center"
                FontAttributes="Italic, Bold"

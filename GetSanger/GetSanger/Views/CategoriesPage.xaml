@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GetSanger.ViewModels"
              xmlns:converters="clr-namespace:GetSanger.Converters"
-             xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.CategoriesPage"
              Shell.NavBarIsVisible="False">
 
@@ -28,7 +27,7 @@
                     <Label Margin="0, 10, 0, 0" 
                            HorizontalTextAlignment="Center" 
                            Text="Pick Job Category"
-                           FontFamily="{StaticResource MontserratBold}"
+                           Style="{StaticResource TitleStyle}"
                            FontAttributes="Bold, Italic"  
                            FontSize="Title"
                            HorizontalOptions="CenterAndExpand" />
@@ -43,7 +42,6 @@
             <CollectionView ItemsSource="{Binding CategoriesItems}"
                             SelectedItem="{Binding SelectedItem}"
                             SelectionMode="Single"
-                            ItemSizingStrategy="MeasureFirstItem"
                             Margin="10, 2, 10, 5">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
@@ -54,6 +52,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame Padding="1"
+                               Style="{StaticResource CategoryCellStyle}"
                                IsClippedToBounds="True"
                                HasShadow="True"
                                CornerRadius="10">
@@ -61,7 +60,7 @@
                                          HorizontalOptions="FillAndExpand"
                                          VerticalOptions="FillAndExpand"
                                          Padding="5"
-                                         Spacing="10"
+                                         Spacing="5"
                                          Margin="5">
                                 <Image Source="{Binding ImageUri}"
                                        WidthRequest="70"

@@ -29,6 +29,7 @@
                         <Label Text="{Binding Job.Title}" 
                                FontSize="Title"
                                FontAttributes="Italic"
+                               Style="{StaticResource TitleStyle}"
                                HorizontalTextAlignment="Center"/>
                         <Label Text="{Binding Job.Category, Converter={StaticResource CategoryToStringConverter}, Mode=OneWay}" 
                                TextColor="Red"
@@ -88,7 +89,7 @@
                              VerticalOptions="Start"
                              Margin="10, 5, 10, 0"
                              Spacing="0">
-                    <Label Text="Destination: "
+                    <Label Text="{Binding DestString}"
                                 BackgroundColor="Transparent"
                                 FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding DestinationLocation, Mode=OneWay}"
@@ -125,13 +126,11 @@
                         <controls:DatePickerWithBorder Format="dd/MM/yyyy" 
                                                        Date="{Binding Job.Date}"
                                                        IsEnabled="False"
-                                                       BorderColor="Black"
                                                        HorizontalOptions="FillAndExpand"
                                                        Visual="Material"
                                                        />
                         <controls:TimePickerWithBorder Time="{Binding Job.Time}"
                                                        IsEnabled="False"
-                                                       BorderColor="Black"
                                                        HorizontalOptions="End"/>
                     </StackLayout>
                 </StackLayout>
@@ -142,7 +141,7 @@
                     <Label Text="Description:"
                        BackgroundColor="Transparent"
                        FontSize="Small"/>
-                    <controls:EditorWithBorder BorderColor="Black"
+                    <controls:EditorWithBorder
                                 IsSpellCheckEnabled="True"
                                 IsTextPredictionEnabled="True"
                                 Placeholder="Job Description"

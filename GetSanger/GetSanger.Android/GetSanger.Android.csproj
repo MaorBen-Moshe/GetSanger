@@ -176,6 +176,7 @@
     <Compile Include="Renderers\BorderEntryRenderer.cs" />
     <Compile Include="Renderers\BorderPickerRenderer.cs" />
     <Compile Include="Renderers\BorderTimePickerRenderer.cs" />
+    <Compile Include="Renderers\ColoredTableViewRenderer.cs" />
     <Compile Include="Renderers\CustomEditorRendrer.cs" />
     <Compile Include="Services\BitmapConfig.cs" />
     <Compile Include="Services\Crashlytics.cs" />
@@ -309,12 +310,6 @@
     <AndroidResource Include="Resources\Drawable\IconBeauty.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\whatsapp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\phone.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\Drawable\rolling.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -358,10 +353,31 @@
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\IconMiscellaneous.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\noVisibilityDarkMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\visibilityDarkMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\ascendingSortDarkMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\phoneDark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\whatsappDark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\phone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\whatsapp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" TriggeredFromHotReload="False" />
+      <UserProperties TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

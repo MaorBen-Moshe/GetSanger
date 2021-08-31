@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GetSanger.Controls.CustomSwitchCell">
+
+    <StackLayout Orientation="Horizontal" Margin="5"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="CenterAndExpand">
+        <Label HorizontalOptions="StartAndExpand"
+               x:Name="label"/>
+        <Switch HorizontalOptions="End"
+                IsToggled="{Binding On, Mode=TwoWay}"
+                x:Name="toggle"/>
+    </StackLayout>
+    
+</ViewCell>

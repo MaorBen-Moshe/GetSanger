@@ -110,7 +110,6 @@
 
                             <controls:PickerWithBorder ItemsSource="{Binding GenderItems}" 
                                                        Margin="20, 0, 20, 5"
-                                                       BorderColor="{AppThemeBinding Dark=White, Light=Black}"
                                                        SelectedItem="{Binding ConnectedUser.PersonalDetails.Gender, Mode=TwoWay}"/>
                         </StackLayout>
                     </ViewCell>

@@ -6,7 +6,8 @@
     <ContentView.Content>
         <Grid RowSpacing="0" 
               ColumnSpacing="0"
-              Margin="0,0,0,10"
+              Margin="0,0,0,0"
+              BackgroundColor="Transparent"
               x:Name="grid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -18,7 +19,7 @@
             <controls:EditorWithBorder x:Name="chatTextInput" 
                                            Grid.Row="0" 
                                            Grid.Column="0"
-                                           Margin="10,0,10,10"
+                                           Margin="10,0,5,10"
                                            Text="{Binding TextToSend}" 
                                            CornerRadius="30"  
                                            TextColor="{AppThemeBinding Dark=White, Light=Black}" 
@@ -29,23 +30,28 @@
                                            IsExpandable="True"
                                            BackgroundColor="{AppThemeBinding Dark=Black, Light=WhiteSmoke}"
                                            IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
-                                           Completed="Handle_Completed"
-                                           BorderColor="Black"/>
-            <Label Text="Send"
-                   FontFamily="{StaticResource OpenSansBold}"
-                   Grid.Row="0"
+                                           Completed="Handle_Completed"/>
+            <Frame Grid.Row="0"
                    Grid.Column="1"
-                   Margin="0,0,0,10"
+                   CornerRadius="30"
+                   HeightRequest="60"
+                   WidthRequest="60"
+                   Padding="0"
+                   Margin="0,0,0,10">
+                <Label Text="Send"
+                   FontFamily="{StaticResource OpenSansBold}"
                    IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
                    BackgroundColor="Transparent"
+                       HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center">
-                  <Label.GestureRecognizers>
-                      <TapGestureRecognizer
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
                                             Command="{Binding SendMessageCommand}"
                                             Tapped="Handle_Completed"/>
-                  </Label.GestureRecognizers>
-            </Label> 
-            
+                    </Label.GestureRecognizers>
+                </Label>
+            </Frame>
+
         </Grid>
     </ContentView.Content>
 </ContentView>

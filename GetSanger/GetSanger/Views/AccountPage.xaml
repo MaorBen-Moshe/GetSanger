@@ -23,10 +23,12 @@
                                        Radius="100"/>
                     <Label Text="{Binding CurrentUser.PersonalDetails.NickName, StringFormat ='Hello, {0}'}"
                            FontSize="Title"   
-                           FontFamily="{StaticResource OpenSansSemiBoldItalic}"
+                           Style="{StaticResource TitleStyle}"
                            FontAttributes="Italic, Bold"/>
                 </StackLayout>
                 <Frame Padding="20"
+                       CornerRadius="15"
+                       BackgroundColor="Transparent"
                        HorizontalOptions="Center">
                     <StackLayout Orientation="Horizontal"
                              HorizontalOptions="CenterAndExpand"

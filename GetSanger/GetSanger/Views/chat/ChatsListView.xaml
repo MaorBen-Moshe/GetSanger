@@ -46,7 +46,6 @@
                 <!--need to implement list of contacts -->
                 <ListView SeparatorVisibility="None" 
                           Margin="0"
-                          RowHeight="55"
                           IsVisible="{Binding IsVisibleViewList}"
                           ItemsSource="{Binding AllCollection}"
                           SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
@@ -64,8 +63,9 @@
                         <DataTemplate>
                             <ViewCell>
                                 <Frame Padding="10"
-                                       Margin="10"
-                                       BorderColor="Black"
+                                       Margin="7"
+                                       CornerRadius="7"
+                                       BorderColor="#3d3d3d"
                                        HasShadow="True">
                                     <StackLayout Orientation="Horizontal" Spacing="0" Padding="10">
                                         <controls:RoundedImage ImageSource="{Binding User.ProfilePictureUri}" 

@@ -64,10 +64,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame
-                                       BorderColor="DarkSlateGray" 
-                                       Padding="0"
-                                       Margin="10">
+                            <Frame Padding="0"
+                                   Margin="10">
                                 <StackLayout Orientation="Horizontal"
                                                  Padding="20"
                                                  VerticalOptions="StartAndExpand">

@@ -60,7 +60,7 @@
                                        BackgroundColor="Transparent"/>
                 <Label Text="{Binding CurrentUser.PersonalDetails.NickName}"
                    FontSize="Title"
-                       FontFamily="{StaticResource OpenSansSemiBoldItalic}"
+                   Style="{StaticResource TitleStyle}"
                    BackgroundColor="Transparent"
                    Margin="0,5"
                    HorizontalOptions="CenterAndExpand"
@@ -76,9 +76,9 @@
             <Frame BackgroundColor="Transparent"
                                       Padding="0"
                                       Margin="50,20,50,0">
-                <TableView VerticalOptions="Center"
-                           BackgroundColor="Transparent"
-                           HeightRequest="136">
+                <controls:ColoredTableView VerticalOptions="Center"
+                                           BackgroundColor="Transparent"
+                                           HeightRequest="136">
                     <TableRoot>
                         <TableSection Title="Details" TextColor="{AppThemeBinding Dark={StaticResource TableViewTextColorDark}, Light={StaticResource TableViewTextColorLight}}">
                             <TextCell Text="{Binding CurrentUser.PersonalDetails.Gender, StringFormat='Gender: {0}'}"
@@ -87,12 +87,11 @@
                                      TextColor="{AppThemeBinding Dark={StaticResource TableViewTextColorDark}, Light={StaticResource TableViewTextColorLight}}"/>
                         </TableSection>
                     </TableRoot>
-                </TableView>
+                </controls:ColoredTableView>
             </Frame>
 
             <Frame Padding="10"
                    Margin="50, 10, 50, 0"
-                   BorderColor="Black"
                    BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ViewRatingsCommand}" />
@@ -110,7 +109,6 @@
 
             <Frame Padding="10"
                    Margin="50, 10, 50, 0"
-                   BorderColor="Black"
                    BackgroundColor="Transparent">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding AboutMeCommand}" />

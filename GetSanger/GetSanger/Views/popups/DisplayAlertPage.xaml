@@ -24,6 +24,7 @@
 
         <Frame Padding="0"
                Margin="20"
+               BorderColor="Transparent"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand">
             <StackLayout Padding="50" 

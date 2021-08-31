@@ -30,13 +30,11 @@
     <Frame CornerRadius="1"
                    Padding="5"
                    Margin="10, 0"
-                   BorderColor="Red"
-                   BackgroundColor="Transparent"
+                   BorderColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
         <StackLayout HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand"
-                     BackgroundColor="{AppThemeBinding Dark=#002157, Light=GhostWhite}">
+                     VerticalOptions="FillAndExpand">
             <Label  Text="X" 
                     Margin="0,10,10,0"
                     FontSize="Large"
@@ -52,7 +50,7 @@
                    FontSize="Title"
                    Margin="5"
                    FontAttributes="Bold,Italic"
-                   FontFamily="{StaticResource MontserratBold}"
+                   Style="{StaticResource TitleStyle}"
                    HorizontalOptions="CenterAndExpand"
                    />
             <Label Text="You now can link your account via one of the options below. Note: this operation is not reverse able."
@@ -75,8 +73,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid HorizontalOptions="CenterAndExpand" 
-                              BackgroundColor="{AppThemeBinding Dark=#002157, Light=Transparent}">
+                            <Grid HorizontalOptions="CenterAndExpand" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.5*"/>
                                     <ColumnDefinition Width="0.5*" />

@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace GetSanger.Controls
 {
-    public class CategoriesTableView : TableView
+    public class CategoriesTableView : ColoredTableView
     {
         #region BindableProperties
         public static BindableProperty SourceProperty
@@ -75,13 +75,13 @@ namespace GetSanger.Controls
         #region Methods
         private void setGenericView()
         {
-            SwitchCell genericCell = new SwitchCell
+            CustomSwitchCell genericCell = new CustomSwitchCell
             {
                 BindingContext = this,
                 Text = "Notifications",
             };
 
-            genericCell.SetBinding(SwitchCell.OnProperty, new Binding("IsGenericNotifications"));
+            genericCell.SetBinding(CustomSwitchCell.OnProperty, new Binding("IsGenericNotifications"));
             Root[0].Clear();
             Root[0].Add(genericCell);
         }
@@ -98,9 +98,9 @@ namespace GetSanger.Controls
             categoriesSection.Clear();
             foreach (var categoryCell in Source)
             {
-                SwitchCell sc = new SwitchCell { BindingContext = categoryCell };
-                sc.SetBinding(SwitchCell.TextProperty, new Binding("CategoryString"));
-                sc.SetBinding(SwitchCell.OnProperty, new Binding("Checked"));
+                CustomSwitchCell sc = new CustomSwitchCell { BindingContext = categoryCell };
+                sc.SetBinding(CustomSwitchCell.TextProperty, new Binding("CategoryString"));
+                sc.SetBinding(CustomSwitchCell.OnProperty, new Binding("Checked"));
                 sc.OnChanged += CategoriesSwitchCell_OnChanged;
                 categoriesSection.Add(sc);
             }
@@ -113,7 +113,7 @@ namespace GetSanger.Controls
                 return;
             }
 
-            SwitchCell current = sender as SwitchCell;
+            CustomSwitchCell current = sender as CustomSwitchCell;
             CategoryCell newCell = new CategoryCell
             {
                 Category = (eCategory)Enum.Parse(typeof(eCategory), current.Text.Trim().Replace(" ", "_")),
