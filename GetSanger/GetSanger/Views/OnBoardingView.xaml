@@ -36,7 +36,7 @@
                         <StackLayout HorizontalOptions="Center"
                                      VerticalOptions="Center"
                                      Margin="50">
-                            <Image Source="getSangerIconTransparent.png"
+                            <Image Source="{AppThemeBinding Dark=getSangerIconTransparentDark.png, Light=getSangerIconTransparent.png}" 
                                        WidthRequest="140"
                                        HeightRequest="140"
                                        HorizontalOptions="CenterAndExpand"

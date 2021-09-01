@@ -374,10 +374,14 @@
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\whatsapp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Renderers\getSangerIconTransparentDark.png" />
+    <AndroidResource Include="Resources\Drawable\getSangerIconTransparentDark.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" TriggeredFromHotReload="False" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

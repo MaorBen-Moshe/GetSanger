@@ -298,4 +298,5 @@
         <Setter Property="MinimumTrackColor" Value="{AppThemeBinding Dark={StaticResource SliderLineDark}, Light={StaticResource SliderLineLight}}" />
         <Setter Property="MaximumTrackColor" Value="Gray"/>
     </Style>
+    
 </ResourceDictionary>

@@ -118,10 +118,11 @@ namespace GetSanger.Controls
             m_LogoImage = new Image
             {
                 BackgroundColor = Color.Transparent,
-                Source = ImageSource.FromFile("getSangerIconTransparent.png"),
                 HeightRequest = 96,
                 WidthRequest = 96
             };
+
+            m_LogoImage.SetOnAppTheme(Image.SourceProperty, ImageSource.FromFile("getSangerIconTransparent.png"), ImageSource.FromFile("getSangerIconTransparentDark.png"));
         }
 
         private static void RefreshCommandPropertyChanged(BindableObject bindable, object oldvalue, object newValue)

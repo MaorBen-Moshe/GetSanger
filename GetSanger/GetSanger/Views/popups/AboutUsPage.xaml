@@ -45,7 +45,7 @@
                             </Label.GestureRecognizers>
                         </Label>
 
-                        <Image Source="getSangerIconTransparent.png"
+                        <Image Source="{AppThemeBinding Dark=getSangerIconTransparentDark.png, Light=getSangerIconTransparent.png}" 
                                HeightRequest="80"
                                WidthRequest="80"
                                HorizontalOptions="CenterAndExpand"
