@@ -531,29 +531,75 @@
     <ImageAsset Include="Assets.xcassets\IconMiscellaneous.png.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\32x32.png" />
-    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\64x64.png" />
-    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\87x87.png" />
-    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\32x32.png" />
-    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\64x64.png" />
-    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\87x87.png" />
-    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Notification%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40.png" />
-    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\87x87-1.png" />
-    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\64x64-1.png" />
-    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\32x32-1.png" />
-    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\87x87-1.png" />
-    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\64x64-1.png" />
-    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\32x32-1.png" />
-    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\87x87-2.png" />
-    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\64x64-2.png" />
-    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\32x32-2.png" />
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\32x32.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\64x64.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\87x87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\32x32.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\64x64.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\87x87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Notification%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\87x87-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\64x64-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\32x32-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\87x87-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\64x64-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\32x32-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\87x87-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\64x64-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\32x32-2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
