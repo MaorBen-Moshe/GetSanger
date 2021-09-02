@@ -444,15 +444,6 @@
     <ImageAsset Include="Assets.xcassets\ratingStarOff.imageset\ratingStarOff.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\phone.png.imageset\32x32.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\phone.png.imageset\64x64.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\phone.png.imageset\128x128.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\whatsapp.png.imageset\32x32.png">
       <Visible>false</Visible>
     </ImageAsset>
@@ -600,6 +591,21 @@
     <ImageAsset Include="Assets.xcassets\visibilityDarkMode.png.imageset\32x32-2.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\phone.png.imageset\128x128-1.png" />
+    <ImageAsset Include="Assets.xcassets\phone.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\phone.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\phoneDark.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\phoneDark.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\phoneDark.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\phoneDark.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\whatsappDark.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\whatsappDark.png.imageset\128x128.png" />
+    <ImageAsset Include="Assets.xcassets\whatsappDark.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\whatsappDark.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\128x128-1.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\64x64.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -679,6 +685,10 @@
     <Folder Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\" />
     <Folder Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\" />
     <Folder Include="Assets.xcassets\AppIcon.appiconset\" />
+    <Folder Include="Assets.xcassets\phoneDark.png.imageset\" />
+    <Folder Include="Assets.xcassets\whatsappDark.png.imageset\" />
+    <Folder Include="Assets.xcassets\d.imageset\" />
+    <Folder Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\" />
   </ItemGroup>
   <ItemGroup />
 </Project>
