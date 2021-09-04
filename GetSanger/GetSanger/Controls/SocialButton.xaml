@@ -5,8 +5,9 @@
     <ContentView.Content>
         <Frame CornerRadius="12" x:Name="myFrame" HorizontalOptions="Start" VerticalOptions="Start"
                Margin="2" HasShadow="True" Padding="10"
-               Background="{AppThemeBinding Dark={StaticResource ButtonGradientDark}, Light={StaticResource ButtonGradientLight}}">
-
+               Opacity="{AppThemeBinding Dark=1, Light=0.75}"
+               BackgroundColor="{AppThemeBinding Dark={StaticResource ButtonBackgroundColorDark}, Light={StaticResource ButtonBackgroundColorLight}}">
+               
             <StackLayout Orientation="Horizontal" x:Name="stack">
                 <Image x:Name="btnIcon" HeightRequest="20" WidthRequest="20" HorizontalOptions="Start"
                        BackgroundColor="Transparent"/>

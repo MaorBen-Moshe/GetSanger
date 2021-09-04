@@ -36,7 +36,8 @@
 
     <ContentPage.Content>
         
-        <TableView Intent="Form" HasUnevenRows="True" BackgroundColor="Transparent">
+        <controls:ColoredTableView Intent="Form" 
+                                   HasUnevenRows="True" >
             <TableRoot>
                 <TableSection Title="Change Picture">
                     <ViewCell>
@@ -159,6 +160,6 @@
                     </ViewCell>
                 </TableSection>
             </TableRoot>
-        </TableView>
+        </controls:ColoredTableView>
     </ContentPage.Content>
 </ContentPage>

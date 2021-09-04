@@ -29,9 +29,16 @@ namespace GetSanger.ViewModels
         private bool m_IsConfirmationStackVisible;
         private bool m_IsConfirmationButtonVisible;
         private ImageSource m_MapImage;
+        private string m_DestString;
         #endregion
 
         #region Properties
+        public string DestString
+        {
+            get => m_DestString;
+            set => SetClassProperty(ref m_DestString, value);
+        }
+
         public Activity ConnectedActivity
         {
             get => m_ConnectedActivity;
@@ -154,6 +161,7 @@ namespace GetSanger.ViewModels
                 IsFromLocationVisible = ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery);
                 IsConfirmationStackVisible = ConnectedActivity.Status.Equals(eActivityStatus.Active) || ConnectedActivity.Status.Equals(eActivityStatus.Pending);
                 IsConfirmationButtonVisible = AppManager.Instance.CurrentMode.Equals(eAppMode.Client) && ConnectedActivity.Status.Equals(eActivityStatus.Pending);
+                DestString = ConnectedActivity.JobDetails.Category.Equals(eCategory.Delivery) ? "Destination: " : "Location: ";
                 MapImage = ImageSource.FromFile("LocationIcon.png");
                 MessagingCenter.Subscribe<MapViewModel, User>(this, Constants.Constants.EndActivity, async (sender, args) =>
                 {

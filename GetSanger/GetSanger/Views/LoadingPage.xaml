@@ -10,7 +10,6 @@
                      VerticalOptions="FillAndExpand">
             <Frame CornerRadius="10"
                    Padding="30"
-                   BorderColor="Transparent"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
                 <StackLayout BackgroundColor="Transparent">

@@ -103,7 +103,7 @@
                              VerticalOptions="Start"
                              Margin="10, 5, 10, 0"
                              Spacing="0">
-                    <Label Text="Destination: "
+                    <Label Text="{Binding DestString}"
                                 BackgroundColor="Transparent"
                                 FontSize="Small"/>
                     <controls:EntryWithBorder Text="{Binding DestinationLocationString, Mode=OneWay}"

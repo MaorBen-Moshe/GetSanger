@@ -11,10 +11,12 @@
     <Color x:Key="StackLayoutBackgroundColorLight">Transparent</Color>
     <Color x:Key="FrameBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="FrameBackgroundColorLight">White</Color>
+    <Color x:Key="CategoryCellBackgroundLight">White</Color>
+    <Color x:Key="CategoryCellBackgroundDark">#6F6F6F</Color>
     <Color x:Key="ListViewBackgroundColorDark">#3d3d3d</Color>
     <Color x:Key="ListViewBackgroundColorLight">White</Color>
-    <Color x:Key="ButtonBackgroundColorDark">#3d4aA3</Color>
-    <Color x:Key="ButtonBackgroundColorLight">WhiteSmoke</Color>
+    <Color x:Key="ButtonBackgroundColorDark">#002857</Color>
+    <Color x:Key="ButtonBackgroundColorLight">White</Color>
     <Color x:Key="ButtonTextColorDark">White</Color>
     <Color x:Key="ButtonTextColorLight">#000000</Color>
     <Color x:Key="EntryTextColorDark">White</Color>
@@ -62,9 +64,9 @@
     <Color x:Key="DatePickerTextColorDark">White</Color>
     <Color x:Key="DatePickerTextColorLight">Black</Color>
     <Color x:Key="ChatIncomingBackgroundColorDark">#163375</Color>
-    <Color x:Key="ChatIncomingBackgroundColorLight">LightBlue</Color>
-    <Color x:Key="ChatOutgoingBackgroundColorDark">Black</Color>
-    <Color x:Key="ChatOutgoingBackgroundColorLight">Gray</Color>
+    <Color x:Key="ChatIncomingBackgroundColorLight">#81aef7</Color>
+    <Color x:Key="ChatOutgoingBackgroundColorDark">#3d3d3d</Color>
+    <Color x:Key="ChatOutgoingBackgroundColorLight">white</Color>
     <Color x:Key="PickerTextColorDark">White</Color>
     <Color x:Key="PickerTextColorLight">Black</Color>
     <Color x:Key="TimePickerTextColorDark">White</Color>
@@ -83,12 +85,18 @@
     <Color x:Key="SwitchThumbColorLight">#002857</Color>
     <Color x:Key="CheckboxColorDark">#00142b</Color>
     <Color x:Key="CheckboxColorLight">#002857</Color>
-
+    <Color x:Key="TableViewSeperatorDark">White</Color>
+    <Color x:Key="TableViewSeperatorLight">Black</Color>
+    <Color x:Key="TableViewHeaderDark">White</Color>
+    <Color x:Key="TableViewHeaderLight">Black</Color>
     <Color x:Key="ButtonGradientStartDark">#002857</Color>
     <Color x:Key="ButtonGradientStartLight">White</Color>
     <Color x:Key="ButtonGradientEndDark">#00142b</Color>
     <Color x:Key="ButtonGradientEndLight">#c9c9c9</Color>
-    
+    <Color x:Key="SliderLineLight">#4479D4</Color>
+    <Color x:Key="SliderLineDark">White</Color>
+    <Color x:Key="SliderThumbLight">#002857</Color>
+    <Color x:Key="SliderThumbDark">#00142b</Color>
 
     <LinearGradientBrush x:Key="GradientDark" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#242424" Offset="0.1"/>
@@ -183,7 +191,7 @@
         <Setter Property="BorderColor" Value="Black"/>
         <Setter Property="TextTransform" Value="None" />
         <Setter Property="FontFamily" Value="{StaticResource Key=MontserratSemiBold}"/>
-        <Setter Property="Background" Value="{AppThemeBinding Dark={StaticResource ButtonGradientDark}, Light={StaticResource ButtonGradientLight}}"/>
+        <Setter Property="Opacity" Value="{AppThemeBinding Dark=1, Light=0.75}"/>
     </Style>
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource LabelTextColorDark}, Light={StaticResource LabelTextColorLight}}"/>
@@ -277,4 +285,18 @@
     <Style TargetType="CheckBox">
         <Setter Property="Color" Value="{AppThemeBinding Dark={StaticResource CheckboxColorDark}, Light={StaticResource CheckboxColorLight}}"/>
     </Style>
+    <Style TargetType="controls:ColoredTableView" ApplyToDerivedTypes="True">
+        <Setter Property="GroupHeaderColor" Value="{AppThemeBinding Dark={StaticResource TableViewHeaderDark}, Light={StaticResource TableViewHeaderLight}}"/>
+        <Setter Property="SeparatorColor" Value="{AppThemeBinding Dark={StaticResource TableViewSeperatorDark}, Light={StaticResource TableViewSeperatorLight}}" />
+    </Style>
+    <Style TargetType="Frame" x:Key="CategoryCellStyle">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource CategoryCellBackgroundDark}, Light={StaticResource CategoryCellBackgroundLight}}"/>
+    </Style>
+
+    <Style TargetType="Slider">
+        <Setter Property="ThumbColor" Value="{AppThemeBinding Dark={StaticResource SliderThumbDark}, Light={StaticResource SliderThumbLight}}"/>
+        <Setter Property="MinimumTrackColor" Value="{AppThemeBinding Dark={StaticResource SliderLineDark}, Light={StaticResource SliderLineLight}}" />
+        <Setter Property="MaximumTrackColor" Value="Gray"/>
+    </Style>
+    
 </ResourceDictionary>

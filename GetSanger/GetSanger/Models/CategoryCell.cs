@@ -9,6 +9,7 @@ namespace GetSanger.Models
         #region Fields
         private eCategory m_category;
         private bool m_Checked;
+        private string m_ImageUri;
         #endregion
 
         public string CategoryString
@@ -37,7 +38,11 @@ namespace GetSanger.Models
         }
 
         //for categories main page (embedded image not Uri)
-        public string ImageUri { get; set; }
+        public string ImageUri
+        {
+            get => m_ImageUri;
+            set => SetClassProperty(ref m_ImageUri, value);
+        }
 
         private void setCategoriesImage()
         {

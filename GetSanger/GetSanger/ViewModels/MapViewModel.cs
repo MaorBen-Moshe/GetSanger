@@ -144,9 +144,10 @@ namespace GetSanger.ViewModels
             m_SangerPin = new Pin
             {
                 Type = PinType.Generic,
-                Icon = BitmapDescriptorFactory.FromBundle("getSangerIconTransparent"),
                 Label = "Sanger Location",
             };
+
+            m_SangerPin.SetOnAppTheme(Pin.IconProperty, BitmapDescriptorFactory.FromBundle("getSangerIconTransparent"), BitmapDescriptorFactory.FromBundle("getSangerIconTransparentDark"));
 
             m_SearchPin = new Pin
             {
