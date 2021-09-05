@@ -149,6 +149,11 @@
                             </StackLayout>
                         </StackLayout>
 
+                        <controls:PriceControl MinPrice="{Binding ConnectedActivity.JobDetails.MinPrice}"
+                                               MaxPrice="{Binding ConnectedActivity.JobDetails.MaxPrice}"
+                                               IsReadOnly="True"
+                                               Margin="10, 5"/>
+
                         <Frame HorizontalOptions="FillAndExpand"
                            Margin="12, 0"
                            Padding="5"
@@ -201,17 +206,17 @@
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding LocationCommand}"></TapGestureRecognizer>
                         </Frame.GestureRecognizers>
-                        <StackLayout VerticalOptions="End"
+                        <StackLayout VerticalOptions="Fill"
                                  Orientation="Horizontal"
                                  Margin="0, 0, 0, 10"
                                  HorizontalOptions="CenterAndExpand">
                             <controls:RoundedImage BackgroundColor="Transparent"
-                                               Radius="80"
+                                                   Radius="60"
+                                                   Margin="10, 5"
                                                ImageSource="{Binding MapImage}"
                                                Command="{Binding LocationCommand}"/>
                             <Label Text="{Binding ActivatedButtonText}"
                            BackgroundColor="Transparent" 
-                           LineBreakMode="NoWrap"
                            VerticalTextAlignment="Center"/>
                         </StackLayout>
                     </Frame>

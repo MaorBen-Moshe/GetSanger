@@ -25,6 +25,13 @@ namespace GetSanger.Controls
                                                                                        propertyChanged: textChanged);
 
 
+        public static readonly BindableProperty ImageProperty = BindableProperty.Create(nameof(ImageString),
+                                                                       typeof(string),
+                                                                       typeof(CustomSwitchCell),
+                                                                       default,
+                                                                       defaultBindingMode: BindingMode.OneWay,
+                                                                       propertyChanged: imageChanged);
+
         public bool On
         {
             get => (bool)GetValue(OnProperty);
@@ -35,6 +42,12 @@ namespace GetSanger.Controls
         {
             get => (string)GetValue(TextProperty);
             set => SetValue(TextProperty, value);
+        }
+
+        public string ImageString
+        {
+            get => (string)GetValue(ImageProperty);
+            set => SetValue(ImageProperty, value);
         }
         
         public CustomSwitchCell()
@@ -50,6 +63,8 @@ namespace GetSanger.Controls
             base.OnParentSet();
             label.Text = Text;
             toggle.IsToggled = On;
+            image.Source = ImageSource.FromFile(ImageString ?? "");
+            image.IsVisible = image.Source != null;
         }
 
         private static void onChanged(BindableObject bindable, object oldValue, object newValue)
@@ -71,6 +86,18 @@ namespace GetSanger.Controls
                 if (newValue is string val)
                 {
                     control.label.Text = val;
+                }
+            }
+        }
+
+        private static void imageChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable is CustomSwitchCell control)
+            {
+                if (newValue is string val)
+                {
+                    control.image.Source = ImageSource.FromFile(val);
+                    control.image.IsVisible = control.image.Source != null;
                 }
             }
         }

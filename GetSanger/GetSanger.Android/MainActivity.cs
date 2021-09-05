@@ -33,7 +33,6 @@ namespace GetSanger.Droid
             Instance = this;
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this);
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState, new PlatformConfig
             {
                 BitmapDescriptorFactory = new BitmapConfig()

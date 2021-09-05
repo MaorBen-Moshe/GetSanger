@@ -134,9 +134,15 @@
                                                        HorizontalOptions="End"/>
                     </StackLayout>
                 </StackLayout>
+
+                <controls:PriceControl MinPrice="{Binding Job.MinPrice}"
+                                       MaxPrice="{Binding Job.MaxPrice}"
+                                       IsReadOnly="True"
+                                       Margin="10, 5"/>
+
                 <StackLayout BackgroundColor="Transparent"
                          VerticalOptions="Start"
-                         Margin="10, 5, 10, 0"
+                         Margin="10, 5, 10, 5"
                          Spacing="0">
                     <Label Text="Description:"
                        BackgroundColor="Transparent"

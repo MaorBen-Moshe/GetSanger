@@ -22,7 +22,7 @@ namespace GetSanger.ViewModels
         private double m_DistanceLimit;
         private double m_OldDistanceLimit;
         private bool m_IsSangerMode;
-        private bool m_InfinityChecked;
+        private bool m_BoxChecked;
         private string m_DistanceString;
         #endregion
 
@@ -51,10 +51,10 @@ namespace GetSanger.ViewModels
             set => SetStructProperty(ref m_IsSangerMode, value);
         }
 
-        public bool InfinityChecked
+        public bool BoxChecked
         {
-            get => m_InfinityChecked;
-            set => SetStructProperty(ref m_InfinityChecked, value);
+            get => m_BoxChecked;
+            set => SetStructProperty(ref m_BoxChecked, value);
         }
 
         public string DistanceString
@@ -99,8 +99,8 @@ namespace GetSanger.ViewModels
             ).ToList());
             IsGenericNotificatons = AppManager.Instance.ConnectedUser.IsGenericNotifications;
             IsSangerMode = AppManager.Instance.CurrentMode.Equals(eAppMode.Sanger);
-            InfinityChecked = AppManager.Instance.ConnectedUser.DistanceLimit == -1;
-            DistanceLimit = InfinityChecked ? 10 : AppManager.Instance.ConnectedUser.DistanceLimit;
+            BoxChecked = AppManager.Instance.ConnectedUser.DistanceLimit != -1;
+            DistanceLimit = BoxChecked ? AppManager.Instance.ConnectedUser.DistanceLimit : 10;
             m_OldDistanceLimit = AppManager.Instance.ConnectedUser.DistanceLimit;
             setDistanceString();
         }
@@ -120,7 +120,11 @@ namespace GetSanger.ViewModels
             DistanceChangedCommand = new Command(distanceChanged);
             InfinityCommand = new Command(() => 
             {
-                AppManager.Instance.ConnectedUser.DistanceLimit = -1;
+                if (!BoxChecked)
+                {
+                    AppManager.Instance.ConnectedUser.DistanceLimit = -1;
+                }
+
                 setDistanceString();
             });
         }
@@ -219,21 +223,25 @@ namespace GetSanger.ViewModels
 
         private void distanceChanged(object i_Param)
         {
-            if (!InfinityChecked)
+            if (BoxChecked)
             {
-                // make double to int
-                double stepValue = 1.0;
-                double newStep = Math.Round(DistanceLimit / stepValue);
-                DistanceLimit = newStep * stepValue;
-
+                DistanceLimit = calcDistance(DistanceLimit);
                 AppManager.Instance.ConnectedUser.DistanceLimit = DistanceLimit;
                 setDistanceString();
             }
         }
 
+        private double calcDistance(double distance)
+        {
+            // make double to int
+            double stepValue = 1.0;
+            double newStep = Math.Round(distance / stepValue);
+            return newStep * stepValue;
+        }
+
         private void setDistanceString()
         {
-            DistanceString = string.Format("Job Distance: {0}", InfinityChecked ? "unlimited" : DistanceLimit.ToString());
+            DistanceString = string.Format("Job Distance: {0}", BoxChecked ? DistanceLimit.ToString() : "unlimited");
         }
         #endregion
     }

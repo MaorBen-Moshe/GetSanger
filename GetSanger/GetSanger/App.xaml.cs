@@ -11,6 +11,7 @@ namespace GetSanger
         public App()
         {
             InitializeComponent();
+
             VersionTracking.Track();
             if (VersionTracking.IsFirstLaunchEver)
             {

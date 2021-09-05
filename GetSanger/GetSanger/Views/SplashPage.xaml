@@ -14,8 +14,8 @@
                      VerticalOptions="CenterAndExpand"
                      BackgroundColor="Transparent">
             <Image Source="{AppThemeBinding Dark=getSangerIconTransparentDark.png, Light=getSangerIconTransparent.png}"
-                   WidthRequest="150"
-                   HeightRequest="150"
+                   WidthRequest="180"
+                   HeightRequest="180"
                    BackgroundColor="Transparent">
             </Image>
             <ActivityIndicator IsRunning="True" Color="Aqua"/>

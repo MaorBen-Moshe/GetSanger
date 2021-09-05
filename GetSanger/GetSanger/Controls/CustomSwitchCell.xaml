@@ -5,10 +5,17 @@
 
     <StackLayout Orientation="Horizontal" Margin="5"
                  HorizontalOptions="FillAndExpand"
+                 BackgroundColor="{AppThemeBinding Default=Transparent, Dark=#242424}"
                  VerticalOptions="CenterAndExpand">
+        <Image x:Name="image"
+               Margin="5,0,0,0"
+               WidthRequest="30"
+               HeightRequest="30"/>
         <Label HorizontalOptions="StartAndExpand"
+               FontFamily="{StaticResource MontserratSemiBold}"
                x:Name="label"/>
         <Switch HorizontalOptions="End"
+                ThumbColor="{AppThemeBinding Dark=Black, Light={StaticResource SwitchThumbColorLight}}"
                 IsToggled="{Binding On, Mode=TwoWay}"
                 x:Name="toggle"/>
     </StackLayout>

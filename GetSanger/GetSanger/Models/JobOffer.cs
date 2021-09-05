@@ -18,6 +18,8 @@ namespace GetSanger.Models
         private DateTime m_Date;
         private TimeSpan m_Time;
         private string m_Description;
+        private int m_MinPrice;
+        private int m_MaxPrice;
 
         #endregion
 
@@ -84,6 +86,18 @@ namespace GetSanger.Models
         }
 
         public string CategoryName { get; set; }
+
+        public int MinPrice
+        {
+            get => m_MinPrice;
+            set => SetStructProperty(ref m_MinPrice, value);
+        }
+
+        public int MaxPrice
+        {
+            get => m_MaxPrice;
+            set => SetStructProperty(ref m_MaxPrice, value);
+        }
 
         public override bool Equals(object obj)
         {

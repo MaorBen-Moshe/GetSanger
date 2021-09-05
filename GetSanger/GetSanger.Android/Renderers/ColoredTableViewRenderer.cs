@@ -80,6 +80,7 @@ namespace GetSanger.Droid.Renderers
                         // Set the color
                         textView.SetTextColor(_coloredTableView.GroupHeaderColor.ToAndroid());
                         textView.TextAlignment = Android.Views.TextAlignment.ViewStart;
+                        textView.TextSize = 20;
                         textView.Gravity = GravityFlags.Start;
                         divider.SetBackgroundColor(_coloredTableView.GroupHeaderColor.ToAndroid());
                     }

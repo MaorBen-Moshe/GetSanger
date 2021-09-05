@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using SQLite;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace GetSanger.ChatDatabase
 {
@@ -14,6 +15,7 @@ namespace GetSanger.ChatDatabase
     {
         #region Fields
         private static SQLiteAsyncConnection m_Connection;
+        private Semaphore m_Lock = new Semaphore(1,1);
         #endregion
 
         #region Instance
@@ -30,6 +32,10 @@ namespace GetSanger.ChatDatabase
         private ChatDatabase()
         {
             m_Connection = DependencyService.Get<ISQLiteDb>().GetConnection();
+        }
+
+        ~ChatDatabase() {
+            m_Lock.Close();
         }
         #endregion
 
@@ -66,7 +72,20 @@ namespace GetSanger.ChatDatabase
                 UserCreatedById = i_CreatedById ?? AuthHelper.GetLoggedInUserId()
             };
 
-            return (await m_Connection.InsertAsync(newUser) == 1) ? newUser : null;
+            ChatUser ret = await GetUserAsync(i_UserId);
+            if(ret == null)
+            {
+                m_Lock.WaitOne();
+                ret = await GetUserAsync(i_UserId);
+                if (ret == null)
+                {
+                    ret = (await m_Connection.InsertAsync(newUser) == 1) ? newUser : null;
+                }
+                
+                m_Lock.Release();
+            }
+
+            return ret;
         }
 
         public async Task<int> DeleteUserAsync(string i_UserId)
