@@ -636,6 +636,10 @@
     <ImageAsset Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\64x64.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -716,6 +720,7 @@
     <Folder Include="Assets.xcassets\visibility.png.imageset\" />
     <Folder Include="Assets.xcassets\visibilityDarkMode.png.imageset\" />
     <Folder Include="Assets.xcassets\whatsappDark.png.imageset\" />
+    <Folder Include="Assets.xcassets\bell.png.imageset\" />
   </ItemGroup>
   <ItemGroup />
 </Project>
