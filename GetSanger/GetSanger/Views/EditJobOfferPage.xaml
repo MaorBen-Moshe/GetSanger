@@ -72,7 +72,7 @@
                     <controls:EntryWithBorder Text="{Binding NewJobOffer.Title}" 
                                               Placeholder="Job Title">
                         <controls:EntryWithBorder.Behaviors>
-                            <behaviors:EntryLengthValidator MinLength="4" MaxLength="20"/>
+                            <behaviors:EntryLengthValidator MinLength="4" MaxLength="50"/>
                         </controls:EntryWithBorder.Behaviors>
                     </controls:EntryWithBorder>
                 </StackLayout>
@@ -136,6 +136,12 @@
                                                        />
                     </StackLayout>
                 </StackLayout>
+
+                <controls:PriceControl MinPrice="{Binding NewJobOffer.MinPrice, Mode=TwoWay}"
+                                       MaxPrice="{Binding NewJobOffer.MaxPrice, Mode=TwoWay}"
+                                       IsReadOnly="False"
+                                       Margin="10, 5"/>
+
                 <StackLayout BackgroundColor="Transparent"
                          VerticalOptions="Start"
                          Margin="10, 5, 10, 0"

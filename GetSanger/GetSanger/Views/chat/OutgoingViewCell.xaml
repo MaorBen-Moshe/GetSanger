@@ -33,7 +33,7 @@
                        BackgroundColor="Transparent"
                        HorizontalOptions="Start"
                        VerticalOptions="FillAndExpand"
-                       Margin="2"
+                       Margin="5"
                        Padding="5"/>
                 <Label Text="!"
                        TextColor="Red"

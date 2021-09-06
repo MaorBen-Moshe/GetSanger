@@ -363,9 +363,6 @@
     <AndroidResource Include="Resources\Drawable\visibilityDarkMode.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\ascendingSortDarkMode.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\Drawable\phoneDark.png" />
   </ItemGroup>
   <ItemGroup>
@@ -380,11 +377,15 @@
   <ItemGroup>
     <Content Include="Renderers\getSangerIconTransparentDark.png" />
     <AndroidResource Include="Resources\Drawable\getSangerIconTransparentDark.png" />
+    <AndroidResource Include="Resources\Drawable\bell.png" />
+    <AndroidResource Include="Resources\Drawable\send.png" />
+    <AndroidResource Include="Resources\Drawable\sendDark.png" />
+    <AndroidResource Include="Resources\Drawable\ascendingSortDarkMode.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" TriggeredFromHotReload="False" />
+      <UserProperties TriggeredFromHotReload="False" XamarinHotReloadUnhandledDeviceExceptionGetSangerAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

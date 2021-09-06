@@ -50,7 +50,6 @@ namespace GetSanger.iOS
             Rg.Plugins.Popup.Popup.Init();
             global::Xamarin.Forms.Forms.Init();
             CarouselViewRenderer.Init();
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Constants.Constants.MapsApiKey);
             Firebase.Core.App.Configure();
             Firebase.Crashlytics.Crashlytics.SharedInstance.Init();

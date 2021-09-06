@@ -51,8 +51,8 @@
                            FontFamily="{StaticResource Key=MontserratSemiBold}"
                            HorizontalOptions="Center" />
                             <Image Source="{AppThemeBinding Dark=getSangerIconTransparentDark.png, Light=getSangerIconTransparent.png}" 
-                                   WidthRequest="70"
-                                   HeightRequest="70"/>
+                                   WidthRequest="90"
+                                   HeightRequest="90"/>
                         </StackLayout>
                     </Frame>
                     <Frame BorderColor="Transparent"

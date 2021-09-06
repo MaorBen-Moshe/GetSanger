@@ -46,15 +46,15 @@
                         </Label>
 
                         <Image Source="{AppThemeBinding Dark=getSangerIconTransparentDark.png, Light=getSangerIconTransparent.png}" 
-                               HeightRequest="80"
-                               WidthRequest="80"
+                               HeightRequest="120"
+                               WidthRequest="120"
                                HorizontalOptions="CenterAndExpand"
                                VerticalOptions="StartAndExpand"/>
                     </StackLayout>
 
                     <Label VerticalOptions="StartAndExpand"
                            Text="{Binding AboutDescription}"
-                           FontSize="Medium"
+                           FontSize="Large"
                            BackgroundColor="Transparent"
                            HorizontalTextAlignment="Center"
                            MaxLines="100">

@@ -564,15 +564,6 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\87x87-1.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\64x64-1.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\32x32-1.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\87x87-1.png">
       <Visible>false</Visible>
     </ImageAsset>
@@ -636,6 +627,21 @@
     <ImageAsset Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\64x64.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\send.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\send.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\send.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\send.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\sendDark.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\sendDark.png.imageset\87x87.png" />
+    <ImageAsset Include="Assets.xcassets\sendDark.png.imageset\64x64.png" />
+    <ImageAsset Include="Assets.xcassets\sendDark.png.imageset\32x32.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -708,20 +714,23 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets.xcassets\AppIcon.appiconset\" />
+    <Folder Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\" />
+    <Folder Include="Assets.xcassets\d.imageset\" />
     <Folder Include="Assets.xcassets\getSangerIconHD.png.imageset\" />
     <Folder Include="Assets.xcassets\getSangerIconTransparent.png.imageset\" />
+    <Folder Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\" />
     <Folder Include="Assets.xcassets\IconElectrician.png.imageset\" />
     <Folder Include="Assets.xcassets\ic_scolldown.png.imageset\" />
+    <Folder Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\" />
+    <Folder Include="Assets.xcassets\phoneDark.png.imageset\" />
     <Folder Include="Assets.xcassets\profile.png.imageset\" />
     <Folder Include="Assets.xcassets\visibility.png.imageset\" />
     <Folder Include="Assets.xcassets\visibilityDarkMode.png.imageset\" />
-    <Folder Include="Assets.xcassets\noVisibilityDarkMode.png.imageset\" />
-    <Folder Include="Assets.xcassets\ascendingSortDarkMode.png.imageset\" />
-    <Folder Include="Assets.xcassets\AppIcon.appiconset\" />
-    <Folder Include="Assets.xcassets\phoneDark.png.imageset\" />
     <Folder Include="Assets.xcassets\whatsappDark.png.imageset\" />
-    <Folder Include="Assets.xcassets\d.imageset\" />
-    <Folder Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\" />
+    <Folder Include="Assets.xcassets\bell.png.imageset\" />
+    <Folder Include="Assets.xcassets\send.png.imageset\" />
+    <Folder Include="Assets.xcassets\sendDark.png.imageset\" />
   </ItemGroup>
   <ItemGroup />
 </Project>

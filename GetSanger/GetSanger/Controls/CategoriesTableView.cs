@@ -63,7 +63,7 @@ namespace GetSanger.Controls
             Root = new TableRoot()
             {
                 new TableSection("Generic Notifications"),
-                new TableSection("Categories")
+                new TableSection("My Sanger Settings")
             };
 
             setGenericView();
@@ -79,6 +79,7 @@ namespace GetSanger.Controls
             {
                 BindingContext = this,
                 Text = "Notifications",
+                ImageString = "bell.png"
             };
 
             genericCell.SetBinding(CustomSwitchCell.OnProperty, new Binding("IsGenericNotifications"));
@@ -98,7 +99,11 @@ namespace GetSanger.Controls
             categoriesSection.Clear();
             foreach (var categoryCell in Source)
             {
-                CustomSwitchCell sc = new CustomSwitchCell { BindingContext = categoryCell };
+                CustomSwitchCell sc = new CustomSwitchCell {
+                    BindingContext = categoryCell,
+                    ImageString = categoryCell.ImageUri
+                };
+
                 sc.SetBinding(CustomSwitchCell.TextProperty, new Binding("CategoryString"));
                 sc.SetBinding(CustomSwitchCell.OnProperty, new Binding("Checked"));
                 sc.OnChanged += CategoriesSwitchCell_OnChanged;

@@ -48,7 +48,6 @@
 
             <controls:RoundedImage ImageSource="{Binding PersonalImage}" 
                                    Radius="80" 
-                                   IsCacheEnable="False"
                                    Command="{Binding ImagePickerCommand}"/>
             <Label Text="Add Profile Picture"
                    FontSize="Caption"

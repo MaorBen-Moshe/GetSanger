@@ -29,7 +29,7 @@
             </StackLayout.Effects>
             
             <Label Text="{Binding Text}"
-                   Margin="2"
+                   Margin="5"
                    Padding="5"
                    HorizontalOptions="Start"
                    VerticalOptions="FillAndExpand"/>

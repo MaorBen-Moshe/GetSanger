@@ -30,6 +30,7 @@
                 <TableRoot>
                     <TableSection Title="Generic Notifications">
                         <controls:CustomSwitchCell Text="Notifications" 
+                                                   ImageString="bell.png"
                                                    On="{Binding IsGenericNotificatons}" />
                     </TableSection>
                 </TableRoot>
@@ -54,15 +55,15 @@
                     <StackLayout Orientation="Horizontal">
                         <Slider Value="{Binding DistanceLimit}"
                             Maximum="400"
-                            Minimum="1"
+                            Minimum="10"
                             HorizontalOptions="FillAndExpand"
-                            IsEnabled="{Binding InfinityChecked, Converter={StaticResource InverseBoolConverter}}">
+                            IsEnabled="{Binding BoxChecked}">
                             <Slider.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="ValueChanged"
                                                               Command="{Binding DistanceChangedCommand}"/>
                             </Slider.Behaviors>
                         </Slider>
-                        <CheckBox IsChecked="{Binding InfinityChecked, Mode=TwoWay}">
+                        <CheckBox IsChecked="{Binding BoxChecked, Mode=TwoWay}">
                             <CheckBox.Behaviors>
                                 <behaviors:EventToCommandBehavior EventName="CheckedChanged"
                                                               Command ="{Binding InfinityCommand}" />
