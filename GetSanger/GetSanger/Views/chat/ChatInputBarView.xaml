@@ -4,21 +4,11 @@
              xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.chat.ChatInputBarView">
     <ContentView.Content>
-        <Grid RowSpacing="0" 
-              ColumnSpacing="0"
-              Margin="0,0,0,0"
-              BackgroundColor="Transparent"
-              x:Name="grid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <StackLayout Orientation="Horizontal"
+                     Margin="0"
+                     BackgroundColor="Transparent"
+                     x:Name="grid">
             <controls:EditorWithBorder x:Name="chatTextInput" 
-                                           Grid.Row="0" 
-                                           Grid.Column="0"
                                            Margin="10,0,5,10"
                                            Text="{Binding TextToSend}" 
                                            CornerRadius="30"  
@@ -31,27 +21,34 @@
                                            BackgroundColor="{AppThemeBinding Dark=Black, Light=WhiteSmoke}"
                                            IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
                                            Completed="Handle_Completed"/>
-            <Frame Grid.Row="0"
-                   Grid.Column="1"
-                   CornerRadius="30"
-                   HeightRequest="60"
-                   WidthRequest="60"
-                   Padding="0"
-                   Margin="0,0,0,10">
-                <Label Text="Send"
-                   FontFamily="{StaticResource OpenSansBold}"
-                   IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
-                   BackgroundColor="Transparent"
-                       HorizontalTextAlignment="Center"
-                   VerticalTextAlignment="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer
-                                            Command="{Binding SendMessageCommand}"
-                                            Tapped="Handle_Completed"/>
-                    </Label.GestureRecognizers>
-                </Label>
-            </Frame>
+            <ImageButton HeightRequest="30"
+                         WidthRequest="30"
+                         Padding="0"
+                         VerticalOptions="EndAndExpand"
+                         Margin="0,0,0,20"
+                         Source="{AppThemeBinding Dark=sendDark.png, Light=send.png}"
+                         Command="{Binding SendMessageCommand}"
+                         Clicked="Handle_Completed"
+                         IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
+                         BackgroundColor="Transparent">
+            </ImageButton>
+        </StackLayout>
+        
+        
+        <!--<Grid RowSpacing="0" 
+              ColumnSpacing="0"
+              Margin="0,0,0,0"
+              BackgroundColor="Transparent"
+              x:Name="grid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
 
-        </Grid>
+        </Grid>-->
     </ContentView.Content>
 </ContentView>
