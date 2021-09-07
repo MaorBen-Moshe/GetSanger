@@ -20,11 +20,16 @@
 	</array>
 	<key>UIAppFonts</key>
 	<array>
-		<string>UIFontIcons.ttf</string>
 		<string>Montserrat-Bold.ttf</string>
-		<string>Montserrat-Medium.ttf</string>
-		<string>Montserrat-Regular.ttf</string>
-		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-SemiBoldItalic.ttf</string>
+		<string>Montserrat-LightItalic.ttf</string>
+		<string>Caveat-Bold.ttf</string>
+		<string>Caveat-Regular.ttf</string>
+		<string>Caveat-SemiBold.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
+		<string>OpenSans-SemiBoldItalic.ttf</string>
+		<string>OpenSans-SemiBold.ttf</string>
+		<string>OpenSans-LightItalic.ttf</string>
 	</array>
 	<key>MinimumOSVersion</key>
 	<string>13.0</string>
@@ -56,29 +61,25 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.companyname.getsanger</string>
+			<string>fb</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.companyname.getsanger</string>
+				<string>fb328227848585394</string>
 			</array>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
 		</dict>
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
-  <key>UIAppFonts</key>
-  <array>
-    <string>Montserrat-Bold.ttf</string>
-    <string>Montserrat-SemiBoldItalic.ttf</string>
-    <string>Montserrat-LightItalic.ttf</string>
-    <string>Caveat-Bold.ttf</string>
-    <string>Caveat-Regular.ttf</string>
-    <string>Caveat-SemiBold.ttf</string>
-    <string>OpenSans-Bold.ttf</string>
-    <string>OpenSans-SemiBoldItalic.ttf</string>
-    <string>OpenSans-SemiBold.ttf</string>
-    <string>OpenSans-LightItalic.ttf</string>
-  </array>
+	<key>FacebookAppID</key>
+	<string>328227848585394</string>
+	<key>FacebookDisplayName</key>
+	<string>Get Sanger</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 </dict>
 </plist>

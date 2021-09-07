@@ -6,6 +6,7 @@ using Firebase.InstanceID;
 using GetSanger.iOS.Services;
 using UserNotifications;
 using CarouselView.FormsPlugin.iOS;
+using Facebook.CoreKit;
 
 namespace GetSanger.iOS
 {
@@ -22,6 +23,11 @@ namespace GetSanger.iOS
                 return true;
 
             return base.OpenUrl(app, url, options);
+        }
+
+        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            return ApplicationDelegate.SharedInstance.OpenUrl(application, url, sourceApplication, annotation);
         }
 
         public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity,
@@ -59,6 +65,11 @@ namespace GetSanger.iOS
             ObjCRuntime.Selector selector = new ObjCRuntime.Selector("setSemanticContentAttribute:");
 
             return base.FinishedLaunching(app, options);
+        }
+
+        public override void OnActivated(UIApplication uiApplication)
+        {
+            base.OnActivated(uiApplication);
         }
 
         void InstanceIdResultHandler(InstanceIdResult result, NSError error)

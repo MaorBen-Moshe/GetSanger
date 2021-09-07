@@ -14,6 +14,7 @@ namespace GetSanger.Services
     public static class AuthHelper
     {
         private static readonly IAuth sr_Auth;
+        public static TaskCompletionSource<bool> FacebookLoginCompletion { get; private set; }
 
         static AuthHelper()
         {
@@ -134,7 +135,11 @@ namespace GetSanger.Services
                 switch (i_Provider)
                 {
                     case eSocialProvider.Facebook:
-                        string facebookAccessToken = await getSocialAuthIdToken("Facebook");
+                        FacebookLoginCompletion = new TaskCompletionSource<bool>();
+                        sr_Auth.LoginViaFacebook();
+                        await FacebookLoginCompletion.Task;
+                        string facebookAccessToken = sr_Auth.GetFacebookAccessToken();
+                        //string facebookAccessToken = await getSocialAuthIdToken("Facebook");
                         requestDictionary["postBody"] = $"access_token={facebookAccessToken}&providerId=facebook.com";
                         requestDictionary["ProviderId"] = "facebook.com";
                         break;
@@ -161,7 +166,8 @@ namespace GetSanger.Services
                 string responseString = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    Dictionary<string, object> responseDictionary = ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
+                    Dictionary<string, object> responseDictionary =
+                        ObjectJsonSerializer.DeserializeForAuth(responseString) as Dictionary<string, object>;
                     string customToken = responseDictionary["customToken"] as string;
                     sr_Auth.SignOut();
                     await sr_Auth.SignInWithCustomToken(customToken);
@@ -365,6 +371,7 @@ namespace GetSanger.Services
             {
                 // Normalize the domain
                 i_Verify = Regex.Replace(i_Verify, @"(@)(.+)$", DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
+
                 // Examines the domain part of the email and normalizes it.
                 static string DomainMapper(Match match)
                 {

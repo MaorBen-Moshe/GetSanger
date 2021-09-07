@@ -104,6 +104,8 @@ namespace GetSanger.Droid
                     PickImageTaskCompletionSource.SetResult(null);
                 }
             }
+
+            Auth.FacebookCallbackManager.OnActivityResult(requestCode, (int)resultCode, intent);
         }
 
         protected override async void OnNewIntent(Intent intent)

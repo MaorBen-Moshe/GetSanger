@@ -1,12 +1,12 @@
 ﻿using Foundation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Facebook.CoreKit;
+using Facebook.LoginKit;
 using Firebase.Auth;
 using GetSanger.Interfaces;
 using GetSanger.iOS.Services;
+using GetSanger.Services;
 using UIKit;
 using Xamarin.Forms;
 
@@ -47,8 +47,7 @@ namespace GetSanger.iOS.Services
         {
             if (getUser() != null)
             {
-                NSError? error;
-                Auth.DefaultInstance.SignOut(out error);
+                Auth.DefaultInstance.SignOut(out _);
             }
         }
 
@@ -74,14 +73,46 @@ namespace GetSanger.iOS.Services
             return result;
         }
 
-        public string GetGoogleClientId()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task SignInAnonymouslyAsync()
         {
             await Auth.DefaultInstance.SignInAnonymouslyAsync();
+        }
+
+        public void LoginViaFacebook()
+        {
+            var window = UIApplication.SharedApplication.KeyWindow;
+            var vc = window.RootViewController;
+
+            LoginManager manager = new LoginManager();
+            manager.LogOut();
+            manager.LogIn(new[] { "public_profile", "email" }, vc, ((result, error) =>
+            {
+                if (result is { IsCancelled: false })
+                {
+                    AccessToken.CurrentAccessToken = result.Token;
+                }
+
+                AuthHelper.FacebookLoginCompletion?.TrySetResult(true);
+            }));
+        }
+
+        public string GetFacebookAccessToken()
+        {
+            try
+            {
+                string accessToken = AccessToken.CurrentAccessToken.TokenString;
+
+                if (accessToken == null)
+                {
+                    throw new Exception();
+                }
+
+                return accessToken;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Login failed.");
+            }
         }
     }
 }
