@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GetSanger.Exceptions;
+using GetSanger.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using GetSanger.ViewModels.chat;
@@ -96,40 +97,47 @@ namespace GetSanger.Services
 
         public static async Task HandleMessageReceived(string i_Title, string i_Body, IDictionary<string, string> i_Message)
         {
-            if (i_Message != null && i_Message.ContainsKey("Type"))
+            try
             {
-                string type = i_Message["Type"];
-                string json = i_Message.ContainsKey("Json") ? i_Message["Json"] : null;
-                i_Message.Clear();
-                switch (type)
+                if (i_Message != null && i_Message.ContainsKey("Type"))
                 {
-                    case nameof(JobOffer):
-                        await handleJobOffer(i_Title, i_Body, json);
-                        break;
-                    case nameof(Activity):
-                        await handleActivity(i_Title, i_Body, json);
-                        break;
-                    case nameof(Message):
-                        await handleMessage(json);
-                        break;
-                    case nameof(Rating):
-                        handleRating(i_Title, i_Body, json);
-                        break;
-                    case "MessageInfo":
-                        await handleMessageInfo(i_Title, i_Body, json);
-                        break;
-                    case Constants.Constants.UpdateLocationType:
-                        handleSangerLocation();
-                        break;
-                    case "":
-                        IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
-                        if (!string.IsNullOrWhiteSpace(i_Title) && !string.IsNullOrWhiteSpace(i_Body))
-                        {
-                            await service.DisplayAlert(i_Title, i_Body, "OK");
-                        }
+                    string type = i_Message["Type"];
+                    string json = i_Message.ContainsKey("Json") ? i_Message["Json"] : null;
+                    i_Message.Clear();
+                    switch (type)
+                    {
+                        case nameof(JobOffer):
+                            await handleJobOffer(i_Title, i_Body, json);
+                            break;
+                        case nameof(Activity):
+                            await handleActivity(i_Title, i_Body, json);
+                            break;
+                        case nameof(Message):
+                            await handleMessage(json);
+                            break;
+                        case nameof(Rating):
+                            handleRating(i_Title, i_Body, json);
+                            break;
+                        case "MessageInfo":
+                            await handleMessageInfo(i_Title, i_Body, json);
+                            break;
+                        case Constants.Constants.UpdateLocationType:
+                            handleSangerLocation();
+                            break;
+                        case "":
+                            IPageService service = AppManager.Instance.Services.GetService(typeof(PageServices)) as PageServices;
+                            if (!string.IsNullOrWhiteSpace(i_Title) && !string.IsNullOrWhiteSpace(i_Body))
+                            {
+                                await service.DisplayAlert(i_Title, i_Body, "OK");
+                            }
 
-                        break;
+                            break;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                await e.LogAndDisplayError($"{nameof(PushServices)}:HandleMessageReceived", "Error", e.Message);
             }
         }
 
