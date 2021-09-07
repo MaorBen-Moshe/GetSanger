@@ -28,15 +28,7 @@ namespace GetSanger.Utils
                         activity.Status = eActivityStatus.Active;
                         await FireStoreHelper.UpdateActivity(activity);
                         await sr_PushService.SendToDevice(activity.SangerID, activity, typeof(Activity).Name, "Activity Confirmed", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} accepted your job offer :)");
-                        foreach (Activity current in AppManager.Instance.ConnectedUser.Activities)
-                        {
-                            if (current.JobDetails.JobId.Equals(activity.JobDetails.JobId))
-                            {
-                                current.Status = eActivityStatus.Rejected;
-                                await sr_PushService.SendToDevice(current.SangerID, activity, typeof(Activity).Name, "Activity Rejected", $"{AppManager.Instance.ConnectedUser.PersonalDetails.NickName} rejected your job offer :)");
-                            }
-                        }
-
+                        
                         action?.Invoke();
                     });
             }
