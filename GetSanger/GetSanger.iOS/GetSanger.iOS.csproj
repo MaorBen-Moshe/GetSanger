@@ -636,10 +636,18 @@
     <ImageAsset Include="Assets.xcassets\getSangerIconTransparentDark.png.imageset\64x64.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\bell.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\bell.png.imageset\87x87.png" />
-    <ImageAsset Include="Assets.xcassets\bell.png.imageset\64x64.png" />
-    <ImageAsset Include="Assets.xcassets\bell.png.imageset\32x32.png" />
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\87x87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\64x64.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\bell.png.imageset\32x32.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

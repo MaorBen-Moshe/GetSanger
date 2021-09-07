@@ -4,11 +4,21 @@
              xmlns:controls="clr-namespace:GetSanger.Controls"
              x:Class="GetSanger.Views.chat.ChatInputBarView">
     <ContentView.Content>
-        <StackLayout Orientation="Horizontal"
-                     Margin="0"
-                     BackgroundColor="Transparent"
-                     x:Name="grid">
+        <Grid RowSpacing="0" 
+              ColumnSpacing="0"
+              Margin="0,0,0,10"
+              BackgroundColor="Transparent"
+              x:Name="grid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             <controls:EditorWithBorder x:Name="chatTextInput" 
+                                       Grid.Row="0"
+                                       Grid.Column="0"
                                            Margin="10,0,5,10"
                                            Text="{Binding TextToSend}" 
                                            CornerRadius="30"  
@@ -24,6 +34,8 @@
             <ImageButton HeightRequest="30"
                          WidthRequest="30"
                          Padding="0"
+                         Grid.Row="0"
+                         Grid.Column="1"
                          VerticalOptions="EndAndExpand"
                          Margin="0,0,0,20"
                          Source="{AppThemeBinding Dark=sendDark.png, Light=send.png}"
@@ -32,23 +44,6 @@
                          IsEnabled="{Binding Source={x:Reference grid}, Path=IsEnabled}"
                          BackgroundColor="Transparent">
             </ImageButton>
-        </StackLayout>
-        
-        
-        <!--<Grid RowSpacing="0" 
-              ColumnSpacing="0"
-              Margin="0,0,0,0"
-              BackgroundColor="Transparent"
-              x:Name="grid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            
-
-        </Grid>-->
+        </Grid>
     </ContentView.Content>
 </ContentView>
