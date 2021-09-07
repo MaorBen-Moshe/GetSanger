@@ -14,7 +14,7 @@ namespace GetSanger.Services
     public static class AuthHelper
     {
         private static readonly IAuth sr_Auth;
-        public static TaskCompletionSource<bool> FacebookLoginCompletion;
+        public static TaskCompletionSource<bool> FacebookLoginCompletion { get; private set; }
 
         static AuthHelper()
         {
