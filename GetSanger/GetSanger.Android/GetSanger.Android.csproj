@@ -378,6 +378,7 @@
     <AndroidResource Include="Resources\Drawable\send.png" />
     <AndroidResource Include="Resources\Drawable\sendDark.png" />
     <AndroidResource Include="Resources\Drawable\ascendingSortDarkMode.png" />
+    <AndroidResource Include="Resources\Drawable\getSangerBig.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
