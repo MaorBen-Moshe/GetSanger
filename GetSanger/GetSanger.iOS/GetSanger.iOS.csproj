@@ -672,8 +672,12 @@
     <ImageAsset Include="Assets.xcassets\sendDark.png.imageset\32x32.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\getSangerBig.png.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\getSangerBig.png.imageset\1024x1024.png" />
+    <ImageAsset Include="Assets.xcassets\getSangerBig.png.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\getSangerBig.png.imageset\1024x1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

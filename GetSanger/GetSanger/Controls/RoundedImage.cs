@@ -9,7 +9,6 @@ namespace GetSanger.Controls
         #region Fields
         private Frame m_Frame;
         private Image m_Image;
-        private Label m_LoadingLabel;
         #endregion
 
         #region Properties
