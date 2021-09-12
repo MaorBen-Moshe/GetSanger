@@ -22,7 +22,7 @@ namespace GetSanger.iOS
             if (Xamarin.Essentials.Platform.OpenUrl(app, url, options))
                 return true;
 
-            return base.OpenUrl(app, url, options);
+            return ApplicationDelegate.SharedInstance.OpenUrl(app, url, options);
         }
 
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
@@ -64,7 +64,8 @@ namespace GetSanger.iOS
             // force Right to left flow direction in app
             ObjCRuntime.Selector selector = new ObjCRuntime.Selector("setSemanticContentAttribute:");
 
-            return base.FinishedLaunching(app, options);
+            base.FinishedLaunching(app, options);
+            return ApplicationDelegate.SharedInstance.FinishedLaunching(app, options);
         }
 
         public override void OnActivated(UIApplication uiApplication)
