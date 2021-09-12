@@ -234,7 +234,7 @@ namespace GetSanger.ViewModels
                     string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
                     sr_LoadingService.HideLoadingPage();
                     await GoBack();
-                    await RunTaskWhileLoading(sr_NavigationService.NavigateTo($"///{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
+                    await sr_NavigationService.NavigateTo($"//{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}");
                 }
                 else
                 {
