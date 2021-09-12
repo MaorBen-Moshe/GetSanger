@@ -226,7 +226,7 @@ namespace GetSanger.ViewModels
                         NewJobOffer.FromLocation = NewJobOffer.DestinationLocation;
                     }
 
-                    NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
+                    NewJobOffer.CategoryName = NewJobOffer.Category.ToString().Replace("_", " ");
                     sr_LoadingService.ShowLoadingPage();
                     List<JobOffer> job = await FireStoreHelper.AddJobOffer(NewJobOffer);
                     AppManager.Instance.ConnectedUser.JobOffers.Append<ObservableCollection<JobOffer>, JobOffer>(new ObservableCollection<JobOffer>(job));
