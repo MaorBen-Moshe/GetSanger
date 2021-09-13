@@ -226,7 +226,7 @@ namespace GetSanger.ViewModels
                         NewJobOffer.FromLocation = NewJobOffer.DestinationLocation;
                     }
 
-                    NewJobOffer.CategoryName = NewJobOffer.Category.ToString();
+                    NewJobOffer.CategoryName = NewJobOffer.Category.ToString().Replace("_", " ");
                     sr_LoadingService.ShowLoadingPage();
                     List<JobOffer> job = await FireStoreHelper.AddJobOffer(NewJobOffer);
                     AppManager.Instance.ConnectedUser.JobOffers.Append<ObservableCollection<JobOffer>, JobOffer>(new ObservableCollection<JobOffer>(job));
@@ -234,7 +234,7 @@ namespace GetSanger.ViewModels
                     string jobJson = ObjectJsonSerializer.SerializeForPage(job.FirstOrDefault());
                     sr_LoadingService.HideLoadingPage();
                     await GoBack();
-                    await RunTaskWhileLoading(sr_NavigationService.NavigateTo($"///{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}"));
+                    await sr_NavigationService.NavigateTo($"//{ShellRoutes.JobOffers}/{ShellRoutes.ViewJobOffer}?jobOffer={jobJson}");
                 }
                 else
                 {
